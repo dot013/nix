@@ -128,6 +128,7 @@
         "home-manager": "home-manager",
         "nix-colors": "nix-colors",
         "nixpkgs": "nixpkgs_2",
+        "tmux-plugin-manager": "tmux-plugin-manager"
       }
     },
     "systems": {
@@ -142,6 +143,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tmux-plugin-manager": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1677502767,
+        "narHash": "sha256-hW8mfwB8F9ZkTQ72WQp/1fy8KL1IIYMZBtZYIwZdMQc=",
+        "owner": "tmux-plugins",
+        "repo": "tpm",
+        "rev": "99469c4a9b1ccf77fade25842dc7bafbc8ce9946",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tmux-plugins",
+        "repo": "tpm",
         "type": "github"
       }
     },

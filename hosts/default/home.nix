@@ -4,6 +4,7 @@
   imports = [
     inputs.flatpaks.homeManagerModules.default
     ../../modules/home-manager/theme.nix
+    ../../modules/home-manager/config/terminal.nix
   ];
 
   # theme.accent = "f38ba8";

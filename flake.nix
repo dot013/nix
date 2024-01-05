@@ -14,6 +14,11 @@
     # Used for theming the OS, see modules/home-manager/theme.nix
     nix-colors.url = "github:misterio77/nix-colors";
 
+    # Necessary for modules/home-manager/programs/tmux.nix
+    tmux-plugin-manager = {
+      url = "github:tmux-plugins/tpm";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
