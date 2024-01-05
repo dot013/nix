@@ -1,10 +1,17 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
+  imports = [
+    inputs.flatpaks.homeManagerModules.default
+    ../../modules/home-manager/theme.nix
+  ];
+
+  # theme.accent = "f38ba8";
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "guz";
   home.homeDirectory = "/home/guz";
+
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release

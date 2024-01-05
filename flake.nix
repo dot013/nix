@@ -10,7 +10,10 @@
     };
 
     flatpaks.url = "github:GermanBread/declarative-flatpak/stable";
-    # nix-flatpak.url = "github:gmodena/nix-flatpak";
+
+    # Used for theming the OS, see modules/home-manager/theme.nix
+    nix-colors.url = "github:misterio77/nix-colors";
+
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:

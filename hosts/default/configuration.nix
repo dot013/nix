@@ -86,7 +86,7 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.guz = {
+  users.users."guz" = {
     isNormalUser = true;
     description = "Guz";
     extraGroups = [ "networkmanager" "wheel" ];
@@ -99,10 +99,7 @@
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
     users = {
-      "guz".imports = [
-        inputs.flatpaks.homeManagerModules.default
-        ./home.nix
-      ];
+      "guz" = import ./home.nix;
     };
   };
 
