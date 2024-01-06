@@ -28,12 +28,12 @@
     in
     {
       nixosConfigurations.default = nixpkgs.lib.nixosSystem {
-          specialArgs = {inherit inputs;};
-          modules = [ 
-            inputs.home-manager.nixosModules.default
-            ./hosts/default/configuration.nix
-          ];
-        };
+        specialArgs = { inherit inputs; };
+        modules = [
+          inputs.home-manager.nixosModules.default
+          ./hosts/default/configuration.nix
+        ];
+      };
       homeConfiguration."guz" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         extraSpecialArgs = { inherit inputs; };

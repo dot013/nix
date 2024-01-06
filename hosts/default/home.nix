@@ -43,9 +43,9 @@
 
   flatpak.enable = true;
   flatpak.packages = [
-      "flathub:app/nz.mega.MEGAsync//stable"
+    "flathub:app/nz.mega.MEGAsync//stable"
   ];
-  
+
   home.packages = with pkgs; [
     obsidian
     # # It is sometimes useful to fine-tune packages, for example, by applying

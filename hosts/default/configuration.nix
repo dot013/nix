@@ -1,4 +1,3 @@
-
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
@@ -7,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       inputs.home-manager.nixosModules.default
     ];
@@ -93,7 +93,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
-    #  thunderbird
+      #  thunderbird
     ];
     shell = pkgs.zsh;
   };
@@ -112,7 +112,7 @@
   environment.systemPackages = with pkgs; [
     vim
     neovim
-    git  
+    git
     gcc # Added temporally so my neovim config doesn't break
     wget
     nixpkgs-fmt
