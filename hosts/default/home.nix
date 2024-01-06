@@ -2,7 +2,7 @@
 
 {
   imports = [
-    inputs.flatpaks.homeManagerModules.default
+    ../../modules/home-manager/flatpak.nix
     ../../modules/home-manager/theme.nix
     ../../modules/home-manager/config/terminal.nix
   ];
@@ -26,16 +26,6 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
 
-  services.flatpak = {
-    enableModule = true;
-    remotes = {
-      "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-      "flathub-beta" = "https://dl.flathub.org/beta-repo/flathub-beta.flatpakrepo";
-    };
-    packages = [
-      "flathub:app/nz.mega.MEGAsync//stable"
-    ];
-  };
 
   programs.bash = {
     enable = true;
@@ -49,6 +39,11 @@
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-25.9.0"
+  ];
+
+  flatpak.enable = true;
+  flatpak.packages = [
+      "flathub:app/nz.mega.MEGAsync//stable"
   ];
   
   home.packages = with pkgs; [

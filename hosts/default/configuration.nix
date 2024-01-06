@@ -115,6 +115,8 @@
     git  
     gcc # Added temporally so my neovim config doesn't break
     wget
+    nixpkgs-fmt
+    nixpkgs-lint
   ];
 
   environment.sessionVariables = {
