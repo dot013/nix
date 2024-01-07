@@ -16,18 +16,23 @@ in
     defaultProg = lib.mkOption {
       default = [ ];
     };
+    font = lib.mkOption {
+      default = "Fira Code";
+      type = lib.types.str;
+    };
   };
   config = lib.mkIf cfg.enable {
     programs.wezterm.enable = true;
     programs.wezterm.enableZshIntegration = lib.mkIf (cfg.integration.zsh) true;
 
     programs.wezterm.extraConfig = ''
-      			return {
-      				enable_tab_bar = false;
-      				color_scheme = "${cfg.colorScheme}",
-      				default_prog = { ${lib.concatMapStrings (x: "'" + x + "',") cfg.defaultProg} },
-      			}
-      		'';
+      return {
+      	enable_tab_bar = false;
+        color_scheme = "${cfg.colorScheme}",
+        default_prog = { ${lib.concatMapStrings (x: "'" + x + "',") cfg.defaultProg} },
+        font = wezterm.font("${cfg.font}"),
+      }
+    '';
 
     programs.wezterm.colorSchemes = {
       system = with config.colorScheme.colors; {
