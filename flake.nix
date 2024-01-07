@@ -23,13 +23,26 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
-    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
-      modules = [
-        inputs.home-manager.nixosModules.default
-        ./hosts/desktop/configuration.nix
-      ];
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+    let
+      create-host = (configs: builtins.listToAttrs (map
+        (c: {
+          name = c;
+          value = nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs; };
+            modules = [
+              inputs.home-manager.nixosModules.default
+              (./. + ("/hosts/" + builtins.replaceStrings [ "@" ] [ "/" ] c) + /configuration.nix)
+            ];
+          };
+        })
+        configs));
+    in
+    {
+      nixosConfigurations = (create-host [
+        "desktop@default"
+        "desktop@work"
+      ]);
     };
-  };
 }
+

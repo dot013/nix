@@ -27,13 +27,6 @@
 
   programs.zsh.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  set-user.users = [
-    {
-      username = "guz";
-      shell = pkgs.zsh;
-      home = import ./home.nix;
-    }
-  ];
 
   services.flatpak.enable = true;
 
