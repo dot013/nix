@@ -7,6 +7,7 @@
 {
   imports = [
     ../../modules/nixos/config/host.nix
+    ../../modules/nixos/systems/set-user.nix
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -26,27 +27,17 @@
 
   programs.zsh.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users."guz" = {
-    isNormalUser = true;
-    description = "Guz";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      firefox
-      #  thunderbird
-    ];
-    shell = pkgs.zsh;
-  };
-
-  home-manager = {
-    extraSpecialArgs = { inherit inputs; };
-    users = {
-      "guz" = import ./home.nix;
-    };
-  };
+  set-user.users = [
+    {
+      username = "guz";
+      shell = pkgs.zsh;
+      home = import ./home.nix;
+    }
+  ];
 
   services.flatpak.enable = true;
 
-  environment.pathsToLink = [ "/share/zsh" ];
+  environment.pathsToLink = [ " /share/zsh " ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -69,3 +60,4 @@
 
 
 }
+
