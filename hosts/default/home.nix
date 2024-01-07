@@ -2,7 +2,8 @@
 
 {
   imports = [
-    ../../modules/home-manager/flatpak.nix
+    # inputs.flatpaks.homeManagerModules.default
+    inputs.nix-flatpak.homeManagerModules.nix-flatpak
     ../../modules/home-manager/theme.nix
     ../../modules/home-manager/config/terminal.nix
   ];
@@ -34,18 +35,15 @@
     '';
   };
 
+  services.flatpak.packages = [
+    "nz.mega.MEGAsync"
+  ];
+
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = _: true;
-
   nixpkgs.config.permittedInsecurePackages = [
     "electron-25.9.0"
   ];
-
-  flatpak.enable = true;
-  flatpak.packages = [
-    "flathub:app/nz.mega.MEGAsync//stable"
-  ];
-
   home.packages = with pkgs; [
     obsidian
     # # It is sometimes useful to fine-tune packages, for example, by applying

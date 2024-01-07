@@ -16,26 +16,6 @@
         "type": "github"
       }
     },
-    "flatpaks": {
-      "inputs": {
-        "nixpkgs": "nixpkgs",
-        "utils": "utils"
-      },
-      "locked": {
-        "lastModified": 1701334529,
-        "narHash": "sha256-bkvO6vqAHBEwBdov1O4/0feK38g9z+qMCBm6/UtvlWY=",
-        "owner": "GermanBread",
-        "repo": "declarative-flatpak",
-        "rev": "5cad4f2ea95e8bd92eed1de01718c2a6d312b471",
-        "type": "github"
-      },
-      "original": {
-        "owner": "GermanBread",
-        "ref": "stable",
-        "repo": "declarative-flatpak",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -75,18 +55,34 @@
         "type": "github"
       }
     },
-    "nixpkgs": {
+    "nix-flatpak": {
       "locked": {
-        "lastModified": 1701156937,
-        "narHash": "sha256-jpMJOFvOTejx211D8z/gz0ErRtQPy6RXxgD2ZB86mso=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "7c4c20509c4363195841faa6c911777a134acdf3",
+        "lastModified": 1702538294,
+        "narHash": "sha256-TvmXiqPqrTRdHqReS5z10xk3QMG5fRyxwHm+4W5d5L8=",
+        "owner": "Tomaszal",
+        "repo": "nix-flatpak",
+        "rev": "7e816f75146124a8ac0dc2ec86ade27768f50a63",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixos-23.11",
+        "owner": "Tomaszal",
+        "ref": "feature/overrides",
+        "repo": "nix-flatpak",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1703961334,
+        "narHash": "sha256-M1mV/Cq+pgjk0rt6VxoyyD+O8cOUiai8t9Q6Yyq4noY=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "b0d36bd0a420ecee3bc916c91886caca87c894e9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -106,44 +102,13 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1703961334,
-        "narHash": "sha256-M1mV/Cq+pgjk0rt6VxoyyD+O8cOUiai8t9Q6Yyq4noY=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "b0d36bd0a420ecee3bc916c91886caca87c894e9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
-        "flatpaks": "flatpaks",
         "home-manager": "home-manager",
         "nix-colors": "nix-colors",
-        "nixpkgs": "nixpkgs_2",
+        "nix-flatpak": "nix-flatpak",
+        "nixpkgs": "nixpkgs",
         "tmux-plugin-manager": "tmux-plugin-manager"
-      }
-    },
-    "systems": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
       }
     },
     "tmux-plugin-manager": {
@@ -159,24 +124,6 @@
       "original": {
         "owner": "tmux-plugins",
         "repo": "tpm",
-        "type": "github"
-      }
-    },
-    "utils": {
-      "inputs": {
-        "systems": "systems"
-      },
-      "locked": {
-        "lastModified": 1694529238,
-        "narHash": "sha256-zsNZZGTGnMOf9YpHKJqMSsa0dXbfmxeoJ7xHlrt+xmY=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "ff7b65b44d01cf9ba6a71320833626af21126384",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
         "type": "github"
       }
     }
