@@ -6,8 +6,6 @@
     ../../modules/home-manager/config/terminal.nix
   ];
 
-  # theme.accent = "f38ba8";
-
   programs.bash = {
     enable = true;
     initExtra = ''
