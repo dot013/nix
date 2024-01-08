@@ -31,6 +31,7 @@ in
         color_scheme = "${cfg.colorScheme}",
         default_prog = { ${lib.concatMapStrings (x: "'" + x + "',") cfg.defaultProg} },
         font = wezterm.font("${cfg.font}"),
+        enable_wayland = false, -- TEMPORALLY FIX (see wez/wezterm#4483)
       }
     '';
 
