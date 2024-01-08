@@ -22,6 +22,7 @@
       "--login"
       "-c"
       "tmux"
+      "-f ${config.xdg.configHome}/tmux/tmux.conf"
     ];
 
     zsh.enable = true;
