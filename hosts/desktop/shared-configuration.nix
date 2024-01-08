@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, inputs, lib, ... }:
 
 {
@@ -11,6 +7,31 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
+
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+    NIXOS_OZONE_WL = "1";
+  };
+
+  environment.systemPackages = with pkgs; [
+    kitty
+    rofi-wayland
+    dunst
+    libnotify
+    swww
+  ];
+
+  hardware = {
+    opengl.enable = true;
+  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -53,4 +74,5 @@
 
 
 }
+
 
