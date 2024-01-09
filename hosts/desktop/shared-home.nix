@@ -4,7 +4,7 @@
   imports = [
     ../../modules/home-manager/theme.nix
     ../../modules/home-manager/config/terminal.nix
-    ../../modules/home-manager/config/wm.nix
+    ./wm.nix
   ];
 
   programs.bash = {

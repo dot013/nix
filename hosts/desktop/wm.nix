@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../programs/hyprland.nix
+    ../../modules/home-manager/programs/hyprland.nix
   ];
   options.wm = { };
   config = {
