@@ -4,24 +4,8 @@
   imports = [
     ../../modules/home-manager/theme.nix
     ../../modules/home-manager/config/terminal.nix
-    ../../modules/home-manager/programs/hyprland.nix
+    ../../modules/home-manager/config/wm.nix
   ];
-
-  hyprland.enable = true;
-  monitors = [
-    {
-      name = "monitor1";
-      resolution = "2560x1080";
-      id = "HDMI-A-1";
-    }
-    {
-      name = "monitor2";
-      resolution = "1920x1080";
-      id = "DVI-D-1";
-      offset = "2560x0";
-    }
-  ];
-
 
   programs.bash = {
     enable = true;
@@ -87,4 +71,8 @@
     # EDITOR = "emacs";
   };
 }
+
+
+
+
 

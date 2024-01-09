@@ -4,23 +4,122 @@ let
   cfg = config.hyprland;
 in
 {
-  options.hyprland = {
-    enable = lib.mkEnableOption "";
-    monitors = lib.mkOption {
+  options.hyprland = with lib; with lib.types; {
+    enable = mkEnableOption "";
+    monitors = mkOption {
       default = [ ];
-      type = {
+      # TODO: Fix types
+      /* type = lib.types.listOf {
         name = lib.types.str;
         resolution = lib.types.str;
         hz = lib.types.nullOr lib.types.int;
         offset = lib.types.nullOr lib.types.str;
         scale = lib.types.nullOr lib.types.int;
+      }; */
+    };
+    env = mkOption {
+      default = { };
+      type = attrsOf str;
+    };
+    windowRules = mkOption {
+      default = { };
+      description = "window = [ \"rule\" ]";
+      # type = attrsOf listOf str;
+    };
+    input = {
+      keyboard.layout = mkOption {
+        default = "br";
+        type = str;
+      };
+      keyboard.variant = mkOption {
+        default = "abnt2";
+        type = str;
+      };
+      mouse.follow = mkOption {
+        default = true;
+        type = bool;
+      };
+      mouse.sensitivity = mkOption {
+        default = 0;
+        type = number;
+      };
+    };
+    general = {
+      gaps_in = mkOption {
+        default = 5;
+        type = number;
+      };
+      gaps_out = mkOption {
+        default = 10;
+        type = number;
+      };
+      border.size = mkOption {
+        default = 0;
+        type = number;
+      };
+      border.color.active = mkOption {
+        default = "rgba(ffffff99) rgba(ffffff33) 90deg";
+        type = str;
+      };
+      border.color.inactive = mkOption {
+        default = "rgba(18181800)";
+        type = str;
+      };
+      layout = mkOption {
+        default = "dwindle";
+        type = str;
+      };
+    };
+    decoration = {
+      rouding = mkOption {
+        default = 5;
+        type = number;
+      };
+      dim.inactive = mkOption {
+        default = true;
+        type = bool;
+      };
+      dim.strength = mkOption {
+        default = 0.2;
+        type = number;
+      };
+      dim.around = mkOption {
+        default = 0.4;
+        type = number;
+      };
+    };
+    animations = {
+      enabled = mkOption {
+        default = true;
+        type = bool;
+      };
+    };
+    workspaces = mkOption {
+      default = [ ];
+      /* type = {
+        name = str;
+        monitor = nullOr str;
+        default = nullOr bool;
+        extraRules = nullOr str;
+      }; */
+    };
+    binds = {
+      mod = mkOption {
+        default = "SUPER";
+        type = str;
+      };
+      keyboard = mkOption {
+        default = [ ];
+        type = listOf str;
+      };
+      mouse = mkOption {
+        default = [ ];
+        type = listOf str;
       };
     };
   };
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.enable = true;
-
-    # wayland.windowManager.hyprland.settings = { };
 
     wayland.windowManager.hyprland.settings = lib.mkMerge [
       # Sets monitor variables ("$name" = "id") so it can be used in rules later
@@ -32,63 +131,87 @@ in
         cfg.monitors)
       )
       {
+        # Construct the "name,resolution@hz,offset,scale" strings
         monitor = (map
           (m:
-            "${
-              m.name
-            },${
-              m.resolution
-            }@${
-              toString (if m?hz then m.hz else 60)
-            },${
-              if m?offset then m.offset else "0x0"
-            },${
-              toString (if m?scale then m.scale else 1)
-            }")
+            "${m.name},${m.resolution}@${
+                toString (if m?hz then m.hz else 60)
+              },${
+                if m?offset then m.offset else "0x0"
+              },${
+                toString (if m?scale then m.scale else 1)
+              }"
+          )
           cfg.monitors
         );
 
-        /*[
-          "$monitor1,2560x1080@60,0x0,1"
-          "$monitor2,1920x1080@60,2560x0,1"
-            ];*/
+        # "Hack" to transform attributes sets to lists (because I didn't know other way to do it)
+        # Transform { "envName" = "value" } to [ "envName,value" ]
+        env = builtins.attrValues
+          (builtins.mapAttrs (n: v: "${n},${v}") (lib.attrsets.mergeAttrsList [
+            {
+              "XCURSOR_SIZE" = "24";
+              "MOZ_ENABLE_WAYLAND" = "1";
+            }
+            cfg.env
+          ]));
 
-        env = [
-          "XCURSOR_SIZE,24"
-          "MOZ_ENABLE_WAYLAND,1"
-        ];
 
-        windowrulev2 = [
-          "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"
-          "noanim,class:^(xwaylandvideobridge)$"
-          "nofocus,class:^(xwaylandvideobridge)$"
-          "noinitialfocus,class:^(xwaylandvideobridge)$"
-        ];
+        windowrulev2 =
+          let
+            firefoxPipRules = [
+              "float"
+              "nofullscreenrequest"
+              "size 480 270"
+              "fakefullscreen"
+              "nodim"
+              "noblur"
+            ];
+          in
+          builtins.concatLists
+            (builtins.attrValues (builtins.mapAttrs
+              (w: rs:
+                (map (r: "${r},${w}") rs)
+              )
+              (lib.attrsets.mergeAttrsList [
+                {
+                  "title:^(Picture-in-Picture)$,class:^(firefox)$" = firefoxPipRules;
+                  "title:^(Firefox)$,class:^(firefox)$" = firefoxPipRules;
+                  "class:^(xwaylandvideobridge)$" = [
+                    "opacity 0.0 override 0.0 override"
+                    "noanim"
+                    "nofocus"
+                    "noinitialfocus"
+                  ];
+                }
+                cfg.windowRules
+              ])
+            ));
 
         input = {
-          kb_layout = "br";
-          kb_variant = "abnt2";
+          kb_layout = cfg.input.keyboard.layout;
+          kb_variant = cfg.input.keyboard.variant;
 
-          follow_mouse = "1";
+          follow_mouse = if cfg.input.mouse.follow then "1" else "0";
 
-          sensitivity = "0";
+          sensitivity = toString cfg.input.mouse.sensitivity;
         };
 
         general = {
-          gaps_in = "5";
-          gaps_out = "10";
-          border_size = "0";
-          "col.active_border" = "rgba(ffffff99) rgba(ffffff33) 90deg";
-          "col.inactive_border" = "rgba(18181800)";
-          layout = "dwindle";
+          gaps_in = toString cfg.general.gaps_in;
+          gaps_out = toString cfg.general.gaps_out;
+          border_size = toString cfg.general.border.size;
+          "col.active_border" = toString cfg.general.border.color.active;
+          "col.inactive_border" = toString cfg.general.border.color.inactive;
+          layout = cfg.general.layout;
         };
 
         decoration = {
-          rounding = "5";
+          rounding = toString cfg.decoration.rouding;
 
-          dim_inactive = "true";
-          dim_strength = "0.2";
-          dim_around = "0.4";
+          dim_inactive = if cfg.decoration.dim.inactive then "true" else "false";
+          dim_strength = toString cfg.decoration.dim.strength;
+          dim_around = toString cfg.decoration.dim.around;
 
           blur = {
             enabled = "false";
@@ -97,7 +220,7 @@ in
         };
 
         animations = {
-          enabled = "yes";
+          enabled = if cfg.animations.enabled then "yes" else "no";
 
           bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
 
@@ -124,54 +247,31 @@ in
           workspace_swipe = "off";
         };
 
-        "$mod" = "SUPER";
+        workspace =
+          (map
+            (w: "${w.name},${
+                if w?monitor then "monitor:${w.monitor}," else ""
+              }${
+                if w?default && w.default then "default:true," else ""
+              }${
+                if w?extraRules then "${w.extraRules}" else ""
+              }")
+            cfg.workspaces
+          );
 
-        workspace = [
-          "1,monitor:$monitor1,default:true"
-          "2,monitor:$monitor1"
-          "3,monitor:$monitor1"
+        "$mod" = cfg.binds.mod;
 
-          "4,monitor:$monitor2,default:true"
-          "5,monitor:$monitor2"
-          "6,monitor:$monitor2"
-        ];
-
-        bind = [
-          "$mod, Q, exec, ${pkgs.wezterm}/bin/wezterm"
-          "$mod, C, killactive"
-          "$mod, M, exit"
-          "$mod, E, exec, ${pkgs.gnome.nautilus}/bin/nautilus"
-          "$mod, V, togglefloating"
-          "$mod, F, fullscreen"
-          "$mod, Z, togglesplit"
-          "$mod, S, exec, ${pkgs.rofi}/bin/rofi -show drun -show-icons"
-
-          "$mod, 1, workspace, 1"
-          "$mod, 2, workspace, 2"
-          "$mod, 3, workspace, 3"
-          "$mod + SHIFT, 1, movetoworkspace, 1"
-          "$mod + SHIFT, 2, movetoworkspace, 2"
-          "$mod + SHIFT, 3, movetoworkspace, 3"
-
-          "$mod, 8, workspace, 4"
-          "$mod, 9, workspace, 5"
-          "$mod, 0, workspace, 6"
-          "$mod + SHIFT, 8, movetoworkspace, 4"
-          "$mod + SHIFT, 9, movetoworkspace, 5"
-          "$mod + SHIFT, 0, movetoworkspace, 6"
-
-          "$mod, H, movefocus, l"
-          "$mod, L, movefocus, r"
-          "$mod, K, movefocus, u"
-          "$mod, J, movefocus, d"
-        ];
-        bindm = [
-          "$mod, mouse:272, movewindow"
-          "$mod, mouse:273, resizewindow"
-        ];
+        bind = cfg.binds.keyboard;
+        bindm = cfg.binds.mouse;
 
       }
     ];
   };
 }
+
+
+
+
+
+
 
