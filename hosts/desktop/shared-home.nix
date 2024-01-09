@@ -5,6 +5,7 @@
     ../../modules/home-manager/theme.nix
     ../../modules/home-manager/config/terminal.nix
     ./wm.nix
+    ./keybinds.nix
   ];
 
   programs.bash = {
