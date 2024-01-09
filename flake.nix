@@ -9,6 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Declaratively install flatpaks
     flatpaks.url = "github:gmodena/nix-flatpak"; # Fork is being used until #24 merges
     # flatpaks.url = "github:Tomaszal/nix-flatpak/feature/overrides";

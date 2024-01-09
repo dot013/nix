@@ -29,6 +29,7 @@ in
             then null
             else inputs.flatpaks.homeManagerModules.nix-flatpak
           )
+          inputs.nix-index-database.hmModules.nix-index
         ];
         programs.home-manager.enable = true;
         home.username = user.username;
