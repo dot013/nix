@@ -27,7 +27,7 @@ in
           (
             if user?flatpak && !user.flatpak
             then null
-            else inputs.nix-flatpak.homeManagerModules.nix-flatpak
+            else inputs.flatpaks.homeManagerModules.nix-flatpak
           )
         ];
         programs.home-manager.enable = true;

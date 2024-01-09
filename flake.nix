@@ -10,8 +10,8 @@
     };
 
     # Declaratively install flatpaks
-    # nix-flatpak.url = "github:gmodena/nix-flatpak"; -- Fork is being used until #24 merges
-    nix-flatpak.url = "github:Tomaszal/nix-flatpak/feature/overrides";
+    flatpaks.url = "github:gmodena/nix-flatpak"; # Fork is being used until #24 merges
+    # flatpaks.url = "github:Tomaszal/nix-flatpak/feature/overrides";
 
     # Used for theming the OS, see modules/home-manager/theme.nix
     nix-colors.url = "github:misterio77/nix-colors";
