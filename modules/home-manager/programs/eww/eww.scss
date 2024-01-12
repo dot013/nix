@@ -2,7 +2,17 @@
 
 * {
 	background-color: transparent;
+	all: unset;
 }
+
+tooltip {
+	@include box-style();
+
+	background-color: $foreground;
+	color: $color-accent;
+	font-weight: bold;
+}
+
 
 .bar {
 	@include box-style();
@@ -20,9 +30,39 @@
 
 	.middlestuff {
 		// background-color: green;
+		font-size: small;
 	}
 
 	.leftstuff {
 		// background-color: red;
+	}
+}
+
+.temperature, .rain, .season {
+	margin: 0 4px;
+}
+
+.metric {
+	.label {
+		font-size: small;
+		margin: 0;
+		padding: 0;
+		color: $color-accent;
+		margin-right: 5px;
+	}
+	margin-right: 5px;
+
+	scale trough {
+		all: unset;
+		background: $foreground;
+		border-radius: 50px;
+		min-height: 5px;
+		min-width: 50px;
+
+		highlight {
+			all: unset;
+			background-color: $color-accent;
+			border-radius: 10px;
+		}
 	}
 }

@@ -17,6 +17,10 @@ in
         scale = lib.types.nullOr lib.types.int;
       }; */
     };
+    exec = mkOption {
+      default = [ ];
+      type = listOf str;
+    };
     env = mkOption {
       default = { };
       type = attrsOf str;
@@ -144,6 +148,8 @@ in
           )
           cfg.monitors
         );
+
+        exec-once = cfg.exec;
 
         # "Hack" to transform attributes sets to lists (because I didn't know other way to do it)
         # Transform { "envName" = "value" } to [ "envName,value" ]

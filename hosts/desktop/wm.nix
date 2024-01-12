@@ -1,15 +1,20 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
+let
+  cfg = config.wm;
+in
 {
   imports = [
     ../../modules/home-manager/programs/hyprland.nix
     ../../modules/home-manager/programs/eww
   ];
-  options.wm = { };
+  options.wm = with lib; with lib.types; { };
   config = {
+
     eww.enable = true;
 
     hyprland.enable = true;
+
     hyprland.monitors = [
       {
         name = "monitor1";
@@ -52,5 +57,4 @@
       }
     ];
   };
-
 }

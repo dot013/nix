@@ -12,6 +12,13 @@
   sops.defaultSopsFile = ../../secrets/desktop-secrets.yaml;
   sops.defaultSopsFormat = "yaml";
 
+  sops.secrets.lon = {
+    owner = config.users.users.guz.name;
+  };
+  sops.secrets.lat = {
+    owner = config.users.users.guz.name;
+  };
+
   sops.age.keyFile = "/home/guz/.config/sops/age/keys.txt";
 
   programs.hyprland = {
