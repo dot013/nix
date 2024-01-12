@@ -3,9 +3,12 @@
 {
   imports = [
     ../../modules/home-manager/programs/hyprland.nix
+    ../../modules/home-manager/programs/eww
   ];
   options.wm = { };
   config = {
+    eww.enable = true;
+
     hyprland.enable = true;
     hyprland.monitors = [
       {

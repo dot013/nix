@@ -26,6 +26,7 @@
   home.packages = with pkgs; [
     ## Programs
     firefox
+    eww-wayland
 
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
@@ -33,6 +34,7 @@
 
     ## Fonts
     fira-code
+    (nerdfonts.override { fonts = [ "FiraCode" ]; })
   ];
 
   fonts.fontconfig.enable = true;

@@ -1,0 +1,50 @@
+(include "/home/guz/.config/eww/vars.yuck");
+
+(defpoll time :interval "10s"
+              :initial "00:00:00"
+  `date +%H:%M`)
+
+(defpoll date :interval "1m"
+              :initial "00:00:00"
+  `date +%d/%m`)
+
+
+(defwidget empty [] "")
+
+(defwidget date []
+  (box :orientation "h"
+    "${date}  ${time}"))
+
+(defwindow bar
+           :monitor 0
+           :geometry (geometry :x "0%"
+                               :y "5px"
+                               :width "99.2%"
+                               :height "20px"
+                               :anchor "top center")
+           :stacking "fg"
+           :reserve (struts :distance "40px" :side "top")
+           :windowtype "dock"
+           :wm-ignore false
+           :exclusive true
+  (centerbox :orientation "h"
+             :class "bar"
+    (centerbox :orientation "h"
+               :halign "start"
+               :class "rightstuff"
+      (empty)
+      (empty)
+      (empty))
+    (centerbox :orientation "h"
+               :halign "center"
+               :class "middlestuff"
+      (empty)
+      (empty)
+      (empty))
+    (centerbox :orientation "h"
+               :halign "end"
+               :class "leftstuff"
+      (empty)
+      (empty)
+      (date))))
+

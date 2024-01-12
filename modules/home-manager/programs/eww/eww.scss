@@ -1,0 +1,28 @@
+@import "/home/guz/.config/eww/vars.scss";
+
+* {
+	background-color: transparent;
+}
+
+.bar {
+	@include box-style();
+
+	color: $color-accent;
+	font-family: 'Fira Code Nerd Font';
+	font-weight: bold;
+
+	background-color: $background;
+	padding: 5px 10px;
+
+	.rightstuff {
+		// background-color: blue;
+	}
+
+	.middlestuff {
+		// background-color: green;
+	}
+
+	.leftstuff {
+		// background-color: red;
+	}
+}

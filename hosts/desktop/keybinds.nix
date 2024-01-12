@@ -15,6 +15,7 @@
       "$mod, F, fullscreen"
       "$mod, Z, togglesplit"
       "$mod, S, exec, ${pkgs.rofi}/bin/rofi -show drun -show-icons"
+      ",Print, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp -d)\" - | ${pkgs.wl-clipboard}/bin/wl-copy"
 
       "$mod, 1, workspace, 1"
       "$mod, 2, workspace, 2"
