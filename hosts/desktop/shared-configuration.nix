@@ -2,11 +2,17 @@
 
 {
   imports = [
+    inputs.sops-nix.nixosModules.sops
     ../../modules/nixos/config/host.nix
     ../../modules/nixos/systems/set-user.nix
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
+
+  sops.defaultSopsFile = ../../secrets/desktop-secrets.yaml;
+  sops.defaultSopsFormat = "yaml";
+
+  sops.age.keyFile = "/home/guz/.config/sops/age/keys.txt";
 
   programs.hyprland = {
     enable = true;
@@ -27,6 +33,8 @@
     dunst
     libnotify
     swww
+    sops
+    wl-clipboard
   ];
 
   hardware = {
