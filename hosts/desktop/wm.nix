@@ -4,6 +4,7 @@ let
   cfg = config.wm;
   wm-boot = pkgs.writeShellScriptBin "wm-boot" ''
     eww="${pkgs.eww-wayland}/bin/eww"
+    swww="${pkgs.swww}/bin/swww"
 
     if [[ "$($eww ping)" -ne "pong" ]]; then
       $eww daemon
@@ -13,11 +14,15 @@ let
     $eww open bar-2
     $eww reload
 
+    $swww init
   '';
   wm-update = pkgs.writeShellScriptBin "wm-update" ''
     eww="${pkgs.eww-wayland}/bin/eww"
+    swww="${pkgs.swww}/bin/swww"
 
     $eww reload
+
+    $swww img "${builtins.toPath cfg.wallpaper}"
   '';
 in
 {
@@ -25,7 +30,12 @@ in
     ../../modules/home-manager/programs/hyprland.nix
     ../../modules/home-manager/programs/eww
   ];
-  options.wm = with lib; with lib.types; { };
+  options.wm = with lib; with lib.types; {
+    wallpaper = mkOption {
+      default = ../../static/guz-wallpaper-default.webp;
+      type = path;
+    };
+  };
   config = {
 
     eww.enable = true;
