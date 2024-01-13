@@ -13,6 +13,9 @@ tooltip {
 	font-weight: bold;
 }
 
+.wrapper {
+	padding: 5px 10px;
+}
 
 .bar {
 	@include box-style();
