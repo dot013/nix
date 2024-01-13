@@ -4,6 +4,7 @@
   imports = [
     ../../modules/home-manager/theme.nix
     ../../modules/home-manager/config/terminal.nix
+    ../../modules/home-manager/programs/librewolf
     ./wm.nix
     ./keybinds.nix
   ];
@@ -15,9 +16,32 @@
     '';
   };
 
+  librewolf = {
+    enable = true;
+    profiles = {
+      guz = {
+        id = 0;
+        settings = {
+          "webgl.disabled" = false;
+          "browser.startup.homepage" = "https://search.brave.com";
+          "privacy.clearOnShutdown.history" = false;
+          "privacy.clearOnShutdown.downloads" = false;
+          "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
+          "privacy.clearOnShutdown.cookies" = false;
+        };
+        extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
+          darkreader
+          canvasblocker
+          smart-referer
+        ];
+      };
+    };
+  };
+
   services.flatpak.packages = [
     "nz.mega.MEGAsync"
     "md.obsidian.Obsidian"
+    "dev.vencord.Vesktop"
   ];
   # services.flatpak.overrides = { };
 
@@ -25,7 +49,7 @@
   nixpkgs.config.allowUnfreePredicate = _: true;
   home.packages = with pkgs; [
     ## Programs
-    firefox
+    # firefox
 
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"

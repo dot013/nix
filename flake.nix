@@ -26,6 +26,11 @@
     # Used for theming the OS, see modules/home-manager/theme.nix
     nix-colors.url = "github:misterio77/nix-colors";
 
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Necessary for modules/home-manager/programs/tmux.nix
     tmux-plugin-manager = {
       url = "github:tmux-plugins/tpm";
