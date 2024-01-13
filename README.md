@@ -22,4 +22,6 @@
 <samp><small>
 &copy; Gustavo "Guz" L. de Mello &lt;<a href="mailto:contact.guz013@gmail.com">contact.guz013@gmail.com</a>&gt; <br/>
 Code under the <a href="./LICENSE-WTFPL">WTFPL license</a>, unless otherwise noticed.
+
+<sub>THE CONFIGURATION IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.</sub>
 </small></samp>
