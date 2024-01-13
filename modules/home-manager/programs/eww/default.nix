@@ -57,23 +57,6 @@ let
     	echo $rain
     fi
   '';
-
-  eww-boot = pkgs.writeShellScriptBin "eww-boot" ''
-    eww="${pkgs.eww-wayland}/bin/eww"
-
-    ping="$($eww ping)"
-    if [[ "$ping" == "pong" ]]; then
-      $eww reload
-      $eww close-all
-    else
-      $eww daemon
-      $eww close-all
-    fi
-
-    $eww open bar
-    $eww open bar-2
-
-  '';
 in
 {
   imports = [ ];
@@ -85,9 +68,6 @@ in
     home.packages = with pkgs; [
       eww-wayland
     ];
-    home.activation = {
-      eww-boot = "${eww-boot}/bin/eww-boot";
-    };
 
     home.file."${ewwDir}/eww.yuck".source = ./eww.yuck;
     home.file."${ewwDir}/eww.scss".source = ./eww.scss;

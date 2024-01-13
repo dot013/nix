@@ -2,6 +2,23 @@
 
 let
   cfg = config.wm;
+  wm-boot = pkgs.writeShellScriptBin "wm-boot" ''
+    eww="${pkgs.eww-wayland}/bin/eww"
+
+    if [[ "$($eww ping)" -ne "pong" ]]; then
+      $eww daemon
+    fi
+    $eww close-all
+    $eww open bar
+    $eww open bar-2
+    $eww reload
+
+  '';
+  wm-update = pkgs.writeShellScriptBin "wm-update" ''
+    eww="${pkgs.eww-wayland}/bin/eww"
+
+    $eww reload
+  '';
 in
 {
   imports = [
@@ -14,6 +31,13 @@ in
     eww.enable = true;
 
     hyprland.enable = true;
+
+    hyprland.exec = [
+      "${wm-boot}/bin/wm-boot"
+    ];
+    home.activation = {
+      wm-update = "${wm-update}/bin/wm-update";
+    };
 
     hyprland.monitors = [
       {
@@ -58,3 +82,4 @@ in
     ];
   };
 }
+
