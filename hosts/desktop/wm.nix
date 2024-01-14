@@ -44,6 +44,7 @@ in
 
     hyprland.exec = [
       "${wm-boot}/bin/wm-boot"
+      "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
     ];
     home.activation = {
       wm-update = "${wm-update}/bin/wm-update";
