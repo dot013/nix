@@ -27,7 +27,10 @@
   };
 
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-hyprland
+    xdg-desktop-portal-kde
+  ];
 
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSORS = "1";
@@ -35,6 +38,8 @@
   };
 
   environment.systemPackages = with pkgs; [
+    electron_28
+    wlroots
     kitty
     rofi-wayland
     dunst
