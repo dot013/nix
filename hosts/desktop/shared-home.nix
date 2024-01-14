@@ -33,6 +33,7 @@
           darkreader
           canvasblocker
           smart-referer
+          libredirect
         ];
       };
     };
@@ -41,7 +42,7 @@
   services.flatpak.packages = [
     "nz.mega.MEGAsync"
     "md.obsidian.Obsidian"
-    "dev.vencord.Vesktop"
+    # "dev.vencord.Vesktop"
   ];
   # services.flatpak.overrides = { };
 
@@ -49,7 +50,7 @@
   nixpkgs.config.allowUnfreePredicate = _: true;
   home.packages = with pkgs; [
     ## Programs
-    # firefox
+    vesktop
 
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"

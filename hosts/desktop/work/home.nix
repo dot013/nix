@@ -23,6 +23,7 @@
       canvasblocker
       smart-referer
       github-file-icons
+      librecdirect
     ];
   };
 
