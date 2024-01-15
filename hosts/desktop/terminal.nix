@@ -2,12 +2,12 @@
 
 {
   imports = [
-    ../programs/starship.nix
-    ../programs/tmux.nix
-    ../programs/wezterm.nix
-    ../programs/zsh.nix
+    ../../modules/home-manager/programs/starship.nix
+    ../../modules/home-manager/programs/tmux.nix
+    ../../modules/home-manager/programs/wezterm.nix
+    ../../modules/home-manager/programs/zsh.nix
   ];
-  options = { };
+  options.terminal = { };
   config = {
     starship.enable = true;
     starship.enableZsh = true;

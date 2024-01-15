@@ -3,10 +3,11 @@
 {
   imports = [
     ../../modules/home-manager/theme.nix
-    ../../modules/home-manager/config/terminal.nix
     ../../modules/home-manager/programs/librewolf
+    ./terminal.nix
     ./wm.nix
     ./keybinds.nix
+    ./.desktop
   ];
 
   programs.bash = {
