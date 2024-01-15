@@ -124,6 +124,10 @@ in
   };
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.enable = true;
+    wayland.windowManager.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+
+    wayland.windowManager.hyprland.xwayland.enable = true;
+    wayland.windowManager.hyprland.systemd.enable = true;
 
     wayland.windowManager.hyprland.settings = lib.mkMerge [
       # Sets monitor variables ("$name" = "id") so it can be used in rules later

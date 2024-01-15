@@ -42,7 +42,6 @@
   services.flatpak.packages = [
     "nz.mega.MEGAsync"
     "md.obsidian.Obsidian"
-    # "dev.vencord.Vesktop"
   ];
   # services.flatpak.overrides = { };
 
@@ -50,7 +49,7 @@
   nixpkgs.config.allowUnfreePredicate = _: true;
   home.packages = with pkgs; [
     ## Programs
-    vesktop
+    webcord-vencord
 
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"

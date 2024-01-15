@@ -24,11 +24,12 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
+    package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+    portalPackage = inputs.xdg-desktop-portal-hyprland.packages."${pkgs.system}".xdg-desktop-portal-hyprland;
   };
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-hyprland
     xdg-desktop-portal-kde
   ];
 
@@ -38,6 +39,8 @@
   };
 
   environment.systemPackages = with pkgs; [
+    inputs.xdg-desktop-portal-hyprland.packages."${pkgs.system}".xdg-desktop-portal-hyprland
+    inputs.hyprland.packages."${pkgs.system}".hyprland
     electron_28
     wlroots
     kitty
