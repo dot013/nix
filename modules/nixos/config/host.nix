@@ -72,6 +72,7 @@ in
       wget
       nixpkgs-fmt
       nixpkgs-lint
+      gnupg
     ];
     environment.sessionVariables = {
       EDITOR = "nvim";
