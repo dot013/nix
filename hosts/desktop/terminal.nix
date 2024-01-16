@@ -17,6 +17,7 @@
 
     wezterm.enable = true;
     wezterm.integration.zsh = true;
+    wezterm.fontSize = 10;
     wezterm.defaultProg = [
       "zsh"
       "--login"

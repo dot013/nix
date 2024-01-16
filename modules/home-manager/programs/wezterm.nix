@@ -4,21 +4,25 @@ let
   cfg = config.wezterm;
 in
 {
-  options.wezterm = {
-    enable = lib.mkEnableOption "Enable Wezterm";
+  options.wezterm = with lib; with lib.types; {
+    enable = mkEnableOption "Enable Wezterm";
     integration = {
-      zsh = lib.mkEnableOption "Enable Zsh Integration";
+      zsh = mkEnableOption "Enable Zsh Integration";
     };
-    colorScheme = lib.mkOption {
-      type = lib.types.str;
+    colorScheme = mkOption {
+      type = str;
       default = "system";
     };
-    defaultProg = lib.mkOption {
+    defaultProg = mkOption {
       default = [ ];
     };
-    font = lib.mkOption {
+    font = mkOption {
       default = "Fira Code";
-      type = lib.types.str;
+      type = str;
+    };
+    fontSize = mkOption {
+      default = 12;
+      type = number;
     };
   };
   config = lib.mkIf cfg.enable {
@@ -31,6 +35,7 @@ in
         color_scheme = "${cfg.colorScheme}",
         default_prog = { ${lib.concatMapStrings (x: "'" + x + "',") cfg.defaultProg} },
         font = wezterm.font("${cfg.font}"),
+        font_size = ${toString cfg.fontSize},
         enable_wayland = false, -- TEMPORALLY FIX (see wez/wezterm#4483)
       }
     '';
