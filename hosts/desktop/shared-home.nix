@@ -43,6 +43,7 @@
   services.flatpak.packages = [
     "nz.mega.MEGAsync"
     "md.obsidian.Obsidian"
+    "com.bitwarden.desktop"
   ];
   # services.flatpak.overrides = { };
 
