@@ -27,5 +27,8 @@
     ];
 
     zsh.enable = true;
+    zsh.extraConfig.init = ''
+      export GPG_TTY=$(tty)
+    '';
   };
 }

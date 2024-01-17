@@ -13,8 +13,18 @@
   programs.bash = {
     enable = true;
     initExtra = ''
-      export XDG_DATA_DIRS="$XDG_DATA_DIRS:/usr/share:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share";
+      export XDG_DATA_DIRS="$XDG_DATA_DIRS:/usr/share:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share"
+
+      export GPG_TTY=$(tty)
     '';
+  };
+
+  services.gnome-keyring.enable = true;
+
+  programs.gpg.enable = true;
+  services.gpg-agent = {
+    enable = true;
+    pinentryFlavor = "gnome3";
   };
 
   librewolf = {
