@@ -36,6 +36,10 @@ let
     }
     desktop-switch $1 $2
 
+    # echo "Restarting services (just in case)" # why? Because discord, as always
+    # systemctl --user stop xdg-desktop-portal-hyprland.service xdg-desktop-portal.service pipewire.service
+    # systemctl --user start xdg-desktop-portal-hyprland.service xdg-desktop-portal.service pipewire.service
+
     echo ""
     cat "Done!"
 
