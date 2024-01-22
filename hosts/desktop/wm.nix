@@ -32,7 +32,7 @@ in
   ];
   options.wm = with lib; with lib.types; {
     wallpaper = mkOption {
-      default = ../../static/guz-wallpaper-default.webp;
+      default = ../../static/guz-wallpaper-default.png;
       type = path;
     };
   };

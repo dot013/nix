@@ -6,7 +6,7 @@
   ];
 
   theme.accent = "94e2d5";
-  wm.wallpaper = ../../../static/guz-wallpaper-work.webp;
+  wm.wallpaper = ../../../static/guz-wallpaper-work.png;
   librewolf.profiles.work = {
     isDefault = true;
     id = 1;
