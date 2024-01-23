@@ -71,6 +71,7 @@
       nixosConfigurations = (create-host [
         "desktop@default"
         "desktop@work"
+        "homex"
       ]);
     };
 }

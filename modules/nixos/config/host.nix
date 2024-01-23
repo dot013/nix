@@ -7,6 +7,7 @@ in
 {
   imports = [
     inputs.home-manager.nixosModules.default
+    inputs.sops-nix.nixosModules.sops
     ../systems/localization.nix
   ];
   options.host = {

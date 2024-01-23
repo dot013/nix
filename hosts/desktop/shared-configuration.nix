@@ -2,7 +2,6 @@
 
 {
   imports = [
-    inputs.sops-nix.nixosModules.sops
     ../../modules/nixos/config/host.nix
     ../../modules/nixos/systems/set-user.nix
     # Include the results of the hardware scan.
