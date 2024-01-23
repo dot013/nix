@@ -17,5 +17,7 @@
   zsh.enable = true;
   zsh.extraConfig.init = ''
     export GPG_TTY=$(tty)
+
+    alias tmux="tmux -f ${config.xdg.configHome}/tmux/tmux.conf"
   '';
 }
