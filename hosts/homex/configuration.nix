@@ -26,6 +26,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  programs.zsh.enable = true;
+
   set-user.users = [{
     username = "guz";
     shell = pkgs.zsh;
