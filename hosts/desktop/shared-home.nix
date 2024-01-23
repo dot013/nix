@@ -54,6 +54,7 @@
     "nz.mega.MEGAsync"
     "md.obsidian.Obsidian"
     "com.bitwarden.desktop"
+    "org.prismlauncher.PrismLauncher"
   ];
   # services.flatpak.overrides = { };
 
