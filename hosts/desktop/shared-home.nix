@@ -4,6 +4,8 @@
   imports = [
     ../../modules/home-manager/theme.nix
     ../../modules/home-manager/programs/librewolf
+    ../../modules/home-manager/packages/nixx.nix
+    ../../modules/home-manager/packages/nixi.nix
     ./terminal.nix
     ./wm.nix
     ./keybinds.nix

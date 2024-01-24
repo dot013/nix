@@ -14,6 +14,8 @@
         ../../../modules/home-manager/programs/starship.nix
         ../../../modules/home-manager/programs/tmux.nix
         ../../../modules/home-manager/programs/zsh.nix
+        ../../../modules/home-manager/packages/nixi.nix
+        ../../../modules/home-manager/packages/nixx.nix
       ];
 
       starship.enable = true;
