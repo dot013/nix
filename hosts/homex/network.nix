@@ -16,10 +16,12 @@
 
     services.tailscale = {
       enable = true;
-      useRoutingFeatures = "server";
+      useRoutingFeatures = "both";
     };
 
     services.openssh.enable = true;
   };
 }
+
+
 
