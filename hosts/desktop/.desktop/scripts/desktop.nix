@@ -6,17 +6,17 @@ let
       echo $1 | ${pkgs.lolcat}/bin/lolcat
       echo ""
     }
-    flakeDir="/home/guz"
+    flakeDir="/home/guz/.nix"
 
     function nix-build() {
       local env="$2"
 
       if [[ "$env" -ne "" ]]; then
         cat "Building the $env desktop!"
-        sudo nixos-rebuild switch --flake "$flakeDir/.nix#desktop@$env"
+        sudo nixos-rebuild switch --flake "$flakeDir#desktop@$env"
       else 
         cat "Building the desktop!"
-        sudo nixos-rebuild switch --flake "$flakeDir/.nix#desktop@default"
+        sudo nixos-rebuild switch --flake "$flakeDir#desktop@default"
       fi
     }
 
@@ -31,7 +31,7 @@ let
 
         # this will be used a lot, that's why "test" and --fast is passed
         # for building to a new configuration, use nix-build instead
-        sudo nixos-rebuild test --fast --flake "$flakeDir/.nix#desktop@$env"
+        sudo nixos-rebuild test --fast --flake "$flakeDir#desktop@$env"
       fi
     }
     desktop-switch $1 $2
