@@ -47,6 +47,7 @@
           canvasblocker
           smart-referer
           libredirect
+          tridactyl
         ];
       };
     };

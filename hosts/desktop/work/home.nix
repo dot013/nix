@@ -24,6 +24,7 @@
       smart-referer
       github-file-icons
       libredirect
+      tridactyl
     ];
   };
 
