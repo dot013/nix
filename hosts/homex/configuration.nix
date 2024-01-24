@@ -9,18 +9,8 @@
     ../../modules/nixos/systems/set-user.nix
     ../../modules/nixos/config/host.nix
     ./hardware-configuration.nix
+    ./network.nix
   ];
-
-  host.networking.hostName = "homex";
-  networking = {
-    dhcpcd.enable = true;
-    interfaces.eno1.ipv4.addresses = [{
-      address = "192.168.1.10";
-      prefixLength = 28;
-    }];
-    defaultGateway = "192.168.1.1";
-    nameservers = [ "1.1.1.1" "8.8.8.8" ];
-  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -36,8 +26,5 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
 
 }
