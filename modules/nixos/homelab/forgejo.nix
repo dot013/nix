@@ -222,7 +222,7 @@ in
               username $username \
               /
           else
-            if [[ "$($user list | grep "$username" | $awk '{print $4}')" == "true" ]]; then
+            if [[ "$($user list | grep "$username" | $awk '{print $5}')" == "true" ]]; then
               $gum log --structured \
                 --time timeonly \
                 --level warn "Undeclared user is a ADMIN, ignoring" \
