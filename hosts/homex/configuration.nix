@@ -20,6 +20,10 @@
 
     forgejo = {
       enable = true;
+      settings.users."test-declarative" = {
+        email = "testdeclarative@example.com";
+        password = "teste";
+      };
     };
   };
 
