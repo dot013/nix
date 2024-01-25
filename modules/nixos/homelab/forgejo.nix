@@ -4,7 +4,7 @@ let
   cfg = config.homelab.forgejo;
   users = (builtins.attrValues (builtins.mapAttrs
     (username: info: {
-      name = username;
+      name = if info.name then info.name else username;
       email = info.email;
       password = info.password;
       admin = info.admin;
@@ -41,6 +41,10 @@ in
       users = mkOption {
         type = attrsOf (submodule ({ config, lib, ... }: {
           options = {
+            name = {
+              type = nullOr (either str path);
+              default = null;
+            };
             password = mkOption {
               type = either str path;
             };
