@@ -11,6 +11,14 @@ in
       type = str;
       default = "forgejo";
     };
+    package = mkOption {
+      type = package;
+      default = pkgs.forgejo;
+    };
+    cliAlias = mkOption {
+      type = bool;
+      default = true;
+    };
     data = {
       root = mkOption {
         type = path;
@@ -124,6 +132,7 @@ in
   config = lib.mkIf cfg.enable {
     services.forgejo = {
       enable = true;
+      package = cfg.package;
       user = cfg.user;
       group = cfg.user;
       stateDir = toString cfg.data.root;

@@ -68,6 +68,13 @@ let
         reset
       fi
     fi
+
+    ${if cfg.forgejo.cliAlias then ''
+      if [[ "$command" == "forgejo" ]]; then
+        shift 1;
+        sudo --user=${cfg.forgejo.user} ${cfg.forgejo.package}/bin/gitea --work-path ${cfg.forgejo.data.root} "$@"
+      fi
+    '' else ""}
   '';
 in
 {
