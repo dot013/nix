@@ -8,10 +8,22 @@
   imports = [
     ../../modules/nixos/systems/set-user.nix
     ../../modules/nixos/config/host.nix
+    ../../modules/nixos/homelab
     ./hardware-configuration.nix
     ./network.nix
     ./users
   ];
+
+  homelab = {
+    enable = true;
+    flakeDir = "/home/guz/.nix#homex";
+
+    forgejo = {
+      enable = true;
+    };
+  };
+
+  services.tailscale.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -21,3 +33,4 @@
   nixpkgs.config.allowUnfree = true;
 
 }
+
