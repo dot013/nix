@@ -15,6 +15,7 @@ let
 in
 {
   imports = [
+    ./forgejo.nix
   ];
   options.homelab = with lib; with lib.types; {
     enable = mkEnableOption "";
