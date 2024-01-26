@@ -35,7 +35,7 @@ in
     };
     handleUndeclaredUsers = mkOption {
       type = bool;
-      default = true;
+      default = false;
     };
     settings = {
       users = mkOption {
