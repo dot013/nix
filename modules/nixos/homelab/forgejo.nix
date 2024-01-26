@@ -220,33 +220,17 @@ in
         
         $user list | $awk '{print $2}' | tail -n +2 | while read username; do
           if printf '%s\0' "''${declaredUsers[@]}" | grep -Fxqz -- "$username"; then
-            $gum log --structured \
-              --time timeonly \
-              --level warn "Declared user already exists, ignoring" \
-              username $username \
-              /
+            $gum log --structured --time timeonly --level warn "Declared user already exists, ignoring" username $username;
           else
-            if [[ "$($user list | grep "$username" | $awk '{print $5}')" == "true" ]]; then
-              $gum log --structured \
-                --time timeonly \
-                --level warn "Undeclared user is a ADMIN, ignoring" \
-                username $username \
-                /
+            if [[ "$($user list | tail -n +2 | $awk '{print $2 " " $5}' | grep "$username " | $awk '{print $2}')" == "true" ]]; then
+              $gum log --structured --time timeonly --level warn "Undeclared user is a ADMIN, ignoring" username $username;
             else
               ${if cfg.handleUndeclaredUsers then ''
-                $gum log --structured \
-                  --time timeonly \
-                  --level warn "DELETING undeclared user" \
-                  username $username \
-                  /
+                $gum log --structured --time timeonly --level warn "DELETING undeclared user" username $username;
 
                 $user delete -u "$username";
               '' else ''
-                $gum log --structured \
-                  --time timeonly \
-                  --level warn "UNDECLARED user, please declare it in the config so it's reproducible" \
-                  username "$username" \
-                  /
+                $gum log --structured --time timeonly --level warn "UNDECLARED user, please declare it in the config so it's reproducible" username "$username";
               ''}
             fi
           fi
@@ -258,30 +242,15 @@ in
           password="${if isPath user.password then "\"$(cat ${toString user.password})\"" else user.password}";
 
           if [[ "$($user list | grep "$username" | $awk '{print $2}')" ]]; then
-            $gum log --structured \
-              --time timeonly \
-              --level warn "User with username already exists" \
-              username $username \
-              /
+            $gum log --structured --time timeonly --level warn "User with username already exists" username $username;
+
           elif [[ "$($user list | grep "$email" | $awk '{print $3}')" ]]; then
-            $gum log --structured \
-              --time timeonly \
-              --level warn "User with email already exists" \
-              email $email \
-              /
+            $gum log --structured --time timeonly --level warn "User with email already exists" email $email;
+
           else
-            $gum log --structured \
-              --time timeonly \
-              --level info ${if user.admin then "Creating ADMIN user" else "Creating user"} \
-              username $username \
-              email $email \
-              password $password \
-              /
-            $user create --username $username \
-              --email $email \
-              --password $password \
-              ${if user.admin then "--admin \\" else ""}
-              /
+            $gum log --structured --time timeonly --level info ${if user.admin then "Creating ADMIN user" else "Creating user"} username $username email $email password $password;
+            $user create --username $username --email $email --password $password ${if user.admin then "--admin" else ""};
+
           fi
         '') users)}
       '';
