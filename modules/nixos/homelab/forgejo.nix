@@ -214,7 +214,7 @@ in
         user="$forgejo admin user"
         awk="${pkgs.gawk}/bin/awk"
 
-        declaredUsers=(${toString (map (user: "${user.name}") users)});
+        declaredUsers=(${toString (map (user: "${if isPath user.name then "$(cat ${toString user.name})" else user.name}") users)});
 
         $gum log --structured --time timeonly --level info "HANDLING UNDECLARED USERS"
         
