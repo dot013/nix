@@ -11,6 +11,7 @@
     ../../modules/nixos/homelab
     ./hardware-configuration.nix
     ./network.nix
+    ./secrets.nix
     ./users
   ];
 
@@ -20,9 +21,11 @@
 
     forgejo = {
       enable = true;
-      settings.users."test-declarative" = {
-        email = "testdeclarative@example.com";
-        password = "teste";
+      settings.users."user1" = {
+        name = /. + config.sops.secrets."forgejo/user1/name".path;
+        email = /. + config.sops.secrets."forgejo/user1/email".path;
+        password = /. + config.sops.secrets."forgejo/user1/password".path;
+        admin = true;
       };
     };
   };
