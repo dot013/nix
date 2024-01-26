@@ -41,7 +41,7 @@ in
       users = mkOption {
         type = attrsOf (submodule ({ config, lib, ... }: with lib; with lib.types; {
           options = {
-            name = {
+            name = mkOption {
               type = nullOr (either str path);
               default = null;
             };
