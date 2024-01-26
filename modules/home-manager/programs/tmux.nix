@@ -45,6 +45,7 @@ in
       set -g @plugin 'b0o/tmux-autoreload'
       set -g @plugin 'aserowy/tmux.nvim'
       set -g @plugin 'guz013/frappuccino-tmux'
+      set -g @plugin 'pschmitt/tmux-ssh-split'
 
       set -sg terminal-overrides ",*:RGB"
 
