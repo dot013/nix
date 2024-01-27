@@ -24,6 +24,7 @@ in
 {
   imports = [
     ./forgejo.nix
+    ./adguard.nix
   ];
   options.homelab = with lib; with lib.types; {
     enable = mkEnableOption "";

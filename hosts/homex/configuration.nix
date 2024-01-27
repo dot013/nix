@@ -19,6 +19,13 @@
     enable = true;
     flakeDir = "/home/guz/.nix#homex";
 
+    adguard = {
+      enable = true;
+      settings.server = {
+        port = 3010;
+      };
+    };
+
     forgejo = {
       enable = true;
       settings.users."user1" = {
@@ -26,6 +33,9 @@
         email = /. + config.sops.secrets."forgejo/user1/email".path;
         password = /. + config.sops.secrets."forgejo/user1/password".path;
         admin = true;
+      };
+      settings.server = {
+        port = 3020;
       };
     };
   };
