@@ -39,6 +39,16 @@ in
         http = {
           address = "${cfg.settings.server.address}:${toString cfg.settings.server.port}";
         };
+        dns.rewrites = [
+          {
+            domain = "guz.local";
+            answer = "100.66.139.89";
+          }
+          {
+            domain = "*.guz.local";
+            answer = "100.66.139.89";
+          }
+        ];
       };
     };
   };
