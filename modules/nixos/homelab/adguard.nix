@@ -24,6 +24,28 @@ in
         type = str;
         default = "0.0.0.0";
       };
+      dns.rewrites = mkOption {
+        type = attrsOf str;
+        default = { };
+      };
+      dns.filters = mkOption {
+        type = attrsOf (submodule ({ lib, ... }: {
+          options = {
+            name = mkOption {
+              type = nullOr str;
+              default = null;
+            };
+            url = mkOption {
+              type = str;
+            };
+            enabled = {
+              type = bool;
+              default = true;
+            };
+          };
+        }));
+        default = { };
+      };
     };
   };
   config = lib.mkIf cfg.enable {
@@ -31,7 +53,7 @@ in
       allowedTCPPorts = [ 53 ];
       allowedUDPPorts = [ 53 51820 ];
     };
-    services.adguardhome = {
+    services.adguardhome = with builtins; {
       enable = true;
       settings = {
         bind_port = cfg.settings.server.port;
@@ -39,16 +61,20 @@ in
         http = {
           address = "${cfg.settings.server.address}:${toString cfg.settings.server.port}";
         };
-        dns.rewrites = [
-          {
-            domain = "guz.local";
-            answer = "100.66.139.89";
-          }
-          {
-            domain = "*.guz.local";
-            answer = "100.66.139.89";
-          }
-        ];
+        dns.rewrites = (builtins.attrValues (builtins.mapAttrs
+          (from: to: {
+            domain = from;
+            answer = to;
+          })
+          cfg.settings.dns.rewrites));
+        filters = (attrValues (mapAttrs
+          (id: list: {
+            name = if isNull list.name then id else list.name;
+            ID = id;
+            url = list.url;
+            enabled = list.enabled;
+          })
+          cfg.settings.dns.filters));
       };
     };
   };

@@ -24,6 +24,12 @@
       settings.server = {
         port = 3010;
       };
+      settings.dns = {
+        rewrites = {
+          "guz.local" = "100.66.139.89";
+          "*.guz.local" = "100.66.139.89";
+        };
+      };
     };
 
     forgejo = {
@@ -50,4 +56,5 @@
   nixpkgs.config.allowUnfree = true;
 
 }
+
 
