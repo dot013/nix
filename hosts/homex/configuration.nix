@@ -19,18 +19,9 @@
     enable = true;
     flakeDir = "/home/guz/.nix#homex";
 
-    adguard = {
-      enable = true;
-      settings.server = {
-        port = 3010;
-      };
-      settings.dns = {
-        rewrites = {
-          "guz.local" = "100.66.139.89";
-          "*.guz.local" = "100.66.139.89";
-        };
-      };
-    };
+    domain = "guz.local";
+    ip = "100.66.139.89";
+    localIp = "192.168.1.10";
 
     forgejo = {
       enable = true;
@@ -39,9 +30,6 @@
         email = /. + config.sops.secrets."forgejo/user1/email".path;
         password = /. + config.sops.secrets."forgejo/user1/password".path;
         admin = true;
-      };
-      settings.server = {
-        port = 3020;
       };
     };
   };

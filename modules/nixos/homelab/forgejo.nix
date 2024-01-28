@@ -27,6 +27,14 @@ in
       type = bool;
       default = true;
     };
+    domain = mkOption {
+      type = str;
+      default = "forgejo." + config.homelab.domain;
+    };
+    port = mkOption {
+      type = port;
+      default = 3020;
+    };
     data = {
       root = mkOption {
         type = path;
@@ -130,11 +138,11 @@ in
       };
       server.domain = mkOption {
         type = str;
-        default = "localhost";
+        default = cfg.domain;
       };
       server.port = mkOption {
         type = port;
-        default = 3000;
+        default = cfg.port;
       };
       server.address = mkOption {
         type = either str path;

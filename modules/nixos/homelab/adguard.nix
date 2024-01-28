@@ -11,14 +11,22 @@ in
       type = listOf str;
       default = [ ];
     };
+    domain = mkOption {
+      type = str;
+      default = "adguard." + config.homelab.domain;
+    };
+    port = mkOption {
+      type = port;
+      default = 3010;
+    };
     settings = {
       server.domain = mkOption {
         type = str;
-        default = "localhost";
+        default = cfg.domain;
       };
       server.port = mkOption {
         type = port;
-        default = 3000;
+        default = cfg.port;
       };
       server.address = mkOption {
         type = str;

@@ -23,8 +23,9 @@ let
 in
 {
   imports = [
-    ./forgejo.nix
     ./adguard.nix
+    ./caddy.nix
+    ./forgejo.nix
   ];
   options.homelab = with lib; with lib.types; {
     enable = mkEnableOption "";
@@ -36,10 +37,62 @@ in
       default = /data/homelab;
       description = "The Homelab central storage path";
     };
+    domain = mkOption {
+      type = either str path;
+      default = "homelab.local";
+    };
+    ip = mkOption {
+      type = str;
+    };
+    localIp = mkOption {
+      type = str;
+    };
+    handleDomains = mkOption {
+      type = bool;
+      default = true;
+    };
   };
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
       homelab
     ];
+
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.handleDomains [ 80 433 ];
+
+    systemd.services."tailscaled" = lib.mkIf cfg.handleDomains {
+      serviceConfig = {
+        Environment = [ "TS_PERMIT_CERT_UID=caddy" ];
+      };
+    };
+
+    homelab = with lib; mkIf cfg.handleDomains {
+      adguard = {
+        enable = true;
+        settings.dns.rewrites = (if hasPrefix "*." cfg.domain then {
+          "${cfg.domain}" = cfg.ip;
+        } else {
+          "${cfg.domain}" = cfg.ip;
+          "${"*." + cfg.domain}" = cfg.ip;
+        });
+      };
+
+      caddy =
+        let
+          homelabServices = (lib.filterAttrs (n: v: builtins.isAttrs v && v?domain) cfg);
+        in
+        with lib;
+        mkIf cfg.handleDomains {
+          enable = true;
+          settings.virtualHosts = mapAttrs'
+            (name: value: nameValuePair (value.domain) ({
+              extraConfig = ''
+                reverse_proxy ${cfg.localIp}:${toString value.port}
+              '';
+            }))
+            homelabServices;
+        };
+    };
   };
 }
+
+

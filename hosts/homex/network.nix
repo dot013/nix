@@ -18,29 +18,9 @@
       enable = true;
       useRoutingFeatures = "both";
     };
-    systemd.services."tailscaled" = {
-      serviceConfig = {
-        Environment = [ "TS_PERMIT_CERT_UID=caddy" ];
-      };
-    };
-
-    services.caddy = {
-      enable = true;
-      virtualHosts."homex.kiko-liberty.ts.net".extraConfig = ''
-        respond "Hello, World"
-      '';
-      virtualHosts."guz.local".extraConfig = ''
-        respond "Hello, World"
-      '';
-      virtualHosts."adguard.guz.local".extraConfig = ''
-        reverse_proxy 192.168.1.10:3010
-      '';
-    };
-    networking.firewall.allowedTCPPorts = [ 80 433 ];
 
     boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
     boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = 1;
-
 
     services.openssh.enable = true;
   };
