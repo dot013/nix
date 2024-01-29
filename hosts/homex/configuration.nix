@@ -37,12 +37,14 @@
 
     forgejo = {
       enable = true;
+      settings.server.url = "https://${config.homelab.forgejo.settings.server.domain}";
       settings.users."user1" = {
         name = /. + config.sops.secrets."forgejo/user1/name".path;
         email = /. + config.sops.secrets."forgejo/user1/email".path;
         password = /. + config.sops.secrets."forgejo/user1/password".path;
         admin = true;
       };
+      settings.ui.themes = [ "forgejo-dark" "arc-green" ];
     };
   };
 
