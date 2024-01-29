@@ -10,6 +10,10 @@ in
       type = bool;
       default = true;
     };
+    hostName = mkOption {
+      type = str;
+      default = config.homelab.name;
+    };
     interface = mkOption {
       type = str;
     };
@@ -36,6 +40,8 @@ in
     settings = { };
   };
   config = lib.mkIf cfg.enable {
+    host.networking.hostName = cfg.hostName;
+
     networking = {
       dhcpcd.enable = true;
       interfaces."${cfg.interface}".ipv4.addresses = [{

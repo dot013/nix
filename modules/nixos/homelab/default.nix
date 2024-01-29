@@ -31,6 +31,10 @@ in
   ];
   options.homelab = with lib; with lib.types; {
     enable = mkEnableOption "";
+    name = mkOption {
+      type = str;
+      default = "homelab";
+    };
     flakeDir = mkOption {
       type = str;
     };
@@ -41,7 +45,7 @@ in
     };
     domain = mkOption {
       type = either str path;
-      default = "homelab.local";
+      default = "${cfg.name}.local";
     };
     localIp = mkOption {
       type = str;
