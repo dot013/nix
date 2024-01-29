@@ -23,6 +23,12 @@
     ip = "100.66.139.89";
     localIp = "192.168.1.10";
 
+    tailscale = {
+      enable = true;
+      mode = "both";
+      exitNode = true;
+    };
+
     forgejo = {
       enable = true;
       settings.users."user1" = {

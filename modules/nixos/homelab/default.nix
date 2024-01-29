@@ -26,6 +26,7 @@ in
     ./adguard.nix
     ./caddy.nix
     ./forgejo.nix
+    ./tailscale.nix
   ];
   options.homelab = with lib; with lib.types; {
     enable = mkEnableOption "";
