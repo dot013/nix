@@ -28,6 +28,9 @@ in
       enable = true;
       useRoutingFeatures = cfg.mode;
     };
+
+    homelab.network = lib.mkIf cfg.exitNode { portForwarding = lib.mkDefault true; };
+
   };
 }
 

@@ -26,6 +26,7 @@ in
     ./adguard.nix
     ./caddy.nix
     ./forgejo.nix
+    ./network.nix
     ./tailscale.nix
   ];
   options.homelab = with lib; with lib.types; {
@@ -42,11 +43,12 @@ in
       type = either str path;
       default = "homelab.local";
     };
-    ip = mkOption {
-      type = str;
-    };
     localIp = mkOption {
       type = str;
+    };
+    ip = mkOption {
+      type = str;
+      default = cfg.localIp;
     };
     handleDomains = mkOption {
       type = bool;

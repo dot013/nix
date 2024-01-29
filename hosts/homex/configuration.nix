@@ -10,7 +10,6 @@
     ../../modules/nixos/config/host.nix
     ../../modules/nixos/homelab
     ./hardware-configuration.nix
-    ./network.nix
     ./secrets.nix
     ./users
   ];
@@ -18,10 +17,17 @@
   homelab = {
     enable = true;
     flakeDir = "/home/guz/.nix#homex";
+    name = "homex";
 
     domain = "guz.local";
+
     ip = "100.66.139.89";
     localIp = "192.168.1.10";
+
+    network = {
+      enable = true;
+      interface = "eno1";
+    };
 
     tailscale = {
       enable = true;
