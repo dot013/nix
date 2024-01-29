@@ -45,6 +45,13 @@
         admin = true;
       };
       settings.ui.themes = [ "forgejo-dark" "arc-green" ];
+      /*
+       I'm hours trying to make pushing via SSH work, but using the {user}@{domain}:{owner}/{repo}
+       simply isn't working and returns "does not appear to be a git repository". Probably
+       is a problem with all the "domain handling" stuff with caddy, adguard, etc. This is
+       a temporary fix, so I don't end up breaking my actual sanity.
+      */
+      settings.security.allowBypassGiteaEnv = true;
     };
   };
 

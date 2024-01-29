@@ -17,7 +17,7 @@ in
     enable = mkEnableOption "";
     user = mkOption {
       type = str;
-      default = "forgejo";
+      default = "git";
     };
     package = mkOption {
       type = package;
@@ -40,27 +40,11 @@ in
         type = path;
         default = config.homelab.storage + /forgejo;
       };
-      repositories = mkOption {
-        type = path;
-        default = /home + cfg.user + /repositories;
-      };
     };
     handleUndeclaredUsers = mkOption {
       type = bool;
       default = false;
     };
-    /*
-      See comment at the bottom of the file
-
-      linkUserReposDir = mkOption {
-      type = bool;
-      default = false;
-      description = ''
-        Links ${cfg.data.repositories} to /home/${cfg.user} to fix repositories
-        not being found when accssing via SSH.
-      '';
-      };
-    */
     settings = {
       users = mkOption {
         type = attrsOf (submodule ({ config, lib, ... }: with lib; with lib.types; {
@@ -188,16 +172,28 @@ in
         type = bool;
         default = false;
       };
+      security.allowBypassGiteaEnv = mkOption {
+        type = bool;
+        default = false;
+      };
     };
   };
   config = lib.mkIf cfg.enable {
+    users.users."${cfg.user}" = {
+      home = cfg.data.root;
+      useDefaultShell = true;
+      group = cfg.user;
+      isSystemUser = true;
+      initialPassword = "1313";
+    };
+    users.groups."${cfg.user}" = { };
+
     services.forgejo = {
       enable = true;
       package = cfg.package;
       user = cfg.user;
       group = cfg.user;
       stateDir = toString cfg.data.root;
-      repositoryRoot = toString cfg.data.repositories;
       useWizard = false;
       database = {
         user = cfg.user;
@@ -233,6 +229,9 @@ in
           ENABLE_GZIP = cfg.settings.server.compression;
           LANDING_PAGE = cfg.settings.server.landingPage;
         };
+        security = {
+          ONLY_ALLOW_PUSH_IF_GITEA_ENVIRONMENT_SET = if cfg.settings.security.allowBypassGiteaEnv then false else true;
+        };
         service = {
           DISABLE_REGISTRATION = if cfg.settings.service.registration then false else true;
         };
@@ -240,8 +239,12 @@ in
     };
     systemd.services."homelab-forgejo-setup" = with builtins; {
       script = ''
+        
+        configFile="${toString cfg.data.root}/custom/conf/app.ini";
+        touch $configFile
+
         gum="${pkgs.gum}/bin/gum"
-        forgejo="${cfg.package}/bin/gitea --work-path ${cfg.data.root}"
+        forgejo="${cfg.package}/bin/gitea --config $configFile"
         user="$forgejo admin user"
         awk="${pkgs.gawk}/bin/awk"
 
@@ -293,54 +296,10 @@ in
         Group = cfg.user;
       };
     };
-
-    /* 
-      Removed for now because handling deleted user/files, without touching the
-      user's files, would be too much of a hassle.
-
-      systemd.services."homelab-forgejo-repos-link-watcher" = lib.mkIf cfg.linkUserReposDir {
-      script = ''
-        ${pkgs.systemctl}/bin/systemctl start homelab-forgejo-repos-link.service;
-      '';
-      wantedBy = [ "multi-user.target" ];
-      before = [ "forgejo.service" ];
-      serviceConfig = {
-        Type = "oneshot";
-      };
-      };
-      systemd.paths."homelab-forgejo-repos-link-watcher" = lib.mkIf cfg.linkUserReposDir {
-      wantedBy = [ "multi-user.target" ];
-      pathConfig = {
-        PathModified = toString cfg.data.repositories;
-      };
-      };
-      systemd.services."homelab-forgejo-repos-link" = lib.mkIf cfg.linkUserReposDir {
-      script = ''
-        userDir="/home/${cfg.user}";
-
-        mkdir -p "$userDir";
-
-        for dir in ${toString cfg.data.repositories}/*; do
-          basename="$(basename $dir)"
-          linkname="$userDir/$basename"
-
-          if [ -f "$f" ]; then
-            echo "Link $dir to $linkname already exists";
-          else
-            echo "Linking $dir to $linkname";
-            ln -sf $dir -T $linkname;
-          fi
-        done
-      '';
-      wantedBy = [ "multi-user.target" ];
-      before = [ "forgejo.service" ];
-      serviceConfig = {
-        Type = "oneshot";
-      };
-      };
-    */
   };
 }
+
+
 
 
 
