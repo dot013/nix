@@ -64,6 +64,7 @@ in
       }
     ];
     hyprland.workspaces = [
+      # First monitor
       {
         name = "1";
         monitor = "$monitor1";
@@ -79,16 +80,33 @@ in
       }
       {
         name = "4";
-        monitor = "$monitor2";
-        default = true;
+        monitor = "$monitor1";
       }
       {
         name = "5";
-        monitor = "$monitor2";
+        monitor = "$monitor1";
       }
+      # Second monitor
       {
         name = "6";
         monitor = "$monitor2";
+      }
+      {
+        name = "7";
+        monitor = "$monitor2";
+      }
+      {
+        name = "8";
+        monitor = "$monitor2";
+      }
+      {
+        name = "9";
+        monitor = "$monitor2";
+      }
+      {
+        name = "10";
+        monitor = "$monitor2";
+        default = true;
       }
     ];
   };

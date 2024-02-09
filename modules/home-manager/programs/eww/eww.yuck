@@ -53,7 +53,17 @@
 (defwidget workspaces [workspace]
   (box :class "workspace"
        :orientation "h"
-    "${workspace == 1 ? '' : ''} ${workspace == 2 ? '' : ''} ${workspace == 3 ? '' : ''}"))
+    "${
+      workspace == 1 ? '' : ''
+    } ${
+      workspace == 2 ? '' : ''
+    } ${
+      workspace == 3 ? '' : ''
+    } ${
+      workspace == 4 ? '' : ''
+    } ${
+      workspace == 5 ? '' : ''
+    }"))
 
 (defwindow bar
            :monitor 0
@@ -137,5 +147,5 @@
                :halign "end"
                :class "leftstuff"
       (empty)
-      (workspaces :workspace "${active-workspace - 3}")))))
+      (workspaces :workspace "${active-workspace - 5}")))))
 
