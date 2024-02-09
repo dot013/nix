@@ -187,8 +187,7 @@ in
                 {
                   "title:^(Picture-in-Picture)$,class:^(firefox)$" = firefoxPipRules;
                   "title:^(Firefox)$,class:^(firefox)$" = firefoxPipRules;
-                  # "title:^(Picture-in-Picture)$,class:^(librewolf)$" = firefoxPipRules;
-                  # "title:^(LibreWolf)$,class:^(librewolf)$" = firefoxPipRules;
+                  "title:^(Picture-in-Picture)$" = firefoxPipRules;
                   "class:^(xwaylandvideobridge)$" = [
                     "opacity 0.0 override 0.0 override"
                     "noanim"
