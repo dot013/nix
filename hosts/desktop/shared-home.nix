@@ -59,6 +59,7 @@
     "com.bitwarden.desktop"
     "org.prismlauncher.PrismLauncher"
     "org.mozilla.Thunderbird"
+    "net.blockbench.Blockbench"
   ];
   # services.flatpak.overrides = { };
 
@@ -67,6 +68,9 @@
   home.packages = with pkgs; [
     ## Programs
     webcord-vencord
+    gimp
+    inkscape
+    pureref
 
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
