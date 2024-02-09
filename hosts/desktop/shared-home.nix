@@ -58,6 +58,7 @@
     "md.obsidian.Obsidian"
     "com.bitwarden.desktop"
     "org.prismlauncher.PrismLauncher"
+    "org.mozilla.Thunderbird"
   ];
   # services.flatpak.overrides = { };
 
