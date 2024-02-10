@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../../modules/home-manager/programs/lf.nix
     ../../modules/home-manager/programs/starship.nix
     ../../modules/home-manager/programs/tmux.nix
     ../../modules/home-manager/programs/wezterm.nix
@@ -9,6 +10,8 @@
   ];
   options.terminal = { };
   config = {
+    lf.enable = true;
+
     starship.enable = true;
     starship.enableZsh = true;
 
