@@ -7,13 +7,14 @@
   options.keybinds = { };
   config = {
     hyprland.binds.keyboard = [
-      "$mod, Q, exec, ${pkgs.wezterm}/bin/wezterm"
       "$mod, C, killactive"
       "$mod, M, exit"
-      "$mod, E, exec, ${pkgs.gnome.nautilus}/bin/nautilus"
       "$mod, V, togglefloating"
       "$mod, F, fullscreen"
       "$mod, Z, togglesplit"
+      "$mod, Q, exec, ${pkgs.wezterm}/bin/wezterm"
+      "$mod, E, exec, ${pkgs.wezterm}/bin/wezterm start lf"
+      "$mod + SHIFT, E, exec, ${pkgs.librewolf}/bin/librewolf"
       "$mod, S, exec, ${pkgs.rofi}/bin/rofi -show drun -show-icons"
       ",Print, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp -d)\" - | ${pkgs.wl-clipboard}/bin/wl-copy"
 
