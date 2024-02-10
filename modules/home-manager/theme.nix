@@ -1,4 +1,4 @@
-{ config, lib, inputs, ... }:
+{ config, lib, inputs, pkgs, ... }:
 
 let
   cfg = config.theme;
@@ -25,5 +25,22 @@ in
   };
   config = {
     colorScheme = inputs.nix-colors.lib.schemeFromYAML "frappuccino" (builtins.readFile cfg.scheme);
+
+    home.packages = with pkgs; [
+      gnome.gnome-themes-extra
+    ];
+
+    gtk = {
+      enable = true;
+      theme = {
+        name = "Catppuccin-Mocha-Compact-Mauve-Dark";
+        package = pkgs.catppuccin-gtk.override {
+          size = "compact";
+          tweaks = [ "rimless" "black" ];
+          accents = [ "mauve" ];
+          variant = "mocha";
+        };
+      };
+    };
   };
 }
