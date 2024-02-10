@@ -1,9 +1,10 @@
-{ inputs, pkgs, lib, config, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.wezterm;
 in
 {
+  imports = [ ];
   options.wezterm = with lib; with lib.types; {
     enable = mkEnableOption "Enable Wezterm";
     integration = {

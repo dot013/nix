@@ -4,13 +4,13 @@ let
   cfg = config.localization;
 in
 {
-  options.localization = {
-    locale = lib.mkOption {
+  options.localization = with lib; with lib.types; {
+    locale = mkOption {
       default = "en_US.UTF-8";
-      type = lib.types.str;
+      type = str;
       description = "Sets default locale of the host";
     };
-    extraLocales = lib.mkOption {
+    extraLocales = mkOption {
       default = rec {
         LC_ADDRESS = "pt_BR.UTF-8";
         LC_IDENTIFICATION = LC_ADDRESS;
@@ -24,24 +24,22 @@ in
       };
       description = "Extra localization settings";
     };
-
-    keymap.layout = lib.mkOption {
+    keymap.layout = mkOption {
       default = "br";
-      type = lib.types.str;
+      type = str;
     };
-    keymap.variant = lib.mkOption {
+    keymap.variant = mkOption {
       default = "";
-      type = lib.types.str;
+      type = str;
     };
-    keymap.console = lib.mkOption {
+    keymap.console = mkOption {
       default = "br-abnt2";
-      type = lib.types.str;
+      type = str;
     };
-
     time = {
-      zone = lib.mkOption {
+      zone = mkOption {
         default = "America/Sao_Paulo";
-        type = lib.types.str;
+        type = str;
       };
     };
   };

@@ -31,7 +31,7 @@
   SOFTWARE.
 */
 
-{ inputs, config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let
@@ -183,6 +183,7 @@ let
     );
 in
 {
+  imports = [ ];
   options.librewolf = with lib; with lib.types; {
     enable = mkEnableOption "Enable module";
     overrides = mkOption {

@@ -1,21 +1,23 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 let
   cfg = config.hyprland;
 in
 {
+  imports = [ ];
   options.hyprland = with lib; with lib.types; {
     enable = mkEnableOption "";
     monitors = mkOption {
       default = [ ];
-      # TODO: Fix types
-      /* type = lib.types.listOf {
-        name = lib.types.str;
-        resolution = lib.types.str;
-        hz = lib.types.nullOr lib.types.int;
-        offset = lib.types.nullOr lib.types.str;
-        scale = lib.types.nullOr lib.types.int;
-      }; */
+      type = listOf (submodule ({ ... }: {
+        options = {
+          name = str;
+          resolution = str;
+          hz = nullOr int;
+          offset = nullOr str;
+          scale = nullOr int;
+        };
+      }));
     };
     exec = mkOption {
       default = [ ];
@@ -28,7 +30,7 @@ in
     windowRules = mkOption {
       default = { };
       description = "window = [ \"rule\" ]";
-      # type = attrsOf listOf str;
+      type = attrsOf (listOf str);
     };
     input = {
       keyboard.layout = mkOption {
@@ -105,7 +107,7 @@ in
         monitor = nullOr str;
         default = nullOr bool;
         extraRules = nullOr str;
-      }; */
+        }; */
     };
     binds = {
       mod = mkOption {

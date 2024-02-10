@@ -1,13 +1,14 @@
-{ inputs, config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.starship;
 in
 {
-  options.starship = {
-    enable = lib.mkEnableOption "Enable module";
-    enableZsh = lib.mkEnableOption "Enable Zsh Integration";
-    enableBash = lib.mkEnableOption "Enable Bash Integration";
+  imports = [ ];
+  options.starship = with lib; with lib.types; {
+    enable = mkEnableOption "Enable module";
+    enableZsh = mkEnableOption "Enable Zsh Integration";
+    enableBash = mkEnableOption "Enable Bash Integration";
   };
   config = lib.mkIf cfg.enable {
     programs.starship.enable = true;

@@ -1,12 +1,15 @@
-{ config, pkgs, inputs, ... }:
+{ ... }:
 
 {
   imports = [
     ../shared-home.nix
   ];
-  librewolf.profiles.guz.isDefault = true;
+  options.default.home = { };
+  config = {
+    librewolf.profiles.guz.isDefault = true;
 
-  services.flatpak.packages = [
-    "com.valvesoftware.Steam"
-  ];
+    services.flatpak.packages = [
+      "com.valvesoftware.Steam"
+    ];
+  };
 }

@@ -1,9 +1,10 @@
-{ inputs, config, pkgs, lib, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.zsh;
 in
 {
+  imports = [ ];
   options.zsh = with lib; with lib.types; {
     enable = mkEnableOption "Enable Zsh shell";
     plugins = {

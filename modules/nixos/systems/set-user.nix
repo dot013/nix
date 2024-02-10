@@ -4,20 +4,19 @@ let
   cfg = config.set-user;
 in
 {
-  options.set-user = {
-    users = lib.mkOption {
+  options.set-user = with lib; with lib.types; {
+    users = mkOption {
       default = [ ];
-      # TODO: Fix types
-      /* type = lib.types.listOf {
-        username = lib.types.str;
-        description = lib.types.str;
-        normalUser = lib.types.bool;
-        shell = lib.types.package;
-        packages = lib.types.pkgs;
-        extraGroups = lib.types.listOf lib.types.str;
-        home = lib.types.anything;
-        flatpak = lib.types.bool;
-      }; */
+      type = listOf (submodule ({ ... }: {
+        username = str;
+        description = str;
+        normalUser = bool;
+        shell = package;
+        packages = types.pkgs;
+        extraGroups = listOf str;
+        home = anything;
+        flatpak = bool;
+      }));
     };
   };
   config =

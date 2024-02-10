@@ -7,19 +7,19 @@ in
   imports = [
     inputs.nix-colors.homeManagerModules.default
   ];
-  options.theme = {
-    accent = lib.mkOption {
-      type = lib.types.str;
+  options.theme = with lib; with lib.types; {
+    accent = mkOption {
+      type = str;
       default = "cdd6f4";
       description = "The accent color of Frappuccino";
     };
-    accentBase = lib.mkOption {
-      type = lib.types.str;
+    accentBase = mkOption {
+      type = str;
       default = "magenta";
       description = "The base name for the accent color to be used in the terminal";
     };
-    scheme = lib.mkOption {
-      type = lib.types.path;
+    scheme = mkOption {
+      type = path;
       default = ../../themes/frappuccino.yaml;
     };
   };

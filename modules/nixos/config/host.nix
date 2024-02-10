@@ -10,22 +10,22 @@ in
     inputs.sops-nix.nixosModules.sops
     ../systems/localization.nix
   ];
-  options.host = {
+  options.host = with lib; with lib.types; {
     networking = {
-      hostName = lib.mkOption {
+      hostName = mkOption {
         default = "nixos";
-        type = lib.types.str;
+        type = str;
         description = "Define the host's network name";
       };
-      wireless.enable = lib.mkOption {
+      wireless.enable = mkOption {
         default = false;
-        type = lib.types.bool;
+        type = bool;
         description = "Enables wireless support";
       };
     };
     time = {
-      timeZone = lib.mkOption {
-        type = lib.types.str;
+      timeZone = mkOption {
+        type = str;
         description = "Sets host's time zone";
       };
     };

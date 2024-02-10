@@ -48,8 +48,12 @@ let
   '';
 in
 {
-  home.packages = [
-    desktop
-  ];
+  imports = [ ];
+  options.desktop.cli = { };
+  config = {
+    home.packages = [
+      desktop
+    ];
+  };
 }
 

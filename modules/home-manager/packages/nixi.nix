@@ -11,8 +11,12 @@ let
   '';
 in
 {
-  home.packages = [
-    nixi
-  ];
+  imports = [ ];
+  options.nixi = { };
+  config = {
+    home.packages = [
+      nixi
+    ];
+  };
 }
 

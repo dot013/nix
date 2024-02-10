@@ -11,8 +11,12 @@ let
   '';
 in
 {
-  home.packages = [
-    nixx
-  ];
+  imports = [ ];
+  options.nixx = { };
+  config = {
+    home.packages = [
+      nixx
+    ];
+  };
 }
 

@@ -1,21 +1,22 @@
-{ inputs, config, pkgs, lib, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 let
   cfg = config.tmux;
 in
 {
-  options.tmux = {
-    enable = lib.mkEnableOption "Enable Tmux module";
-    baseIndex = lib.mkOption {
-      type = lib.types.ints.unsigned;
+  imports = [ ];
+  options.tmux = with lib; with lib.types; {
+    enable = mkEnableOption "Enable Tmux module";
+    baseIndex = mkOption {
+      type = ints.unsigned;
       default = 1;
     };
-    prefix = lib.mkOption {
-      type = lib.types.str;
+    prefix = mkOption {
+      type = str;
       default = "C-Space";
     };
-    shell = lib.mkOption {
-      type = lib.types.str;
+    shell = mkOption {
+      type = str;
       default = "\${pkgs.bash}/bin/bash";
     };
   };
