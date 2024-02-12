@@ -29,6 +29,15 @@
       interface = "eno1";
     };
 
+    /*
+      nextcloud = {
+      enable = true;
+      settings.admin = {
+        passwordFile = /. + config.sops.secrets."nextcloud/user1/password".path;
+      };
+      };
+      */
+
     tailscale = {
       enable = true;
       mode = "both";

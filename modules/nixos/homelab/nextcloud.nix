@@ -5,8 +5,12 @@ let
 in
 {
   imports = [ ];
-  options = with lib; with lib.types; {
+  options.homelab.nextcloud = with lib; with lib.types; {
     enable = mkEnableOption "";
+    user = mkOption {
+      type = str;
+      default = "nextcloud";
+    };
     package = mkOption {
       type = package;
       default = pkgs.nextcloud28;
@@ -27,17 +31,31 @@ in
     };
     configureRedis = mkOption {
       type = bool;
-      default = true;
+      default = false;
+    };
+    settings = {
+      admin.user = mkOption {
+        type = str;
+        default = cfg.user;
+      };
+      admin.passwordFile = mkOption {
+        type = path;
+      };
     };
   };
   config = lib.mkIf cfg.enable {
     services.nextcloud = {
+      config = {
+        adminuser = cfg.settings.admin.user;
+        adminpassFile = toString cfg.settings.admin.passwordFile;
+      };
       configureRedis = cfg.configureRedis;
       enable = true;
-      package = cfg.package;
-      home = cfg.data.root;
+      home = toString cfg.data.root;
       hostName = cfg.domain;
       https = true;
+      package = cfg.package;
+      # phpPackage = pkgs.php;
     };
   };
 }

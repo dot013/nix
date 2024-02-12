@@ -27,6 +27,7 @@ in
     ./caddy.nix
     ./forgejo.nix
     ./network.nix
+    ./nextcloud.nix
     ./tailscale.nix
   ];
   options.homelab = with lib; with lib.types; {
