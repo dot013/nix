@@ -11,12 +11,15 @@
     shell = pkgs.zsh;
     home = {
       imports = [
+        ../../../modules/home-manager/programs/lf.nix
         ../../../modules/home-manager/programs/starship.nix
         ../../../modules/home-manager/programs/tmux.nix
         ../../../modules/home-manager/programs/zsh.nix
         ../../../modules/home-manager/packages/nixi.nix
         ../../../modules/home-manager/packages/nixx.nix
       ];
+
+      lf.enable = true;
 
       starship.enable = true;
       starship.enableZsh = true;
