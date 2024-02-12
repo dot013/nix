@@ -9,15 +9,33 @@ in
     enable = mkEnableOption "";
     monitors = mkOption {
       default = [ ];
+      /*
       type = listOf (submodule ({ ... }: {
         options = {
-          name = str;
-          resolution = str;
-          hz = nullOr int;
-          offset = nullOr str;
-          scale = nullOr int;
+          id = mkOption {
+            type = str;
+          };
+          name = mkOption {
+            type = str;
+          };
+          resolution = mkOption {
+            type = str;
+          };
+          hz = mkOption {
+            type = nullOr int;
+            default = null;
+          };
+          offset = mkOption {
+            type = nullOr str;
+            default = null;
+          };
+          scale = mkOption {
+            type = nullOr int;
+            default = null;
+          };
         };
       }));
+      */
     };
     exec = mkOption {
       default = [ ];

@@ -8,14 +8,38 @@ in
     users = mkOption {
       default = [ ];
       type = listOf (submodule ({ ... }: {
-        username = str;
-        description = str;
-        normalUser = bool;
-        shell = package;
-        packages = types.pkgs;
-        extraGroups = listOf str;
-        home = anything;
-        flatpak = bool;
+        options = {
+          username = mkOption {
+            type = str;
+          };
+          description = mkOption {
+            type = nullOr str;
+            default = null;
+          };
+          normalUser = mkOption {
+            type = bool;
+            default = true;
+          };
+          shell = mkOption {
+            type = package;
+            default = pkgs.bash;
+          };
+          packages = mkOption {
+            type = listOf package;
+            default = [ ];
+          };
+          extraGroups = mkOption {
+            type = listOf str;
+            default = [ "networkmanager" "wheel" ];
+          };
+          home = mkOption {
+            type = anything;
+          };
+          flatpak = mkOption {
+            type = nullOr bool;
+            default = true;
+          };
+        };
       }));
     };
   };
@@ -43,15 +67,11 @@ in
             name = u.username;
             value = {
               description =
-                if u?description then u.description else u.username;
-              isNormalUser =
-                if u?normalUser then u.normalUser else true;
-              shell =
-                if u?shell then u.shell else pkgs.bash;
-              packages =
-                if u?packages then u.packages else [ ];
-              extraGroups =
-                if u?extraGroups then u.extraGroups else [ "networkmanager" "wheel" ];
+                if u.description != null then u.description else u.username;
+              isNormalUser = u.normalUser;
+              shell = u.shell;
+              packages = u.packages;
+              extraGroups = u.extraGroups ++ [ "wheel" ];
             };
           })
           cfg.users
