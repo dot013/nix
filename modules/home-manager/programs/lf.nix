@@ -59,7 +59,7 @@ in
         "<enter>" = "open";
         a = "mkfile";
         A = "mkdir";
-        D = "delete-trash";
+        D = "delete";
         R = "trash-recover";
         ee = "editor-open";
       };
