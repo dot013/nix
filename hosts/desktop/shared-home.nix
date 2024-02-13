@@ -4,6 +4,7 @@
   imports = [
     ../../modules/home-manager/theme.nix
     ../../modules/home-manager/programs/librewolf
+    ../../modules/home-manager/programs/krita
     ../../modules/home-manager/packages/nixx.nix
     ../../modules/home-manager/packages/nixi.nix
     ./terminal.nix
@@ -30,6 +31,8 @@
       enable = true;
       pinentryFlavor = "gnome3";
     };
+
+    krita.enable = true;
 
     librewolf = {
       enable = true;
