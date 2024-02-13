@@ -28,6 +28,12 @@ in
         else
           ln -sf /run/current-system/sw/share/X11/fonts /home/${cfg.user}/.local/share/fonts;
         fi
+
+        if [ -d "/home/${cfg.user}/.fonts" ]; then
+          echo "";
+        else
+          ln -sf /run/current-system/sw/share/X11/fonts /home/${cfg.user}/.fonts;
+        fi
       '';
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
