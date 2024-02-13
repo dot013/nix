@@ -4,11 +4,39 @@
   imports = [
     ../../modules/nixos/config/host.nix
     ../../modules/nixos/systems/set-user.nix
+    ../../modules/nixos/systems/fonts.nix
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
   options.shared.configuration = { };
   config = {
+
+    my-fonts.enable = true;
+    my-fonts.user = "guz";
+    my-fonts.fonts = with pkgs; [
+      fira-code
+      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      (google-fonts.override { fonts = [ "Gloock" "Cinzel" ]; })
+      (stdenv.mkDerivation rec {
+        pname = "calsans";
+        version = "1.0.0";
+        src = pkgs.fetchzip {
+          url = "https://github.com/calcom/font/releases/download/v${version}/CalSans_Semibold_v${version}.zip";
+          stripRoot = false;
+          hash = "sha256-JqU64JUgWimJgrKX3XYcml8xsvy//K7O5clNKJRGaTM=";
+        };
+        installPhase = ''
+          runHook preInstall
+          install -m444 -Dt $out/share/fonts/truetype fonts/webfonts/*.ttf
+          runHook postInstall
+        '';
+        meta = with lib; {
+          homepage = "https://github.com/calcom/font";
+          license = licenses.ofl;
+          platforms = platforms.all;
+        };
+      })
+    ];
 
     sops.defaultSopsFile = ../../secrets/desktop-secrets.yaml;
     sops.defaultSopsFormat = "yaml";
@@ -101,3 +129,4 @@
     # networking.firewall.enable = false;
   };
 }
+
