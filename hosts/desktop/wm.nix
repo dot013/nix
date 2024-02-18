@@ -63,6 +63,10 @@ in
         offset = "2560x0";
       }
     ];
+    hyprland.windowRules = {
+      "class:^(org.inkscape.Inkscape)$" = [ "float" ];
+      "class:^(org.inkscape.Inkscape)$,title:(.*)(- Inkscape)$" = [ "tile" ];
+    };
     hyprland.workspaces = [
       # First monitor
       {
