@@ -31,6 +31,7 @@
       export GPG_TTY=$(tty)
 
       alias tmux="tmux -f ${config.xdg.configHome}/tmux/tmux.conf"
+      alias nvim="${pkgs.steam-run}/bin/steam-run nvim"
     '';
   };
 }
