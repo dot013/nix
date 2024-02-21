@@ -7,6 +7,7 @@
     ../../modules/nixos/systems/fonts.nix
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./gpu-configuration.nix
   ];
   options.shared.configuration = { };
   config = {
@@ -80,10 +81,6 @@
       sops
       wl-clipboard
     ];
-
-    hardware = {
-      opengl.enable = true;
-    };
 
     # Enable the X11 windowing system.
     services.xserver.enable = true;
