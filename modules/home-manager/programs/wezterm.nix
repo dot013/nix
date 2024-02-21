@@ -42,7 +42,7 @@ in
     '';
 
     programs.wezterm.colorSchemes = {
-      system = with config.colorScheme.colors; {
+      system = with config.colorScheme.palette; {
         foreground = "#${base05}";
         background = "#${base00}";
 

@@ -50,8 +50,8 @@ in
     };
 
     services.xserver = {
-      layout = cfg.keymap.layout;
-      xkbVariant = cfg.keymap.variant;
+      xkb.layout = cfg.keymap.layout;
+      xkb.variant = cfg.keymap.variant;
     };
 
     console.keyMap = cfg.keymap.console;

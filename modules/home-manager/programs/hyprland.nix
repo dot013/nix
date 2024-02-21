@@ -191,7 +191,7 @@ in
           let
             firefoxPipRules = [
               "float"
-              "nofullscreenrequest"
+              # "nofullscreenrequest"
               "size 480 270"
               "fakefullscreen"
               "nodim"

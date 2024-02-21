@@ -97,8 +97,8 @@ in
 
     home.file."${ewwDir}/vars.scss".text = ''
       $color-accent: #${config.theme.accent};
-      $foreground: rgba(#${config.colorScheme.colors.base03}, 1);
-      $background: rgba(#${config.colorScheme.colors.base00} , 1);
+      $foreground: rgba(#${config.colorScheme.palette.base03}, 1);
+      $background: rgba(#${config.colorScheme.palette.base00} , 1);
 
       $shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
       $border-radius: 5px;
