@@ -3,7 +3,7 @@
   imports = [ ];
   options = { };
   config = {
-    sops.defaultSopsFile = ../../secrets/homex-secrets.yaml;
+    sops.defaultSopsFile = ../../secrets/homelab-secrets.yaml;
     sops.defaultSopsFormat = "yaml";
 
     sops.secrets."forgejo/user1/name" = {
