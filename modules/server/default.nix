@@ -2,7 +2,7 @@
 
 let
   cfg = config.server;
-  homelab = pkgs.writeShellScriptBin "homelab" ''
+  server = pkgs.writeShellScriptBin "server" ''
     gum="${pkgs.gum}/bin/gum";
     flakeDir="${toString cfg.flakeDir}";
 
@@ -37,14 +37,14 @@ in
     enable = mkEnableOption "";
     name = mkOption {
       type = str;
-      default = "homelab";
+      default = "server";
     };
     flakeDir = mkOption {
       type = str;
     };
     storage = mkOption {
       type = path;
-      default = /data/homelab;
+      default = /data + "/${cfg.name}";
       description = "The Homelab central storage path";
     };
     domain = mkOption {
@@ -65,7 +65,7 @@ in
   };
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
-      homelab
+      server
     ];
 
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.handleDomains [ 80 433 ];

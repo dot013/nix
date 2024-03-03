@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
   imports = [
@@ -16,10 +16,9 @@
 
   server = {
     enable = true;
-    flakeDir = "/home/guz/.nix#homex";
-    name = "homex";
-
-    domain = "guz.local";
+    flakeDir = "/home/guz/.nix#homelab";
+    name = "homelab";
+    domain = "homelab.local";
 
     ip = "100.66.139.89";
     localIp = "192.168.1.10";
