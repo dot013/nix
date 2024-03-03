@@ -1,25 +1,25 @@
 { config, lib, ... }:
 
 let
-  cfg = config.homelab.network;
+  cfg = config.server.network;
 in
 {
   imports = [ ];
-  options.homelab.network = with lib; with lib.types; {
+  options.server.network = with lib; with lib.types; {
     enable = mkOption {
       type = bool;
       default = true;
     };
     hostName = mkOption {
       type = str;
-      default = config.homelab.name;
+      default = config.server.name;
     };
     interface = mkOption {
       type = str;
     };
     localIp = mkOption {
       type = str;
-      default = config.homelab.localIp;
+      default = config.server.localIp;
     };
     defaultGateway = mkOption {
       type = str;
@@ -50,7 +50,7 @@ in
       }];
       defaultGateway = cfg.defaultGateway;
       nameservers = [
-        (if config.homelab.tailscale.enable then "100.100.100.100" else null)
+        (if config.server.tailscale.enable then "100.100.100.100" else null)
       ] ++ cfg.nameservers;
     };
 

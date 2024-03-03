@@ -1,11 +1,11 @@
 { config, lib, ... }:
 
 let
-  cfg = config.homelab.caddy;
+  cfg = config.server.caddy;
 in
 {
   imports = [ ];
-  options.homelab.caddy = with lib; with lib.types; {
+  options.server.caddy = with lib; with lib.types; {
     enable = mkEnableOption "";
     settings = {
       virtualHosts = mkOption {

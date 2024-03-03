@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.homelab.jellyfin;
+  cfg = config.server.jellyfin;
   networkConfig = pkgs.writeTextFile {
     name = "network.json";
     text = builtins.toJSON cfg.settings.network;
@@ -19,7 +19,7 @@ in
   imports = [
     ./jellyseerr.nix
   ];
-  options.homelab.jellyfin = with lib; with lib.types; {
+  options.server.jellyfin = with lib; with lib.types; {
     enable = mkEnableOption "";
     user = mkOption {
       type = str;
@@ -31,7 +31,7 @@ in
     };
     domain = mkOption {
       type = str;
-      default = "jellyfin." + config.homelab.domain;
+      default = "jellyfin." + config.server.domain;
     };
     port = mkOption {
       type = port;
@@ -40,7 +40,7 @@ in
     data = {
       root = mkOption {
         type = path;
-        default = config.homelab.storage + /jellyfin;
+        default = config.server.storage + /jellyfin;
       };
     };
     jellyseerr = mkOption {
@@ -600,7 +600,7 @@ in
       openFirewall = true;
     };
 
-    homelab.jellyseerr.enable = cfg.jellyseerr;
+    server.jellyseerr.enable = cfg.jellyseerr;
 
     systemd.services."homelab-jellyfin-config" = {
       script = ''

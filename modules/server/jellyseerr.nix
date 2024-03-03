@@ -1,19 +1,19 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
-  cfg = config.homelab.jellyseerr;
+  cfg = config.server.jellyseerr;
 in
 {
   imports = [ ];
-  options.homelab.jellyseerr = with lib; with lib.types; {
+  options.server.jellyseerr = with lib; with lib.types; {
     enable = mkEnableOption "";
     domain = mkOption {
       type = str;
-      default = "jellyseerr." + config.homelab.domain;
+      default = "jellyseerr." + config.server.domain;
     };
     port = mkOption {
       type = port;
-      default = config.homelab.jellyfin.port + 10;
+      default = config.server.jellyfin.port + 10;
     };
   };
   config = lib.mkIf cfg.enable {

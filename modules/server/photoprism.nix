@@ -1,11 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
-  cfg = config.homelab.photoprism;
+  cfg = config.server.photoprism;
 in
 {
   imports = [ ];
-  options.homelab.photoprism = with lib; with lib.types; {
+  options.server.photoprism = with lib; with lib.types; {
     enable = mkEnableOption "";
     user = mkOption {
       type = str;
@@ -13,7 +13,7 @@ in
     };
     domain = mkOption {
       type = str;
-      default = "photoprism." + config.homelab.domain;
+      default = "photoprism." + config.server.domain;
     };
     port = mkOption {
       type = port;

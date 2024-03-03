@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.homelab.forgejo;
+  cfg = config.server.forgejo;
   users = (builtins.attrValues (builtins.mapAttrs
     (username: info: {
       name = if isNull info.name then username else info.name;
@@ -13,7 +13,7 @@ let
 in
 {
   imports = [ ];
-  options.homelab.forgejo = with lib; with lib.types; {
+  options.server.forgejo = with lib; with lib.types; {
     enable = mkEnableOption "";
     user = mkOption {
       type = str;
@@ -29,7 +29,7 @@ in
     };
     domain = mkOption {
       type = str;
-      default = "forgejo." + config.homelab.domain;
+      default = "forgejo." + config.server.domain;
     };
     port = mkOption {
       type = port;
@@ -38,7 +38,7 @@ in
     data = {
       root = mkOption {
         type = path;
-        default = config.homelab.storage + /forgejo;
+        default = config.server.storage + /forgejo;
       };
     };
     handleUndeclaredUsers = mkOption {

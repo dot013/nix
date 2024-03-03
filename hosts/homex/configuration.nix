@@ -8,13 +8,13 @@
   imports = [
     ../../modules/nixos/systems/set-user.nix
     ../../modules/nixos/config/host.nix
-    ../../modules/nixos/homelab
+    ../../modules/server
     ./hardware-configuration.nix
     ./secrets.nix
     ./users
   ];
 
-  homelab = {
+  server = {
     enable = true;
     flakeDir = "/home/guz/.nix#homex";
     name = "homex";
@@ -46,7 +46,7 @@
 
     forgejo = {
       enable = true;
-      settings.server.url = "https://${config.homelab.forgejo.settings.server.domain}";
+      settings.server.url = "https://${config.server.forgejo.settings.server.domain}";
       settings.users."user1" = {
         name = /. + config.sops.secrets."forgejo/user1/name".path;
         email = /. + config.sops.secrets."forgejo/user1/email".path;

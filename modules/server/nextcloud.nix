@@ -1,11 +1,11 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.homelab.nextcloud;
+  cfg = config.server.nextcloud;
 in
 {
   imports = [ ];
-  options.homelab.nextcloud = with lib; with lib.types; {
+  options.server.nextcloud = with lib; with lib.types; {
     enable = mkEnableOption "";
     user = mkOption {
       type = str;
@@ -17,7 +17,7 @@ in
     };
     domain = mkOption {
       type = str;
-      default = "nextcloud." + config.homelab.domain;
+      default = "nextcloud." + config.server.domain;
     };
     port = mkOption {
       type = port;
@@ -26,7 +26,7 @@ in
     data = {
       root = mkOption {
         type = path;
-        default = config.homelab.storage + /nextcloud;
+        default = config.server.storage + /nextcloud;
       };
     };
     configureRedis = mkOption {
@@ -55,7 +55,6 @@ in
       hostName = cfg.domain;
       https = true;
       package = cfg.package;
-      # phpPackage = pkgs.php;
     };
   };
 }

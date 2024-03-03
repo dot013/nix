@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.homelab;
+  cfg = config.server;
   homelab = pkgs.writeShellScriptBin "homelab" ''
     gum="${pkgs.gum}/bin/gum";
     flakeDir="${toString cfg.flakeDir}";
@@ -33,7 +33,7 @@ in
     ./photoprism.nix
     ./tailscale.nix
   ];
-  options.homelab = with lib; with lib.types; {
+  options.server = with lib; with lib.types; {
     enable = mkEnableOption "";
     name = mkOption {
       type = str;
@@ -76,7 +76,7 @@ in
       };
     };
 
-    homelab = with lib; mkIf cfg.handleDomains {
+    server = with lib; mkIf cfg.handleDomains {
       adguard = {
         enable = true;
         settings.dns.rewrites = (if hasPrefix "*." cfg.domain then {

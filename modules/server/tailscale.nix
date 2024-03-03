@@ -1,13 +1,13 @@
 { config, lib, ... }:
 
 let
-  cfg = config.homelab.tailscale;
+  cfg = config.server.tailscale;
 in
 {
   imports = [
     ./network.nix
   ];
-  options.homelab.tailscale = with lib; with lib.types; {
+  options.server.tailscale = with lib; with lib.types; {
     enable = mkEnableOption "";
     mode = mkOption {
       type = enum [
@@ -29,8 +29,7 @@ in
       useRoutingFeatures = cfg.mode;
     };
 
-    homelab.network = lib.mkIf cfg.exitNode { portForwarding = lib.mkDefault true; };
-
+    server.network = lib.mkIf cfg.exitNode { portForwarding = lib.mkDefault true; };
   };
 }
 

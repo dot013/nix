@@ -1,11 +1,11 @@
 { config, lib, ... }:
 
 let
-  cfg = config.homelab.adguard;
+  cfg = config.server.adguard;
 in
 {
   imports = [ ];
-  options.homelab.adguard = with lib; with lib.types; {
+  options.server.adguard = with lib; with lib.types; {
     enable = mkEnableOption "";
     extraArgs = mkOption {
       type = listOf str;
@@ -13,7 +13,7 @@ in
     };
     domain = mkOption {
       type = str;
-      default = "adguard." + config.homelab.domain;
+      default = "adguard." + config.server.domain;
     };
     port = mkOption {
       type = port;
