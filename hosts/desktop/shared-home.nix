@@ -5,6 +5,9 @@
     ../../modules/home-manager/theme.nix
     ../../modules/home-manager/programs/librewolf
     ../../modules/home-manager/programs/krita
+    ../../modules/home-manager/programs/davinci.nix
+    ../../modules/home-manager/programs/obs.nix
+    ../../modules/home-manager/programs/obsidian.nix
     ../../modules/home-manager/packages/nixx.nix
     ../../modules/home-manager/packages/nixi.nix
     ./terminal.nix
@@ -33,6 +36,9 @@
     };
 
     krita.enable = true;
+    davinci.enable = true;
+    obs.enable = true;
+    obsidian.enable = true;
 
     librewolf = {
       enable = true;
@@ -60,7 +66,6 @@
 
     services.flatpak.packages = [
       "nz.mega.MEGAsync"
-      "md.obsidian.Obsidian"
       "com.bitwarden.desktop"
       "org.prismlauncher.PrismLauncher"
       "org.mozilla.Thunderbird"

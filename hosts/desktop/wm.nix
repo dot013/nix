@@ -113,6 +113,24 @@ in
         default = true;
       }
     ];
+
+    xdg.desktopEntries = {
+      librewolf = {
+        name = "Librewolf";
+        genericName = "Web Browser";
+        exec = "${pkgs.librewolf}/bin/librewolf %U";
+        terminal = false;
+        categories = [ "Application" "Network" "WebBrowser" ];
+        mimeType = [ "text/html" "text/xml" ];
+      };
+      davinci = {
+        name = "Davinci Resolve";
+        genericName = "Video Editor";
+        exec = "${pkgs.davinci-resolve}/bin/davinci-resolve %U";
+        terminal = false;
+        categories = [ "Application" "Video" ];
+      };
+    };
   };
 }
 
