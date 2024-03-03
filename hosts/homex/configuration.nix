@@ -62,6 +62,10 @@
       */
       settings.security.allowBypassGiteaEnv = true;
     };
+
+    jellyfin = {
+      enable = true;
+    };
   };
 
   services.tailscale.enable = true;

@@ -26,8 +26,11 @@ in
     ./adguard.nix
     ./caddy.nix
     ./forgejo.nix
+    ./jellyfin.nix
+    ./jellyseerr.nix
     ./network.nix
     ./nextcloud.nix
+    ./photoprism.nix
     ./tailscale.nix
   ];
   options.homelab = with lib; with lib.types; {
