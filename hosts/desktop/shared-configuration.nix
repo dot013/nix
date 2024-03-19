@@ -39,6 +39,11 @@
       })
     ];
 
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = with pkgs; [ ];
+
+    virtualisation.waydroid.enable = true;
+
     sops.defaultSopsFile = ../../secrets/desktop-secrets.yaml;
     sops.defaultSopsFormat = "yaml";
 
@@ -82,6 +87,15 @@
       wl-clipboard
     ];
 
+    nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "steam"
+      "steam-original"
+      "steam-run"
+    ];
+    programs.steam = {
+      enable = true;
+    };
+
     # Enable the X11 windowing system.
     services.xserver.enable = true;
 
@@ -108,6 +122,11 @@
     };
 
     hardware.opentabletdriver.enable = true;
+
+    hardware.bluetooth.enable = true;
+    hardware.bluetooth.powerOnBoot = true;
+    services.blueman.enable = true;
+    # hardware.pulseaudio.enable = true;
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.

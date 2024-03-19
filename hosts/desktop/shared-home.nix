@@ -81,6 +81,8 @@
       gimp
       inkscape
       pureref
+      gamemode
+      lutris
 
       # (pkgs.writeShellScriptBin "my-hello" ''
       #   echo "Hello, ${config.home.username}!"
