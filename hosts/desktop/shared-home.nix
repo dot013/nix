@@ -73,6 +73,7 @@
       "org.prismlauncher.PrismLauncher"
       "org.mozilla.Thunderbird"
       "net.blockbench.Blockbench"
+      "org.libreoffice.LibreOffice"
     ];
     # services.flatpak.overrides = { };
 
@@ -86,6 +87,7 @@
       pureref
       gamemode
       lutris
+      pavucontrol
 
       # (pkgs.writeShellScriptBin "my-hello" ''
       #   echo "Hello, ${config.home.username}!"
