@@ -38,7 +38,10 @@
     krita.enable = true;
     davinci.enable = true;
     obs.enable = true;
-    obsidian.enable = true;
+    obsidian = {
+      enable = true;
+      vaultCmd = true;
+    };
 
     librewolf = {
       enable = true;
