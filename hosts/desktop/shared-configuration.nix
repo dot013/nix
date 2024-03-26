@@ -128,6 +128,22 @@
     services.blueman.enable = true;
     # hardware.pulseaudio.enable = true;
 
+    services.interception-tools =
+      let
+        device = "/dev/input/by-id/usb-BY_Tech_Gaming_Keyboard-event-kbd";
+      in
+      {
+        enable = true;
+        plugins = [ pkgs.interception-tools-plugins.caps2esc ];
+        udevmonConfig = ''
+          - JOB: "${pkgs.interception-tools}/bin/intercept -g ${device} | ${pkgs.interception-tools-plugins.caps2esc}/bin/caps2esc -m 2 | ${pkgs.interception-tools}/bin/uinput -d ${device}"
+            DEVICE:
+              EVENTS:
+                EV_KEY: [[KEY_CAPSLOCK, KEY_ESC]]
+              LINK: ${device}
+        '';
+      };
+
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
     # programs.mtr.enable = true;
