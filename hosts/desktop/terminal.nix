@@ -33,5 +33,12 @@
       alias tmux="tmux -f ${config.xdg.configHome}/tmux/tmux.conf"
       alias nvim="${pkgs.steam-run}/bin/steam-run nvim"
     '';
+
+    programs.direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
+
   };
 }
