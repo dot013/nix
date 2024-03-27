@@ -14,6 +14,10 @@ in
     flakeDir = mkOption {
       type = str;
     };
+    domain = mkOption {
+      type = either str path;
+      default = "${cfg.name}.local";
+    };
     localIp = mkOption {
       type = nullOr str;
       default = null;
