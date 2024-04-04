@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../../modules/nih
     ../../modules/nixos/config/host.nix
     ../../modules/nixos/systems/set-user.nix
     ../../modules/nixos/systems/fonts.nix
@@ -12,12 +13,116 @@
   options.shared.configuration = { };
   config = {
 
+    nih = {
+      enable = true;
+      ip = "192.168.1.13";
+      handleDomains = false;
+      networking = {
+        interface = "enp6s0";
+        wireless = false;
+        tailscale.enable = true;
+      };
+      users.test = {
+        username = "test";
+      };
+      users.test = {
+        programs.hyprland = {
+          enable = true;
+          exec = [
+            "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+          ];
+          monitors = [
+            {
+              name = "monitor1";
+              resolution = "2560x1080";
+              id = "HDMI-A-1";
+            }
+            {
+              name = "monitor2";
+              resolution = "1920x1080";
+              id = "DVI-D-1";
+              offset = "2560x0";
+            }
+          ];
+          windowRules = {
+            "class:^(org.inkscape.Inkscape)$" = [ "float" ];
+            "class:^(org.inkscape.Inkscape)$,title:(.*)(- Inkscape)$" = [ "tile" ];
+          };
+          workspaces = [
+            # First monitor
+            {
+              name = "1";
+              monitor = "$monitor1";
+              default = true;
+            }
+            {
+              name = "2";
+              monitor = "$monitor1";
+            }
+            {
+              name = "3";
+              monitor = "$monitor1";
+            }
+            {
+              name = "4";
+              monitor = "$monitor1";
+            }
+            {
+              name = "5";
+              monitor = "$monitor1";
+            }
+            # Second monitor
+            {
+              name = "6";
+              monitor = "$monitor2";
+            }
+            {
+              name = "7";
+              monitor = "$monitor2";
+            }
+            {
+              name = "8";
+              monitor = "$monitor2";
+            }
+            {
+              name = "9";
+              monitor = "$monitor2";
+            }
+            {
+              name = "10";
+              monitor = "$monitor2";
+              default = true;
+            }
+          ];
+        };
+
+        programs.lf = {
+          enable = true;
+          settings = {
+            preview = true;
+            hidden = true;
+            drawbox = true;
+            icons = true;
+            ignorecase = true;
+          };
+          keybindings = {
+            "." = "set hidden!";
+            "<enter>" = "open";
+            "%" = "mkfile";
+            d = "mkdir";
+            D = "delete";
+            ee = "editor-open";
+          };
+        };
+      };
+    };
+
     my-fonts.enable = true;
     my-fonts.user = "guz";
     my-fonts.fonts = with pkgs; [
       fira-code
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
-      (google-fonts.override { fonts = [ "Gloock" "Cinzel" ]; })
+      (google-fonts.override { fonts = [ "Gloock" "Cinzel" "Red Hat Display" ]; })
       (stdenv.mkDerivation rec {
         pname = "calsans";
         version = "1.0.0";
@@ -162,8 +267,17 @@
     # networking.firewall.allowedUDPPorts = [ ... ];
     # Or disable the firewall altogether.
     # networking.firewall.enable = false;
+
+    # This value determines the NixOS release from which the default
+    # settings for stateful data, like file locations and database versions
+    # on your system were taken. It‘s perfectly fine and recommended to leave
+    # this value at the release version of the first install of this system.
+    # Before changing this value read the documentation for this option
+    # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+    system.stateVersion = "23.11"; # Did you read the comment?
   };
 }
+
 
 
 
