@@ -44,10 +44,6 @@ in
               type = attrsOf anything;
               default = { };
             };
-            h = mkOption {
-              type = attrsOf anything;
-              default = { };
-            };
             normalUser = mkOption {
               type = bool;
               default = true;
@@ -59,6 +55,10 @@ in
             password = mkOption {
               type = nullOr (passwdEntry str);
               default = null;
+            };
+            profiles = mkOption {
+              type = attrsOf anything;
+              default = { };
             };
             programs = mkOption {
               type = attrsOf anything;
@@ -106,25 +106,38 @@ in
               inputs.flatpaks.homeManagerModules.nix-flatpak
               ./programs
             ];
-            programs = mkMerge [
-              { home-manager.enable = true; }
-              value.programs
-            ];
-            services = mkMerge [
-              { flatpak.enable = mkDefault true; }
-              value.services
-            ];
+            options = with lib; with lib.types; {
+              _nih = mkOption {
+                type = attrsOf anything;
+                default = { };
+              };
+            };
+            config = {
 
-            home = mkMerge [
-              {
-                username = value.username;
-                homeDirectory = mkDefault
-                  "/home/${value.username}";
-                stateVersion = mkDefault
-                  "23.11"; # Do not change
-              }
-              value.home
-            ];
+              _nih = {
+                type = config.nih.type;
+              };
+              programs = mkMerge [
+                { home-manager.enable = true; }
+                value.programs
+              ];
+
+              services = mkMerge [
+                { flatpak.enable = mkDefault true; }
+                value.services
+              ];
+
+              home = mkMerge [
+                {
+                  username = value.username;
+                  homeDirectory = mkDefault
+                    "/home/${value.username}";
+                  stateVersion = mkDefault
+                    "23.11"; # Do not change
+                }
+                value.home
+              ];
+            };
           }
         ])
         cfg.users);

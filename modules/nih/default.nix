@@ -35,6 +35,10 @@ in
       type = str;
       default = "nih";
     };
+    type = mkOption {
+      type = enum [ "laptop" "desktop" "server" ];
+      default = "desktop";
+    };
   };
   config = with lib; mkIf cfg.enable {
     boot = {
@@ -56,6 +60,8 @@ in
     # Handle domains configuration
 
     networking.firewall.allowedTCPPorts = mkIf cfg.handleDomains [ 80 433 ];
+
+    services.openssh.enable = mkDefault (if cfg.type == "server" then true else false);
 
     systemd.services."tailscaled" = mkIf cfg.handleDomains {
       serviceConfig = {
