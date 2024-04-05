@@ -105,6 +105,7 @@ in
               inputs.nix-index-database.hmModules.nix-index
               inputs.flatpaks.homeManagerModules.nix-flatpak
               ./programs
+              ./user-profiles
             ];
             options = with lib; with lib.types; {
               _nih = mkOption {
@@ -117,6 +118,9 @@ in
               _nih = {
                 type = config.nih.type;
               };
+
+              profiles = mkMerge [ value.profiles ];
+
               programs = mkMerge [
                 { home-manager.enable = true; }
                 value.programs
