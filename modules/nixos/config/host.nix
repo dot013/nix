@@ -42,7 +42,7 @@ in
     networking = {
       networkmanager.enable = true;
 
-      hostName = cfg.networking.hostName;
+      hostName = lib.mkDefault cfg.networking.hostName;
       wireless.enable = cfg.networking.wireless.enable;
 
       # Configure network proxy if necessary
@@ -67,6 +67,7 @@ in
     environment.systemPackages = with pkgs; [
       vim
       neovim
+      tmux
       git
       lazygit
       gcc # Added temporally so my neovim config doesn't break
