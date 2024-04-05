@@ -35,7 +35,7 @@ in
     };
     wireless = mkOption {
       type = bool;
-      default = true;
+      default = if config.nih.type == "laptop" then true else false;
     };
   };
   config = with lib; {
