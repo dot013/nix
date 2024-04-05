@@ -1,12 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.nih.networking;
 in
 {
-  imports = [
-    ./tailscale.nix
-  ];
   options.nih.networking = with lib; with lib.types; {
     defaultGateway = mkOption {
       type = str;
@@ -45,9 +42,8 @@ in
     boot.kernel.sysctl."net.ipv4.ip_forward" = if cfg.portForwarding then 1 else 0;
     boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = if cfg.portForwarding then 1 else 0;
 
-    host.networking.hostName = cfg.hostName;
-
     networking = {
+      hostName = cfg.hostName;
       defaultGateway = cfg.defaultGateway;
       dhcpcd.enable = true;
       interfaces = mkIf (cfg.interface != null) {
@@ -56,9 +52,7 @@ in
           prefixLength = 28;
         }];
       };
-      nameservers = [
-        (mkIf config.nih.networking.tailscale.enable "100.100.100.100")
-      ] ++ cfg.nameservers;
+      nameservers = cfg.nameservers;
       networkmanager.enable = cfg.networkmanager;
       wireless.enable = cfg.wireless;
     };
