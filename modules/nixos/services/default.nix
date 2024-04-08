@@ -1,7 +1,7 @@
 {...}: {
   imports = [
     ./adguardhome.nix
-    ./forgejo.nix
+    ./forgejo
     ./tailscale.nix
   ];
   options = {};
