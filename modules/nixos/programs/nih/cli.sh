@@ -105,6 +105,14 @@ function nih-switch () {
 	gum log --structured --prefix 'nih switch' --level debug 'Adding decrypted secret files'
 	git add ./secrets/*.decrypted.*
 
+	gum log --structured --prefix 'nih switch' --level debug 'Formatting files'
+	alejandra . &>/dev/null \
+	|| (alejandra . ; \
+		gum log --structured \
+				--prefix 'nih switch' \
+				--level error 'Failed to format files' \
+		&& exit 1)
+
 	gum log --structured --prefix 'nih switch' --level debug 'Building NixOS'
 	sudo nixos-rebuild switch --flake "$flake_dir#$host" \
 		|| (gum log --structured --prefix 'nih edit' --level debug 'Removing decrypted secret files' \
