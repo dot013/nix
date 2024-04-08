@@ -84,7 +84,12 @@ function nih-edit() {
 	popd
 }
 
-function nih-build () {
+function nih-switch () {
+	local flake_dir="$1"
+	local host="$2"
+
+	set -e
+
 	gum log --structured --prefix 'nih switch' --level debug 'Building NixOS'
 	sudo nixos-rebuild switch --flake "$flake_dir#$host" \
 		|| (gum log --structured --prefix 'nih edit' --level error 'Error building new config' && exit 1)
@@ -116,7 +121,7 @@ function nih-execute() {
 
 case "$1" in
 	"edit") nih-edit $flake_dir $host ;;
-	"switch" | "build") nih-build $flake_dir $host ;;
+	"switch" | "build") nih-switch $flake_dir $host ;;
 	"install" | "i" ) shift 1; nih-install "$@" ;;
 	"exec" | "x" ) shift 1; nih-execute "$@" ;;
 	*) gum log --structured --prefix 'nih' --level error "Command $1 does not exist" ;;
