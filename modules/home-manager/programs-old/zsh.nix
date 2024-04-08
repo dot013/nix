@@ -1,11 +1,13 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.zsh;
-in
 {
-  imports = [ ];
-  options.zsh = with lib; with lib.types; {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.zsh;
+in {
+  imports = [];
+  options.zsh = with lib;
+  with lib.types; {
     enable = mkEnableOption "Enable Zsh shell";
     plugins = {
       suggestions.enable = mkOption {
@@ -41,7 +43,7 @@ in
     };
     variables = mkOption {
       type = attrsOf str;
-      default = { };
+      default = {};
     };
   };
   config = lib.mkIf cfg.enable {

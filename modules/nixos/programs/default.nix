@@ -1,0 +1,7 @@
+{...}: {
+  imports = [
+    ./nih
+  ];
+  options = {};
+  config = {};
+}

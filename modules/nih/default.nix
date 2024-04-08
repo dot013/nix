@@ -1,17 +1,20 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.nih;
-  applyAttrNames = builtins.mapAttrs (name: f: f name);
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.nih;
+in {
   imports = [
-    ./sound.nix
-    ./users.nix
+    ./domains
     ./networking
     ./services
+    ./sound.nix
+    ./users.nix
   ];
-  options.nih = with lib; with lib.types; {
+  options.nih = with lib;
+  with lib.types; {
     domain = mkOption {
       type = str;
       default = "${cfg.name}.local";
@@ -19,10 +22,6 @@ in
     enable = mkEnableOption "";
     flakeDir = mkOption {
       type = either str path;
-    };
-    handleDomains = mkOption {
-      type = bool;
-      default = true;
     };
     ip = mkOption {
       type = str;
@@ -36,64 +35,40 @@ in
       default = "nih";
     };
     type = mkOption {
-      type = enum [ "laptop" "desktop" "server" ];
+      type = enum ["laptop" "desktop" "server"];
       default = "desktop";
     };
+    _nih = mkOption {
+      type = attrsOf anything;
+      default = with builtins; {
+        servicesNamesList = readDir ./services;
+      };
+    };
   };
-  config = with lib; mkIf cfg.enable {
-    boot = {
-      loader.systemd-boot.enable = mkDefault true;
-      loader.efi.canTouchEfiVariables = mkDefault true;
-    };
-
-    systemd.services."nih-setup" = with builtins; {
-      script = ''
-        echo ${builtins.toJSON cfg.users}
-      '';
-      wantedBy = [ "multi-user.target" ];
-      after = [ "forgejo.service" ];
-      serviceConfig = {
-        Type = "oneshot";
-      };
-    };
-
-    # Handle domains configuration
-
-    networking.firewall.allowedTCPPorts = mkIf cfg.handleDomains [ 80 433 ];
-
-    services.openssh.enable = mkDefault (if cfg.type == "server" then true else false);
-
-    systemd.services."tailscaled" = mkIf cfg.handleDomains {
-      serviceConfig = {
-        Environment = [ "TS_PERMIT_CERT_UID=caddy" ];
-      };
-    };
-
-    nih.services = mkIf cfg.handleDomains {
-      adguard = {
-        enable = true;
-        settings.dns.rewrites = (if hasPrefix "*." cfg.domain then {
-          "${cfg.domain}" = cfg.ip;
-        } else {
-          "${cfg.domain}" = cfg.ip;
-          "${"*." + cfg.domain}" = cfg.ip;
-        });
+  config = with lib;
+    mkIf cfg.enable {
+      boot = {
+        loader.systemd-boot.enable = mkDefault true;
+        loader.efi.canTouchEfiVariables = mkDefault true;
       };
 
-      caddy =
-        let
-          nihServices = (filterAttrs (n: v: builtins.isAttrs v && v?domain) cfg.services);
-        in
-        mkIf cfg.handleDomains {
-          enable = true;
-          virtualHosts = mapAttrs'
-            (name: value: nameValuePair (value.domain) ({
-              extraConfig = ''
-                reverse_proxy ${cfg.localIp}:${toString value.port}
-              '';
-            }))
-            nihServices;
+      systemd.services."nih-setup" = with builtins; {
+        script = ''
+          echo ${builtins.toJSON cfg._nih.servicesNamesList}
+        '';
+        wantedBy = ["multi-user.target"];
+        after = ["forgejo.service"];
+        serviceConfig = {
+          Type = "oneshot";
         };
+      };
+
+      # Handle domains configuration
+
+      services.openssh.enable = mkDefault (
+        if cfg.type == "server"
+        then true
+        else false
+      );
     };
-  };
 }

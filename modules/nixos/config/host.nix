@@ -1,16 +1,20 @@
 # Config shared between all host's configuration.nix (NixOS config)
-{ config, pkgs, inputs, lib, ... }:
-
-let
-  cfg = config.host;
-in
 {
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}: let
+  cfg = config.host;
+in {
   imports = [
     inputs.home-manager.nixosModules.default
     inputs.sops-nix.nixosModules.sops
     ../systems/localization.nix
   ];
-  options.host = with lib; with lib.types; {
+  options.host = with lib;
+  with lib.types; {
     networking = {
       hostName = mkOption {
         default = "nixos";
@@ -31,8 +35,8 @@ in
     };
   };
   config = {
-    # Nix configuration 
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    # Nix configuration
+    nix.settings.experimental-features = ["nix-command" "flakes"];
 
     boot = {
       loader.systemd-boot.enable = true;
@@ -86,6 +90,5 @@ in
     # Before changing this value read the documentation for this option
     # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
     system.stateVersion = "23.11"; # Did you read the comment?
-
   };
 }

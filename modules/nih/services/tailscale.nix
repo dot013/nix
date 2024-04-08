@@ -1,50 +1,54 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.nih.services.tailscale;
-in
 {
-  imports = [ ];
-  options.nih.services.tailscale = with lib; with lib.types; {
-    enable = mkEnableOption "";
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.services.tailscale;
+in {
+  imports = [];
+  options.services.tailscale = with lib;
+  with lib.types; {
     exitNode = mkOption {
       type = bool;
       default = false;
     };
-    port = mkOption {
-      type = port;
-      default = 41641;
-    };
-    routingFeatures = mkOption {
-      type = enum [ "none" "client" "server" "both" ];
-      default = "client";
-    };
     tailnetName = mkOption {
-      type = nullOr str;
-      default = null;
-      apply = v:
-        if cfg.enable && config.nih.handleDomains && v == null then
-          throw "The option ${tailnetName} a is used when Tailscale and Nih's domain handling is enabled, but it is not defined."
-        else null;
-    };
-    upFlags = mkOption {
-      type = listOf str;
-      default = [ ];
+      type = str;
     };
   };
-  config = with lib; {
-    services.tailscale = {
-      enable = true;
-      extraUpFlags = cfg.upFlags ++ [
-        (if cfg.exitNode then "--advertise-exit-node" else null)
-      ];
-      port = cfg.port;
-      useRoutingFeatures = cfg.routingFeatures;
-    };
+  config = with lib;
+    mkIf cfg.enable {
+      services.tailscale = {
+        extraUpFlags = [
+          (
+            if cfg.exitNode
+            then "--advertise-exit-node"
+            else null
+          )
+          (
+            if cfg.exitNode
+            then "--exit-node"
+            else null
+          )
+        ];
+        useRoutingFeatures = mkDefault (
+          if config.nih.type == "server" || cfg.exitNode
+          then "server"
+          else "client"
+        );
+      };
 
-    nih.networking = mkIf cfg.exitNode {
-      portForwarding = mkDefault true;
-      nameservers = [ "100.100.100.100" ];
+      networking.firewall.allowedTCPPorts = [80 433];
+
+      systemd.services."tailscaled" = mkIf config.services.caddy.enable {
+        serviceConfig = {
+          Environment = ["TS_PERMIT_CERT_UID=caddy"];
+        };
+      };
+
+      nih.networking = mkIf cfg.exitNode {
+        portForwarding = mkDefault true;
+        nameservers = ["100.100.100.100"];
+      };
     };
-  };
 }

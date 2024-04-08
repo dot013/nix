@@ -1,13 +1,17 @@
-{ config, lib, inputs, pkgs, ... }:
-
-let
-  cfg = config.theme;
-in
 {
+  config,
+  lib,
+  inputs,
+  pkgs,
+  ...
+}: let
+  cfg = config.theme;
+in {
   imports = [
     inputs.nix-colors.homeManagerModules.default
   ];
-  options.theme = with lib; with lib.types; {
+  options.theme = with lib;
+  with lib.types; {
     accent = mkOption {
       type = str;
       default = "cdd6f4";
@@ -36,8 +40,8 @@ in
         name = "Catppuccin-Mocha-Compact-Mauve-Dark";
         package = pkgs.catppuccin-gtk.override {
           size = "compact";
-          tweaks = [ "rimless" "black" ];
-          accents = [ "mauve" ];
+          tweaks = ["rimless" "black"];
+          accents = ["mauve"];
           variant = "mocha";
         };
       };

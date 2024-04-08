@@ -1,11 +1,13 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.server.photoprism;
-in
 {
-  imports = [ ];
-  options.server.photoprism = with lib; with lib.types; {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.server.photoprism;
+in {
+  imports = [];
+  options.server.photoprism = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
     user = mkOption {
       type = str;

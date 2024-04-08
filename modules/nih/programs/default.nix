@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.programs;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.programs;
+in {
   imports = [
     ./direnv.nix
     ./hyprland.nix
@@ -13,6 +15,6 @@ in
     ./wezterm.nix
     ./zsh.nix
   ];
-  options.programs = { };
-  config = { };
+  options.programs = {};
+  config = {};
 }

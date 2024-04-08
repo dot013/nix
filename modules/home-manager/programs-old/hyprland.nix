@@ -1,14 +1,18 @@
-{ config, inputs, lib, pkgs, ... }:
-
-let
-  cfg = config.hyprland;
-in
 {
-  imports = [ ];
-  options.hyprland = with lib; with lib.types; {
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.hyprland;
+in {
+  imports = [];
+  options.hyprland = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
     monitors = mkOption {
-      default = [ ];
+      default = [];
       /*
       type = listOf (submodule ({ ... }: {
         options = {
@@ -38,15 +42,15 @@ in
       */
     };
     exec = mkOption {
-      default = [ ];
+      default = [];
       type = listOf str;
     };
     env = mkOption {
-      default = { };
+      default = {};
       type = attrsOf str;
     };
     windowRules = mkOption {
-      default = { };
+      default = {};
       description = "window = [ \"rule\" ]";
       type = attrsOf (listOf str);
     };
@@ -119,13 +123,15 @@ in
       };
     };
     workspaces = mkOption {
-      default = [ ];
-      /* type = {
-        name = str;
-        monitor = nullOr str;
-        default = nullOr bool;
-        extraRules = nullOr str;
-        }; */
+      default = [];
+      /*
+       type = {
+      name = str;
+      monitor = nullOr str;
+      default = nullOr bool;
+      extraRules = nullOr str;
+      };
+      */
     };
     binds = {
       mod = mkOption {
@@ -133,11 +139,11 @@ in
         type = str;
       };
       keyboard = mkOption {
-        default = [ ];
+        default = [];
         type = listOf str;
       };
       mouse = mkOption {
-        default = [ ];
+        default = [];
         type = listOf str;
       };
     };
@@ -151,24 +157,36 @@ in
 
     wayland.windowManager.hyprland.settings = lib.mkMerge [
       # Sets monitor variables ("$name" = "id") so it can be used in rules later
-      (builtins.listToAttrs (map
-        (m: {
-          name = "\$${m.name}";
-          value = "${m.id}";
-        })
-        cfg.monitors)
+      (
+        builtins.listToAttrs (map
+          (m: {
+            name = "\$${m.name}";
+            value = "${m.id}";
+          })
+          cfg.monitors)
       )
       {
         # Construct the "name,resolution@hz,offset,scale" strings
-        monitor = (map
-          (m:
-            "${m.name},${m.resolution}@${
-                toString (if m?hz then m.hz else 60)
-              },${
-                if m?offset then m.offset else "0x0"
-              },${
-                toString (if m?scale then m.scale else 1)
-              }"
+        monitor = (
+          map
+          (
+            m: "${m.name},${m.resolution}@${
+              toString (
+                if m ? hz
+                then m.hz
+                else 60
+              )
+            },${
+              if m ? offset
+              then m.offset
+              else "0x0"
+            },${
+              toString (
+                if m ? scale
+                then m.scale
+                else 1
+              )
+            }"
           )
           cfg.monitors
         );
@@ -177,7 +195,8 @@ in
 
         # "Hack" to transform attributes sets to lists (because I didn't know other way to do it)
         # Transform { "envName" = "value" } to [ "envName,value" ]
-        env = builtins.attrValues
+        env =
+          builtins.attrValues
           (builtins.mapAttrs (n: v: "${n},${v}") (lib.attrsets.mergeAttrsList [
             {
               "XCURSOR_SIZE" = "24";
@@ -186,44 +205,46 @@ in
             cfg.env
           ]));
 
-
-        windowrulev2 =
-          let
-            firefoxPipRules = [
-              "float"
-              # "nofullscreenrequest"
-              "size 480 270"
-              "fakefullscreen"
-              "nodim"
-              "noblur"
-            ];
-          in
+        windowrulev2 = let
+          firefoxPipRules = [
+            "float"
+            # "nofullscreenrequest"
+            "size 480 270"
+            "fakefullscreen"
+            "nodim"
+            "noblur"
+          ];
+        in
           builtins.concatLists
-            (builtins.attrValues (builtins.mapAttrs
-              (w: rs:
-                (map (r: "${r},${w}") rs)
-              )
-              (lib.attrsets.mergeAttrsList [
-                {
-                  "title:^(Picture-in-Picture)$,class:^(firefox)$" = firefoxPipRules;
-                  "title:^(Firefox)$,class:^(firefox)$" = firefoxPipRules;
-                  "title:^(Picture-in-Picture)$" = firefoxPipRules;
-                  "class:^(xwaylandvideobridge)$" = [
-                    "opacity 0.0 override 0.0 override"
-                    "noanim"
-                    "nofocus"
-                    "noinitialfocus"
-                  ];
-                }
-                cfg.windowRules
-              ])
-            ));
+          (builtins.attrValues (
+            builtins.mapAttrs
+            (
+              w: rs: (map (r: "${r},${w}") rs)
+            )
+            (lib.attrsets.mergeAttrsList [
+              {
+                "title:^(Picture-in-Picture)$,class:^(firefox)$" = firefoxPipRules;
+                "title:^(Firefox)$,class:^(firefox)$" = firefoxPipRules;
+                "title:^(Picture-in-Picture)$" = firefoxPipRules;
+                "class:^(xwaylandvideobridge)$" = [
+                  "opacity 0.0 override 0.0 override"
+                  "noanim"
+                  "nofocus"
+                  "noinitialfocus"
+                ];
+              }
+              cfg.windowRules
+            ])
+          ));
 
         input = {
           kb_layout = cfg.input.keyboard.layout;
           kb_variant = cfg.input.keyboard.variant;
 
-          follow_mouse = if cfg.input.mouse.follow then "1" else "0";
+          follow_mouse =
+            if cfg.input.mouse.follow
+            then "1"
+            else "0";
 
           sensitivity = toString cfg.input.mouse.sensitivity;
         };
@@ -240,7 +261,10 @@ in
         decoration = {
           rounding = toString cfg.decoration.rouding;
 
-          dim_inactive = if cfg.decoration.dim.inactive then "true" else "false";
+          dim_inactive =
+            if cfg.decoration.dim.inactive
+            then "true"
+            else "false";
           dim_strength = toString cfg.decoration.dim.strength;
           dim_around = toString cfg.decoration.dim.around;
 
@@ -251,7 +275,10 @@ in
         };
 
         animations = {
-          enabled = if cfg.animations.enabled then "yes" else "no";
+          enabled =
+            if cfg.animations.enabled
+            then "yes"
+            else "no";
 
           bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
 
@@ -278,31 +305,29 @@ in
           workspace_swipe = "off";
         };
 
-        workspace =
-          (map
-            (w: "${w.name},${
-                if w?monitor then "monitor:${w.monitor}," else ""
-              }${
-                if w?default && w.default then "default:true," else ""
-              }${
-                if w?extraRules then "${w.extraRules}" else ""
-              }")
-            cfg.workspaces
-          );
+        workspace = (
+          map
+          (w: "${w.name},${
+              if w ? monitor
+              then "monitor:${w.monitor},"
+              else ""
+            }${
+              if w ? default && w.default
+              then "default:true,"
+              else ""
+            }${
+              if w ? extraRules
+              then "${w.extraRules}"
+              else ""
+            }")
+          cfg.workspaces
+        );
 
         "$mod" = cfg.binds.mod;
 
         bind = cfg.binds.keyboard;
         bindm = cfg.binds.mouse;
-
       }
     ];
   };
 }
-
-
-
-
-
-
-

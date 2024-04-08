@@ -1,82 +1,73 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.wezterm;
-in
 {
-  imports = [ ];
-  options.wezterm = with lib; with lib.types; {
-    enable = mkEnableOption "Enable Wezterm";
-    integration = {
-      zsh = mkEnableOption "Enable Zsh Integration";
-    };
-    colorScheme = mkOption {
-      type = str;
-      default = "system";
-    };
-    defaultProg = mkOption {
-      default = [ ];
-    };
-    font = mkOption {
-      default = "Fira Code";
-      type = str;
-    };
-    fontSize = mkOption {
-      default = 12;
-      type = number;
-    };
-  };
-  config = lib.mkIf cfg.enable {
-    programs.wezterm.enable = true;
-    programs.wezterm.enableZshIntegration = lib.mkIf (cfg.integration.zsh) true;
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with builtins; let
+  cfg = config.programs.wezterm;
+  jsonFormat = pkgs.formats.json {};
+  toLua = with lib.strings;
+    v:
+      if isList v
+      then "{ ${concatMapStringsSep ", " (i: toLua i) v} }"
+      else if isAttrs v
+      then "\{ ${concatStringsSep ", " (attrValues (mapAttrs (n: a: "${n} = ${toLua a}") v))} \}"
+      else if isNull v
+      then "nil"
+      else if isBool v
+      then
+        if v
+        then "true"
+        else "false"
+      else if isInt v
+      then toString v
+      else if isString v && hasPrefix "lua " v
+      then "${substring 4 (stringLength v) v}"
+      else "\"${toString v}\"";
+  configInLua = pkgs.writeText "nih-wezterm-generated-config" ''
+    local wezterm = require("wezterm");
 
-    programs.wezterm.extraConfig = ''
-      return {
-      	enable_tab_bar = false;
-        color_scheme = "${cfg.colorScheme}",
-        default_prog = { ${lib.concatMapStrings (x: "'" + x + "',") cfg.defaultProg} },
-        font = wezterm.font("${cfg.font}"),
-        font_size = ${toString cfg.fontSize},
-        enable_wayland = false, -- TEMPORALLY FIX (see wez/wezterm#4483)
-      }
-    '';
+    local nih_generated_config = {};
+    ${concatStringsSep "\n" (attrValues (mapAttrs
+      (n: v: "nih_generated_config.${n} = ${toLua v};")
+      cfg.config))}
 
-    programs.wezterm.colorSchemes = {
-      system = with config.colorScheme.palette; {
-        foreground = "#${base05}";
-        background = "#${base00}";
+    local function extra_config()
+      ${cfg.extraConfig}
+    end
 
-        cursor_fg = "#${base01}";
-        cursor_bg = "#${config.theme.accent}";
-        cursor_border = "#${config.theme.accent}";
+    for k,v in pairs(extra_config()) do nih_generated_config[k] = v end
 
-        selection_fg = "#${base04}";
-        selection_bg = "#${config.theme.accent}";
-
-        split = "#${base04}";
-
-        ansi = [
-          "#${base03}"
-          "#${base08}"
-          "#${base0B}"
-          "#${base0A}"
-          "#${base0D}"
-          "#${base0E}"
-          "#${base0C}"
-          "#${base03}"
-        ];
-
-        brights = [
-          "#${base03}"
-          "#${base08}"
-          "#${base0B}"
-          "#${base0A}"
-          "#${base0D}"
-          "#${base0E}"
-          "#${base0C}"
-          "#${base03}"
-        ];
-      };
+    return nih_generated_config;
+  '';
+  prettyConfig = pkgs.runCommand "nih-wezterm-pretty-config" {config = configInLua;} ''
+    echo "Nih's Wezterm configuration file builder";
+    echo "input file: $config";
+    echo "output file: $out";
+    echo ""
+    echo "Formatting config file with Stylua"
+    cat $config | ${pkgs.stylua}/bin/stylua - > $out
+    echo ""
+    echo "Checking erros with luacheck"
+    ${pkgs.luajitPackages.luacheck}/bin/luacheck \
+      --no-max-line-length \
+      --no-unused \
+      "$out";
+  '';
+in {
+  imports = [];
+  options.programs.wezterm = with lib;
+  with lib.types; {
+    config = mkOption {
+      type = submodule ({...}: {
+        freeformType = jsonFormat.type;
+      });
+      default = {};
     };
   };
+  config = with lib;
+    mkIf cfg.enable {
+      xdg.configFile."wezterm/wezterm.lua".source = prettyConfig;
+    };
 }

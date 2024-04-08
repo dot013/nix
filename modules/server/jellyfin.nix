@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.server.jellyfin;
   networkConfig = pkgs.writeTextFile {
     name = "network.json";
@@ -14,12 +17,12 @@ let
     name = "encoding.json";
     text = builtins.toJSON cfg.settings.system;
   };
-in
-{
+in {
   imports = [
     ./jellyseerr.nix
   ];
-  options.server.jellyfin = with lib; with lib.types; {
+  options.server.jellyfin = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
     user = mkOption {
       type = str;
@@ -49,8 +52,8 @@ in
     };
     settings = {
       network = mkOption {
-        type = (submodule {
-          freeformType = (pkgs.formats.json { }).type;
+        type = submodule {
+          freeformType = (pkgs.formats.json {}).type;
           options = {
             AutoDiscovery = mkOption {
               type = bool;
@@ -185,149 +188,148 @@ in
               default = "vEthernet*";
             };
           };
-        });
-        default = { };
+        };
+        default = {};
       };
       encoding = mkOption {
-        type =
-          (submodule {
-            freeformType = (pkgs.formats.json { }).type;
-            options = {
-              AllowOnDemandMetadataBasedKeyframeExtractionForExtensions.string = mkOption {
-                type = listOf str;
-                default = [ "mkv" ];
-              };
-              DeinterlaceDoubleRate = mkOption {
-                type = bool;
-                default = false;
-              };
-              DeinterlaceMethod = mkOption {
-                type = str;
-                default = "yadif";
-              };
-              DownMixAudioBoost = mkOption {
-                type = int;
-                default = 2;
-              };
-              EnableDecodingColorDepth10Hevc = mkOption {
-                type = bool;
-                default = true;
-              };
-              EnableDecodingColorDepth10Vp9 = mkOption {
-                type = bool;
-                default = true;
-              };
-              EnableEnhancedNvdecDecoder = mkOption {
-                type = bool;
-                default = true;
-              };
-              EnableFallbackFont = mkOption {
-                type = bool;
-                default = false;
-              };
-              EnableHardwareEncoding = mkOption {
-                type = bool;
-                default = true;
-              };
-              EnableIntelLowPowerH264HwEncoder = mkOption {
-                type = bool;
-                default = false;
-              };
-              EnableIntelLowPowerHevcHwEncoder = mkOption {
-                type = bool;
-                default = false;
-              };
-              EnableSubtitleExtraction = mkOption {
-                type = bool;
-                default = true;
-              };
-              EnableThrottling = mkOption {
-                type = bool;
-                default = false;
-              };
-              EnableTonemapping = mkOption {
-                type = bool;
-                default = false;
-              };
-              EnableVppTonemapping = mkOption {
-                type = bool;
-                default = false;
-              };
-              EncoderAppPathDisplay = mkOption {
-                type = either path str;
-                default = "${pkgs.jellyfin-ffmpeg}/bin/ffmpeg";
-              };
-              EncodingThreadCount = mkOption {
-                type = int;
-                default = -1;
-              };
-              H264Crf = mkOption {
-                type = int;
-                default = 23;
-              };
-              H265Crf = mkOption {
-                type = int;
-                default = 28;
-              };
-              HardwareDecodingCodecs.string = mkOption {
-                type = listOf str;
-                default = [ "h254" "vc1" ];
-              };
-              MaxMuxingQueueSize = mkOption {
-                type = int;
-                default = 2048;
-              };
-              PreferSystemNativeHwDecoder = mkOption {
-                type = bool;
-                default = true;
-              };
-              ThrottleDelaySeconds = mkOption {
-                type = int;
-                default = 180;
-              };
-              TonemappingAlgorithm = mkOption {
-                type = str;
-                default = "bt2390";
-              };
-              TonemappingDesat = mkOption {
-                type = int;
-                default = 0;
-              };
-              TonemappingMode = mkOption {
-                type = str;
-                default = "auto";
-              };
-              TonemappingParam = mkOption {
-                type = int;
-                default = 0;
-              };
-              TonemappingPeak = mkOption {
-                type = int;
-                default = 100;
-              };
-              TonemappingRange = mkOption {
-                type = str;
-                default = "auto";
-              };
-              VaapiDevice = mkOption {
-                type = either path str;
-                default = "/dev/dri/renderD128";
-              };
-              VppTonemappingBrightness = mkOption {
-                type = int;
-                default = 16;
-              };
-              VppTonemappingContrast = mkOption {
-                type = int;
-                default = 1;
-              };
+        type = submodule {
+          freeformType = (pkgs.formats.json {}).type;
+          options = {
+            AllowOnDemandMetadataBasedKeyframeExtractionForExtensions.string = mkOption {
+              type = listOf str;
+              default = ["mkv"];
             };
-          });
-        default = { };
+            DeinterlaceDoubleRate = mkOption {
+              type = bool;
+              default = false;
+            };
+            DeinterlaceMethod = mkOption {
+              type = str;
+              default = "yadif";
+            };
+            DownMixAudioBoost = mkOption {
+              type = int;
+              default = 2;
+            };
+            EnableDecodingColorDepth10Hevc = mkOption {
+              type = bool;
+              default = true;
+            };
+            EnableDecodingColorDepth10Vp9 = mkOption {
+              type = bool;
+              default = true;
+            };
+            EnableEnhancedNvdecDecoder = mkOption {
+              type = bool;
+              default = true;
+            };
+            EnableFallbackFont = mkOption {
+              type = bool;
+              default = false;
+            };
+            EnableHardwareEncoding = mkOption {
+              type = bool;
+              default = true;
+            };
+            EnableIntelLowPowerH264HwEncoder = mkOption {
+              type = bool;
+              default = false;
+            };
+            EnableIntelLowPowerHevcHwEncoder = mkOption {
+              type = bool;
+              default = false;
+            };
+            EnableSubtitleExtraction = mkOption {
+              type = bool;
+              default = true;
+            };
+            EnableThrottling = mkOption {
+              type = bool;
+              default = false;
+            };
+            EnableTonemapping = mkOption {
+              type = bool;
+              default = false;
+            };
+            EnableVppTonemapping = mkOption {
+              type = bool;
+              default = false;
+            };
+            EncoderAppPathDisplay = mkOption {
+              type = either path str;
+              default = "${pkgs.jellyfin-ffmpeg}/bin/ffmpeg";
+            };
+            EncodingThreadCount = mkOption {
+              type = int;
+              default = -1;
+            };
+            H264Crf = mkOption {
+              type = int;
+              default = 23;
+            };
+            H265Crf = mkOption {
+              type = int;
+              default = 28;
+            };
+            HardwareDecodingCodecs.string = mkOption {
+              type = listOf str;
+              default = ["h254" "vc1"];
+            };
+            MaxMuxingQueueSize = mkOption {
+              type = int;
+              default = 2048;
+            };
+            PreferSystemNativeHwDecoder = mkOption {
+              type = bool;
+              default = true;
+            };
+            ThrottleDelaySeconds = mkOption {
+              type = int;
+              default = 180;
+            };
+            TonemappingAlgorithm = mkOption {
+              type = str;
+              default = "bt2390";
+            };
+            TonemappingDesat = mkOption {
+              type = int;
+              default = 0;
+            };
+            TonemappingMode = mkOption {
+              type = str;
+              default = "auto";
+            };
+            TonemappingParam = mkOption {
+              type = int;
+              default = 0;
+            };
+            TonemappingPeak = mkOption {
+              type = int;
+              default = 100;
+            };
+            TonemappingRange = mkOption {
+              type = str;
+              default = "auto";
+            };
+            VaapiDevice = mkOption {
+              type = either path str;
+              default = "/dev/dri/renderD128";
+            };
+            VppTonemappingBrightness = mkOption {
+              type = int;
+              default = 16;
+            };
+            VppTonemappingContrast = mkOption {
+              type = int;
+              default = 1;
+            };
+          };
+        };
+        default = {};
       };
       system = mkOption {
-        type = (submodule {
-          freeformType = (pkgs.formats.json { }).type;
+        type = submodule {
+          freeformType = (pkgs.formats.json {}).type;
           options = {
             ActivityLogRetentionDays = mkOption {
               type = int;
@@ -347,7 +349,7 @@ in
             };
             CorsHost.string = mkOption {
               type = listOf str;
-              default = [ "*" ];
+              default = ["*"];
             };
             DisableLiveTvChannelUserDataName = mkOption {
               type = bool;
@@ -439,19 +441,19 @@ in
                 }
                 {
                   ItemType = "MusicVideo";
-                  DisabledMetadataFetchers.string = [ "The Open Movie Database" ];
-                  DisabledImageFetchers.string = [ "The Open Movie Database" ];
+                  DisabledMetadataFetchers.string = ["The Open Movie Database"];
+                  DisabledImageFetchers.string = ["The Open Movie Database"];
                 }
                 {
                   ItemType = "Series";
                 }
                 {
                   ItemType = "MusicAlbum";
-                  DisabledMetadataFetchers.string = [ "TheAudioDB" ];
+                  DisabledMetadataFetchers.string = ["TheAudioDB"];
                 }
                 {
                   ItemType = "MusicArtist";
-                  DisabledMetadataFetchers.string = [ "TheAudioDB" ];
+                  DisabledMetadataFetchers.string = ["TheAudioDB"];
                 }
                 {
                   ItemType = "BoxSet";
@@ -470,27 +472,27 @@ in
                     type = str;
                   };
                   DisabledMetadataSavers.string = mkOption {
-                    default = [ ];
+                    default = [];
                     type = listOf str;
                   };
                   LocalMetadataReaderOrder.string = mkOption {
-                    default = [ ];
+                    default = [];
                     type = listOf str;
                   };
                   DisabledMetadataFetchers.string = mkOption {
-                    default = [ ];
+                    default = [];
                     type = listOf str;
                   };
                   MetadataFetcherOrder.string = mkOption {
-                    default = [ ];
+                    default = [];
                     type = listOf str;
                   };
                   DisabledImageFetchers.string = mkOption {
-                    default = [ ];
+                    default = [];
                     type = listOf str;
                   };
                   ImageFetcherOrder.string = mkOption {
-                    default = [ ];
+                    default = [];
                     type = listOf str;
                   };
                 };
@@ -517,11 +519,13 @@ in
               default = "";
             };
             PluginRepositories.RepositoryInfo = mkOption {
-              default = [{
-                Name = "Jellyfin Stable";
-                Url = "https://repo.jellyfin.org/releases/plugin/manifest-stable.json";
-                Enabled = true;
-              }];
+              default = [
+                {
+                  Name = "Jellyfin Stable";
+                  Url = "https://repo.jellyfin.org/releases/plugin/manifest-stable.json";
+                  Enabled = true;
+                }
+              ];
               type = listOf (submodule {
                 options = {
                   Name = mkOption {
@@ -571,23 +575,23 @@ in
             };
             SortRemoveCharacters.string = mkOption {
               type = listOf str;
-              default = [ "," "&" "-" "{" "}" "'" ];
+              default = ["," "&" "-" "{" "}" "'"];
             };
             SortRemoveWords.string = mkOption {
               type = listOf str;
-              default = [ "the" "a" "an" ];
+              default = ["the" "a" "an"];
             };
             SortReplaceCharacters.string = mkOption {
               type = listOf str;
-              default = [ "." "+" "%" ];
+              default = ["." "+" "%"];
             };
             UICulture = mkOption {
               type = str;
               default = "en-US";
             };
           };
-        });
-        default = { };
+        };
+        default = {};
       };
     };
   };
@@ -636,12 +640,11 @@ in
         touch "$jellyfin_dir/config/system.xml";
         echo "$(system_file)" > "$jellyfin_dir/config/system.xml";
       '';
-      wantedBy = [ "multi-user.target" ];
-      after = [ "jellyfin.service" ];
+      wantedBy = ["multi-user.target"];
+      after = ["jellyfin.service"];
       serviceConfig = {
         Type = "oneshot";
       };
     };
   };
 }
-

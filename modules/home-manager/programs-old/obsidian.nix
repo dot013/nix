@@ -1,7 +1,9 @@
-{ config, lib, pkgs, ... }:
-
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.obsidian;
   vaultCmd = pkgs.writeShellScriptBin "vault" ''
     command="$1";
@@ -18,10 +20,10 @@ let
       $git push
     fi
   '';
-in
-{
-  imports = [ ];
-  options.obsidian = with lib; with lib.types; {
+in {
+  imports = [];
+  options.obsidian = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
     vaultCmd = mkOption {
       type = bool;
@@ -37,7 +39,11 @@ in
       "md.obsidian.Obsidian"
     ];
     home.packages = [
-      (if cfg.vaultCmd then vaultCmd else null)
+      (
+        if cfg.vaultCmd
+        then vaultCmd
+        else null
+      )
     ];
   };
 }

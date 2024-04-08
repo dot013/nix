@@ -1,6 +1,10 @@
-{ config, inputs, lib, pkgs, ... }:
-
-let
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.nih;
   hmModule = lib.types.submoduleWith {
     description = "Home Manager module";
@@ -8,29 +12,32 @@ let
       lib = lib;
       osConfig = config;
     };
-    modules = [
-      ({ name, ... }: {
-        config = {
-          submoduleSupport.enable = true;
-          submoduleSupport.externalPackageInstall = cfg.useUserPackages;
+    modules =
+      [
+        ({name, ...}: {
+          config = {
+            submoduleSupport.enable = true;
+            submoduleSupport.externalPackageInstall = cfg.useUserPackages;
 
-          home.username = config.users.users.${name}.name;
-          home.homeDirectory = config.users.users.${name}.home;
+            home.username = config.users.users.${name}.name;
+            home.homeDirectory = config.users.users.${name}.home;
 
-          # Make activation script use same version of Nix as system as a whole.
-          # This avoids problems with Nix not being in PATH.
-          nix.package = config.nix.package;
-        };
-      })
-    ] ++ config.home-manager.sharedModules;
+            # Make activation script use same version of Nix as system as a whole.
+            # This avoids problems with Nix not being in PATH.
+            nix.package = config.nix.package;
+          };
+        })
+      ]
+      ++ config.home-manager.sharedModules;
   };
-in
-{
-  imports = [ ];
-  options.nih = with lib; with lib.types; {
+in {
+  imports = [];
+  options.nih = with lib;
+  with lib.types; {
     users = mkOption {
-      type = attrsOf
-        (submodule ({ ... }: {
+      type =
+        attrsOf
+        (submodule ({...}: {
           options = {
             description = mkOption {
               type = nullOr str;
@@ -38,11 +45,11 @@ in
             };
             extraGroups = mkOption {
               type = listOf str;
-              default = [ "networkmanager" "wheel" ];
+              default = ["networkmanager" "wheel"];
             };
             home = mkOption {
               type = attrsOf anything;
-              default = { };
+              default = {};
             };
             normalUser = mkOption {
               type = bool;
@@ -50,7 +57,7 @@ in
             };
             packages = mkOption {
               type = listOf package;
-              default = [ ];
+              default = [];
             };
             password = mkOption {
               type = nullOr (passwdEntry str);
@@ -58,15 +65,15 @@ in
             };
             profiles = mkOption {
               type = attrsOf anything;
-              default = { };
+              default = {};
             };
             programs = mkOption {
               type = attrsOf anything;
-              default = { };
+              default = {};
             };
             services = mkOption {
               type = attrsOf anything;
-              default = { };
+              default = {};
             };
             shell = mkOption {
               type = package;
@@ -74,8 +81,11 @@ in
             };
             username = mkOption {
               type = passwdEntry str;
-              apply = x: assert (builtins.stringLength
-                x < 32 || abort "Username '${x}' is longer than 31 characters"); x;
+              apply = x:
+                assert (builtins.stringLength
+                  x
+                  < 32
+                  || abort "Username '${x}' is longer than 31 characters"); x;
             };
           };
         }));
@@ -83,23 +93,27 @@ in
   };
   config = with lib; {
     users.users =
-      (builtins.mapAttrs
-        (name: value: {
-          name = value.username;
-          hashedPassword = value.password;
-          description = if value.description != null then value.description else value.username;
-          isNormalUser = value.normalUser;
-          shell = value.shell;
-          extraGroups = value.extraGroups ++ [ "wheel" ];
-        })
-        cfg.users);
+      builtins.mapAttrs
+      (name: value: {
+        name = value.username;
+        hashedPassword = value.password;
+        description =
+          if value.description != null
+          then value.description
+          else value.username;
+        isNormalUser = value.normalUser;
+        shell = value.shell;
+        extraGroups = value.extraGroups ++ ["wheel"];
+      })
+      cfg.users;
 
     users.mutableUsers = true;
 
-    home-manager.extraSpecialArgs = { inherit inputs; };
+    home-manager.extraSpecialArgs = {inherit inputs;};
     home-manager.users =
-      (builtins.mapAttrs
-        (name: value: mkMerge [
+      builtins.mapAttrs
+      (name: value:
+        mkMerge [
           {
             imports = [
               inputs.nix-index-database.hmModules.nix-index
@@ -107,36 +121,38 @@ in
               ./programs
               ./user-profiles
             ];
-            options = with lib; with lib.types; {
+            options = with lib;
+            with lib.types; {
               _nih = mkOption {
                 type = attrsOf anything;
-                default = { };
+                default = {};
               };
             };
             config = {
-
               _nih = {
                 type = config.nih.type;
               };
 
-              profiles = mkMerge [ value.profiles ];
+              profiles = mkMerge [value.profiles];
 
               programs = mkMerge [
-                { home-manager.enable = true; }
+                {home-manager.enable = true;}
                 value.programs
               ];
 
               services = mkMerge [
-                { flatpak.enable = mkDefault true; }
+                {flatpak.enable = mkDefault true;}
                 value.services
               ];
 
               home = mkMerge [
                 {
                   username = value.username;
-                  homeDirectory = mkDefault
+                  homeDirectory =
+                    mkDefault
                     "/home/${value.username}";
-                  stateVersion = mkDefault
+                  stateVersion =
+                    mkDefault
                     "23.11"; # Do not change
                 }
                 value.home
@@ -144,6 +160,6 @@ in
             };
           }
         ])
-        cfg.users);
+      cfg.users;
   };
 }

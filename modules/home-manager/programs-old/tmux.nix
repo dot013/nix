@@ -1,11 +1,15 @@
-{ config, inputs, lib, pkgs, ... }:
-
-let
-  cfg = config.tmux;
-in
 {
-  imports = [ ];
-  options.tmux = with lib; with lib.types; {
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.tmux;
+in {
+  imports = [];
+  options.tmux = with lib;
+  with lib.types; {
     enable = mkEnableOption "Enable Tmux module";
     baseIndex = mkOption {
       type = ints.unsigned;

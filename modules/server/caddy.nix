@@ -1,15 +1,21 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.server.caddy;
-in
 {
-  imports = [ ];
-  options.server.caddy = with lib; with lib.types; {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.server.caddy;
+in {
+  imports = [];
+  options.server.caddy = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
     settings = {
       virtualHosts = mkOption {
-        type = attrsOf (submodule ({ config, lib, ... }: {
+        type = attrsOf (submodule ({
+          config,
+          lib,
+          ...
+        }: {
           options = {
             extraConfig = mkOption {
               type = lines;
@@ -17,7 +23,7 @@ in
             };
           };
         }));
-        default = { };
+        default = {};
       };
     };
   };

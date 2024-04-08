@@ -1,10 +1,14 @@
-{ config, pkgs, inputs, lib, ... }:
-
-let
-  cfg = config.localization;
-in
 {
-  options.localization = with lib; with lib.types; {
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}: let
+  cfg = config.localization;
+in {
+  options.localization = with lib;
+  with lib.types; {
     locale = mkOption {
       default = "en_US.UTF-8";
       type = str;

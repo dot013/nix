@@ -1,12 +1,16 @@
-{ config, lib, pkgs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.services;
+in {
   imports = [
-    ./adguard.nix
+    ./adguardhome.nix
     ./caddy.nix
-    ./forgejo.nix
     ./tailscale.nix
   ];
-  options.nih.services = { };
-  config = { };
+  options.services = {};
+  config = {};
 }

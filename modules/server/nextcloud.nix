@@ -1,11 +1,14 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.server.nextcloud;
-in
 {
-  imports = [ ];
-  options.server.nextcloud = with lib; with lib.types; {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.server.nextcloud;
+in {
+  imports = [];
+  options.server.nextcloud = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
     user = mkOption {
       type = str;

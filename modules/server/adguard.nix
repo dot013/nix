@@ -1,15 +1,17 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.server.adguard;
-in
 {
-  imports = [ ];
-  options.server.adguard = with lib; with lib.types; {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.server.adguard;
+in {
+  imports = [];
+  options.server.adguard = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
     extraArgs = mkOption {
       type = listOf str;
-      default = [ ];
+      default = [];
     };
     domain = mkOption {
       type = str;
@@ -34,10 +36,10 @@ in
       };
       dns.rewrites = mkOption {
         type = attrsOf str;
-        default = { };
+        default = {};
       };
       dns.filters = mkOption {
-        type = attrsOf (submodule ({ lib, ... }: {
+        type = attrsOf (submodule ({lib, ...}: {
           options = {
             name = mkOption {
               type = nullOr str;
@@ -52,14 +54,14 @@ in
             };
           };
         }));
-        default = { };
+        default = {};
       };
     };
   };
   config = lib.mkIf cfg.enable {
     networking.firewall = {
-      allowedTCPPorts = [ 53 ];
-      allowedUDPPorts = [ 53 51820 ];
+      allowedTCPPorts = [53];
+      allowedUDPPorts = [53 51820];
     };
     services.adguardhome = with builtins; {
       enable = true;
@@ -69,22 +71,24 @@ in
         http = {
           address = "${cfg.settings.server.address}:${toString cfg.settings.server.port}";
         };
-        dns.rewrites = (builtins.attrValues (builtins.mapAttrs
+        dns.rewrites = builtins.attrValues (builtins.mapAttrs
           (from: to: {
             domain = from;
             answer = to;
           })
-          cfg.settings.dns.rewrites));
-        filters = (attrValues (mapAttrs
+          cfg.settings.dns.rewrites);
+        filters = attrValues (mapAttrs
           (id: list: {
-            name = if isNull list.name then id else list.name;
+            name =
+              if isNull list.name
+              then id
+              else list.name;
             ID = id;
             url = list.url;
             enabled = list.enabled;
           })
-          cfg.settings.dns.filters));
+          cfg.settings.dns.filters);
       };
     };
   };
 }
-

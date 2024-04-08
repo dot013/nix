@@ -1,6 +1,9 @@
-{ lib, config, pkgs, ... }:
-
-let
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}: let
   cfg = config.eww;
   ewwDir = "${config.xdg.configHome}/eww";
 
@@ -9,7 +12,7 @@ let
     jq="${pkgs.jq}/bin/jq"
     socat="${pkgs.socat}/bin/socat"
 
-    $hyprctl monitors -j | 
+    $hyprctl monitors -j |
       $jq '.[] | select(.focused) | .activeWorkspace.id'
 
     $socat -u UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock - |
@@ -57,14 +60,13 @@ let
     	echo $rain
     fi
   '';
-in
-{
-  imports = [ ];
-  options.eww = with lib; with lib.types; {
+in {
+  imports = [];
+  options.eww = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
   };
   config = lib.mkIf cfg.enable {
-
     home.packages = with pkgs; [
       eww-wayland
     ];
@@ -73,7 +75,7 @@ in
     home.file."${ewwDir}/eww.scss".source = ./eww.scss;
 
     home.file."${ewwDir}/vars.yuck".text = ''
-      (deflisten active-workspace :initial "1" 
+      (deflisten active-workspace :initial "1"
       "${eww-get-active-workspace}/bin/eww-get-active-workspace")
 
       (defpoll volume :interval "1s"
@@ -111,5 +113,3 @@ in
     '';
   };
 }
-
-

@@ -42,37 +42,40 @@
     hyprland.url = "github:hyprwm/Hyprland";
     xdg-desktop-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
     /*
-      Note to self:
-      The last commit with working screen share, as the time of writing this, was
-      https://github.com/hyprwm/xdg-desktop-portal-hyprland/commit/6a5de92769d5b7038134044053f90e7458f6a197
-      https://github.com/hyprwm/Hyprland/commit/3c964a9fdc220250a85b1c498e5b6fad9390272f
-      so if needed, you can always roll-back.
+    Note to self:
+    The last commit with working screen share, as the time of writing this, was
+    https://github.com/hyprwm/xdg-desktop-portal-hyprland/commit/6a5de92769d5b7038134044053f90e7458f6a197
+    https://github.com/hyprwm/Hyprland/commit/3c964a9fdc220250a85b1c498e5b6fad9390272f
+    so if needed, you can always roll-back.
 
-      Fuck discord.
+    Fuck discord.
     */
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
-    let
-      create-host = (configs: builtins.listToAttrs (map
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  } @ inputs: let
+    create-host = configs:
+      builtins.listToAttrs (map
         (c: {
           name = c;
           value = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs; };
+            specialArgs = {inherit inputs;};
             modules = [
               inputs.home-manager.nixosModules.default
-              (./. + ("/hosts/" + builtins.replaceStrings [ "@" ] [ "/" ] c) + /configuration.nix)
+              (./. + ("/hosts/" + builtins.replaceStrings ["@"] ["/"] c) + /configuration.nix)
             ];
           };
         })
-        configs));
-    in
-    {
-      nixosConfigurations = (create-host [
-        "desktop@default"
-        "desktop@work"
-        "homelab"
-      ]);
-    };
+        configs);
+  in {
+    nixosConfigurations = create-host [
+      "desktop@default"
+      "desktop@work"
+      "homelab"
+    ];
+  };
 }
-

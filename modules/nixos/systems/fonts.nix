@@ -1,15 +1,17 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.my-fonts;
-in
 {
-  imports = [ ];
-  options.my-fonts = with lib; with lib.types; {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.my-fonts;
+in {
+  imports = [];
+  options.my-fonts = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
     fonts = mkOption {
       type = listOf package;
-      default = [ ];
+      default = [];
     };
     user = mkOption {
       type = str;
@@ -35,7 +37,7 @@ in
           ln -sf /run/current-system/sw/share/X11/fonts /home/${cfg.user}/.fonts;
         fi
       '';
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = ["multi-user.target"];
       serviceConfig = {
         Type = "oneshot";
         User = cfg.user;

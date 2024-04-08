@@ -1,11 +1,13 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.server.jellyseerr;
-in
 {
-  imports = [ ];
-  options.server.jellyseerr = with lib; with lib.types; {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.server.jellyseerr;
+in {
+  imports = [];
+  options.server.jellyseerr = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
     domain = mkOption {
       type = str;

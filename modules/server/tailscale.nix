@@ -1,13 +1,15 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.server.tailscale;
-in
 {
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.server.tailscale;
+in {
   imports = [
     ./network.nix
   ];
-  options.server.tailscale = with lib; with lib.types; {
+  options.server.tailscale = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
     mode = mkOption {
       type = enum [
@@ -21,7 +23,7 @@ in
       type = bool;
       default = false;
     };
-    settings = { };
+    settings = {};
   };
   config = lib.mkIf cfg.enable {
     services.tailscale = {
@@ -29,7 +31,6 @@ in
       useRoutingFeatures = cfg.mode;
     };
 
-    server.network = lib.mkIf cfg.exitNode { portForwarding = lib.mkDefault true; };
+    server.network = lib.mkIf cfg.exitNode {portForwarding = lib.mkDefault true;};
   };
 }
-

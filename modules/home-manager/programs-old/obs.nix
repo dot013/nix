@@ -1,11 +1,14 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.obs;
-in
 {
-  imports = [ ];
-  options.obs = with lib; with lib.types; {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.obs;
+in {
+  imports = [];
+  options.obs = with lib;
+  with lib.types; {
     enable = mkEnableOption "";
   };
   config = lib.mkIf cfg.enable {
