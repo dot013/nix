@@ -39,10 +39,20 @@ function nih-edit() {
 	gum pager < $temp_file
 	rm $temp_file
 
+	# Add secret files
+	gum log --structured --prefix 'nih edit' --level debug 'Adding decrypted secret files'
+	git add ./secrets/*
+
 	# Build NixOS
 	gum log --structured --prefix 'nih edit' --level debug 'Building NixOS'
 	sudo nixos-rebuild switch --flake "$flake_dir#$host" \
-		|| (gum log --structured --prefix 'nih edit' --level error 'Error building new config' && exit 1)
+		|| (gum log --structured --prefix 'nih edit' --level debug 'Removing decrypted secret files' \
+		&& git reset ./secrets/*.decrypted.* \
+		&& gum log --structured --prefix 'nih edit' --level error 'Error building new config' \
+		&& exit 1)
+
+	gum log --structured --prefix 'nih edit' --level debug 'Removing decrypted secret files'
+	git reset ./secrets/*
 
 	gum log --structured \
 			--prefix 'nih edit' \
@@ -90,13 +100,27 @@ function nih-switch () {
 
 	set -e
 
+	pushd $flake_dir
+
+	gum log --structured --prefix 'nih switch' --level debug 'Adding decrypted secret files'
+	git add ./secrets/*.decrypted.*
+
 	gum log --structured --prefix 'nih switch' --level debug 'Building NixOS'
 	sudo nixos-rebuild switch --flake "$flake_dir#$host" \
-		|| (gum log --structured --prefix 'nih edit' --level error 'Error building new config' && exit 1)
+		|| (gum log --structured --prefix 'nih edit' --level debug 'Removing decrypted secret files' \
+		&& git reset ./secrets/*.decrypted.* \
+		&& gum log --structured --prefix 'nih edit' --level error 'Error building new config' \
+		&& exit 1)
+
 	gum log --structured --prefix 'nih switch' --level info 'NixOS rebuilt!'
 	notify-send -e "NixOS Rebuilt!" \
 		--icon=software-update-available \
 		--urgency=low
+
+	gum log --structured --prefix 'nih switch' --level debug 'Removing decrypted secret files'
+	git reset ./secrets/*.decrypted.*
+
+	popd
 }
 
 function nih-install() {
