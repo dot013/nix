@@ -1,10 +1,8 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   imports = [
     ../../modules/home-manager/programs/hyprland.nix
   ];
-  options.keybinds = { };
+  options.keybinds = {};
   config = {
     hyprland.binds.keyboard = [
       "$mod, C, killactive"

@@ -1,12 +1,9 @@
-{ config, ... }:
-
-let
+{config, ...}: let
   cfg = config.desktop;
-in
-{
+in {
   imports = [
     ./scripts/desktop.nix
   ];
-  options.desktop = { };
-  config = { };
+  options.desktop = {};
+  config = {};
 }

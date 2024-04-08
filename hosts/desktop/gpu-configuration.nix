@@ -1,11 +1,13 @@
-{ config, pkgs, ... }:
-
 {
-  imports = [ ];
-  options.shared.configuration.gpu = { };
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [];
+  options.shared.configuration.gpu = {};
   config = {
-    boot.initrd.kernelModules = [ "amdgpu" ];
-    services.xserver.videoDrivers = [ "amdgpu" ];
+    boot.initrd.kernelModules = ["amdgpu"];
+    services.xserver.videoDrivers = ["amdgpu"];
 
     environment = {
       variables = {
@@ -25,6 +27,5 @@
       driSupport = true;
       driSupport32Bit = true;
     };
-
   };
 }

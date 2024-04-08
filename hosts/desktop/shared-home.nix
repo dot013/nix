@@ -1,23 +1,25 @@
-{ config, pkgs, inputs, ... }:
-
 {
+  config,
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
     ../../modules/home-manager/theme.nix
-    ../../modules/home-manager/programs/librewolf
-    ../../modules/home-manager/programs/krita
-    ../../modules/home-manager/programs/davinci.nix
-    ../../modules/home-manager/programs/obs.nix
-    ../../modules/home-manager/programs/obsidian.nix
-    ../../modules/home-manager/packages/nixx.nix
-    ../../modules/home-manager/packages/nixi.nix
+    ../../modules/home-manager/programs-old/librewolf
+    ../../modules/home-manager/programs-old/krita
+    ../../modules/home-manager/programs-old/davinci.nix
+    ../../modules/home-manager/programs-old/obs.nix
+    ../../modules/home-manager/programs-old/obsidian.nix
+    ../../modules/home-manager/packages-old/nixx.nix
+    ../../modules/home-manager/packages-old/nixi.nix
     ./terminal.nix
     ./wm.nix
     ./keybinds.nix
     ./.desktop
   ];
-  options.shared.home = { };
+  options.shared.home = {};
   config = {
-
     programs.bash = {
       enable = true;
       initExtra = ''
@@ -95,7 +97,7 @@
 
       ## Fonts
       fira-code
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      (nerdfonts.override {fonts = ["FiraCode"];})
     ];
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage

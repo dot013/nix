@@ -1,10 +1,8 @@
-{ inputs, ... }:
-
-{
+{inputs, ...}: {
   imports = [
     ../shared-home.nix
   ];
-  options.work.home = { };
+  options.work.home = {};
   config = {
     theme.accent = "94e2d5";
     wm.wallpaper = ../../../static/guz-wallpaper-work.png;

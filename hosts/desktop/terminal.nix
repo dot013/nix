@@ -1,6 +1,9 @@
-{ config, inputs, pkgs, ... }:
-
 {
+  config,
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
     ../../modules/home-manager/programs/lf.nix
     ../../modules/home-manager/programs/starship.nix
@@ -8,7 +11,7 @@
     ../../modules/home-manager/programs/wezterm.nix
     ../../modules/home-manager/programs/zsh.nix
   ];
-  options.terminal = { };
+  options.terminal = {};
   config = {
     lf.enable = true;
 
@@ -39,6 +42,5 @@
       enableZshIntegration = true;
       nix-direnv.enable = true;
     };
-
   };
 }

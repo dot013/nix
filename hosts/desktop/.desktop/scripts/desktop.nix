@@ -1,7 +1,5 @@
-{ pkgs, ... }:
-
-let
-  desktop = pkgs.writeShellScriptBin "desktop" '' 
+{pkgs, ...}: let
+  desktop = pkgs.writeShellScriptBin "desktop" ''
     function cat() {
       echo $1 | ${pkgs.lolcat}/bin/lolcat
       echo ""
@@ -14,7 +12,7 @@ let
       if [[ "$env" -ne "" ]]; then
         cat "Building the $env desktop!"
         sudo nixos-rebuild switch --flake "$flakeDir#desktop@$env"
-      else 
+      else
         cat "Building the desktop!"
         sudo nixos-rebuild switch --flake "$flakeDir#desktop@default"
       fi
@@ -46,14 +44,12 @@ let
     echo "Restarting zsh"
     exec zsh
   '';
-in
-{
-  imports = [ ];
-  options.desktop.cli = { };
+in {
+  imports = [];
+  options.desktop.cli = {};
   config = {
     home.packages = [
       desktop
     ];
   };
 }
-

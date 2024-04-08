@@ -1,10 +1,8 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   imports = [
     ../shared-configuration.nix
   ];
-  options.default.configuration = { };
+  options.default.configuration = {};
   config = {
     set-user.users = [
       {

@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-let
+{pkgs, ...}: let
   nixx = pkgs.writeShellScriptBin "nixx" ''
     # npx-like command for nix
     function nix-run() {
@@ -9,14 +7,12 @@ let
     }
     nix-run $1
   '';
-in
-{
-  imports = [ ];
-  options.nixx = { };
+in {
+  imports = [];
+  options.nixx = {};
   config = {
     home.packages = [
       nixx
     ];
   };
 }
-

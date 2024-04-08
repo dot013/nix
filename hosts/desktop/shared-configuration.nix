@@ -1,6 +1,10 @@
-{ config, pkgs, inputs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}: {
   imports = [
     ../../modules/nih
     ../../modules/nixos/config/host.nix
@@ -10,9 +14,8 @@
     ./hardware-configuration.nix
     ./gpu-configuration.nix
   ];
-  options.shared.configuration = { };
+  options.shared.configuration = {};
   config = {
-
     nih = {
       enable = true;
       ip = "192.168.1.13";
@@ -20,10 +23,13 @@
       networking = {
         interface = "enp6s0";
         wireless = false;
-        tailscale.enable = true;
       };
       users.test = {
         username = "test";
+      };
+
+      serives = {
+        tailscale.enable = true;
       };
       users.test = {
         programs.hyprland = {
@@ -45,8 +51,8 @@
             }
           ];
           windowRules = {
-            "class:^(org.inkscape.Inkscape)$" = [ "float" ];
-            "class:^(org.inkscape.Inkscape)$,title:(.*)(- Inkscape)$" = [ "tile" ];
+            "class:^(org.inkscape.Inkscape)$" = ["float"];
+            "class:^(org.inkscape.Inkscape)$,title:(.*)(- Inkscape)$" = ["tile"];
           };
           workspaces = [
             # First monitor
@@ -121,8 +127,8 @@
     my-fonts.user = "guz";
     my-fonts.fonts = with pkgs; [
       fira-code
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
-      (google-fonts.override { fonts = [ "Gloock" "Cinzel" "Red Hat Display" ]; })
+      (nerdfonts.override {fonts = ["FiraCode"];})
+      (google-fonts.override {fonts = ["Gloock" "Cinzel" "Red Hat Display"];})
       (stdenv.mkDerivation rec {
         pname = "calsans";
         version = "1.0.0";
@@ -145,7 +151,7 @@
     ];
 
     programs.nix-ld.enable = true;
-    programs.nix-ld.libraries = with pkgs; [ ];
+    programs.nix-ld.libraries = with pkgs; [];
 
     virtualisation.waydroid.enable = true;
 
@@ -192,11 +198,12 @@
       wl-clipboard
     ];
 
-    nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "steam"
-      "steam-original"
-      "steam-run"
-    ];
+    nixpkgs.config.allowUnfreePredicate = pkg:
+      builtins.elem (lib.getName pkg) [
+        "steam"
+        "steam-original"
+        "steam-run"
+      ];
     programs.steam = {
       enable = true;
     };
@@ -219,7 +226,7 @@
 
     services.flatpak.enable = true;
 
-    environment.pathsToLink = [ " /share/zsh " ];
+    environment.pathsToLink = [" /share/zsh "];
 
     services.tailscale = {
       enable = true;
@@ -233,21 +240,19 @@
     services.blueman.enable = true;
     # hardware.pulseaudio.enable = true;
 
-    services.interception-tools =
-      let
-        device = "/dev/input/by-id/usb-BY_Tech_Gaming_Keyboard-event-kbd";
-      in
-      {
-        enable = true;
-        plugins = [ pkgs.interception-tools-plugins.caps2esc ];
-        udevmonConfig = ''
-          - JOB: "${pkgs.interception-tools}/bin/intercept -g ${device} | ${pkgs.interception-tools-plugins.caps2esc}/bin/caps2esc -m 2 | ${pkgs.interception-tools}/bin/uinput -d ${device}"
-            DEVICE:
-              EVENTS:
-                EV_KEY: [[KEY_CAPSLOCK, KEY_ESC]]
-              LINK: ${device}
-        '';
-      };
+    services.interception-tools = let
+      device = "/dev/input/by-id/usb-BY_Tech_Gaming_Keyboard-event-kbd";
+    in {
+      enable = true;
+      plugins = [pkgs.interception-tools-plugins.caps2esc];
+      udevmonConfig = ''
+        - JOB: "${pkgs.interception-tools}/bin/intercept -g ${device} | ${pkgs.interception-tools-plugins.caps2esc}/bin/caps2esc -m 2 | ${pkgs.interception-tools}/bin/uinput -d ${device}"
+          DEVICE:
+            EVENTS:
+              EV_KEY: [[KEY_CAPSLOCK, KEY_ESC]]
+            LINK: ${device}
+      '';
+    };
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
@@ -277,9 +282,3 @@
     system.stateVersion = "23.11"; # Did you read the comment?
   };
 }
-
-
-
-
-
-

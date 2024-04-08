@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.wm;
   wm-boot = pkgs.writeShellScriptBin "wm-boot" ''
     eww="${pkgs.eww-wayland}/bin/eww"
@@ -24,20 +27,19 @@ let
 
     $swww img "${builtins.toPath cfg.wallpaper}"
   '';
-in
-{
+in {
   imports = [
     ../../modules/home-manager/programs/hyprland.nix
     ../../modules/home-manager/programs/eww
   ];
-  options.wm = with lib; with lib.types; {
+  options.wm = with lib;
+  with lib.types; {
     wallpaper = mkOption {
       default = ../../static/guz-wallpaper-default.png;
       type = path;
     };
   };
   config = {
-
     eww.enable = true;
 
     hyprland.enable = true;
@@ -64,8 +66,8 @@ in
       }
     ];
     hyprland.windowRules = {
-      "class:^(org.inkscape.Inkscape)$" = [ "float" ];
-      "class:^(org.inkscape.Inkscape)$,title:(.*)(- Inkscape)$" = [ "tile" ];
+      "class:^(org.inkscape.Inkscape)$" = ["float"];
+      "class:^(org.inkscape.Inkscape)$,title:(.*)(- Inkscape)$" = ["tile"];
     };
     hyprland.workspaces = [
       # First monitor
@@ -120,17 +122,16 @@ in
         genericName = "Web Browser";
         exec = "${pkgs.librewolf}/bin/librewolf %U";
         terminal = false;
-        categories = [ "Application" "Network" "WebBrowser" ];
-        mimeType = [ "text/html" "text/xml" ];
+        categories = ["Application" "Network" "WebBrowser"];
+        mimeType = ["text/html" "text/xml"];
       };
       davinci = {
         name = "Davinci Resolve";
         genericName = "Video Editor";
         exec = "${pkgs.davinci-resolve}/bin/davinci-resolve %U";
         terminal = false;
-        categories = [ "Application" "Video" ];
+        categories = ["Application" "Video"];
       };
     };
   };
 }
-
