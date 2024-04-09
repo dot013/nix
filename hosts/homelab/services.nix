@@ -47,7 +47,7 @@ in {
         url = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt";
       };
     };
-    services.adguardhome.settings.user-rules = ["@@||tumblr.com^$important" "@@||wordpress.com^$important"];
+    services.adguardhome.settings.user_rules = ["@@||tumblr.com^$important" "@@||wordpress.com^$important"];
 
     services.caddy.enable = true;
     services.caddy.virtualHosts =
