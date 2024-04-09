@@ -25,6 +25,8 @@ in {
         lazygit
         gcc
         wget
+        alejandra
+        stylua
       ];
     };
 }
