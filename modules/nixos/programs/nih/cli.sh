@@ -136,12 +136,13 @@ function nih-install() {
 	local index=0
 	for arg in "$@"; do
 		if [[ "$arg" == "--" ]]; then
+			index=$(($index + 1))
 			break 
 		fi
 		pkgs+=("nixpkgs#$arg")
 		index=$(($index + 1))
 	done
-	shift $(($index + 1))
+	shift $index
 	nix shell "${pkgs[@]}" "$@"
 }
 
