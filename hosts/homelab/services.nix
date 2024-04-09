@@ -51,6 +51,7 @@ in
     services.adguardhome.settings.user_rules = [
       "@@||tumblr.com^$important"
       "@@||wordpress.com^$important"
+      "@@||tailscale.com^$important"
     ];
 
     services.caddy.enable = true;
