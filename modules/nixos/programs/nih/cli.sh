@@ -1,4 +1,15 @@
 
+function util-show-diff() {
+	local prefix="$1";
+
+	gum log --structured --prefix "$prefix" --level debug 'Creatting diff files'
+	temp_file="$(mktemp /tmp/nih-diff-XXXXX)"
+	git diff -U0 '*.*' > $temp_file
+	echo "$(gum format -l diff -t code < $temp_file)" > $temp_file
+	gum pager < $temp_file
+	rm $temp_file
+}
+
 function nih-edit() {
 	local flake_dir="$1"
 	local host="$2"
@@ -32,12 +43,7 @@ function nih-edit() {
 		&& exit 1)
 
 	# Show modifications
-	gum log --structured --prefix 'nih edit' --level debug 'Creatting diff files'
-	temp_file="$(mktemp /tmp/nih-diff-XXXXX)"
-	git diff -U0 '*.nix' > $temp_file
-	echo "$(gum format -l diff -t code < $temp_file)" > $temp_file
-	gum pager < $temp_file
-	rm $temp_file
+	util-show-diff 'nih edit'
 
 	# Add secret files
 	gum log --structured --prefix 'nih edit' --level debug 'Adding decrypted secret files'
