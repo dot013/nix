@@ -1,14 +1,13 @@
-{ config
-, lib
-, ...
-}:
-let
+{
+  config,
+  lib,
+  ...
+}: let
   secrets = config.homelab-secrets.lesser;
   deviceIp = config.services.tailscale.deviceIp;
-in
-{
-  imports = [ ];
-  options = { };
+in {
+  imports = [];
+  options = {};
   config = {
     services.adguardhome.enable = true;
     services.adguardhome.dns.rewrites = {
@@ -57,12 +56,12 @@ in
     services.caddy.enable = true;
     services.caddy.virtualHosts =
       lib.attrsets.mapAttrs'
-        (name: service: {
-          name = service.domain;
-          value = { extraConfig = "reverse_proxy ${deviceIp}:${toString service.port}"; };
-        })
-        secrets.services;
-    networking.firewall.allowedTCPPorts = [ 80 433 ];
+      (name: service: {
+        name = service.domain;
+        value = {extraConfig = "reverse_proxy ${deviceIp}:${toString service.port}";};
+      })
+      secrets.services;
+    networking.firewall.allowedTCPPorts = [80 433];
 
     services.forgejo = {
       enable = true;
@@ -83,7 +82,7 @@ in
         server = {
           ROOT_URL = "https://${secrets.services.forgejo.domain}";
           DOMAIN = "${secrets.services.forgejo.domain}";
-          HTTP_PORT = "${secrets.services.forgejo.port}";
+          HTTP_PORT = secrets.services.forgejo.port;
         };
       };
     };
