@@ -18,7 +18,7 @@ in {
           url = mkOption {
             type = str;
           };
-          enabled = {
+          enabled = mkOption {
             type = bool;
             default = true;
           };
