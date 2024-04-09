@@ -170,11 +170,57 @@ function nih-execute() {
 	nix run "nixpkgs#$pkg" "$@"
 }
 
+function nih-sync() {
+	local flake_dir="$1"
+	local host="$2"
+
+	set -e
+
+	pushd $flake_dir
+
+	gum log --structured --prefix 'nih sync' --level info 'Syncing NixOS config'
+
+	gum log --structured --prefix 'nih sync' --level debug 'Formatting files'
+	alejandra . &>/dev/null \
+	|| (alejandra . ; \
+		gum log --structured \
+				--prefix 'nih sync' \
+				--level error 'Failed to format files' \
+		&& exit 1)
+
+	gum log --structured --prefix 'nih sync' --level debug 'Removing decrypted secret files'
+	git reset ./secrets/*.decrypted.*
+
+
+	# Skip if there's no changes
+	if git diff --quiet "*.*"; then
+		gum log --structured \
+			--prefix 'nih sync' \
+			--level warn \
+			'No files changed'
+		popd
+		exit 0
+	else
+		# Show modifications
+		util-show-diff 'nih sync'
+
+		commit_msg="$(gum write --prompt 'Commit message' --placeholder 'Commit message')"
+		git commit -am "$commit_msg"
+
+		gum log --structured --prefix 'nih sync' --level debug 'Pushing to remote'
+		git push
+
+		gum log --structured --prefix 'nih sync' --level info 'NixOS configuration synced!'
+	fi
+
+	popd
+}
+
 case "$1" in
 	"edit") nih-edit $flake_dir $host ;;
 	"switch" | "build") nih-switch $flake_dir $host ;;
 	"install" | "i" ) shift 1; nih-install "$@" ;;
 	"exec" | "x" ) shift 1; nih-execute "$@" ;;
+	"sync") nih-sync $flake_dir $host ;;
 	*) gum log --structured --prefix 'nih' --level error "Command $1 does not exist" ;;
 esac
-
