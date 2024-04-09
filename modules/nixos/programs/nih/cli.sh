@@ -63,8 +63,7 @@ function nih-edit() {
 
 	case "$(gum choose --limit 1 'Commit' 'Open lazygit' 'No commit')" in
 		"Commit")
-			metadata="$(nixos-rebuild list-generations | grep current)"
-			commit_msg="$(gum write --value "$metadata" --placeholder 'Commit message')"
+			commit_msg="$(gum write --prompt 'Commit message' --placeholder 'Commit message')"
 			git commit -am "$commit_msg"
 
 			gum confirm 'Push changes to remote?' \
@@ -137,7 +136,7 @@ function nih-install() {
 	for arg in "$@"; do
 		if [[ "$arg" == "--" ]]; then
 			index=$(($index + 1))
-			break 
+			break
 		fi
 		pkgs+=("nixpkgs#$arg")
 		index=$(($index + 1))
