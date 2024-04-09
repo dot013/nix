@@ -82,6 +82,7 @@ in
         server = {
           ROOT_URL = "https://${secrets.services.forgejo.domain}";
           DOMAIN = "${secrets.services.forgejo.domain}";
+          HTTP_PORT = "${secrets.services.forgejo.port}";
         };
       };
     };
