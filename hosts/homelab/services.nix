@@ -1,13 +1,14 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config
+, lib
+, ...
+}:
+let
   secrets = config.homelab-secrets.lesser;
   deviceIp = config.services.tailscale.deviceIp;
-in {
-  imports = [];
-  options = {};
+in
+{
+  imports = [ ];
+  options = { };
   config = {
     services.adguardhome.enable = true;
     services.adguardhome.dns.rewrites = {
@@ -47,17 +48,20 @@ in {
         url = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt";
       };
     };
-    services.adguardhome.settings.user_rules = ["@@||tumblr.com^$important" "@@||wordpress.com^$important"];
+    services.adguardhome.settings.user_rules = [
+      "@@||tumblr.com^$important"
+      "@@||wordpress.com^$important"
+    ];
 
     services.caddy.enable = true;
     services.caddy.virtualHosts =
       lib.attrsets.mapAttrs'
-      (name: service: {
-        name = service.domain;
-        value = {extraConfig = "reverse_proxy ${deviceIp}:${toString service.port}";};
-      })
-      secrets.services;
-    networking.firewall.allowedTCPPorts = [80 433];
+        (name: service: {
+          name = service.domain;
+          value = { extraConfig = "reverse_proxy ${deviceIp}:${toString service.port}"; };
+        })
+        secrets.services;
+    networking.firewall.allowedTCPPorts = [ 80 433 ];
 
     services.forgejo = {
       enable = true;
