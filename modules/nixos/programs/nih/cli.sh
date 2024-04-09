@@ -107,6 +107,8 @@ function nih-switch () {
 
 	pushd $flake_dir
 
+	gum log --structured --prefix 'nih switch' --level info 'Switching NixOS config'
+
 	gum log --structured --prefix 'nih switch' --level debug 'Adding decrypted secret files'
 	git add ./secrets/*.decrypted.*
 
@@ -133,6 +135,11 @@ function nih-switch () {
 	gum log --structured --prefix 'nih switch' --level debug 'Removing decrypted secret files'
 	git reset ./secrets/*.decrypted.*
 
+	gum log --structured --prefix 'nih edit' --level info 'NixOS rebuilt!'
+	notify-send -e "NixOS Rebuilt!" \
+		--icon=software-update-available \
+		--urgency=low
+
 	popd
 }
 
@@ -148,7 +155,13 @@ function nih-install() {
 		index=$(($index + 1))
 	done
 	shift $index
+
+	gum log --structured --prefix 'nih install' --level info "Temporaly installing to current shell:"
+	gum log --structured --prefix 'nih install' --level info "${pkgs[@]}"
+
 	nix shell "${pkgs[@]}" "$@"
+
+	gum log --structured --prefix 'nih install' --level info "Packages intalled!"
 }
 
 function nih-execute() {
