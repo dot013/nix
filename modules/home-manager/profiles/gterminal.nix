@@ -33,16 +33,17 @@ in {
         lf.commands = {
           dragon-out = ''%${pkgs.xdragon}/bin/xdragon -a -x "$fx"'';
           editor-open = ''$$EDITOR $f'';
-          mkfile = ''            ''${{
-                      printf "Dirname: "
-                      read DIR
+          mkfile = ''
+            ''${{
+              printf "Dirname: "
+              read DIR
 
-                      if [[ $DIR = */ ]]; then
-                        mkdir $DIR
-                      else
-                        touch $DIR
-                      fi
-                    }}'';
+              if [[ $DIR = */ ]]; then
+                mkdir $DIR
+              else
+                touch $DIR
+              fi
+            }}'';
         };
         lf.extraConfig = let
           previewer = pkgs.writeShellScriptBin "pv.sh" ''
@@ -159,6 +160,7 @@ in {
           export GPG_TTY=$(tty)
 
           alias tmux="tmux -f ${config.xdg.configHome}/tmux/tmux.conf";
+          alias lg="${pkgs.lazygit}/bin/lazygit";
         '';
       };
     };
