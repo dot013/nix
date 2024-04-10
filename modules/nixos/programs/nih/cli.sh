@@ -55,6 +55,23 @@ function util-build() {
 	popd
 }
 
+function util-format() {
+	local prefix="$1"
+	local flake_dir="$2"
+
+	pushd $flake_dir
+
+	gum log --structured --prefix "$prefix" --level debug 'Formatting files'
+	alejandra . &>/dev/null \
+	|| (alejandra . ; \
+		gum log --structured \
+				--prefix "$prefix" \
+				--level error 'Failed to format files' \
+		&& exit 1)
+
+	popd
+}
+
 function nih-edit() {
 	local flake_dir="$1"
 	local host="$2"
@@ -78,14 +95,7 @@ function nih-edit() {
 		exit 0
 	fi
 
-	# Autoformat nix files
-	gum log --structured --prefix 'nih edit' --level debug 'Formatting files'
-	alejandra . &>/dev/null \
-	|| (alejandra . ; \
-		gum log --structured \
-				--prefix 'nih edit' \
-				--level error 'Failed to format files' \
-		&& exit 1)
+	util-format 'nih edit' $flake_dir
 
 	# Show modifications
 	util-show-diff 'nih edit'
@@ -142,23 +152,12 @@ function nih-switch () {
 
 	gum log --structured --prefix 'nih switch' --level info 'Switching NixOS config'
 
-	gum log --structured --prefix 'nih switch' --level debug 'Formatting files'
-	alejandra . &>/dev/null \
-	|| (alejandra . ; \
-		gum log --structured \
-				--prefix 'nih switch' \
-				--level error 'Failed to format files' \
-		&& exit 1)
+	util-format 'nih switch' $flake_dir
 
 	# Build nixos
 	util-build 'nih switch' $flake_dir $host
 
 	gum log --structured --prefix 'nih switch' --level info 'NixOS rebuilt!'
-	notify-send -e "NixOS Rebuilt!" \
-		--icon=software-update-available \
-		--urgency=low
-
-	gum log --structured --prefix 'nih edit' --level info 'NixOS rebuilt!'
 	notify-send -e "NixOS Rebuilt!" \
 		--icon=software-update-available \
 		--urgency=low
@@ -203,13 +202,7 @@ function nih-sync() {
 
 	gum log --structured --prefix 'nih sync' --level info 'Syncing NixOS config'
 
-	gum log --structured --prefix 'nih sync' --level debug 'Formatting files'
-	alejandra . &>/dev/null \
-	|| (alejandra . ; \
-		gum log --structured \
-				--prefix 'nih sync' \
-				--level error 'Failed to format files' \
-		&& exit 1)
+	util-format 'nih sync' $flake_dir
 
 	git reset ./secrets/*.decrypted.*
 	for f in ./secrets/*.decrypted.*; do
