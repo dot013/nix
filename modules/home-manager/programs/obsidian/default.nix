@@ -28,7 +28,7 @@ in {
   };
   config = with lib;
     mkIf cfg.enable {
-      services.flatpak.packages = mkIf cfg.flatpak [
+      services.flatpak.packages = [
         "md.obsidian.Obsidian"
       ];
       home.packages = [

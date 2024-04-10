@@ -31,6 +31,12 @@
     };
   };
 
+  programs.obsidian.enable = true;
+  programs.obsidian.vaultCmd = true;
+  programs.obsidian.vaultDir = "${config.home.homeDirectory}/.vault";
+
+  programs.krita.enable = true;
+
   services.flatpak.enable = true;
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
@@ -62,6 +68,7 @@
     pavucontrol
     libreoffice
     pinentry
+    gnome.nautilus
 
     ## Fonts
     fira-code
