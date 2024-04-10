@@ -10,6 +10,51 @@ function util-show-diff() {
 	rm $temp_file
 }
 
+function util-build() {
+	local prefix="$1";
+	local flake_dir="$2";
+	local host="$3";
+
+	set -e
+
+	pushd $flake_dir
+
+	for f in ./secrets/*.lesser.*; do
+		local filename="$(basename -- "$f")"
+		local extension="${filename##*.}"
+		local filename="${filename%.*}"
+		local subextenstion="${filename##*.}"
+
+		if [[ "$subextenstion" == "decrypted" ]]; then
+			gum log --structured --prefix "$prefix" --level warn 'File already decrypted!' file "$f"
+		else
+			gum log --structured --prefix "$prefix" --level debug 'Decrypting lesser secret file' file "$f"
+			sops --output "./secrets/$filename.decrypted.$extension" -d $f
+		fi
+	done
+
+	# Add secret files
+	gum log --structured --prefix "$prefix" --level debug 'Adding decrypted secret files'
+	git add ./secrets/*.decrypted.*
+
+	# Build NixOS
+	gum log --structured --prefix "$prefix" --level debug 'Building NixOS'
+	sudo nixos-rebuild switch --flake "$flake_dir#$host" \
+		|| (gum log --structured --prefix "$prefix" --level debug 'Removing decrypted secret files' \
+		&& git reset ./secrets/*.decrypted.* \
+		&& for f in ./secrets/*.decrypted.*; do rm $f; done \
+		&& gum log --structured --prefix "$prefix" --level error 'Error building new config' \
+		&& exit 1)
+
+	git reset ./secrets/*.decrypted.*
+	for f in ./secrets/*.decrypted.*; do
+		gum log --structured --prefix "$prefix" --level debug 'Removing decrypted secret file' file "$f"
+		rm $f
+	done
+
+	popd
+}
+
 function nih-edit() {
 	local flake_dir="$1"
 	local host="$2"
@@ -21,7 +66,7 @@ function nih-edit() {
 	pushd $flake_dir
 
 	# Edit file
-	$EDITOR "$(gum file "$flakedir")"
+	$EDITOR "$(gum file "$flake_dir")"
 
 	# Skip if there's no changes
 	if git diff --quiet "*.*"; then
@@ -45,20 +90,8 @@ function nih-edit() {
 	# Show modifications
 	util-show-diff 'nih edit'
 
-	# Add secret files
-	gum log --structured --prefix 'nih edit' --level debug 'Adding decrypted secret files'
-	git add ./secrets/*
-
-	# Build NixOS
-	gum log --structured --prefix 'nih edit' --level debug 'Building NixOS'
-	sudo nixos-rebuild switch --flake "$flake_dir#$host" \
-		|| (gum log --structured --prefix 'nih edit' --level debug 'Removing decrypted secret files' \
-		&& git reset ./secrets/*.decrypted.* \
-		&& gum log --structured --prefix 'nih edit' --level error 'Error building new config' \
-		&& exit 1)
-
-	gum log --structured --prefix 'nih edit' --level debug 'Removing decrypted secret files'
-	git reset ./secrets/*
+	# Build nixos
+	util-build 'nih edit' $flake_dir $host
 
 	gum log --structured \
 			--prefix 'nih edit' \
@@ -109,9 +142,6 @@ function nih-switch () {
 
 	gum log --structured --prefix 'nih switch' --level info 'Switching NixOS config'
 
-	gum log --structured --prefix 'nih switch' --level debug 'Adding decrypted secret files'
-	git add ./secrets/*.decrypted.*
-
 	gum log --structured --prefix 'nih switch' --level debug 'Formatting files'
 	alejandra . &>/dev/null \
 	|| (alejandra . ; \
@@ -120,20 +150,13 @@ function nih-switch () {
 				--level error 'Failed to format files' \
 		&& exit 1)
 
-	gum log --structured --prefix 'nih switch' --level debug 'Building NixOS'
-	sudo nixos-rebuild switch --flake "$flake_dir#$host" \
-		|| (gum log --structured --prefix 'nih edit' --level debug 'Removing decrypted secret files' \
-		&& git reset ./secrets/*.decrypted.* \
-		&& gum log --structured --prefix 'nih edit' --level error 'Error building new config' \
-		&& exit 1)
+	# Build nixos
+	util-build 'nih switch' $flake_dir $host
 
 	gum log --structured --prefix 'nih switch' --level info 'NixOS rebuilt!'
 	notify-send -e "NixOS Rebuilt!" \
 		--icon=software-update-available \
 		--urgency=low
-
-	gum log --structured --prefix 'nih switch' --level debug 'Removing decrypted secret files'
-	git reset ./secrets/*.decrypted.*
 
 	gum log --structured --prefix 'nih edit' --level info 'NixOS rebuilt!'
 	notify-send -e "NixOS Rebuilt!" \
@@ -188,9 +211,11 @@ function nih-sync() {
 				--level error 'Failed to format files' \
 		&& exit 1)
 
-	gum log --structured --prefix 'nih sync' --level debug 'Removing decrypted secret files'
 	git reset ./secrets/*.decrypted.*
-
+	for f in ./secrets/*.decrypted.*; do
+		gum log --structured --prefix "$prefix" --level debug 'Removing decrypted secret file' file "$f"
+		rm $f
+	done
 
 	# Skip if there's no changes
 	if git diff --quiet "*.*"; then

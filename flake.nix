@@ -73,8 +73,7 @@
         configs);
   in {
     nixosConfigurations = create-host [
-      "desktop@default"
-      "desktop@work"
+      "battleship"
       "homelab"
     ];
   };

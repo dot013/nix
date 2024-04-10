@@ -15,6 +15,7 @@
       (${pkgs.libnotify}/bin/notify-send "$@" &>/dev/null || echo "")
     }
     function mktemp() { ${pkgs.mktemp}/bin/mktemp "$@"; }
+    function sops() { ${pkgs.sops}/bin/sops "$@"; }
 
     flake_dir="${toString cfg.flakeDir}";
     host="${toString cfg.host}";
