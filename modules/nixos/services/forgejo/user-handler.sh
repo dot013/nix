@@ -10,7 +10,7 @@ fjuser list | awk '{print $2}' | tail -n +2 | while read username; do
 				--time timeonly \
 				--level info \
 				'Declared user already exists, ignoring' \
-				username $username
+				username "$username"
 	else
 		if [[ "$(fjuser list | tail -n +2 | awk '{print $2 " " $5}' | grep "$username" | awk '{print $2}')" == "true" ]]; then
 			gum log --structured \

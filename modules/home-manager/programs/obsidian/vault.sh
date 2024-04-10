@@ -6,7 +6,7 @@ function vault-sync() {
 
 	set -e
 
-	pushd $vault_dir
+	pushd "$vault_dir"
 
 	gum log --structured --prefix 'vault sync' --level info "Syncing vault through git"
 
@@ -35,7 +35,7 @@ function vault-sync() {
 }
 
 case "$1" in
-	"sync") vault-sync $vault_dir ;;
+	"sync") vault-sync "$vault_dir" ;;
 	*) gum log --structured --prefix 'vault' --level error "Command $1 does not exist" ;;
 esac
 

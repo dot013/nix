@@ -4,10 +4,10 @@ function util-show-diff() {
 
 	gum log --structured --prefix "$prefix" --level debug 'Creatting diff files'
 	temp_file="$(mktemp /tmp/nih-diff-XXXXX)"
-	git diff -U0 '*.*' > $temp_file
-	echo "$(gum format -l diff -t code < $temp_file)" > $temp_file
-	gum pager < $temp_file
-	rm $temp_file
+	git diff -U0 '*.*' > "$temp_file"
+	echo "$(gum format -l diff -t code < "$temp_file")" > "$temp_file"
+	gum pager < "$temp_file"
+	rm "$temp_file"
 }
 
 function util-build() {
@@ -17,7 +17,7 @@ function util-build() {
 
 	set -e
 
-	pushd $flake_dir > /dev/null
+	pushd "$flake_dir" > /dev/null
 
 	for f in ./secrets/*.lesser.*; do
 		local filename="$(basename -- "$f")"
@@ -29,7 +29,7 @@ function util-build() {
 			gum log --structured --prefix "$prefix" --level warn 'File already decrypted!' file "$f"
 		else
 			gum log --structured --prefix "$prefix" --level debug 'Decrypting lesser secret file' file "$f"
-			sops --output "./secrets/$filename.decrypted.$extension" -d $f
+			sops --output "./secrets/$filename.decrypted.$extension" -d "$f"
 		fi
 	done
 
@@ -42,14 +42,14 @@ function util-build() {
 	sudo nixos-rebuild switch --flake "$flake_dir#$host" \
 		|| (gum log --structured --prefix "$prefix" --level debug 'Removing decrypted secret files' \
 		&& git reset ./secrets/*.decrypted.* \
-		&& for f in ./secrets/*.decrypted.*; do rm $f; done \
+		&& for f in ./secrets/*.decrypted.*; do rm "$f"; done \
 		&& gum log --structured --prefix "$prefix" --level error 'Error building new config' \
 		&& exit 1)
 
 	git reset ./secrets/*.decrypted.*
 	for f in ./secrets/*.decrypted.*; do
 		gum log --structured --prefix "$prefix" --level debug 'Removing decrypted secret file' file "$f"
-		rm $f
+		rm "$f"
 	done
 
 	popd > /dev/null
@@ -59,15 +59,26 @@ function util-format() {
 	local prefix="$1"
 	local flake_dir="$2"
 
-	pushd $flake_dir > /dev/null
+	set -e
 
-	gum log --structured --prefix "$prefix" --level debug 'Formatting files'
+	pushd "$flake_dir" > /dev/null
+
+	gum log --structured --prefix "$prefix" --level info 'Formatting files'
+
+	gum log --structured --prefix "$prefix" --level debug 'Formatting *.nix files'
 	alejandra . &>/dev/null \
 	|| (alejandra . ; \
 		gum log --structured \
 				--prefix "$prefix" \
 				--level error 'Failed to format files' \
 		&& exit 1)
+
+	gum log --structured --prefix "$prefix" --level debug 'Formatting *.sh files'
+	find "$flake_dir" -type f -name "*.sh" -execdir shellharden --replace {} \;
+	# find "$flake_dir" -type f -name "*.sh" -execdir shfmt {} \;
+
+	# gum log --structured --prefix "$prefix" --level debug 'Formatting *.{md,scss} files'
+	# find "$flake_dir" -type f \( -iname '*.md' -o -iname '*.scss' \) -execdir prettier -w {} \;
 
 	popd > /dev/null
 }
@@ -80,10 +91,10 @@ function nih-edit() {
 	set -e
 
 	# Push directory to history
-	pushd $flake_dir > /dev/null
+	pushd "$flake_dir" > /dev/null
 
 	# Edit file
-	$EDITOR "$(gum file "$flake_dir")"
+	"$EDITOR" "$(gum file "$flake_dir")"
 
 	# Skip if there's no changes
 	if git diff --quiet "*.*"; then
@@ -95,13 +106,13 @@ function nih-edit() {
 		exit 0
 	fi
 
-	util-format 'nih edit' $flake_dir
+	util-format 'nih edit' "$flake_dir"
 
 	# Show modifications
 	util-show-diff 'nih edit'
 
 	# Build nixos
-	util-build 'nih edit' $flake_dir $host
+	util-build 'nih edit' "$flake_dir" "$host"
 
 	gum log --structured \
 			--prefix 'nih edit' \
@@ -148,14 +159,14 @@ function nih-switch () {
 
 	set -e
 
-	pushd $flake_dir > /dev/null
+	pushd "$flake_dir" > /dev/null
 
 	gum log --structured --prefix 'nih switch' --level info 'Switching NixOS config'
 
-	util-format 'nih switch' $flake_dir
+	util-format 'nih switch' "$flake_dir"
 
 	# Build nixos
-	util-build 'nih switch' $flake_dir $host
+	util-build 'nih switch' "$flake_dir" "$host"
 
 	gum log --structured --prefix 'nih switch' --level info 'NixOS rebuilt!'
 	notify-send -e "NixOS Rebuilt!" \
@@ -176,7 +187,7 @@ function nih-install() {
 		pkgs+=("nixpkgs#$arg")
 		index=$(($index + 1))
 	done
-	shift $index
+	shift "$index"
 
 	gum log --structured --prefix 'nih install' --level info "Temporaly installing to current shell:"
 	gum log --structured --prefix 'nih install' --level info "${pkgs[@]}"
@@ -198,16 +209,16 @@ function nih-sync() {
 
 	set -e
 
-	pushd $flake_dir
+	pushd "$flake_dir" > /dev/null
 
 	gum log --structured --prefix 'nih sync' --level info 'Syncing NixOS config'
 
-	util-format 'nih sync' $flake_dir
+	util-format 'nih sync' "$flake_dir"
 
 	git reset ./secrets/*.decrypted.*
 	for f in ./secrets/*.decrypted.*; do
 		gum log --structured --prefix "$prefix" --level debug 'Removing decrypted secret file' file "$f"
-		rm $f
+		rm "$f"
 	done
 
 	# Skip if there's no changes
@@ -231,7 +242,7 @@ function nih-sync() {
 		gum log --structured --prefix 'nih sync' --level info 'NixOS configuration synced!'
 	fi
 
-	popd
+	popd > /dev/null
 }
 
 function nih-format() {
@@ -239,16 +250,19 @@ function nih-format() {
 
 	gum log --structured --prefix "nih format" --level info 'Formatting NixOS config files'
 
-	util-format 'nix format' $flake_dir
+	util-format 'nix format' "$flake_dir"
 
 	gum log --structured --prefix "nih format" --level info 'NixOS config files formatted'
 }
 
 case "$1" in
-	"edit") nih-edit $flake_dir $host ;;
-	"switch" | "build") nih-switch $flake_dir $host ;;
+	"edit") nih-edit "$flake_dir" "$host" ;;
+	"switch" | "build") nih-switch "$flake_dir" "$host" ;;
 	"install" | "i" ) shift 1; nih-install "$@" ;;
 	"exec" | "x" ) shift 1; nih-execute "$@" ;;
-	"sync") nih-sync $flake_dir $host ;;
+	"sync") nih-sync "$flake_dir" "$host" ;;
+	"format") nih-format "$flake_dir" ;;
 	*) gum log --structured --prefix 'nih' --level error "Command $1 does not exist" ;;
 esac
+
+echo "";

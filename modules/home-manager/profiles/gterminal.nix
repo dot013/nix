@@ -23,6 +23,8 @@ in {
         wget
         nixpkgs-fmt
         nixpkgs-lint
+        alejandra
+        shellharden
       ];
       programs = {
         direnv.enable = true;
