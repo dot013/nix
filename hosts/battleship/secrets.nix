@@ -36,6 +36,9 @@ in {
     sops.secrets.lat = {
       owner = config.users.users.guz.name;
     };
+    sops.secrets."guz/password" = {
+      owner = config.users.users.guz.name;
+    };
 
     sops.age.keyFile = "/home/guz/.config/sops/age/keys.txt";
   };
