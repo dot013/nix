@@ -86,6 +86,14 @@ in {
         };
       };
     };
+    home-manager-helper.users."${config.services.forgejo.user}" = {
+      name = "${config.services.forgejo.user}";
+      hashedPasswordFile = builtins.toString config.sops.secrets."forgejo/git-password".path;
+      isSystemUser = true;
+      homeDirectory = "/var/lib/forgejo";
+      extraGroups = ["wheel" "networkmanager"];
+      useDefaultShell = true;
+    };
 
     services.openssh.enable = true;
 

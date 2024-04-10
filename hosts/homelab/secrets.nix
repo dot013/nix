@@ -30,6 +30,10 @@ in {
     sops.defaultSopsFile = ../../secrets/homelab-secrets.yaml;
     sops.defaultSopsFormat = "yaml";
 
+    sops.secrets."guz/password" = {
+      owner = config.users.users."guz".name;
+    };
+
     sops.secrets."forgejo/user1/name" = {
       owner = config.services.forgejo.user;
     };
@@ -37,6 +41,9 @@ in {
       owner = config.services.forgejo.user;
     };
     sops.secrets."forgejo/user1/email" = {
+      owner = config.services.forgejo.user;
+    };
+    sops.secrets."forgejo/git-password" = {
       owner = config.services.forgejo.user;
     };
 

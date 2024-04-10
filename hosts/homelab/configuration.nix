@@ -30,7 +30,7 @@
   home-manager-helper.users."guz" = {
     name = "guz";
     shell = pkgs.zsh;
-    hashedPassword = "$y$j9T$J7gmdB306rufrjdsY5kJq0$spluDZf8jEkG0VYcZXzBIpnACVIk27C8YTbo2vbNFfA";
+    hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
     home = import ./home.nix;
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager"];
