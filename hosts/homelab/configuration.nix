@@ -18,6 +18,14 @@
 
   profiles.locale.enable = true;
 
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry-tty;
+    settings = {
+      default-cache-ttl = 3600 * 24;
+    };
+  };
+
   home-manager-helper.enable = true;
   home-manager-helper.users."guz" = {
     name = "guz";

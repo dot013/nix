@@ -1,9 +1,9 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.programs.nih;
   cli = pkgs.writeShellScriptBin "nih" ''
     # Since alias= doesn't work in bash scripts
@@ -26,23 +26,22 @@ let
 
     ${builtins.readFile ./cli.sh}
   '';
-in
-{
-  imports = [ ];
+in {
+  imports = [];
   options.programs.nih = with lib;
-    with lib.types; {
-      enable = mkEnableOption "";
-      host = mkOption {
-        type = str;
-      };
-      flakeDir = mkOption {
-        type = str;
-      };
-      cli = mkOption {
-        type = bool;
-        default = cfg.enable;
-      };
+  with lib.types; {
+    enable = mkEnableOption "";
+    host = mkOption {
+      type = str;
     };
+    flakeDir = mkOption {
+      type = str;
+    };
+    cli = mkOption {
+      type = bool;
+      default = cfg.enable;
+    };
+  };
   config = with lib;
     mkIf cfg.enable {
       environment.systemPackages = [
