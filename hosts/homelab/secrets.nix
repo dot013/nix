@@ -6,7 +6,7 @@
   ...
 }: let
   lesser-secrets = with builtins;
-    fromJSON (readFile ../../secrets/homelab-lesser-secrets.decrypted.json);
+    fromJSON (readFile ../../secrets/homelab-secrets.lesser.decrypted.json);
   jsonType = pkgs.formats.json {};
 in {
   imports = [
