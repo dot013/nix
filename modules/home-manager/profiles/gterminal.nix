@@ -154,7 +154,7 @@ in {
         };
 
         zsh.enable = true;
-        zsh.enableAutosuggestions = true;
+        zsh.autosuggestion.enable = true;
         zsh.enableCompletion = true;
         zsh.initExtra = ''
           export GPG_TTY=$(tty)
