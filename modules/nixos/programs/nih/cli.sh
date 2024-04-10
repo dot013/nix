@@ -17,7 +17,7 @@ function util-build() {
 
 	set -e
 
-	pushd $flake_dir
+	pushd $flake_dir > /dev/null
 
 	for f in ./secrets/*.lesser.*; do
 		local filename="$(basename -- "$f")"
@@ -52,14 +52,14 @@ function util-build() {
 		rm $f
 	done
 
-	popd
+	popd > /dev/null
 }
 
 function util-format() {
 	local prefix="$1"
 	local flake_dir="$2"
 
-	pushd $flake_dir
+	pushd $flake_dir > /dev/null
 
 	gum log --structured --prefix "$prefix" --level debug 'Formatting files'
 	alejandra . &>/dev/null \
@@ -69,7 +69,7 @@ function util-format() {
 				--level error 'Failed to format files' \
 		&& exit 1)
 
-	popd
+	popd > /dev/null
 }
 
 function nih-edit() {
@@ -80,7 +80,7 @@ function nih-edit() {
 	set -e
 
 	# Push directory to history
-	pushd $flake_dir
+	pushd $flake_dir > /dev/null
 
 	# Edit file
 	$EDITOR "$(gum file "$flake_dir")"
@@ -91,7 +91,7 @@ function nih-edit() {
 			--prefix 'nih edit' \
 			--level warn \
 			'No files changed'
-		popd
+		popd > /dev/null
 		exit 0
 	fi
 
@@ -139,7 +139,7 @@ function nih-edit() {
 		--urgency=low
 
 	# Pop back to previous directory
-	popd
+	popd > /dev/null
 }
 
 function nih-switch () {
@@ -148,7 +148,7 @@ function nih-switch () {
 
 	set -e
 
-	pushd $flake_dir
+	pushd $flake_dir > /dev/null
 
 	gum log --structured --prefix 'nih switch' --level info 'Switching NixOS config'
 
@@ -162,7 +162,7 @@ function nih-switch () {
 		--icon=software-update-available \
 		--urgency=low
 
-	popd
+	popd > /dev/null
 }
 
 function nih-install() {
