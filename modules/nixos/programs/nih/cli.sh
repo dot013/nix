@@ -234,6 +234,16 @@ function nih-sync() {
 	popd
 }
 
+function nih-format() {
+	local flake_dir="$1"
+
+	gum log --structured --prefix "nih format" --level info 'Formatting NixOS config files'
+
+	util-format 'nix format' $flake_dir
+
+	gum log --structured --prefix "nih format" --level info 'NixOS config files formatted'
+}
+
 case "$1" in
 	"edit") nih-edit $flake_dir $host ;;
 	"switch" | "build") nih-switch $flake_dir $host ;;
