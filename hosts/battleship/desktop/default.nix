@@ -31,6 +31,10 @@ in {
     ./eww
   ];
 
+  environment.systemPackages = with pkgs; [
+    wl-clipboard
+  ];
+
   programs.hyprland.enable = true;
   programs.hyprland.settings = let
     monitor-1 = "HDMI-A-1";
