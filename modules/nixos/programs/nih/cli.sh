@@ -262,6 +262,8 @@ case "$1" in
 	"exec" | "x" ) shift 1; nih-execute "$@" ;;
 	"sync") nih-sync "$flake_dir" "$host" ;;
 	"format") nih-format "$flake_dir" ;;
+	"forgejo") shift 1; nih-forgejo "$@" ;;
+	"forgejo-act") shift 1; nih-forgejo-act "$@" ;;
 	*) gum log --structured --prefix 'nih' --level error "Command $1 does not exist" ;;
 esac
 
