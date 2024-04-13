@@ -93,6 +93,7 @@
   programs.zsh.enable = true;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.package = pkgs.nixVersions.nix_2_21;
 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [];

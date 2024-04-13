@@ -47,6 +47,7 @@
   programs.zsh.enable = true;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.package = pkgs.nixVersions.nix_2_21;
 
   networking = {
     networkmanager.enable = true;
