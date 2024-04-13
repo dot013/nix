@@ -72,7 +72,7 @@ function set-user() {
 
 			fjuser create --username "$username" \
 						--email "$email" \
-						--passowrd "$password" \
+						--password "$password" \
 						--admin
 		else
 			gum log --structured \
@@ -84,8 +84,7 @@ function set-user() {
 
 			fjuser create --username "$username" \
 						--email "$email" \
-						--passowrd "$password"
+						--password "$password"
 		fi
 	fi
 }
-

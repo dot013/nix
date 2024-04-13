@@ -63,39 +63,22 @@ in {
       secrets.services;
     networking.firewall.allowedTCPPorts = [80 433];
 
+    services.openssh.enable = true;
+
     services.forgejo = {
       enable = true;
       actions = {
         enable = true;
         token = secrets.services.forgejo.actions-token;
-        url = "http://${config.services.tailscale.deviceUrl}:${toString secrets.services.forgejo.port}";
-      };
-      users = {
-        user1 = {
-          name = /. + config.sops.secrets."forgejo/user1/name".path;
-          password = /. + config.sops.secrets."forgejo/user1/password".path;
-          email = /. + config.sops.secrets."forgejo/user1/email".path;
-          admin = true;
-        };
       };
       settings = {
         server = {
-          ROOT_URL = "https://${secrets.services.forgejo.domain}";
-          DOMAIN = "${secrets.services.forgejo.domain}";
           HTTP_PORT = secrets.services.forgejo.port;
+          DOMAIN = secrets.services.forgejo.domain;
+          ROOT_URL = "https://${secrets.services.forgejo.domain}";
         };
       };
     };
-    home-manager-helper.users."${config.services.forgejo.user}" = {
-      name = "${config.services.forgejo.user}";
-      hashedPasswordFile = builtins.toString config.sops.secrets."forgejo/git-password".path;
-      isSystemUser = true;
-      homeDirectory = "/var/lib/forgejo";
-      extraGroups = ["wheel" "networkmanager"];
-      useDefaultShell = true;
-    };
-
-    services.openssh.enable = true;
 
     services.tailscale = {
       enable = true;

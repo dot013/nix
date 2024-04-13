@@ -22,7 +22,7 @@ in {
       default = lesser-secrets;
     };
   };
-  config = {
+  config = with lib; {
     environment.systemPackages = with pkgs; [
       sops
     ];
@@ -34,16 +34,16 @@ in {
       owner = config.users.users."guz".name;
     };
 
-    sops.secrets."forgejo/user1/name" = {
+    sops.secrets."forgejo/user1/name" = mkIf config.services.forgejo.enable {
       owner = config.services.forgejo.user;
     };
-    sops.secrets."forgejo/user1/password" = {
+    sops.secrets."forgejo/user1/password" = mkIf config.services.forgejo.enable {
       owner = config.services.forgejo.user;
     };
-    sops.secrets."forgejo/user1/email" = {
+    sops.secrets."forgejo/user1/email" = mkIf config.services.forgejo.enable {
       owner = config.services.forgejo.user;
     };
-    sops.secrets."forgejo/git-password" = {
+    sops.secrets."forgejo/git-password" = mkIf config.services.forgejo.enable {
       owner = config.services.forgejo.user;
     };
 
