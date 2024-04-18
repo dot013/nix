@@ -50,7 +50,6 @@
   services.flatpak.packages = [
     "nz.mega.MEGAsync"
     "com.bitwarden.desktop"
-    "org.prismlauncher.PrismLauncher"
     "org.mozilla.Thunderbird"
     "net.blockbench.Blockbench"
   ];

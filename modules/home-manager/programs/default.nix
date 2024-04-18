@@ -4,6 +4,7 @@
     ./krita
     ./neovim.nix
     ./obsidian
+    ./prismlauncher.nix
     ./wezterm.nix
   ];
   options = {};

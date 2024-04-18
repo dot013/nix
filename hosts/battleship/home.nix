@@ -19,6 +19,8 @@
 
   services.gnome-keyring.enable = true;
 
+  programs.prismlauncher.enable = true;
+
   fonts.fontconfig.enable = true;
 
   home.sessionVariables = {

@@ -26,6 +26,8 @@
     };
   };
 
+  programs.steam.enable = false;
+
   programs.gnupg.agent = {
     enable = true;
     pinentryPackage = pkgs.pinentry-gnome3;
