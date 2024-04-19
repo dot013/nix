@@ -9,11 +9,11 @@ creation_rules:
     key_groups:
       - age:
         - *primary
-  - path_regex: secrets/homelab-secrets.yaml$
+  - path_regex: secrets/spacestation-secrets.yaml$
     key_groups:
       - age:
         - *primary
-  - path_regex: secrets/homelab-secrets.lesser.json$
+  - path_regex: secrets/spacestation-secrets.lesser.json$
     key_groups:
       - age:
         - *primary

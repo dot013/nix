@@ -74,7 +74,7 @@
   in {
     nixosConfigurations = create-host [
       "battleship"
-      "homelab"
+      "spacestation"
     ];
   };
 }

@@ -6,7 +6,7 @@
   ...
 }: let
   lesser-secrets = with builtins;
-    fromJSON (readFile ../../secrets/homelab-secrets.lesser.decrypted.json);
+    fromJSON (readFile ../../secrets/spacestation-secrets.lesser.decrypted.json);
   jsonType = pkgs.formats.json {};
 in {
   imports = [
@@ -27,7 +27,7 @@ in {
       sops
     ];
 
-    sops.defaultSopsFile = ../../secrets/homelab-secrets.yaml;
+    sops.defaultSopsFile = ../../secrets/spacestation-secrets.yaml;
     sops.defaultSopsFormat = "yaml";
 
     sops.secrets."guz/password" = {

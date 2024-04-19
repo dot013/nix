@@ -14,7 +14,7 @@
 
   programs.nih.enable = true;
   programs.nih.flakeDir = "/home/guz/.nix";
-  programs.nih.host = "homelab";
+  programs.nih.host = "spacestation";
 
   profiles.locale.enable = true;
 
