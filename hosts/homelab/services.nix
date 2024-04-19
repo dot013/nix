@@ -70,6 +70,15 @@ in {
       actions = {
         enable = true;
         token = secrets.services.forgejo.actions-token;
+        url = "http://192.168.1.10:${toString secrets.services.forgejo.port}";
+      };
+      users = {
+        user1 = {
+          name = /. + config.sops.secrets."forgejo/user1/name".path;
+          password = /. + config.sops.secrets."forgejo/user1/password".path;
+          email = /. + config.sops.secrets."forgejo/user1/email".path;
+          admin = true;
+        };
       };
       settings = {
         server = {
