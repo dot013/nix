@@ -1,12 +1,12 @@
-{ config
-, lib
-, pkgs
-, utils
-, ...
-}:
-let
+{
+  config,
+  lib,
+  pkgs,
+  utils,
+  ...
+}: let
   cfg = config.services.forgejo;
-  yamlFormat = pkgs.formats.yaml { };
+  yamlFormat = pkgs.formats.yaml {};
   users = builtins.attrValues (builtins.mapAttrs
     (username: info: {
       name =
@@ -19,55 +19,55 @@ let
     })
     cfg.users);
   initList = l: lib.strings.concatStringsSep "," l;
-in
-{
-  imports = [ ];
+in {
+  imports = [];
   options.services.forgejo = with lib;
-    with lib.types; {
-      handleUndeclaredUsers = mkOption {
-        type = bool;
-        default = false;
-      };
-      users = mkOption {
-        type = attrsOf (submodule ({ config
-                                   , lib
-                                   , ...
-                                   }:
-          with lib;
-          with lib.types; {
-            options = {
-              name = mkOption {
-                type = nullOr (either str path);
-                default = null;
-              };
-              password = mkOption {
-                type = either str path;
-              };
-              email = mkOption {
-                type = either str path;
-              };
-              admin = mkOption {
-                type = bool;
-                default = false;
-              };
+  with lib.types; {
+    handleUndeclaredUsers = mkOption {
+      type = bool;
+      default = false;
+    };
+    users = mkOption {
+      type = attrsOf (submodule ({
+        config,
+        lib,
+        ...
+      }:
+        with lib;
+        with lib.types; {
+          options = {
+            name = mkOption {
+              type = nullOr (either str path);
+              default = null;
             };
-          }));
-        default = { };
+            password = mkOption {
+              type = either str path;
+            };
+            email = mkOption {
+              type = either str path;
+            };
+            admin = mkOption {
+              type = bool;
+              default = false;
+            };
+          };
+        }));
+      default = {};
+    };
+    actions = {
+      enable = mkOption {
+        type = bool;
+        default = cfg.enable;
       };
-      actions = {
-        enable = mkOption {
-          type = bool;
-          default = cfg.enable;
-        };
-        token = mkOption {
-          type = str;
-        };
-        url = mkOption {
-          type = str;
-          default = "http://localhost:${toString cfg.settings.server.HTTP_PORT}";
-        };
+      token = mkOption {
+        type = str;
+      };
+      url = mkOption {
+        type = str;
+        default = "http://localhost:${toString cfg.settings.server.HTTP_PORT}";
       };
     };
+  };
   config = with lib;
     mkIf cfg.enable {
       networking.firewall.allowedTCPPorts = mkIf cfg.settings.actions.ENABLED [
@@ -82,9 +82,9 @@ in
         useDefaultShell = true;
         group = cfg.group;
         isSystemUser = true;
-        extraGroups = [ "wheel" "networkmanager" ];
+        extraGroups = ["wheel" "networkmanager"];
       };
-      users.groups."${cfg.group}" = { };
+      users.groups."${cfg.group}" = {};
 
       services.forgejo = {
         user = mkDefault "git";
@@ -123,6 +123,7 @@ in
           name = mkDefault "${cfg.settings.DEFAULT.APP_NAME} - Actions";
           url = cfg.actions.url;
           labels = mkDefault [
+            "alpine-plus:docker://cicirello/alpine-plus-plus:3.19.1"
             /*
             Remember to install git on these images so actions/checkout can work,
             without it, the actions tries to use the /api/v3/repos/{user}/{repo}/tarball/{ref}
