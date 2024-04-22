@@ -6,6 +6,7 @@
   wallpaper = ../../../static/guz-wallpaper-default.png;
   desktop-boot = pkgs.writeShellScriptBin "desktop-boot" ''
     function eww() { ${config.programs.eww.package}/bin/eww "$@"; }
+    function hyprctl() { ${config.wayland.windowManager.hyprland.package}/bin/hyprctl; }
     function swww() { ${pkgs.swww}/bin/swww "$@"; }
     function swww-daemon() { ${pkgs.swww}/bin/swww-daemon "$@"; }
 
@@ -38,6 +39,31 @@ in {
   home.packages = with pkgs; [
     wl-clipboard
   ];
+
+  xdg.mime.enable = true;
+  xdg.mimeApps.enable = true;
+  xdg.mimeApps.defaultApplications = let
+    librewolf = "librewolf.desktop";
+  in {
+    "text/html" = librewolf;
+    "x-scheme-handler/http" = librewolf;
+    "x-scheme-handler/https" = librewolf;
+    "x-scheme-handler/about" = librewolf;
+    "x-scheme-handler/unknown" = librewolf;
+  };
+  xdg.desktopEntries = {
+    "librewolf" = {
+      name = "Librewolf";
+      exec = "${pkgs.librewolf}/bin/librewolf %U";
+      mimeType = [
+        "text/html"
+        "x-scheme-handler/http"
+        "x-scheme-handler/https"
+        "x-scheme-handler/about"
+        "x-scheme-handler/unknown"
+      ];
+    };
+  };
 
   programs.hyprland.enable = true;
   programs.hyprland.settings = let
