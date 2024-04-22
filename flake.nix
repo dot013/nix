@@ -74,6 +74,7 @@
   in {
     nixosConfigurations = create-host [
       "battleship"
+      "cruiser"
       "spacestation"
     ];
   };
