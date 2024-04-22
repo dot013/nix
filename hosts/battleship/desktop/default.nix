@@ -136,7 +136,7 @@ in {
       "7,monitor:${monitor-2}"
       "8,monitor:${monitor-2}"
       "9,monitor:${monitor-2}"
-      "0,monitor:${monitor-2},default:true"
+      "10,monitor:${monitor-2},default:true"
     ];
   };
 }
