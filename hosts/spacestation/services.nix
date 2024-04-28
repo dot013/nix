@@ -96,5 +96,8 @@ in {
       tailnetName = secrets.tailnet-name;
       deviceIp = secrets.device-ip;
     };
+
+    profiles.media-server.enable = true;
+
   };
 }
