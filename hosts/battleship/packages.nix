@@ -31,9 +31,6 @@
     };
   };
 
-  programs.obsidian.enable = true;
-  programs.obsidian.vaultCmd = true;
-  programs.obsidian.vaultDir = "${config.home.homeDirectory}/.vault";
 
   programs.krita.enable = true;
 
