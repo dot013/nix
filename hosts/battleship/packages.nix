@@ -31,6 +31,12 @@
     };
   };
 
+  home.file."${config.home.homeDirectory}".text = ''
+    prefix = $${HOME}/.npm-packages
+  '';
+  programs.zsh.initExtra = ''
+    export PATH=~/.npm-packages/bin:$PATH
+  '';
 
   programs.krita.enable = true;
 
