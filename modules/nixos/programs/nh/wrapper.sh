@@ -115,6 +115,14 @@ case "$1" in
 			;;
 		esac
 	;;
+	"secrets")
+		case "$2" in
+			"-d"|"--decrypt") decrypt_lesser_secrets
+			;;
+			"-r"|"--remove") remove_decrypted_secrets
+			;;
+		esac
+	;;
 	"--")
 		shift 1
 		nh "$@"
