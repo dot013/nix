@@ -130,6 +130,7 @@ case "$1" in
 		popd > /dev/null
 	;;
 	"secrets")
+		PREFIX="nh secrets"
 		case "$2" in
 			"-d"|"--decrypt") decrypt_lesser_secrets
 			;;
