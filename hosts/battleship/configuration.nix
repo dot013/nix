@@ -19,11 +19,16 @@
   profiles.locale.enable = true;
 
   programs.hyprland.enable = true;
+  # TEMPFIX: 2024-05-04 https://github.com/NixOS/nixpkgs/issues/308287#issuecomment-2093091892
+  # After the flake update in 2024-05-04, the screen blacked out after switch
+  programs.hyprland.envVars.enable = lib.mkForce false;
+
   services.xserver = {
     enable = true;
-    displayManager = {
-      sddm.enable = true;
-    };
+  };
+  services.displayManager = {
+    sddm.enable = true;
+    sddm.wayland.enable = true;
   };
 
   programs.steam.enable = false;
