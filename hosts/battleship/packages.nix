@@ -63,7 +63,6 @@
     ## Programs
     webcord-vencord
     gimp
-    inkscape
     pureref
     gamemode
     lutris
@@ -71,9 +70,6 @@
     libreoffice
     pinentry
     gnome.nautilus
-
-    ## Fonts
-    fira-code
-    (nerdfonts.override {fonts = ["FiraCode"];})
+    inkscape
   ];
 }

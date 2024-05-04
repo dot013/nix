@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./gfonts.nix
     ./gterminal.nix
     ./vault
   ];

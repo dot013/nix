@@ -8,6 +8,7 @@
 
   profiles.gterminal.enable = true;
   profiles.vault.enable = true;
+  profiles.gfonts.enable = true;
 
   programs.bash = {
     enable = true;
