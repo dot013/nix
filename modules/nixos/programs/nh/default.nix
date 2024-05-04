@@ -8,6 +8,7 @@
   wrapper = pkgs.writeShellScriptBin "nh" ''
     function alejandra() { ${pkgs.alejandra}/bin/alejandra "$@"; }
     function git() { ${pkgs.git}/bin/git "$@"; }
+    function lazygit() { ${pkgs.lazygit}/bin/lazygit "$@"; }
     function nh() { ${pkgs.nh}/bin/nh "$@"; }
     function shellharden() { ${pkgs.shellharden}/bin/shellharden "$@"; }
 
