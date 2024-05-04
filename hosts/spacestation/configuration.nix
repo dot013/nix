@@ -12,9 +12,8 @@
     ./hardware-configuration.nix
   ];
 
-  programs.nih.enable = true;
-  programs.nih.flakeDir = "/home/guz/.nix";
-  programs.nih.host = "spacestation";
+  programs.nh.enable = true;
+  programs.nh.flake = "/home/guz/nix";
 
   profiles.locale.enable = true;
 

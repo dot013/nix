@@ -15,10 +15,6 @@
   programs.nh.enable = true;
   programs.nh.flake = "/home/guz/nix";
 
-  programs.nih.enable = true;
-  programs.nih.flakeDir = "/home/guz/nix";
-  programs.nih.host = "battleship";
-
   profiles.locale.enable = true;
 
   programs.hyprland.enable = true;
