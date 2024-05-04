@@ -31,6 +31,15 @@
     sddm.wayland.enable = true;
   };
 
+  services.xserver.videoDrivers = ["amdgpu"];
+  boot.kernelModules = ["amdgpu"];
+  environment.variables = {
+    ROC_ENABLE_PRE_VEGA = "1";
+  };
+  hardware.opengl.extraPackages = with pkgs; [
+    rocmPackages.clr.icd
+  ];
+
   programs.steam.enable = false;
 
   programs.gnupg.agent = {
