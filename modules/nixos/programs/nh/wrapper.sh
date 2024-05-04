@@ -122,6 +122,13 @@ case "$1" in
 
 		popd > /dev/null
 	;;
+	"sync")
+		pushd "$FLAKE_DIR" > /dev/null
+
+		lazygit
+
+		popd > /dev/null
+	;;
 	"secrets")
 		case "$2" in
 			"-d"|"--decrypt") decrypt_lesser_secrets
