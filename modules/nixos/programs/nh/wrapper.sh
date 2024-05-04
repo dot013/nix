@@ -115,6 +115,13 @@ case "$1" in
 			;;
 		esac
 	;;
+	"edit")
+		pushd "$FLAKE_DIR" > /dev/null
+
+		"$EDITOR" .
+
+		popd > /dev/null
+	;;
 	"secrets")
 		case "$2" in
 			"-d"|"--decrypt") decrypt_lesser_secrets
