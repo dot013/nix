@@ -7,6 +7,12 @@
 }: {
   imports = [];
 
+  programs.brave.enable = true;
+  programs.brave.extensions = [
+    {id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";}
+    {id = "eimadpbcbfnmbkopoojfekhnkhdbieeh";}
+  ];
+
   librewolf = {
     enable = true;
     profiles = {
