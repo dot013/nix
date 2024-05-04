@@ -138,6 +138,13 @@ case "$1" in
 			;;
 		esac
 	;;
+	"format")
+		pushd "$FLAKE_DIR" > /dev/null
+
+		format_files
+
+		popd > /dev/null
+	;;
 	"--")
 		shift 1
 		nh "$@"
