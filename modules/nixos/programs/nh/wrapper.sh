@@ -58,10 +58,10 @@ function remove_decrypted_secrets() {
 	set -e
 	pushd "$FLAKE_DIR" > /dev/null
 
-	echo_info "$PREFIX - Removing descrypted files" \
-	git reset ./secrets/*.decrypted.*
-	for f in ./secrets/*.decrypted.*; do
+	echo_info "$PREFIX - Removing descrypted files"
+	for f in "$FLAKE_DIR"/secrets/*.decrypted.*; do
 		echo_info "$PREFIX - Removing descrypted files. file=$f"
+		git reset "$f"
 		rm "$f"
 	done
 
