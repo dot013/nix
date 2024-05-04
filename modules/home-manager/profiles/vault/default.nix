@@ -33,6 +33,14 @@ in {
         vault
       ];
 
+      home.file = {
+        "${cfg.vaultDir}/vault" = {
+          executable = true;
+          text = ''
+            ${vault}
+          '';
+        };
+      };
       systemd.user.services = mkIf cfg.periodicPush {
         vault-periodic-push = {
           Install = {
