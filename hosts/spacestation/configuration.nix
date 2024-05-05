@@ -50,7 +50,7 @@
 
   networking = {
     networkmanager.enable = true;
-    hostName = "homelab";
+    hostName = "spacestation";
     wireless.enable = false;
     dhcpcd.enable = true;
     defaultGateway = "192.168.1.1";
