@@ -17,6 +17,13 @@
 
   profiles.locale.enable = true;
 
+  hardware.opentabletdriver.enable = true;
+  # services.xserver.digimend.enable = true;
+  services.libinput.enable = true;
+  services.udev.extraRules = ''
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0660", GROUP="plugdev"
+  '';
+
   programs.hyprland.enable = true;
   # TEMPFIX: 2024-05-04 https://github.com/NixOS/nixpkgs/issues/308287#issuecomment-2093091892
   # After the flake update in 2024-05-04, the screen blacked out after switch
@@ -73,7 +80,7 @@
     hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
     home = import ./home.nix;
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager"];
+    extraGroups = ["wheel" "networkmanager" "plugdev"];
   };
 
   environment.sessionVariables = {
@@ -82,6 +89,7 @@
 
   environment.systemPackages = with pkgs; [
     git
+    libinput
   ];
 
   hardware.bluetooth.enable = true;

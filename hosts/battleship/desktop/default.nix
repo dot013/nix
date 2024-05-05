@@ -63,6 +63,10 @@ in {
         "x-scheme-handler/unknown"
       ];
     };
+    "pureref" = {
+      name = "Pureref";
+      exec = "${pkgs.pureref}/bin/pureref";
+    };
   };
 
   programs.hyprland.enable = true;
