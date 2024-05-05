@@ -38,8 +38,7 @@ in {
 
       services.adguardhome = {
         settings = {
-          http.address = "${cfg.settings.bind_host}:${toString cfg.settings.bind_port}";
-          dns.rewrites = builtins.attrValues (builtins.mapAttrs
+          filtering.rewrites = builtins.attrValues (builtins.mapAttrs
             (from: to: {
               domain = from;
               answer = to;

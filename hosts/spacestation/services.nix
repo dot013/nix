@@ -14,7 +14,8 @@ in {
       "*.${secrets.homelab-domain}" = deviceIp;
       "${secrets.homelab-domain}" = deviceIp;
     };
-    services.adguardhome.settings.bind_port = secrets.services.adguard.port;
+    services.adguardhome.openFirewall = true;
+    services.adguardhome.port = secrets.services.adguard.port;
     services.adguardhome.dns.filters = {
       "Hagezi's Multi PRO" = {
         url = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt";
