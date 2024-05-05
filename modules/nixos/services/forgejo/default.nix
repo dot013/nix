@@ -66,6 +66,18 @@ in {
         type = str;
         default = "http://localhost:${toString cfg.settings.server.HTTP_PORT}";
       };
+      labels = mkOption {
+        type = listOf str;
+        default = [
+          /*
+          Remember to install git on these images so actions/checkout can work,
+          without it, the actions tries to use the /api/v3/repos/{user}/{repo}/tarball/{ref}
+          api endpoint, which Gitea/Forgejo doesn't has.
+          */
+          "ubuntu-latest:docker://gitea/runner-images:ubuntu-latest-slim"
+          "ubuntu-latest-full:docker://gitea/runner-images:ubuntu-latest"
+        ];
+      };
     };
   };
   config = with lib;
@@ -122,16 +134,7 @@ in {
           token = mkDefault cfg.actions.token;
           name = mkDefault "${cfg.settings.DEFAULT.APP_NAME} - Actions";
           url = cfg.actions.url;
-          labels = mkDefault [
-            "alpine-plus:docker://cicirello/alpine-plus-plus:3.19.1"
-            /*
-            Remember to install git on these images so actions/checkout can work,
-            without it, the actions tries to use the /api/v3/repos/{user}/{repo}/tarball/{ref}
-            api endpoint, which Gitea/Forgejo doesn't has.
-            */
-            "ubuntu-latest:docker://gitea/runner-images:ubuntu-latest-slim"
-            "ubuntu-latest-full:docker://gitea/runner-images:ubuntu-latest"
-          ];
+          labels = mkDefault cfg.actions.labels;
           settings = {
             runner = {
               insecure = true;

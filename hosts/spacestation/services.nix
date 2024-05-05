@@ -72,6 +72,7 @@ in {
         enable = true;
         token = secrets.services.forgejo.actions-token;
         url = "http://192.168.1.10:${toString secrets.services.forgejo.port}";
+        labels = secrets.services.forgejo.actions-labels;
       };
       users = {
         user1 = {
