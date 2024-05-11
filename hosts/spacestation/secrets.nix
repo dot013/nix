@@ -34,6 +34,8 @@ in {
       owner = config.users.users."guz".name;
     };
 
+    sops.secrets."muse/secrets" = {};
+
     sops.secrets."forgejo/user1/name" = mkIf config.services.forgejo.enable {
       owner = config.services.forgejo.user;
     };

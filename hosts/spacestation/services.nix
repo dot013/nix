@@ -105,28 +105,40 @@ in {
       docker.enable = true;
       oci-containers = {
         backend = "docker";
-        containers.homarr = {
-          image = "ghcr.io/ajnart/homarr:latest";
-          autoStart = true;
-          ports = ["${toString secrets.services.homarr.port}:7575"];
-          volumes = [
-            "/var/run/docker.sock:/var/run/docker.sock"
-            "/var/lib/homarr/configs:/app/data/configs"
-            "/var/lib/homarr/data:/data"
-            "/var/lib/homarr/icons:/app/public/icons"
-          ];
-          environment = {
-            NODE_TLS_REJECT_UNAUTHORIZED = "0";
+        containers = {
+          homarr = {
+            image = "ghcr.io/ajnart/homarr:latest";
+            autoStart = true;
+            ports = ["${toString secrets.services.homarr.port}:7575"];
+            volumes = [
+              "/var/run/docker.sock:/var/run/docker.sock"
+              "/var/lib/homarr/configs:/app/data/configs"
+              "/var/lib/homarr/data:/data"
+              "/var/lib/homarr/icons:/app/public/icons"
+            ];
+            environment = {
+              NODE_TLS_REJECT_UNAUTHORIZED = "0";
+            };
           };
-        };
-        containers.dashdot = {
-          image = "mauricenino/dashdot";
-          autoStart = true;
-          ports = ["${toString secrets.services.dashdot.port}:3001"];
-          extraOptions = ["--privileged"];
-          volumes = [
-            "/:/mnt/host:ro"
-          ];
+          dashdot = {
+            image = "mauricenino/dashdot";
+            autoStart = true;
+            ports = ["${toString secrets.services.dashdot.port}:3001"];
+            extraOptions = ["--privileged"];
+            volumes = [
+              "/:/mnt/host:ro"
+            ];
+          };
+          muse-discord-bot = {
+            image = "codetheweb/muse:latest";
+            autoStart = true;
+            volumes = [
+              "/var/lib/muse/data:/data"
+            ];
+            environmentFiles = [
+              (/. + config.sops.secrets."muse/secrets".path)
+            ];
+          };
         };
       };
     };
