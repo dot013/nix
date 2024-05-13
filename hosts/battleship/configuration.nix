@@ -46,7 +46,7 @@
     rocmPackages.clr.icd
   ];
 
-  programs.steam.enable = false;
+  programs.steam.enable = true;
 
   programs.gnupg.agent = {
     enable = true;
