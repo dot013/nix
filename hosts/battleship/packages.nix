@@ -77,5 +77,7 @@
     pinentry
     gnome.nautilus
     inkscape
+    latexrun
+    zathura
   ];
 }

@@ -15,7 +15,7 @@ in {
       fonts.fontconfig.enable = true;
       home.packages = with pkgs; [
         (nerdfonts.override {fonts = ["FiraCode"];})
-        (google-fonts.override {fonts = ["Gloock" "Cinzel"];})
+        (google-fonts.override {fonts = ["Gloock" "Cinzel" "Inter" "Inter Tight"];})
         (stdenv.mkDerivation rec {
           pname = "calsans";
           version = "1.0.0";
