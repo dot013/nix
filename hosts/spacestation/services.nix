@@ -129,6 +129,11 @@ in {
               "/:/mnt/host:ro"
             ];
           };
+          ferdium-server = {
+            image = "linuxserver/ferdium:6.7.3";
+            autoStart = true;
+            ports = ["${toString secrets.services.ferdium-server.port}:3000"];
+          };
           muse-discord-bot = {
             image = "codetheweb/muse:latest";
             autoStart = true;
