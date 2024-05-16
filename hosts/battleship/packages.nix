@@ -81,5 +81,6 @@
     inkscape
     latexrun
     zathura
+    ferdium
   ];
 }
