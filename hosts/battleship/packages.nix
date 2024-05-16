@@ -61,6 +61,8 @@
     "com.bitwarden.desktop"
     "org.mozilla.Thunderbird"
     "net.blockbench.Blockbench"
+    "de.shorsh.discord-screenaudio"
+    "md.obsidian.Obsidian"
   ];
 
   nixpkgs.config.allowUnfree = true;
