@@ -1,10 +1,15 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
   ];
 
   programs.hyprland.enable = true;
   programs.hyprland.settings = let
     mod = "SUPER";
+    terminal = "${config.profiles.gterminal.emulator.bin}";
     librewolf = "${pkgs.librewolf}/bin/librewolf";
     rofi = "${pkgs.rofi}/bin/rofi";
     grim = "${pkgs.grim}/bin/grim";
@@ -18,8 +23,8 @@
       "${mod}, V, togglefloating"
       "${mod}, F, fullscreen"
       "${mod}, Z, togglesplit"
-      "${mod}, Q, exec, ${pkgs.wezterm}/bin/wezterm"
-      "${mod}, E, exec, ${pkgs.wezterm}/bin/wezterm start lf"
+      "${mod}, Q, exec, ${terminal}"
+      "${mod}, E, exec, ${terminal} -e lf"
       "${mod} + SHIFT, E, exec, ${librewolf}"
       "${mod}, S, exec, ${rofi} -show drun -show-icons"
       ",Print, exec, ${grim} -g \"$(${slurp} -d)\" - | ${wl-copy}"

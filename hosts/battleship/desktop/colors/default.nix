@@ -47,6 +47,30 @@ in {
       };
     };
 
+    programs.alacritty.settings.colors = with config.colorScheme.palette; rec {
+      primary = {
+        foreground = "#${base05}";
+        background = "#${base00}";
+      };
+
+      normal = {
+        black = "#${base02}";
+        red = "#${base08}";
+        green = "#${base0B}";
+        yellow = "#${base0A}";
+        blue = "#${base0D}";
+        magenta = "#${base0E}";
+        cyan = "#${base0C}";
+        white = "#${base05}";
+      };
+      bright = normal;
+
+      selection = {
+        text = primary.foreground;
+        background = primary.background;
+      };
+    };
+
     programs.wezterm.config.color_scheme = mkDefault "system";
     programs.wezterm.colorSchemes = mkIf (config.programs.wezterm.config.color_scheme == "system") {
       system = with config.colorScheme.palette; {

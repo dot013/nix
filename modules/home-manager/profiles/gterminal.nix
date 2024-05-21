@@ -13,6 +13,34 @@ in {
   options.profiles.gterminal = with lib;
   with lib.types; {
     enable = mkEnableOption "";
+    emulator = {
+      enable = mkOption {
+        type = bool;
+        default = true;
+      };
+      pkg = mkOption {
+        type = package;
+        default = pkgs.alacritty;
+      };
+      bin = mkOption {
+        type = str;
+        default = "${cfg.emulator.pkg}/bin/alacritty";
+      };
+    };
+    shell = {
+      pkg = mkOption {
+        type = package;
+        default = pkgs.zsh;
+      };
+      bin = mkOption {
+        type = str;
+        default = "${pkgs.zsh}/bin/zsh";
+      };
+      defaultArgs = mkOption {
+        type = listOf str;
+        default = ["--login"];
+      };
+    };
   };
   config = with lib;
     mkIf cfg.enable {
@@ -87,6 +115,7 @@ in {
           bind -T prefix \\ split-window -h -c "#''''{pane_current_path}"
         '';
         tmux.keyMode = "vi";
+        tmux.newSession = true;
         tmux.mouse = true;
         tmux.prefix = "C-Space";
         tmux.plugins = with pkgs; [
@@ -138,21 +167,35 @@ in {
             };
             extraConfig = '''';
           }
+          {
+            plugin = tmuxPlugins.resurrect;
+            extraConfig = ''
+              set -g @resurrect-strategy-nvim 'session'
+            '';
+          }
+          {
+            plugin = tmuxPlugins.continuum;
+            extraConfig = ''
+              set -g @continuum-boot 'on'
+            '';
+          }
         ];
-
-        tmux.shell = "${pkgs.zsh}/bin/zsh";
+        tmux.shell = cfg.shell.bin;
         tmux.terminal = "screen-256color";
 
-        wezterm = {
+        alacritty = {
           enable = mkDefault true;
-          config = {
-            default_prog = ["zsh" "--login"];
-            enable_wayland = false;
-            enable_tab_bar = false;
-            font = "lua wezterm.font(\"Fira Code\")";
-            font_size = 10;
+          settings = {
+            shell.program = cfg.shell.bin;
+            shell.args = cfg.shell.defaultArgs;
+            font = {
+              normal = {
+                family = "Fira Code";
+                style = "Regular";
+              };
+              size = 10;
+            };
           };
-          enableZshIntegration = true;
         };
 
         zsh.enable = true;
