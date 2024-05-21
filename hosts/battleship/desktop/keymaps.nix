@@ -5,6 +5,12 @@
   programs.hyprland.enable = true;
   programs.hyprland.settings = let
     mod = "SUPER";
+    librewolf = "${pkgs.librewolf}/bin/librewolf";
+    rofi = "${pkgs.rofi}/bin/rofi";
+    grim = "${pkgs.grim}/bin/grim";
+    slurp = "${pkgs.slurp}/bin/slurp";
+    wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
+    cliphist = "${pkgs.cliphist}/bin/cliphist";
   in {
     bind = [
       "${mod}, C, killactive"
@@ -14,9 +20,10 @@
       "${mod}, Z, togglesplit"
       "${mod}, Q, exec, ${pkgs.wezterm}/bin/wezterm"
       "${mod}, E, exec, ${pkgs.wezterm}/bin/wezterm start lf"
-      "${mod} + SHIFT, E, exec, ${pkgs.librewolf}/bin/librewolf"
-      "${mod}, S, exec, ${pkgs.rofi}/bin/rofi -show drun -show-icons"
-      ",Print, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp -d)\" - | ${pkgs.wl-clipboard}/bin/wl-copy"
+      "${mod} + SHIFT, E, exec, ${librewolf}"
+      "${mod}, S, exec, ${rofi} -show drun -show-icons"
+      ",Print, exec, ${grim} -g \"$(${slurp} -d)\" - | ${wl-copy}"
+      "${mod}, V, exec, ${cliphist} list | ${rofi} -dmenu | ${cliphist} decode | ${wl-copy}"
 
       "${mod}, 1, workspace, 1"
       "${mod}, 2, workspace, 2"
