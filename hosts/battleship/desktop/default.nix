@@ -38,6 +38,7 @@ in {
 
   home.packages = with pkgs; [
     wl-clipboard
+    cliphist
   ];
 
   xdg.mime.enable = true;
@@ -103,6 +104,8 @@ in {
     exec = [
       "${desktop-boot}/bin/desktop-boot"
       "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+      "${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store"
+      "${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store"
     ];
     general = {
       gaps_in = 5;
