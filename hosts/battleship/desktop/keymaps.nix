@@ -20,7 +20,7 @@
     bind = [
       "${mod}, C, killactive"
       "${mod}, M, exit"
-      "${mod}, V, togglefloating"
+      "${mod}, R, togglefloating"
       "${mod}, F, fullscreen"
       "${mod}, Z, togglesplit"
       "${mod}, Q, exec, ${terminal}"
