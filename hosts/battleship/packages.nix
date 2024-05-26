@@ -86,6 +86,7 @@
     latexrun
     zathura
     ferdium
+    act
     protonup
   ];
 }

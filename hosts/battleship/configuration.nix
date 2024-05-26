@@ -24,6 +24,8 @@
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0660", GROUP="plugdev"
   '';
 
+  virtualisation.docker.enable = true;
+
   programs.dconf.enable = true;
 
   programs.hyprland.enable = true;
