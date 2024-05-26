@@ -188,9 +188,13 @@ in {
           settings = {
             shell.program = cfg.shell.bin;
             shell.args = cfg.shell.defaultArgs;
+            window = {
+              padding.x = 5;
+              padding.y = 5;
+            };
             font = {
               normal = {
-                family = "Fira Code";
+                family = "FiraCode Nerd Font";
                 style = "Regular";
               };
               size = 10;
