@@ -65,6 +65,9 @@
     "md.obsidian.Obsidian"
   ];
 
+  home.sessionVariables = {
+    STEAM_EXTRA_COMPACT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+  };
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = _: true;
   home.packages = with pkgs; [
@@ -82,5 +85,6 @@
     latexrun
     zathura
     ferdium
+    protonup
   ];
 }

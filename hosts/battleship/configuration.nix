@@ -24,6 +24,8 @@
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", MODE="0660", GROUP="plugdev"
   '';
 
+  programs.dconf.enable = true;
+
   programs.hyprland.enable = true;
   /*
   # TEMPFIX: 2024-05-04 https://github.com/NixOS/nixpkgs/issues/308287#issuecomment-2093091892
@@ -44,11 +46,16 @@
   environment.variables = {
     ROC_ENABLE_PRE_VEGA = "1";
   };
-  hardware.opengl.extraPackages = with pkgs; [
-    rocmPackages.clr.icd
-  ];
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+    extraPackages = [pkgs.rocmPackages.clr.icd];
+  };
 
   programs.steam.enable = true;
+  programs.steam.wayland = true;
+  programs.gamemode.enable = true;
 
   programs.gnupg.agent = {
     enable = true;
