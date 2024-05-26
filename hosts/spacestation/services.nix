@@ -64,6 +64,8 @@ in {
       secrets.services;
     networking.firewall.allowedTCPPorts = [80 433];
 
+    profiles.minecraft-servers.enable = true;
+
     services.openssh.enable = true;
 
     services.forgejo = {
