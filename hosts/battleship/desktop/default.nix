@@ -39,6 +39,7 @@ in {
   home.packages = with pkgs; [
     wl-clipboard
     cliphist
+    libnotify
   ];
 
   xdg.mime.enable = true;
@@ -67,6 +68,13 @@ in {
     "pureref" = {
       name = "Pureref";
       exec = "${pkgs.pureref}/bin/pureref";
+    };
+  };
+
+  services.dunst.enable = true;
+  services.dunst.settings = {
+    global = {
+      follow = "mouse";
     };
   };
 
@@ -101,6 +109,9 @@ in {
       pseudotile = true;
       preserve_split = true;
     };
+    env = [
+      "WLR_DRM_DEVICES,${config.xdg.configHome}/hypr/card"
+    ];
     exec = [
       "${desktop-boot}/bin/desktop-boot"
       "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
