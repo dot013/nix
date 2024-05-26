@@ -65,6 +65,8 @@
     "md.obsidian.Obsidian"
   ];
 
+  services.easyeffects.enable = true;
+
   home.sessionVariables = {
     STEAM_EXTRA_COMPACT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
   };
