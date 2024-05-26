@@ -24,7 +24,7 @@ in {
       home.packages = with pkgs; mkIf (!cfg.flatpak) [prismlauncher];
       programs.java = mkIf (!cfg.flatpak) {
         enable = true;
-        package = mkDefault pkgs.jdk17;
+        package = mkDefault pkgs.jdk21;
       };
     };
 }
