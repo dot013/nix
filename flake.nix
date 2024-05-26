@@ -39,7 +39,8 @@
 
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     # Temp version pin because of issue https://github.com/hyprwm/Hyprland/issues/6132
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=cba1ade848feac44b2eda677503900639581c3f4";
+    # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=cba1ade848feac44b2eda677503900639581c3f4";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     xdg-desktop-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland";
     /*
     Note to self:
