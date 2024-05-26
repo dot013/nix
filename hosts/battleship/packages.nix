@@ -73,8 +73,7 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = _: true;
   home.packages = with pkgs; [
-    ## Programs
-    webcord-vencord
+    vesktop
     gimp
     pureref
     gamemode
