@@ -41,7 +41,7 @@
   nixpkgs.config.allowUnfreePredicate = _: true;
   home.packages = with pkgs; [
     ## Programs
-    webcord-vencord
+    vesktop
     pavucontrol
     pinentry
     gnome.nautilus
