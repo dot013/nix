@@ -8,14 +8,14 @@
 
   programs.hyprland.enable = true;
   programs.hyprland.settings = let
-    mod = "SUPER";
-    terminal = "${config.profiles.gterminal.emulator.bin}";
+    cliphist = "${pkgs.cliphist}/bin/cliphist";
     librewolf = "${pkgs.librewolf}/bin/librewolf";
+    terminal = "${config.profiles.gterminal.emulator.bin}";
+    mod = "SUPER";
     rofi = "${pkgs.rofi}/bin/rofi";
     grim = "${pkgs.grim}/bin/grim";
     slurp = "${pkgs.slurp}/bin/slurp";
     wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
-    cliphist = "${pkgs.cliphist}/bin/cliphist";
   in {
     bind = [
       "${mod}, C, killactive"
