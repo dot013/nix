@@ -7,6 +7,7 @@
   ];
 
   profiles.gterminal.enable = true;
+  profiles.vault.enable = true;
 
   programs.bash = {
     enable = true;
