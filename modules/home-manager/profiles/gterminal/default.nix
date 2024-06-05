@@ -5,10 +5,24 @@
   ...
 }: let
   cfg = config.profiles.gterminal;
+
+  PATHS =
+    lib.strings.concatMapStringsSep " "
+    (p: (builtins.replaceStrings ["~/"] ["${config.home.homeDirectory}/"] p))
+    cfg.sessionizer.paths;
+
+  sessionizer = pkgs.writeShellScriptBin "sessionizer" ''
+    function tmux() { ${pkgs.tmux}/bin/tmux "$@"; }
+    function fzf() { ${pkgs.fzf}/bin/fzf "$@"; }
+
+    PATHS="${PATHS}"
+
+    ${builtins.readFile ./sessionizer.sh}
+  '';
 in {
   imports = [
-    ../programs/wezterm.nix
-    ../programs/neovim.nix
+    ../../programs/wezterm.nix
+    ../../programs/neovim.nix
   ];
   options.profiles.gterminal = with lib;
   with lib.types; {
@@ -25,6 +39,16 @@ in {
       bin = mkOption {
         type = str;
         default = "${cfg.emulator.pkg}/bin/alacritty";
+      };
+    };
+    sessionizer = {
+      enable = mkOption {
+        type = bool;
+        default = true;
+      };
+      paths = mkOption {
+        type = listOf str;
+        default = [];
       };
     };
     shell = {
@@ -113,6 +137,12 @@ in {
 
           bind -T prefix / split-window -v -c "#''''{pane_current_path}"
           bind -T prefix \\ split-window -h -c "#''''{pane_current_path}"
+
+          ${
+            if cfg.sessionizer.enable
+            then "bind -T prefix g run-shell \"tmux neww ${sessionizer}/bin/sessionizer\""
+            else ""
+          }
         '';
         tmux.keyMode = "vi";
         tmux.newSession = true;
@@ -210,6 +240,8 @@ in {
 
           alias tmux="tmux -f ${config.xdg.configHome}/tmux/tmux.conf";
           alias lg="${pkgs.lazygit}/bin/lazygit";
+          alias goto="${sessionizer}/bin/sessionizer"
+          alias gt="${sessionizer}/bin/sessionizer"
         '';
       };
     };

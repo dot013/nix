@@ -1,7 +1,7 @@
 {...}: {
   imports = [
     ./gfonts.nix
-    ./gterminal.nix
+    ./gterminal
     ./vault
   ];
   options = {};
