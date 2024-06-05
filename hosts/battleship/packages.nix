@@ -5,7 +5,11 @@
   lib,
   ...
 }: {
-  imports = [];
+  imports = [
+    inputs.rec-sh.homeManagerModules.rec-sh
+  ];
+
+  programs.rec-sh.enable = true;
 
   programs.brave.enable = true;
   programs.brave.extensions = [

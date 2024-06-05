@@ -37,7 +37,7 @@
       flake = false;
     };
 
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    rec-sh.url = "git+file:///home/guz/.projects/dot013/rec.sh";
 
     # hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     # Temp version pin because of issue https://github.com/hyprwm/Hyprland/issues/6132

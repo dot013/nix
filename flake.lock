@@ -441,6 +441,22 @@
     },
     "nixpkgs_4": {
       "locked": {
+        "lastModified": 1716769173,
+        "narHash": "sha256-7EXDb5WBw+d004Agt+JHC/Oyh/KTUglOaQ4MNjBbo5w=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "9ca3f649614213b2aaf5f1e16ec06952fe4c2632",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
         "lastModified": 1712963716,
         "narHash": "sha256-WKm9CvgCldeIVvRz87iOMi8CFVB1apJlkUT4GGvA0iM=",
         "owner": "NixOS",
@@ -455,6 +471,24 @@
         "type": "github"
       }
     },
+    "rec-sh": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1717124269,
+        "narHash": "sha256-CboDW1jTZST8WwjUrrh/d+AiQ9Cz7MyDGuP4aUP4Ghw=",
+        "ref": "refs/heads/main",
+        "rev": "437b7475d283b76da1625e53648f6f2ed3b82378",
+        "revCount": 13,
+        "type": "git",
+        "url": "file:///home/guz/.projects/dot013/rec.sh"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///home/guz/.projects/dot013/rec.sh"
+      }
+    },
     "root": {
       "inputs": {
         "firefox-addons": "firefox-addons",
@@ -463,8 +497,8 @@
         "hyprland": "hyprland",
         "nix-colors": "nix-colors",
         "nix-index-database": "nix-index-database",
-        "nix-minecraft": "nix-minecraft",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_2",
+        "rec-sh": "rec-sh",
         "sops-nix": "sops-nix",
         "tmux-plugin-manager": "tmux-plugin-manager",
         "xdg-desktop-portal-hyprland": "xdg-desktop-portal-hyprland"
@@ -572,7 +606,7 @@
         "hyprland-protocols": "hyprland-protocols_2",
         "hyprlang": "hyprlang_2",
         "nixpkgs": "nixpkgs_4",
-        "systems": "systems_4"
+        "systems": "systems_3"
       },
       "locked": {
         "lastModified": 1716290197,
