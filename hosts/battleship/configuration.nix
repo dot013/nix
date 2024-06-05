@@ -52,7 +52,11 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
-    extraPackages = [pkgs.rocmPackages.clr.icd];
+    extraPackages = with pkgs; [
+      libvdpau-va-gl
+      rocmPackages.clr.icd
+      vaapiVdpau
+    ];
   };
 
   programs.steam.enable = true;

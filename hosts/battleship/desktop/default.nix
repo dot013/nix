@@ -141,6 +141,7 @@ in {
     windowrulev2 = [
       "float,class:^(org.inkscape.Inkscape)$"
       "tile,class:^(org.inkscape.Inkscape)$,title:(.*)(- Inkscape)$"
+      "float,class:^(blender)$,title:^(?!.*\ \-\ Blender).*$"
     ];
     workspace = [
       # Primary monitor
