@@ -2,14 +2,17 @@
   config,
   pkgs,
   inputs,
-  lib,
   ...
 }: {
   imports = [
+    inputs.dot013-environment.homeManagerModule
     inputs.rec-sh.homeManagerModules.rec-sh
   ];
 
   programs.rec-sh.enable = true;
+
+  dot013.environment.enable = true;
+  dot013.environment.tmux.sessionizer.paths = ["~/.projects"];
 
   programs.brave.enable = true;
   programs.brave.extensions = [

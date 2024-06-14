@@ -10,7 +10,7 @@
   programs.hyprland.settings = let
     cliphist = "${pkgs.cliphist}/bin/cliphist";
     librewolf = "${pkgs.librewolf}/bin/librewolf";
-    terminal = "${config.profiles.gterminal.emulator.bin}";
+    terminal = "${config.programs.alacritty.package}/bin/alacritty";
     mod = "SUPER";
     rofi = "${pkgs.rofi}/bin/rofi";
     grim = "${pkgs.grim}/bin/grim";

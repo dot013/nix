@@ -6,8 +6,6 @@
     ../../modules/home-manager/programs-old/librewolf
   ];
 
-  profiles.gterminal.enable = true;
-  profiles.gterminal.sessionizer.paths = ["~/.projects"];
   profiles.vault.enable = true;
   profiles.gfonts.enable = true;
 

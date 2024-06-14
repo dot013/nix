@@ -6,11 +6,15 @@
   ...
 }: {
   imports = [
+    inputs.dot013-environment.nixosModules.default
     ../../modules/nixos
     ./secrets.nix
     ./gpu-configuration.nix
     ./hardware-configuration.nix
   ];
+
+  dot013.environment.enable = true;
+  dot013.environment.interception-tools.device = "/dev/input/by-id/usb-BY_Tech_Gaming_Keyboard-event-kbd";
 
   programs.nh.enable = true;
   programs.nh.flake = "/home/guz/nix";
@@ -98,10 +102,6 @@
     extraGroups = ["wheel" "networkmanager" "plugdev"];
   };
 
-  environment.sessionVariables = {
-    EDITOR = "nvim";
-  };
-
   environment.systemPackages = with pkgs; [
     git
     libinput
@@ -111,24 +111,6 @@
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
   # hardware.pulseaudio.enable = true;
-
-  services.interception-tools = let
-    device = "/dev/input/by-id/usb-BY_Tech_Gaming_Keyboard-event-kbd";
-  in {
-    enable = true;
-    plugins = [pkgs.interception-tools-plugins.caps2esc];
-    udevmonConfig = ''
-      - JOB: "${pkgs.interception-tools}/bin/intercept -g ${device} | ${pkgs.interception-tools-plugins.caps2esc}/bin/caps2esc -m 2 | ${pkgs.interception-tools}/bin/uinput -d ${device}"
-        DEVICE:
-          EVENTS:
-            EV_KEY: [[KEY_CAPSLOCK, KEY_ESC]]
-          LINK: ${device}
-    '';
-  };
-
-  environment.pathsToLink = [" /share/zsh "];
-
-  programs.zsh.enable = true;
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.package = pkgs.nixVersions.nix_2_21;
