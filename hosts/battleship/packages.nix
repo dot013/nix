@@ -70,6 +70,7 @@
     "net.blockbench.Blockbench"
     "de.shorsh.discord-screenaudio"
     "md.obsidian.Obsidian"
+    "me.proton.Mail"
   ];
 
   services.easyeffects.enable = true;
