@@ -24,8 +24,6 @@
         amdvlk
         rocmPackages.clr.icd
       ];
-      driSupport = true;
-      driSupport32Bit = true;
     };
   };
 }

@@ -54,8 +54,6 @@
   };
   hardware.opengl = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
     extraPackages = with pkgs; [
       libvdpau-va-gl
       rocmPackages.clr.icd
@@ -105,6 +103,7 @@
   environment.systemPackages = with pkgs; [
     git
     libinput
+    polkit_gnome
   ];
 
   hardware.bluetooth.enable = true;

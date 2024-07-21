@@ -47,6 +47,7 @@
     hyprland = {
       type = "git";
       url = "https://github.com/hyprwm/Hyprland?ref=v0.41.1";
+      rev = "9e781040d9067c2711ec2e9f5b47b76ef70762b3";
       submodules = true;
     };
     xdg-desktop-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland/v1.3.2";
