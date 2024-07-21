@@ -217,6 +217,7 @@ in {
         })
         cfg.users;
 
+      home-manager.backupFileExtension = "backup~";
       home-manager.extraSpecialArgs = {inherit inputs;};
       home-manager.users =
         mapAttrs
