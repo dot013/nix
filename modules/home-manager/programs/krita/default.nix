@@ -13,7 +13,7 @@ in {
   };
   config = with lib;
     mkIf cfg.enable {
-      home.packages = with pkgs; [krita];
+      home.packages = with pkgs; [krita ffmpeg];
 
       home.file."${config.xdg.configHome}/kritarc".source = ./kritarc;
       home.file."${config.xdg.configHome}/kritashortcutsrc".source = ./kritashortcutsrc;
