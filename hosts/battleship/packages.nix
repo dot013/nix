@@ -96,5 +96,6 @@
     ferdium
     act
     protonup
+    showmethekey
   ];
 }
