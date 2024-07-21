@@ -143,7 +143,6 @@ in {
         };
       };
 
-      /*
       systemd.services."forgejo-users-setup" = with builtins; {
         script = ''
           function gum() { ${pkgs.gum}/bin/gum "$@"; }
@@ -194,14 +193,13 @@ in {
             '')
             users)}
         '';
-        wantedBy = [ "multi-user.target" ];
-        after = [ "forgejo.service" ];
+        wantedBy = ["multi-user.target"];
+        after = ["forgejo.service"];
         serviceConfig = {
           Type = "oneshot";
           User = cfg.user;
           Group = cfg.group;
         };
       };
-      */
     };
 }
