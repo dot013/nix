@@ -132,8 +132,6 @@
     ];
     nameservers = ["8.8.8.8" "1.1.1.1"];
   };
-
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {

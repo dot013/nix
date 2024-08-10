@@ -2,10 +2,11 @@
   description = "Nixos config flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -20,11 +21,15 @@
     };
 
     # Declaratively install flatpaks
-    flatpaks.url = "github:gmodena/nix-flatpak"; # Fork is being used until #24 merges
+    flatpaks = {
+      url = "github:gmodena/nix-flatpak"; # Fork is being used until #24 merges
+    };
     # flatpaks.url = "github:Tomaszal/nix-flatpak/feature/overrides";
 
     # Used for theming the OS, see modules/home-manager/theme.nix
-    nix-colors.url = "github:misterio77/nix-colors";
+    nix-colors = {
+      url = "github:misterio77/nix-colors";
+    };
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -37,20 +42,33 @@
       flake = false;
     };
 
-    rec-sh.url = "git+file:///home/guz/.projects/dot013/rec.sh";
+    rec-sh = {
+      url = "github:dot013/rec.sh";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    # dot013-environment.url = "git+file:///home/guz/.projects/dot013/environment";
-    dot013-environment.url = "github:dot013/environment";
+    dot013-environment = {
+      # url = "git+file:///home/guz/.projects/dot013/environment";
+      url = "github:dot013/environment";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     hyprland = {
       type = "git";
-      url = "https://github.com/hyprwm/Hyprland?ref=v0.41.1";
-      rev = "9e781040d9067c2711ec2e9f5b47b76ef70762b3";
+      url = "https://github.com/hyprwm/Hyprland?ref=v0.41.2";
+      rev = "918d8340afd652b011b937d29d5eea0be08467f5";
       submodules = true;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-    xdg-desktop-portal-hyprland.url = "github:hyprwm/xdg-desktop-portal-hyprland/v1.3.2";
+    xdg-desktop-portal-hyprland = {
+      url = "github:hyprwm/xdg-desktop-portal-hyprland/v1.3.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     /*
     Note to self:
     The last commit with working screen share, as the time of writing this, was
@@ -66,6 +84,7 @@
     self,
     nixpkgs,
     home-manager,
+    nixpkgs-unstable,
     ...
   } @ inputs: let
     create-host = configs:

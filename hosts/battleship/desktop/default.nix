@@ -133,7 +133,7 @@ in {
       follow_mouse = 1;
       sensitivity = 0;
     };
-    master.new_is_master = true;
+    # master.new_is_master = true;
     monitor = [
       "${monitor-1},2560x1080,0x0,1"
       "${monitor-2},1920x1080,2560x0,1"
