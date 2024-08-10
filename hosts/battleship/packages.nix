@@ -89,6 +89,7 @@
     lutris
     pavucontrol
     libreoffice
+    lmms
     pinentry
     gnome.nautilus
     inkscape
