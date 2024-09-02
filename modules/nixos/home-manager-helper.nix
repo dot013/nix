@@ -236,7 +236,10 @@ in {
                 if value ? home ? packages
                 then value.home.packages
                 else []
-              );
+              )
+              ++ [
+                pkgs.nil
+              ];
 
             programs.home-manager.enable = true;
 
