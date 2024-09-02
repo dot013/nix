@@ -14,6 +14,7 @@ in {
     mkIf cfg.enable {
       fonts.fontconfig.enable = true;
       home.packages = with pkgs; [
+        cantarell-fonts
         google-fonts
         (nerdfonts.override {fonts = ["FiraCode"];})
         (stdenv.mkDerivation rec {
