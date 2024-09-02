@@ -51,8 +51,6 @@
     export PATH=~/.npm-packages/bin:$PATH
   '';
 
-  programs.krita.enable = true;
-
   services.flatpak.enable = true;
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
@@ -67,37 +65,19 @@
     "nz.mega.MEGAsync"
     "com.bitwarden.desktop"
     "org.mozilla.Thunderbird"
-    "net.blockbench.Blockbench"
-    "de.shorsh.discord-screenaudio"
-    "md.obsidian.Obsidian"
-    "me.proton.Mail"
-    "org.beeref.BeeRef"
   ];
 
   services.easyeffects.enable = true;
 
-  home.sessionVariables = {
-    STEAM_EXTRA_COMPACT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
-  };
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = _: true;
   home.packages = with pkgs; [
-    blender
-    vesktop
-    gimp
-    gamemode
-    lutris
     pavucontrol
     libreoffice
-    lmms
     pinentry
     gnome.nautilus
-    inkscape
-    latexrun
-    zathura
     ferdium
     act
-    protonup
     showmethekey
   ];
 }

@@ -16,7 +16,6 @@
               :initial "00/00"
   `date +%d/%m`)
 
-
 (defwidget empty [] "")
 
 (defwidget day []
@@ -33,12 +32,12 @@
        :tooltip "${value-text != "" ? value-text : value}"
        :space-evenly false
        :class "metric"
-    (box :orientation "h" 
+    (box :orientation "h"
          :class "label"
-      (eventbox :active {onclick != ""} 
-                :width 15 
+      (eventbox :active {onclick != ""}
+                :width 15
                 :cursor "pointer"
-                :onclick onclick 
+                :onclick onclick
         label))
     (scale :min 0
            :max 101
@@ -95,8 +94,8 @@
                :halign "end"
                :class "leftstuff"
                :space-evenly false
-      (metric :label volume-label 
-              :value volume 
+      (metric :label volume-label
+              :value volume
               :value-text "${volume-label}  Volume ${volume}%"
               :onclick volume-toggle
               :onchange volume-set)))))
@@ -121,13 +120,13 @@
                :halign "start"
                :class "rightstuff"
       (metric :label ""
-              :value "${EWW_RAM.used_mem_perc}" 
+              :value "${EWW_RAM.used_mem_perc}"
               :value-text "   Ram ${round(EWW_RAM.used_mem_perc, 2)}%")
       (metric :label ""
-              :value "${EWW_CPU.avg}" 
+              :value "${EWW_CPU.avg}"
               :value-text "   CPU ${round(EWW_CPU.avg, 2)}%")
       (metric :label "󰨣"
-              :value "${EWW_DISK["/"].used_perc}" 
+              :value "${EWW_DISK["/"].used_perc}"
               :value-text "󰨣   Disk ${round(EWW_DISK["/"].used_perc, 2)}%")
       (empty)
       (empty))
@@ -136,10 +135,10 @@
          :class "middlestuff"
          :space-evenly false
       (box :class "season"
-        (season)) 
+        (season))
       (label :tooltip "󱣖  ${temperature}°C -   ${wind}km/h"
            :class "temperature"
-           :text "${round(temperature, 0)}󰔄") 
+           :text "${round(temperature, 0)}󰔄")
       (label :tooltip "󰖗  ${rain}mm - 󰖌 ${precipitation}mm"
            :class "rain"
            :text "${round(precipitation, 2)}mm"))
@@ -149,3 +148,52 @@
       (empty)
       (workspaces :workspace "${active-workspace - 5}")))))
 
+  (defwindow bar-full
+           :monitor 0
+           :geometry (geometry :x "0%"
+                               :y "0%"
+                               :width "100%"
+                               :height "20px"
+                               :anchor "top center")
+           :stacking "fg"
+           :reserve (struts :distance "40px" :side "top")
+           :windowtype "dock"
+           :wm-ignore false
+           :exclusive true
+  (box :orientation "h"
+       :class "wrapper"
+  (centerbox :orientation "h"
+             :class "bar"
+    (box :orientation "h"
+               :halign "start"
+               :class "rightstuff"
+      (workspaces :workspace active-workspace)
+      (box :orientation "h"
+           :halign "start"
+           :class "bar-full-volume-align"
+           (metric :label volume-label
+              :value volume
+              :value-text "${volume-label}  Volume ${volume}%"
+              :onclick volume-toggle
+              :onchange volume-set))
+      (metric :label "󰂄"
+              :value "${battery}"
+              :value-text "󰂄   Battery ${battery}%"))
+    (box :orientation "h"
+               :halign "center"
+               :class "middlestuff"
+      (day)
+      (season))
+    (box :orientation "h"
+               :halign "end"
+               :class "leftstuff"
+               :space-evenly false
+      (metric :label ""
+              :value "${EWW_RAM.used_mem_perc}"
+              :value-text "   Ram ${round(EWW_RAM.used_mem_perc, 2)}%")
+      (metric :label ""
+              :value "${EWW_CPU.avg}"
+              :value-text "   CPU ${round(EWW_CPU.avg, 2)}%")
+      (metric :label "󰨣"
+              :value "${EWW_DISK["/"].used_perc}"
+              :value-text "󰨣   Disk ${round(EWW_DISK["/"].used_perc, 2)}%")))))

@@ -59,6 +59,10 @@
     	echo $rain
     fi
   '';
+  eww-battery = pkgs.writeShellScriptBin "eww-battery" ''
+    BAT="$(ls /sys/class/power_supply | grep BAT | head -n 1)"
+    cat "/sys/class/power_supply/$BAT/capacity"
+  '';
 in {
   imports = [];
   options = {};
@@ -89,6 +93,9 @@ in {
       "${eww-weather}/bin/eww-weather --precipitation")
       (defpoll rain :interval "15m" :initial "00.0"
       "${eww-weather}/bin/eww-weather --rain")
+
+      (defpoll battery :interval "1s"
+      "${eww-battery}/bin/eww-battery")
     '';
 
     home.file."${ewwDir}/vars.scss".text = ''

@@ -101,6 +101,7 @@
   in {
     nixosConfigurations = create-host [
       "battleship"
+      "fighter"
       # "cruiser"
       # "spacestation"
     ];

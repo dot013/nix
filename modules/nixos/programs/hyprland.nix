@@ -6,6 +6,7 @@
   ...
 }: let
   cfg = config.programs.hyprland;
+  system = pkgs.stdenv.hostPlatform.system;
 in {
   imports = [];
   options.programs.hyprland = with lib;
@@ -21,12 +22,12 @@ in {
         xwayland.enable = mkDefault true;
         package = mkDefault (
           if cfg.useFlakes
-          then inputs.hyprland.packages."${pkgs.system}".hyprland
+          then inputs.hyprland.packages."${system}".hyprland
           else pkgs.hyprland
         );
         portalPackage = mkDefault (
           if cfg.useFlakes
-          then inputs.xdg-desktop-portal-hyprland.packages."${pkgs.system}".xdg-desktop-portal-hyprland
+          then inputs.xdg-desktop-portal-hyprland.packages."${system}".xdg-desktop-portal-hyprland
           else pkgs.xdg-desktop-portal-hyprland
         );
       };
