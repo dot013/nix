@@ -71,6 +71,7 @@
     "de.shorsh.discord-screenaudio"
     "md.obsidian.Obsidian"
     "me.proton.Mail"
+    "org.beeref.BeeRef"
   ];
 
   services.easyeffects.enable = true;
