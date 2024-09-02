@@ -50,7 +50,7 @@
     dot013-environment = {
       # url = "git+file:///home/guz/.projects/dot013/environment";
       url = "github:dot013/environment";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     nix-minecraft = {
@@ -63,11 +63,9 @@
       url = "https://github.com/hyprwm/Hyprland?ref=v0.41.2";
       rev = "918d8340afd652b011b937d29d5eea0be08467f5";
       submodules = true;
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     xdg-desktop-portal-hyprland = {
       url = "github:hyprwm/xdg-desktop-portal-hyprland/v1.3.2";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     /*
     Note to self:
