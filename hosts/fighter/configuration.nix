@@ -86,6 +86,11 @@
   };
   nix.package = pkgs.nixVersions.nix_2_21;
 
+  services.logind = {
+    lidSwitch = "suspend";
+    lidSwitchExternalPower = "lock";
+  };
+
   networking = {
     networkmanager.enable = true;
     hostName = "fighter";
