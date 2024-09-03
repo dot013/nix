@@ -24,6 +24,8 @@
   programs.dconf.enable = true;
 
   programs.hyprland.enable = true;
+  programs.hyprland.package =
+    inputs.hyprland.packages.${pkgs.system}.hyprland.override {};
 
   programs.gnupg.agent = {
     enable = true;
@@ -81,8 +83,8 @@
 
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
-    substituters = ["https://hyprland.cachix.org"];
-    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    # substituters = ["https://hyprland.cachix.org"];
+    # trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
   };
   nix.package = pkgs.nixVersions.nix_2_21;
 
