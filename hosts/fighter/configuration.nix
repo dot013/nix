@@ -24,8 +24,9 @@
   programs.dconf.enable = true;
 
   programs.hyprland.enable = true;
-  programs.hyprland.package =
-    inputs.hyprland.packages.${pkgs.system}.hyprland.override {};
+  programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland.override {
+    legacyRenderer = true;
+  };
 
   programs.gnupg.agent = {
     enable = true;
@@ -41,6 +42,13 @@
   services.displayManager = {
     sddm.enable = true;
     sddm.wayland.enable = true;
+  };
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      # vpl-gpu-rt
+      onevpl-intel-gpu
+    ];
   };
 
   services.flatpak.enable = true;
