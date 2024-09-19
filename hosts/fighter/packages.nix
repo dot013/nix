@@ -34,11 +34,17 @@
           "privacy.clearOnShutdown.cookies" = false;
         };
         extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
-          darkreader
           canvasblocker
-          smart-referer
+          clearurls
+          darkreader
+          facebook-container
+          multi-account-containers
           libredirect
+          simplelogin
+          smart-referer
+          sponsorblock
           tridactyl
+          ublock-origin
         ];
       };
     };
