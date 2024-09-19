@@ -40,6 +40,7 @@
 
   services.xserver = {
     enable = true;
+    desktopManager.xfce.enable = true;
   };
   services.displayManager = {
     sddm.enable = true;
@@ -149,6 +150,7 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = _: true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
