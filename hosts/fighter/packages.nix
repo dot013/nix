@@ -79,5 +79,6 @@
     ferdium
     act
     showmethekey
+    bluetuith
   ];
 }

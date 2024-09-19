@@ -107,5 +107,6 @@
     act
     protonup
     showmethekey
+    bluetuith
   ];
 }

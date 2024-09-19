@@ -45,5 +45,7 @@
     ## Fonts
     fira-code
     (nerdfonts.override {fonts = ["FiraCode"];})
+
+    blutuith
   ];
 }
