@@ -116,8 +116,8 @@
     hostName = "fighter";
     wireless.enable = false;
     dhcpcd.enable = true;
-    defaultGateway = "${config.battleship-secrets.lesser.devices.defaultGateway}";
-    interfaces."enp6s0".ipv4.addresses = [
+    defaultGateway = "192.168.1.1";
+    interfaces."wlp2s0".ipv4.addresses = [
       {
         address = "${config.battleship-secrets.lesser.devices.figther}";
         prefixLength = 24;
@@ -153,10 +153,10 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [80 433];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
