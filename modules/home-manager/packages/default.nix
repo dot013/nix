@@ -1,8 +1,6 @@
 {...}: {
   imports = [
-    ./programs
-    ./profiles
-    ./packages
+    ./lmms.nix
   ];
   options = {};
   config = {};

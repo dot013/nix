@@ -129,6 +129,10 @@ in {
               name = mkOption {
                 type = passwdEntry str;
               };
+              openssh = mkOption {
+                type = anything;
+                default = {};
+              };
               packages = mkOption {
                 type = listOf package;
                 default = [];
@@ -186,6 +190,7 @@ in {
             isSystemUser
             linger
             name
+            openssh
             pamMount
             shell
             subGidRanges
@@ -217,7 +222,7 @@ in {
         })
         cfg.users;
 
-      home-manager.backupFileExtension = "backup~";
+      home-manager.backupFileExtension = "backup";
       home-manager.extraSpecialArgs = {inherit inputs;};
       home-manager.users =
         mapAttrs
