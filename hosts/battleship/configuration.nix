@@ -159,6 +159,10 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.openssh.settings = {
+    PasswordAuthentication = false;
+    PermitRootLogin = "forced-commands-only";
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

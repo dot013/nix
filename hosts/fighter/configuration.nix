@@ -117,7 +117,7 @@
     hostName = "fighter";
     wireless.enable = false;
     dhcpcd.enable = true;
-    defaultGateway = "192.168.1.1";
+    defaultGateway = "${config.battleship-secrets.lesser.devices.defaultGateway}";
     interfaces."wlp2s0".ipv4.addresses = [
       {
         address = "${config.battleship-secrets.lesser.devices.figther}";
@@ -154,6 +154,11 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.openssh.settings = {
+    PasswordAuthentication = false;
+    PermitRootLogin = "forced-commands-only";
+  };
+
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [80 433];
   # networking.firewall.allowedUDPPorts = [ ... ];
