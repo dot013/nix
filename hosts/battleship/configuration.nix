@@ -118,6 +118,11 @@
     trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
   };
   nix.package = pkgs.nixVersions.nix_2_21;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 10d";
+  };
 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [];

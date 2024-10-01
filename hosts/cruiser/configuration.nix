@@ -75,6 +75,11 @@
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.package = pkgs.nixVersions.nix_2_21;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 10d";
+  };
 
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [];
