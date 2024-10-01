@@ -12,7 +12,9 @@
   ];
 
   dot013.environment.enable = true;
-  dot013.environment.interception-tools.device = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
+  dot013.environment.interception-tools.devices = [
+    "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+  ];
 
   programs.nh.enable = true;
   programs.nh.flake = "/home/guz/nix";
