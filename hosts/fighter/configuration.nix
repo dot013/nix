@@ -78,6 +78,9 @@
     home = import ./home.nix;
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager" "plugdev"];
+    openssh.authorizedKeys.keyFiles = [
+      ../../.ssh/guz-figther.pub
+    ];
   };
 
   environment.systemPackages = with pkgs; [

@@ -101,6 +101,9 @@
     home = import ./home.nix;
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager" "plugdev"];
+    openssh.authorizedKeys.keyFiles = [
+      ../../.ssh/guz-battleship.pub
+    ];
   };
 
   environment.systemPackages = with pkgs; [
