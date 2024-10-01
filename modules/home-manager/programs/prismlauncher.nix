@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  inputs,
   pkgs,
   ...
 }: let
@@ -21,10 +22,14 @@ in {
         packages = ["org.prismlauncher.PrismLauncher"];
       };
 
-      home.packages = with pkgs; mkIf (!cfg.flatpak) [prismlauncher];
+      home.packages = with pkgs;
+        mkIf (!cfg.flatpak) [
+          prismlauncher
+          glfw
+        ];
       programs.java = mkIf (!cfg.flatpak) {
         enable = true;
-        package = mkDefault pkgs.jdk21;
+        package = mkDefault pkgs.jdk22;
       };
     };
 }
