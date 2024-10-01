@@ -106,11 +106,13 @@
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    libinput
-    polkit_gnome
-  ];
+  environment.systemPackages = with pkgs;
+    [
+      git
+      libinput
+      polkit_gnome
+    ]
+    ++ (builtins.map (p: pkgs."${p}") config.battleship-secrets.lesser.packages);
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
