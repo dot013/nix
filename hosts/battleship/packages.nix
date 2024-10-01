@@ -96,6 +96,7 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = _: true;
   home.packages = with pkgs; [
+    chromium
     blender
     vesktop
     gimp
@@ -103,7 +104,7 @@
     lutris
     pavucontrol
     libreoffice
-    lmms
+    # lmms
     pinentry
     gnome.nautilus
     inkscape
