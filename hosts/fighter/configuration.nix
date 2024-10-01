@@ -119,7 +119,7 @@
     defaultGateway = "${config.battleship-secrets.lesser.devices.defaultGateway}";
     interfaces."enp6s0".ipv4.addresses = [
       {
-        address = "${config.battleship-secrets.lesser.devices.fighter}";
+        address = "${config.battleship-secrets.lesser.devices.figther}";
         prefixLength = 24;
       }
     ];
