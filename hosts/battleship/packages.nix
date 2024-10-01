@@ -3,7 +3,7 @@
   pkgs,
   inputs,
   ...
-}: {
+} @ args: {
   imports = [
     inputs.dot013-environment.homeManagerModule
     inputs.rec-sh.homeManagerModules.rec-sh
@@ -13,6 +13,14 @@
 
   dot013.environment.enable = true;
   dot013.environment.tmux.sessionizer.paths = ["~/.projects"];
+  dot013.environment.ssh.devices = {
+    "spacestation" = {
+      hostname = "${args.osConfig.battleship-secrets.lesser.devices.spacestation}";
+    };
+    "figther" = {
+      hostname = "${args.osConfig.battleship-secrets.lesser.devices.figther}";
+    };
+  };
 
   programs.brave.enable = true;
   programs.brave.extensions = [

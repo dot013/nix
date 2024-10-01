@@ -137,10 +137,10 @@
     hostName = "battleship";
     wireless.enable = false;
     dhcpcd.enable = true;
-    defaultGateway = "192.168.1.1";
+    defaultGateway = "${config.battleship-secrets.lesser.devices.defaultGateway}";
     interfaces."enp6s0".ipv4.addresses = [
       {
-        address = "192.168.1.13";
+        address = "${config.battleship-secrets.lesser.devices.battleship}";
         prefixLength = 24;
       }
     ];
