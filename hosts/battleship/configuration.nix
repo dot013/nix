@@ -16,8 +16,8 @@
   dot013.environment.enable = true;
   dot013.environment.interception-tools.devices = [
     "/dev/input/by-id/usb-BY_Tech_Gaming_Keyboard-event-kbd"
-  ];
-  # dot013.environment.interception-tools.device = "/dev/input/by-id/usb-Compx_2.4G_Wireless_Receiver-event-kbd";
+    "/dev/input/by-id/usb-Compx_2.4G_Wireless_Receiver-event-kbd"
+  ]; # dot013.environment.interception-tools.device = "/dev/input/by-id/usb-Compx_2.4G_Wireless_Receiver-event-kbd";
 
   programs.nh.enable = true;
   programs.nh.flake = "/home/guz/nix";
