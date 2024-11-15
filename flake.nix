@@ -49,7 +49,7 @@
 
     dot013-environment = {
       # url = "git+file:///home/guz/.projects/dot013/environment";
-      url = "github:dot013/environment";
+      url = "git+https://forge.capytal.company/dot013/environment";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
