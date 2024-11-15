@@ -126,7 +126,7 @@
         prefixLength = 24;
       }
     ];
-    nameservers = ["8.8.8.8" "1.1.1.1"];
+    nameservers = ["9.9.9.9"];
   };
 
   # Enable sound with pipewire.

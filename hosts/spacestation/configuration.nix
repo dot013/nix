@@ -60,6 +60,7 @@
         prefixLength = 24;
       }
     ];
+    nameservers = ["9.9.9.9"];
   };
 
   sound.enable = true;
