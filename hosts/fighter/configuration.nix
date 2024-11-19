@@ -122,6 +122,12 @@
     defaultGateway = "${config.battleship-secrets.lesser.devices.defaultGateway}";
     interfaces."wlp2s0".ipv4.addresses = [
       {
+        address = "${config.battleship-secrets.lesser.devices.figther-wifi}";
+        prefixLength = 24;
+      }
+    ];
+    interfaces."enp1s0".ipv4.addresses = [
+      {
         address = "${config.battleship-secrets.lesser.devices.figther}";
         prefixLength = 24;
       }
