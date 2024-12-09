@@ -21,6 +21,5 @@ in {
   config = with lib;
     mkIf cfg.enable {
       programs.nh.package = wrapper;
-      programs.nh.clean.enable = mkDefault true;
     };
 }
