@@ -51,6 +51,10 @@
       # url = "git+file:///home/guz/.projects/dot013/environment";
       url = "git+https://forge.capytal.company/dot013/environment";
     };
+    dot013-neovim = {
+      # url = "git+file:///home/guz/.projects/dot013/nvim";
+      url = "git+https://forge.capytal.company/dot013/nvim";
+    };
 
     nix-minecraft = {
       url = "github:Infinidoge/nix-minecraft";

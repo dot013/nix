@@ -7,6 +7,7 @@
   imports = [
     inputs.dot013-environment.homeManagerModule
     inputs.rec-sh.homeManagerModules.rec-sh
+    inputs.dot013-neovim.homeManagerModules.neovim
   ];
 
   programs.rec-sh.enable = true;
