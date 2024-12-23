@@ -134,6 +134,8 @@
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [];
 
+  programs.kdeconnect.enable = true;
+
   networking = {
     networkmanager.enable = true;
     hostName = "battleship";
@@ -147,6 +149,16 @@
       }
     ];
     nameservers = ["9.9.9.9"];
+    firewall = let
+      kde-connect = {
+        from = 1714;
+        to = 1764;
+      };
+    in {
+      enable = true;
+      allowedTCPPortRanges = [kde-connect];
+      allowedUDPPortRanges = [kde-connect];
+    };
   };
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
