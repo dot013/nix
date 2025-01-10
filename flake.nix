@@ -48,11 +48,15 @@
     };
 
     dot013-environment = {
-      # url = "git+file:///home/guz/.projects/dot013/environment";
+      # url = "git+file:///home/guz/.projects/dot013-environment";
       url = "git+https://forge.capytal.company/dot013/environment";
     };
     dot013-neovim = {
-      # url = "git+file:///home/guz/.projects/dot013/nvim";
+      # url = "git+file:///home/guz/.projects/dot013-nvim";
+      url = "git+https://forge.capytal.company/dot013/nvim";
+    };
+    dot013-shell = {
+      # url = "git+file:///home/guz/.projects/dot013-shell";
       url = "git+https://forge.capytal.company/dot013/nvim";
     };
 

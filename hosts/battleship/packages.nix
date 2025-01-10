@@ -5,8 +5,9 @@
   ...
 } @ args: {
   imports = [
-    inputs.dot013-environment.homeManagerModule
     inputs.rec-sh.homeManagerModules.rec-sh
+
+    inputs.dot013-environment.homeManagerModule
     inputs.dot013-neovim.homeManagerModules.neovim
   ];
 
@@ -96,25 +97,31 @@
   };
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = _: true;
-  home.packages = with pkgs; [
-    chromium
-    blender
-    vesktop
-    gimp
-    gamemode
-    lutris
-    pavucontrol
-    libreoffice
-    # lmms
-    pinentry
-    gnome.nautilus
-    inkscape
-    latexrun
-    zathura
-    ferdium
-    act
-    protonup
-    showmethekey
-    bluetuith
-  ];
+  home.packages = with pkgs;
+    [
+      chromium
+      blender
+      vesktop
+      gimp
+      gamemode
+      lutris
+      pavucontrol
+      libreoffice
+      # lmms
+      pinentry
+      gnome.nautilus
+      inkscape
+      latexrun
+      zathura
+      ferdium
+      act
+      protonup
+      showmethekey
+      bluetuith
+    ]
+    ++ (with inputs.dot013-shell.packages.${pkgs.system}; [
+      neovim
+      yazi
+      zellij
+    ]);
 }

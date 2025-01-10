@@ -5,9 +5,10 @@
   ...
 } @ args: {
   imports = [
-    inputs.dot013-environment.homeManagerModule
     inputs.rec-sh.homeManagerModules.rec-sh
+
     inputs.dot013-neovim.homeManagerModules.neovim
+    inputs.dot013-environment.homeManagerModule
   ];
 
   programs.rec-sh.enable = true;
@@ -89,14 +90,21 @@
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = _: true;
-  home.packages = with pkgs; [
-    pavucontrol
-    libreoffice
-    pinentry
-    gnome.nautilus
-    ferdium
-    act
-    showmethekey
-    bluetuith
-  ];
+  home.packages = with pkgs;
+    [
+      ungoogled-chromium
+      pavucontrol
+      libreoffice
+      pinentry
+      gnome.nautilus
+      ferdium
+      act
+      showmethekey
+      bluetuith
+    ]
+    ++ (with inputs.dot013-shell.packages.${pkgs.system}; [
+      neovim
+      yazi
+      zellij
+    ]);
 }
