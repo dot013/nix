@@ -2,20 +2,8 @@
   config,
   pkgs,
   lib,
-  osConfig ? null,
   ...
-}:
-(
-  # Check if it is being used as a NixOS module
-  if (isNull osConfig)
-  then {
-    stylix.enable = true;
-    stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-    stylix.image = ../static/guz-wallpaper-default.png;
-  }
-  else {}
-)
-// {
+}: {
   # Desktop Environment
 
   ## Hyprland

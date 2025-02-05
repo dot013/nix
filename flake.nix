@@ -84,6 +84,11 @@
           inputs.stylix.homeManagerModules.stylix
           # inputs.xremap.homeManaggerModules.default
           ./home
+          ({pkgs, ...}: {
+            stylix.enable = true;
+            stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+            stylix.image = ../static/guz-wallpaper-default.png;
+          })
         ];
         pkgs = import nixpkgs {system = "x86_64-linux";};
       };
