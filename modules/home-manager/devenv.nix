@@ -132,4 +132,7 @@
   programs.zsh.autosuggestion.enable = true;
   programs.zsh.enableCompletion = true;
   programs.zsh.syntaxHighlighting.enable = true;
+  programs.zsh.shellAliases = {
+    "lg" = "${lib.getExe config.programs.lazygit.package}";
+  };
 }
