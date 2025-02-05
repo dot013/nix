@@ -88,6 +88,7 @@
 
   # Mosh
   programs.mosh.enable = true;
+  programs.mosh.openFirewall = true;
 
   # Tailscale
   services.tailscale.enable = true;
