@@ -13,6 +13,9 @@
   home-manager.extraSpecialArgs = {inherit inputs self;};
   home-manager.users.guz = import ./home;
 
+  programs.zsh.enable = true;
+  users.users."guz".shell = pkgs.zsh;
+
   stylix.enable = true;
   stylix.image = ./static/guz-wallpaper-default.png;
   stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
