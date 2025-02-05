@@ -9,10 +9,11 @@
     inputs.dot013-nvim.homeManagerModules.neovim
   ];
 
-  home.sessionVariables = {
+  home.sessionVariables = rec {
     # EDITOR = "nvim"; # Default editor, already defined by dot013-nvim
     SHELL = lib.getExe config.programs.zsh.package;
-    TERMINAL = lib.getExe config.programs.ghostty.package;
+    TERM = lib.getExe config.programs.ghostty.package;
+    TERMINAL = TERM;
     EXPLORER = lib.getExe config.programs.yazi.package;
   };
 
