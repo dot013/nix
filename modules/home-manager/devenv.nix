@@ -13,6 +13,7 @@
     # EDITOR = "nvim"; # Default editor, already defined by dot013-nvim
     SHELL = lib.getExe config.programs.zsh.package;
     TERMINAL = lib.getExe config.programs.ghostty.package;
+    EXPLORER = lib.getExe config.programs.yazi.package;
   };
 
   # Local development shells
@@ -134,5 +135,6 @@
   programs.zsh.syntaxHighlighting.enable = true;
   programs.zsh.shellAliases = {
     "lg" = "${lib.getExe config.programs.lazygit.package}";
+    "ex" = "${config.home.sessionVariables.EXPLORER}";
   };
 }
