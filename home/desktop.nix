@@ -8,6 +8,7 @@
 
   ## Hyprland
   wayland.windowManager.hyprland.enable = true;
+  wayland.windowManager.hyprland.xwayland.enable = true;
   wayland.windowManager.hyprland.settings = {
     "$MOD" = "SUPER";
     "$MONITOR-1" = "";
