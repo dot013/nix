@@ -14,8 +14,8 @@
   boot.kernelModules = ["amdgpu"];
   boot.initrd.kernelModules = ["amdgpu"];
 
-  hardware.opengl.enable = true;
-  hardware.opengl.extraPackages = with pkgs; [
+  hardware.graphics.enable = true;
+  hardware.graphics.extraPackages = with pkgs; [
     amdvlk
     rocmPackages.clr.icd
     vaapiVdpau
