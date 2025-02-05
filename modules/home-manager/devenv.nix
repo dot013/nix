@@ -5,8 +5,12 @@
   pkgs,
   ...
 }: {
+  imports = [
+    inputs.dot013-nvim.homeManagerModules.neovim
+  ];
+
   home.sessionVariables = {
-    EDITOR = "nvim"; # Default editor
+    # EDITOR = "nvim"; # Default editor, already defined by dot013-nvim
     SHELL = lib.getExe config.programs.zsh.package;
     TERMINAL = lib.getExe config.programs.ghostty.package;
   };
@@ -19,6 +23,9 @@
   # Ghostty (Terminal)
   programs.ghostty.enable = true;
   programs.ghostty.enableZshIntegration = true;
+
+  # Neovim (Editor)
+  # programs.neovim.enable = true; # Already enabled by dot013-nvim
 
   # Git
   programs.git.enable = true;
@@ -50,13 +57,6 @@
     git.paging.colorArg = "always";
     git.paging.pager = "${lib.getExe config.programs.git.delta.package} --dark --paging=never";
   };
-
-  # Neovim (Code editor)
-  programs.neovim.enable = true;
-  # programs.neovim.package = pkgs.callPackage ../../packages/nvim/neovim.nix {
-  #   go-grip = inputs.go-grip.packages.${pkgs.system}.default;
-  #   yazi = config.programs.yazi.package;
-  # };
 
   # Shell decoration
   programs.starship.enable = true;

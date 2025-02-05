@@ -23,8 +23,9 @@
     };
 
     # Dependecy of the Neovim configuration at ./modules/home-manager/devenv.nix
-    go-grip = {
-      url = "github:guz013/go-grip";
+    dot013-nvim = {
+      url = "github:dot013/nvim";
+      # url = "git+file:///home/guz/.projects/dot013-nvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
