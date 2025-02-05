@@ -88,5 +88,8 @@
       };
     };
 
+    homeManagerModules = {
+      devenv = ./modules/home-manager/devenv.nix;
+    };
   };
 }

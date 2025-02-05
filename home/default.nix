@@ -3,6 +3,7 @@
   home.homeDirectory = "/home/guz";
 
   imports = [
+    self.homeManagerModules.devenv
 
     ./desktop.nix
     ./keymaps.nix
