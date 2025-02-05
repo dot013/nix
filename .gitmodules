@@ -1,0 +1,3 @@
+[submodule "packages/nvim"]
+	path = packages/nvim
+	url = https://forge.capytal.company/dot013/nvim
