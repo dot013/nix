@@ -76,5 +76,17 @@
       };
     };
 
+    homeConfigurations = {
+      "guz" = home-manager.lib.homeManagerConfiguration {
+        extraSpecialArgs = {inherit inputs self;};
+        modules = [
+          inputs.stylix.homeManagerModules.stylix
+          # inputs.xremap.homeManaggerModules.default
+          ./home
+        ];
+        pkgs = import nixpkgs {system = "x86_64-linux";};
+      };
+    };
+
   };
 }
