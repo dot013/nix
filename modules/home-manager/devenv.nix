@@ -127,6 +127,22 @@
   # Zellij (Terminal multiplexer)
   programs.zellij.enable = true;
   programs.zellij.enableZshIntegration = true;
+  home.file."${config.xdg.configHome}/zellij/config.kdl".text = let
+    zellij-sessionizer = builtins.fetchurl {
+      url = "https://github.com/laperlej/zellij-sessionizer/releases/download/v0.4.3/zellij-sessionizer.wasm";
+      sha256 = "0d43jhlhm7p8pvd8kcylfbfy3dahr8q4yngpnjyqivapwip9csq0";
+    };
+  in ''
+    plugins {
+      zellij-sessionizer location="file:${zellij-sessionizer}"
+
+      tab-bar location="zellij:tab-bar"
+      status-bar location="zellij:status-bar"
+      compact-bar location="zellij:compact-bar"
+      session-manager location="zellij:session-manager"
+    }
+    ${builtins.readFile ./devenv-zellij-config.kdl}
+  '';
 
   # Default shell
   programs.zsh.enable = true;
