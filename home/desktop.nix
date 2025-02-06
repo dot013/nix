@@ -114,4 +114,12 @@
   xdg.portal.config = {
     common.default = ["gtk"]; # Use GTK for things such as file picker.
   };
+
+  # Notifications
+  services.dunst.enable = true;
+  services.dunst.settings = {
+    global = {
+      follow = "mouse";
+    };
+  };
 }
