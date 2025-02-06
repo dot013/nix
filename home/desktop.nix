@@ -122,4 +122,7 @@
       follow = "mouse";
     };
   };
+
+  # Clipboard
+  services.cliphist.enable = true;
 }
