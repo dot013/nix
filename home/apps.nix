@@ -121,4 +121,9 @@
     useDeArrowTitles = true;
     useDeArrowThumbnails = true;
   };
+
+  home.packages = with pkgs; [
+    # Vesktop/Vencord (Discord client)
+    vesktop
+  ];
 }
