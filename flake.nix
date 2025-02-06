@@ -96,6 +96,11 @@
 
     homeManagerModules = {
       devenv = ./modules/home-manager/devenv.nix;
+      zen-browser = ./modules/home-manager/zen-browser.nix;
     };
+
+    packages = forAllSystems (pkgs: {
+      zen-browser = pkgs.callPackage ./packages/zen-browser {};
+    });
   };
 }
