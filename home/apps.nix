@@ -1,9 +1,4 @@
-{
-  inputs,
-  pkgs,
-  self,
-  ...
-}: {
+{pkgs, ...}: {
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = let
     browser = "zen.desktop";
@@ -22,6 +17,17 @@
   };
 
   programs.zen-browser.enable = true;
+
+  # Work browser
+  programs.chromium.enable = true;
+  programs.chromium.package = pkgs.brave;
+  programs.chromium.extensions = [
+    {id = "eimadpbcbfnmbkopoojfekhnkhdbieeh";} # Dark Reader
+    {id = "oldceeleldhonbafppcapldpdifcinji";} # Language Tool
+    {id = "edibdbjcniadpccecjdfdjjppcpchdlm";} # I still don't care about cookies
+    {id = "dphilobhebphkdjbpfohgikllaljmgbn";} # SimpleLogin
+    {id = "cbghhgpcnddeihccjmnadmkaejncjndb";} # Vencord
+  ];
 
   programs.thunderbird.enable = true;
   programs.thunderbird.profiles = {};
