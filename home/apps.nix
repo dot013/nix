@@ -16,9 +16,10 @@
     "text/x-vcard" = email;
   };
 
+  # Zen Browser (Main browser)
   programs.zen-browser.enable = true;
 
-  # Work browser
+  # Brave (Work browser)
   programs.chromium.enable = true;
   programs.chromium.package = pkgs.brave;
   programs.chromium.extensions = [
@@ -29,6 +30,7 @@
     {id = "cbghhgpcnddeihccjmnadmkaejncjndb";} # Vencord
   ];
 
+  # Thunderbird (Email client)
   programs.thunderbird.enable = true;
   programs.thunderbird.profiles = {};
 }
