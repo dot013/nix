@@ -14,8 +14,9 @@
     isNormalUser = true;
 
     hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "guz"];
   };
+  users.groups."guz" = {};
 
   # GnuPG keyring
   programs.gnupg.agent = {
