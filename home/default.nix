@@ -6,11 +6,10 @@
     self.homeManagerModules.devenv
     self.homeManagerModules.zen-browser
 
+    ./apps.nix
     ./desktop.nix
     ./keymaps.nix
   ];
-
-  programs.zen-browser.enable = true;
 
   # The *state version* indicates which default
   # settings are in effect and will therefore help avoid breaking
