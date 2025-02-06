@@ -8,16 +8,6 @@
     ./secrets.nix
   ];
 
-  # Users
-  users.users."guz" = {
-    useDefaultShell = true;
-    isNormalUser = true;
-
-    hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
-    extraGroups = ["wheel" "guz"];
-  };
-  users.groups."guz" = {};
-
   # GnuPG keyring
   programs.gnupg.agent = {
     enable = true;

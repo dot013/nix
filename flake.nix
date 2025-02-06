@@ -52,7 +52,7 @@
     # Home manager NixOS module
     homeNixOSModules = [
       home-manager.nixosModules.home-manager
-      ./home.nix
+      ./colors.nix
     ];
   in {
     nixosConfigurations = {
@@ -62,7 +62,8 @@
           homeNixOSModules
           ++ [
             ./hosts/battleship/configuration.nix
-            ./hosts/battleship/home.nix
+            inputs.stylix.nixosModules.stylix
+            ./home/guz/configuration.nix
           ];
       };
       "fighter" = nixpkgs.lib.nixosSystem {
@@ -71,18 +72,30 @@
           homeNixOSModules
           ++ [
             ./hosts/fighter/configuration.nix
-            ./hosts/fighter/home.nix
+            inputs.stylix.nixosModules.stylix
+            ./home/guz-lite/configuration.nix
           ];
       };
     };
 
     homeConfigurations = {
+      "guz-lite" = home-manager.lib.homeManagerConfiguration {
+        extraSpecialArgs = {inherit inputs self;};
+        modules = [
+          inputs.stylix.homeManagerModules.stylix
+          ./colors.nix
+          inputs.xremap.homeManagerModules.default
+          ./home/guz-lite
+        ];
+        pkgs = import nixpkgs {system = "x86_64-linux";};
+      };
       "guz" = home-manager.lib.homeManagerConfiguration {
         extraSpecialArgs = {inherit inputs self;};
         modules = [
           inputs.stylix.homeManagerModules.stylix
           ./colors.nix
-          ./home
+          inputs.xremap.homeManagerModules.default
+          ./home/guz
         ];
         pkgs = import nixpkgs {system = "x86_64-linux";};
       };
