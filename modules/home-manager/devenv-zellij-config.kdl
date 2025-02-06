@@ -345,7 +345,7 @@ scrollback_lines_to_serialize 0
 //   - system (default)
 //   - primary
 //
-copy_clipboard "primary"
+copy_clipboard "system"
 
 // Enable or disable automatic copy (and clear) of selection when releasing mouse
 // Default: true
