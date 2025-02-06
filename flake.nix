@@ -49,9 +49,8 @@
       in
         f pkgs);
 
-    # Shared NixOS modules
-    nixosModules = [
-      inputs.stylix.nixosModules.stylix
+    # Home manager NixOS module
+    homeNixOSModules = [
       home-manager.nixosModules.home-manager
       ./home.nix
     ];
@@ -60,7 +59,7 @@
       "battleship" = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs self;};
         modules =
-          nixosModules
+          homeNixOSModules
           ++ [
             ./hosts/battleship/configuration.nix
             ./hosts/battleship/home.nix
@@ -69,7 +68,7 @@
       "fighter" = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs self;};
         modules =
-          nixosModules
+          homeNixOSModules
           ++ [
             ./hosts/fighter/configuration.nix
             ./hosts/fighter/home.nix
@@ -82,13 +81,8 @@
         extraSpecialArgs = {inherit inputs self;};
         modules = [
           inputs.stylix.homeManagerModules.stylix
-          # inputs.xremap.homeManaggerModules.default
+          ./colors.nix
           ./home
-          ({pkgs, ...}: {
-            stylix.enable = true;
-            stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-            stylix.image = ../static/guz-wallpaper-default.png;
-          })
         ];
         pkgs = import nixpkgs {system = "x86_64-linux";};
       };

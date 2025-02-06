@@ -1,11 +1,14 @@
 {
-  config,
   inputs,
   pkgs,
   self,
   ...
 }: {
   # Home-manager configurations for when it is used as a NixOS module.
+  imports = [
+    inputs.stylix.nixosModules.stylix
+    ./colors.nix
+  ];
 
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
@@ -16,7 +19,4 @@
   programs.zsh.enable = true;
   users.users."guz".shell = pkgs.zsh;
 
-  stylix.enable = true;
-  stylix.image = ./static/guz-wallpaper-default.png;
-  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 }
