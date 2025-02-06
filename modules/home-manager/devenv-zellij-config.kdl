@@ -228,8 +228,8 @@ keybinds clear-defaults=true {
 }
 
 themes {
-    catppuccin-mocha {
-        bg "#111111" // Surface2
+    frappuccino {
+        bg "#181818" // Surface2
         fg "#cdd6f4" // Text
         red "#f38ba8"
         green "#a6e3a1"
@@ -238,11 +238,11 @@ themes {
         magenta "#f5c2e7" // Pink
         orange "#fab387" // Peach
         cyan "#89dceb" // Sky
-        black "#111111" // Mantle
+        black "#101010" // Mantle
         white "#cdd6f4" // Text
     }
 }
-theme "catppuccin-mocha"
+theme "frappuccino"
 
 // Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
 // eg. when terminal window with an active zellij session is closed
