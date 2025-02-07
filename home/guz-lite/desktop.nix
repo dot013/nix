@@ -123,6 +123,9 @@
     };
   };
 
+  # Application Launcher
+  programs.rofi.enable = true;
+
   # Clipboard
   services.cliphist.enable = true;
   services.cliphist.allowImages = true;
