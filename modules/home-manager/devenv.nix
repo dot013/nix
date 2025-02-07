@@ -9,6 +9,10 @@
     inputs.dot013-nvim.homeManagerModules.neovim
   ];
 
+  home.packages = with pkgs; [
+    ouch
+  ];
+
   home.sessionVariables = rec {
     # EDITOR = "nvim"; # Default editor, already defined by dot013-nvim
     SHELL = "zsh";
