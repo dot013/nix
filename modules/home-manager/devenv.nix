@@ -157,6 +157,6 @@
   programs.zsh.syntaxHighlighting.enable = true;
   programs.zsh.shellAliases = {
     "lg" = "${lib.getExe config.programs.lazygit.package}";
-    "ex" = "${config.home.sessionVariables.EXPLORER}";
+    "x" = "${config.home.sessionVariables.EXPLORER}";
   };
 }
