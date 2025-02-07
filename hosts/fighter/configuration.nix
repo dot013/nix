@@ -22,7 +22,7 @@
   # Enable OpenGL
   hardware.graphics.enable = true;
   hardware.graphics.extraPackages = with pkgs; [
-    onevpl-intel-gpu
+    vpl-gpu-rt
   ];
 
   # Laptop features
