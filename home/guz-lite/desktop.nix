@@ -125,4 +125,6 @@
 
   # Clipboard
   services.cliphist.enable = true;
+  services.cliphist.allowImages = true;
+  home.packages = with pkgs; [wl-clipboard];
 }
