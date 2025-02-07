@@ -1,36 +1,189 @@
 {
   config,
   lib,
+  inputs,
   pkgs,
   ...
 }: {
-  wayland.windowManager.hyprland.settings.bind = [
-    "$MOD, 1, workspace, 1"
-    "$MOD, 2, workspace, 2"
-    "$MOD, 3, workspace, 3"
-    "$MOD, 4, workspace, 4"
-    "$MOD, 5, workspace, 5"
-    "$MOD + SHIFT, 1, movetoworkspace, 1"
-    "$MOD + SHIFT, 2, movetoworkspace, 2"
-    "$MOD + SHIFT, 3, movetoworkspace, 3"
-    "$MOD + SHIFT, 4, movetoworkspace, 4"
-    "$MOD + SHIFT, 5, movetoworkspace, 5"
+  imports = [
+    inputs.xremap.homeManagerModules.default
+  ];
 
-    "$MOD, 6, workspace, 6"
-    "$MOD, 7, workspace, 7"
-    "$MOD, 8, workspace, 8"
-    "$MOD, 9, workspace, 9"
-    "$MOD, 0, workspace, 10"
-    "$MOD + SHIFT, 6, movetoworkspace, 6"
-    "$MOD + SHIFT, 7, movetoworkspace, 7"
-    "$MOD + SHIFT, 8, movetoworkspace, 8"
-    "$MOD + SHIFT, 9, movetoworkspace, 9"
-    "$MOD + SHIFT, 0, movetoworkspace, 10"
+  services.xremap.enable = true;
+  services.xremap.withHypr = true;
+  services.xremap.config.modmap = [
+    {
+      name = "main remaps";
+      remap = {
+        "CapsLock" = {
+          held = "leftctrl";
+          alone = "esc";
+          alone_timeout_millis = 150;
+        };
+      };
+    }
+  ];
+  services.xremap.config.keymap = let
+    TERM = config.home.sessionVariables.TERM;
+    EXPLORER = config.home.sessionVariables.EXPLORER;
+    rofi = lib.getExe config.programs.rofi.finalPackage;
 
-    "$MOD, H, movefocus, l"
-    "$MOD, L, movefocus, r"
-    "$MOD, K, movefocus, u"
-    "$MOD, J, movefocus, d"
+    exec = c:
+      ["hyprctl" "dispatch" "exec"]
+      ++ (
+        if builtins.isString c
+        then [c]
+        else c
+      );
+
+    MODE_DEFAULT = "default";
+    move = d: ["hyprctl" "dispatch" "movefocus" d];
+    close = _: ["hyprctl" "dispatch" "killactive"];
+    switchWorkspace = w: ["hyprland" "dispatch" "workspace" w];
+    toggleFullscreen = _: ["hyprctl" "dispatch" "fullscreen"];
+    toggleFloating = _: ["hyprctl" "dispatch" "togglefloating"];
+    toggleSplit = _: ["hyprctl" "dispatch" "togglesplit"];
+
+    MODE_ARREGEMENT = "arregement";
+    moveTile = d: ["hyprctl" "dispatch" "movewindow" d];
+    switchTileWorkspace = w: ["hyprctl" "dispatch" "movetoworkspace" w];
+
+    MODE_RESIZING = "resizing";
+    resize = d:
+      [
+        "hyprctl"
+        "dispatch"
+        "resizeactive"
+      ]
+      ++ {
+        "l" = ["-10" "0"];
+        "r" = ["10" "0"];
+        "u" = ["0" "-10"];
+        "d" = ["0" "10"];
+      }
+      .${d};
+  in [
+    {
+      name = "General Keybindings";
+      remap = {
+        # Terminal
+        "super-q" = {launch = exec "${TERM}";};
+        # File explorer
+        "super-e" = {launch = exec ["${TERM}" "-e" "${EXPLORER}"];};
+        # Web Browser
+        "super-w" = {launch = exec ["xdg-open" "https://search.brave.com"];};
+        # Launcher
+        "super-s" = {launch = exec ["${rofi}" "-show" "drun" "-show-icons"];};
+        # Toggle fullscreen
+        "super-f" = {launch = toggleFullscreen "";};
+        # Toggle floating
+        "super-shift-f" = {launch = toggleFloating "";};
+        # Close window
+        "super-c" = {launch = close "";};
+      };
+      mode = MODE_DEFAULT;
+    }
+    {
+      name = "Navigation Keybinds";
+      remap = {
+        # Switch modes
+        "super-m" = {
+          remap = {
+            "a" = {set_mode = MODE_ARREGEMENT;};
+            "r" = {set_mode = MODE_RESIZING;};
+          };
+        };
+        # Move between tiles
+        "super-h" = {launch = move "l";};
+        "super-l" = {launch = move "r";};
+        "super-k" = {launch = move "u";};
+        "super-j" = {launch = move "d";};
+        # Move between workspaces
+        "super-1" = {launch = switchWorkspace "1";};
+        "super-2" = {launch = switchWorkspace "2";};
+        "super-3" = {launch = switchWorkspace "3";};
+        "super-4" = {launch = switchWorkspace "4";};
+        "super-5" = {launch = switchWorkspace "5";};
+        "super-6" = {launch = switchWorkspace "6";};
+        "super-7" = {launch = switchWorkspace "7";};
+        "super-8" = {launch = switchWorkspace "8";};
+        "super-9" = {launch = switchWorkspace "9";};
+      };
+      mode = MODE_DEFAULT;
+    }
+    {
+      name = "Arregement Keybinds";
+      remap = {
+        # Exit mode mode
+        "esc" = {set_mode = MODE_DEFAULT;};
+        # Switch modes
+        "super-m" = {
+          remap = {
+            "r" = {set_mode = MODE_RESIZING;};
+          };
+        };
+        # Move tiles
+        "h" = {launch = moveTile "l";};
+        "l" = {launch = moveTile "r";};
+        "k" = {launch = moveTile "u";};
+        "j" = {launch = moveTile "d";};
+        # Move tiles to workspace
+        "1" = {launch = switchTileWorkspace "1";};
+        "2" = {launch = switchTileWorkspace "2";};
+        "3" = {launch = switchTileWorkspace "3";};
+        "4" = {launch = switchTileWorkspace "4";};
+        "5" = {launch = switchTileWorkspace "5";};
+        "6" = {launch = switchTileWorkspace "6";};
+        "7" = {launch = switchTileWorkspace "7";};
+        "8" = {launch = switchTileWorkspace "8";};
+        "9" = {launch = switchTileWorkspace "9";};
+        # Switch split
+        "s" = {launch = toggleSplit "";};
+        # Toggle fullscreen
+        "f" = {launch = toggleFullscreen "";};
+        # Toggle floating
+        "shift-f" = {launch = toggleFloating "";};
+        # Close window
+        "c" = {launch = close "";};
+      };
+      mode = MODE_ARREGEMENT;
+    }
+    {
+      name = "Resizing Keybinds";
+      remap = {
+        # Exit mode mode
+        "esc" = {set_mode = MODE_DEFAULT;};
+        # Switch modes
+        "super-m" = {
+          remap = {
+            "a" = {set_mode = MODE_ARREGEMENT;};
+          };
+        };
+        # Move tiles
+        "h" = {launch = resize "l";};
+        "l" = {launch = resize "r";};
+        "k" = {launch = resize "u";};
+        "j" = {launch = resize "d";};
+        # Switch split
+        "s" = {launch = toggleSplit "";};
+        # Toggle fullscreen
+        "f" = {launch = toggleFullscreen "";};
+        # Toggle floating
+        "shift-f" = {launch = toggleFloating "";};
+        # Close window
+        "c" = {launch = close "";};
+      };
+      mode = MODE_RESIZING;
+    }
+  ];
+
+  wayland.windowManager.hyprland.settings.bind = let
+    rofi = lib.getExe config.programs.rofi.finalPackage;
+    grim = lib.getExe pkgs.grim;
+    slurp = lib.getExe pkgs.slurp;
+  in [
+    "SUPER, V, exec, cliphist list | ${rofi} -dmenu | cliphist decode | wl-copy" # For some reason this doesn't work on xremap
+    ",Print, exec, ${grim} -g \"$(${slurp} -d)\" - | wl-copy"
   ];
   wayland.windowManager.hyprland.settings.bindm = [
     # Left-click
