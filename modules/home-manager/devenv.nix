@@ -103,7 +103,7 @@
       linemode = "size";
     };
   };
-  home.file."${config.xdg.configHome}/yazi/init.lua".text = ''
+  programs.yazi.initLua = ''
     -- Add username and hostname in header
     -- https://yazi-rs.github.io/docs/tips#username-hostname-in-header
     Header:children_add(function()
@@ -129,6 +129,7 @@
       })
     end, 500, Status.RIGHT)
   '';
+
   # Zellij (Terminal multiplexer)
   programs.zellij.enable = true;
   programs.zellij.enableZshIntegration = true;
