@@ -28,4 +28,9 @@
     proton-ge-bin
   ];
 
+  # OpenTabletDriver
+  hardware.opentabletdriver.enable = true;
+  services.udev.extraRules = ''
+    KERNEL=="hidraw", SUBSYSTEM=="hidraw", MODE="0660", GROUP="plugdev"
+  '';
 }
