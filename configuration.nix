@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./secrets.nix
   ];
@@ -23,10 +18,7 @@
   programs.hyprland.withUWSM = true;
   programs.hyprlock.enable = true;
 
-  services.displayManager = {
-    sddm.enable = true;
-    sddm.wayland.enable = true;
-  };
+  services.xserver.displayManager.gdm.enable = true;
 
   ## XFCE (fallback)
   services.xserver.enable = true;
