@@ -62,6 +62,25 @@
         "d" = ["0" "10"];
       }
       .${d};
+
+    movementBinds = {
+      # Move between tiles
+      "super-h" = {launch = move "l";};
+      "super-l" = {launch = move "r";};
+      "super-k" = {launch = move "u";};
+      "super-j" = {launch = move "d";};
+      # Move between workspaces
+      "super-1" = {launch = switchWorkspace "1";};
+      "super-2" = {launch = switchWorkspace "2";};
+      "super-3" = {launch = switchWorkspace "3";};
+      "super-4" = {launch = switchWorkspace "4";};
+      "super-5" = {launch = switchWorkspace "5";};
+      "super-6" = {launch = switchWorkspace "6";};
+      "super-7" = {launch = switchWorkspace "7";};
+      "super-8" = {launch = switchWorkspace "8";};
+      "super-9" = {launch = switchWorkspace "9";};
+      "super-0" = {launch = switchWorkspace "10";};
+    };
   in [
     {
       name = "General Keybindings";
@@ -91,94 +110,86 @@
     }
     {
       name = "Navigation Keybinds";
-      remap = {
-        # Switch modes
-        "super-m" = {
-          remap = {
-            "a" = {set_mode = MODE_ARREGEMENT;};
-            "r" = {set_mode = MODE_RESIZING;};
+      remap =
+        {
+          # Switch modes
+          "super-m" = {
+            remap = {
+              "a" = {set_mode = MODE_ARREGEMENT;};
+              "r" = {set_mode = MODE_RESIZING;};
+            };
           };
-        };
-        # Move between tiles
-        "super-h" = {launch = move "l";};
-        "super-l" = {launch = move "r";};
-        "super-k" = {launch = move "u";};
-        "super-j" = {launch = move "d";};
-        # Move between workspaces
-        "super-1" = {launch = switchWorkspace "1";};
-        "super-2" = {launch = switchWorkspace "2";};
-        "super-3" = {launch = switchWorkspace "3";};
-        "super-4" = {launch = switchWorkspace "4";};
-        "super-5" = {launch = switchWorkspace "5";};
-        "super-6" = {launch = switchWorkspace "6";};
-        "super-7" = {launch = switchWorkspace "7";};
-        "super-8" = {launch = switchWorkspace "8";};
-        "super-9" = {launch = switchWorkspace "9";};
-      };
+        }
+        // movementBinds;
       mode = MODE_DEFAULT;
     }
     {
       name = "Arregement Keybinds";
-      remap = {
-        # Exit mode mode
-        "esc" = {set_mode = MODE_DEFAULT;};
-        # Switch modes
-        "super-m" = {
-          remap = {
-            "r" = {set_mode = MODE_RESIZING;};
+      remap =
+        {
+          # Exit mode mode
+          "esc" = {set_mode = MODE_DEFAULT;};
+          # Switch modes
+          "super-m" = {
+            remap = {
+              "r" = {set_mode = MODE_RESIZING;};
+            };
           };
-        };
-        # Move tiles
-        "h" = {launch = moveTile "l";};
-        "l" = {launch = moveTile "r";};
-        "k" = {launch = moveTile "u";};
-        "j" = {launch = moveTile "d";};
-        # Move tiles to workspace
-        "1" = {launch = switchTileWorkspace "1";};
-        "2" = {launch = switchTileWorkspace "2";};
-        "3" = {launch = switchTileWorkspace "3";};
-        "4" = {launch = switchTileWorkspace "4";};
-        "5" = {launch = switchTileWorkspace "5";};
-        "6" = {launch = switchTileWorkspace "6";};
-        "7" = {launch = switchTileWorkspace "7";};
-        "8" = {launch = switchTileWorkspace "8";};
-        "9" = {launch = switchTileWorkspace "9";};
-        # Switch split
-        "s" = {launch = toggleSplit "";};
-        # Toggle fullscreen
-        "f" = {launch = toggleFullscreen "";};
-        # Toggle floating
-        "shift-f" = {launch = toggleFloating "";};
-        # Close window
-        "c" = {launch = close "";};
-      };
+          # Move tiles
+          "h" = {launch = moveTile "l";};
+          "l" = {launch = moveTile "r";};
+          "k" = {launch = moveTile "u";};
+          "j" = {launch = moveTile "d";};
+          # Move tiles to workspace
+          "1" = {launch = switchTileWorkspace "1";};
+          "2" = {launch = switchTileWorkspace "2";};
+          "3" = {launch = switchTileWorkspace "3";};
+          "4" = {launch = switchTileWorkspace "4";};
+          "5" = {launch = switchTileWorkspace "5";};
+          "6" = {launch = switchTileWorkspace "6";};
+          "7" = {launch = switchTileWorkspace "7";};
+          "8" = {launch = switchTileWorkspace "8";};
+          "9" = {launch = switchTileWorkspace "9";};
+          "0" = {launch = switchTileWorkspace "10";};
+          # Switch split
+          "s" = {launch = toggleSplit "";};
+          # Toggle fullscreen
+          "f" = {launch = toggleFullscreen "";};
+          # Toggle floating
+          "shift-f" = {launch = toggleFloating "";};
+          # Close window
+          "c" = {launch = close "";};
+        }
+        // movementBinds;
       mode = MODE_ARREGEMENT;
     }
     {
       name = "Resizing Keybinds";
-      remap = {
-        # Exit mode mode
-        "esc" = {set_mode = MODE_DEFAULT;};
-        # Switch modes
-        "super-m" = {
-          remap = {
-            "a" = {set_mode = MODE_ARREGEMENT;};
+      remap =
+        {
+          # Exit mode mode
+          "esc" = {set_mode = MODE_DEFAULT;};
+          # Switch modes
+          "super-m" = {
+            remap = {
+              "a" = {set_mode = MODE_ARREGEMENT;};
+            };
           };
-        };
-        # Move tiles
-        "h" = {launch = resize "l";};
-        "l" = {launch = resize "r";};
-        "k" = {launch = resize "u";};
-        "j" = {launch = resize "d";};
-        # Switch split
-        "s" = {launch = toggleSplit "";};
-        # Toggle fullscreen
-        "f" = {launch = toggleFullscreen "";};
-        # Toggle floating
-        "shift-f" = {launch = toggleFloating "";};
-        # Close window
-        "c" = {launch = close "";};
-      };
+          # Move tiles
+          "h" = {launch = resize "l";};
+          "l" = {launch = resize "r";};
+          "k" = {launch = resize "u";};
+          "j" = {launch = resize "d";};
+          # Switch split
+          "s" = {launch = toggleSplit "";};
+          # Toggle fullscreen
+          "f" = {launch = toggleFullscreen "";};
+          # Toggle floating
+          "shift-f" = {launch = toggleFloating "";};
+          # Close window
+          "c" = {launch = close "";};
+        }
+        // movementBinds;
       mode = MODE_RESIZING;
     }
   ];
