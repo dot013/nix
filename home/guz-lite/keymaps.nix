@@ -39,7 +39,7 @@
     MODE_DEFAULT = "default";
     move = d: ["hyprctl" "dispatch" "movefocus" d];
     close = _: ["hyprctl" "dispatch" "killactive"];
-    switchWorkspace = w: ["hyprland" "dispatch" "workspace" w];
+    switchWorkspace = w: ["hyprctl" "dispatch" "workspace" w];
     toggleFullscreen = _: ["hyprctl" "dispatch" "fullscreen"];
     toggleFloating = _: ["hyprctl" "dispatch" "togglefloating"];
     toggleSplit = _: ["hyprctl" "dispatch" "togglesplit"];
