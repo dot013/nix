@@ -7,6 +7,7 @@
     self.homeManagerModules.zen-browser
 
     ./apps.nix
+    ./style.nix
     ./desktop.nix
     ./keymaps.nix
   ];

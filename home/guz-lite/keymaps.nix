@@ -73,7 +73,13 @@
         # Web Browser
         "super-w" = {launch = exec ["xdg-open" "https://search.brave.com"];};
         # Launcher
-        "super-s" = {launch = exec ["${rofi}" "-show" "drun" "-show-icons"];};
+        "super-s" = {
+          launch = exec [
+            (lib.getExe (pkgs.writeShellScriptBin "launcher" ''
+              ${rofi} -show drun -theme ${config.xdg.configHome}/rofi/launcher.rasi
+            ''))
+          ];
+        };
         # Toggle fullscreen
         "super-f" = {launch = toggleFullscreen "";};
         # Toggle floating
