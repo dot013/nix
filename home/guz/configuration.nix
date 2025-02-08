@@ -5,5 +5,5 @@
     ../guz-lite/configuration.nix
   ];
 
-  home-manager.users.guz = lib.mkForce import ./default.nix;
+  home-manager.users.guz = import ./default.nix;
 }
