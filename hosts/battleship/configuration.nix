@@ -7,6 +7,8 @@
     ./hardware-configuration.nix
     ./gpu-configuration.nix
     ../../configuration.nix
+
+    ./home.nix
   ];
 
   users.users."guz" = {
@@ -17,8 +19,7 @@
 
   # Network
   networking = {
-    hostName = lib.mkForce "figther";
-    wireless.enable = lib.mkForce true;
+    hostName = lib.mkForce "battleship";
   };
 
   # Steam (cannot be [properly] installed just in one user)
