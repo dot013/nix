@@ -11,8 +11,8 @@
   wayland.windowManager.hyprland.xwayland.enable = true;
   wayland.windowManager.hyprland.settings = {
     "$MOD" = "SUPER";
-    "$MONITOR-1" = "";
-    "$MONITOR-2" = "";
+    "$MONITOR-1" = lib.mkDefault "";
+    "$MONITOR-2" = lib.mkDefault "";
 
     animations.enabled = true;
 
