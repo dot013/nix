@@ -1,7 +1,7 @@
 {
-  pkgs,
-  lib,
   mkNixPak,
+  pkgs,
+  ...
 }:
 mkNixPak {
   config = {sloth, ...}: {
@@ -24,10 +24,6 @@ mkNixPak {
     bubblewrap = {
       network = true;
       shareIpc = true;
-
-      env = {
-        "XDG_CURRENT_DESKTOP" = sloth.env "XDG_CURRENT_DESKTOP";
-      };
 
       bind.rw = [
         (sloth.concat' sloth.xdgConfigHome "/Bitwarden")
