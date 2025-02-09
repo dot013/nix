@@ -11,7 +11,8 @@
 
   bitwarden-desktop = import ./bitwarden-desktop.nix {inherit lib mkNixPak pkgs self;};
   zen = import ./zen-browser.nix {inherit lib mkNixPak pkgs self;};
-  brave = import ./brave.nix {inherit lib mkNixPak pkgs self;};
+  # brave = import ./brave.nix {inherit lib mkNixPak pkgs self;};
+  vesktop = import ./vesktop.nix {inherit lib mkNixPak pkgs self;};
 in {
   bitwarden-desktop = bitwarden-desktop.config.script;
   bitwarden-desktop-env = bitwarden-desktop.config.env;
@@ -19,6 +20,9 @@ in {
   # Currently borked: "Filed to create a ProcessSingleton for your profile directory"
   # brave = brave.config.script;
   # brave-env = brave.config.env;
+
+  vesktop = vesktop.config.script;
+  vesktop-env = vesktop.config.env;
 
   zen-browser = zen.config.script;
   zen-browser-env = zen.config.env;

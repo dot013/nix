@@ -93,10 +93,12 @@
 
   home.packages =
     (with pkgs; [
+      ])
+    ++ (with self.packages.${pkgs.system}.nixpak; [
       # Vesktop/Vencord (Discord client)
       vesktop
-    ])
-    ++ (with self.packages.${pkgs.system}.nixpak; [
+
+      # Bitwarden (Password manager)
       bitwarden-desktop
     ]);
 }
