@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  self,
+  ...
+}: {
   # Freetube (YouTube client)
   programs.freetube.enable = true;
   programs.freetube.settings = {
@@ -87,8 +91,12 @@
     useDeArrowThumbnails = true;
   };
 
-  home.packages = with pkgs; [
-    # Vesktop/Vencord (Discord client)
-    vesktop
-  ];
+  home.packages =
+    (with pkgs; [
+      # Vesktop/Vencord (Discord client)
+      vesktop
+    ])
+    ++ (with self.packages.${pkgs.system}.nixpak; [
+      bitwarden-desktop
+    ]);
 }
