@@ -27,6 +27,7 @@
   # Brave (Work browser)
   programs.chromium.enable = true;
   programs.chromium.package = pkgs.brave;
+  # programs.chromium.package = self.packages.${pkgs.system}.nixpak.brave;
   # programs.chromium.extensions = let
   #   libredirect = builtins.fetchurl {
   #     url = "https://github.com/libredirect/browser_extension/releases/download/v3.1.0/libredirect-3.1.0.crx";
