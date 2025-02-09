@@ -18,6 +18,11 @@
   programs.hyprland.withUWSM = true;
   programs.hyprlock.enable = true;
 
+  ### File picker and other portals not implemented by XDPH
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+  ];
+
   services.xserver.displayManager.gdm.enable = true;
 
   ## XFCE (fallback)

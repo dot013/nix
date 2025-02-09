@@ -105,15 +105,10 @@
   ### Wallpaper
   services.hyprpaper.enable = true;
 
-  # Wayland/flatpak portals
-  xdg.portal.enable = true;
+  ### File picker and other portals not implemented by XDPH
   xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-wlr
     xdg-desktop-portal-gtk
   ];
-  xdg.portal.config = {
-    common.default = ["gtk"]; # Use GTK for things such as file picker.
-  };
 
   # Notifications
   services.dunst.enable = true;
