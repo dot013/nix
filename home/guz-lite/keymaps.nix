@@ -23,6 +23,8 @@
         };
         # Esc to single- and double-quote
         "Esc" = "grave";
+        # single-quotes as Capslock
+        "Grave" = "CapsLock";
       };
     }
   ];
