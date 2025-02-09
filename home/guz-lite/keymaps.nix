@@ -15,11 +15,14 @@
     {
       name = "main remaps";
       remap = {
+        # Capslock as esc and ctrl on hold
         "CapsLock" = {
           held = "leftctrl";
           alone = "esc";
           alone_timeout_millis = 150;
         };
+        # Esc to single- and double-quote
+        "Esc" = "grave";
       };
     }
   ];
