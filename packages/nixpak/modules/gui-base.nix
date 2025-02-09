@@ -5,30 +5,30 @@
   sloth,
   ...
 }: {
-  config = {
+  config = with lib; {
     dbus.policies = {
       "${config.flatpak.appId}" = "own";
-      "org.freedesktop.DBus" = "talk";
-      "org.gtk.vfs.*" = "talk";
-      "org.gtk.vfs" = "talk";
-      "ca.desrt.dconf" = "talk";
-      "org.freedesktop.portal" = "talk";
-      "org.a11y.Bus" = "talk";
+      "org.freedesktop.DBus" = mkDefault "talk";
+      "org.gtk.vfs.*" = mkDefault "talk";
+      "org.gtk.vfs" = mkDefault "talk";
+      "ca.desrt.dconf" = mkDefault "talk";
+      "org.freedesktop.portal" = mkDefault "talk";
+      "org.a11y.Bus" = mkDefault "talk";
     };
 
-    gpu.enable = lib.mkDefault true;
-    gpu.provider = "bundle";
+    gpu.enable = mkDefault true;
+    gpu.provider = mkDefault "bundle";
 
-    fonts.enable = true;
+    fonts.enable = mkDefault true;
 
-    locale.enable = true;
+    locale.enable = mkDefault true;
 
     bubblewrap = {
-      network = lib.mkDefault false;
+      network = mkDefault false;
 
       sockets = {
-        wayland = true;
-        pulse = true;
+        wayland = mkDefault true;
+        pulse = mkDefault true;
       };
 
       bind.rw = [
@@ -56,11 +56,11 @@
       ];
 
       env = {
-        "XDG_DATA_DIRS" = lib.makeSearchPath "share" (with pkgs; [
+        "XDG_DATA_DIRS" = makeSearchPath "share" (with pkgs; [
           adwaita-icon-theme
           shared-mime-info
         ]);
-        "XCURSOR_PATH" = lib.concatStringsSep ":" (with pkgs; [
+        "XCURSOR_PATH" = concatStringsSep ":" (with pkgs; [
           "${adwaita-icon-theme}/share/icons"
           "${adwaita-icon-theme}/share/pixmaps"
         ]);
