@@ -117,7 +117,7 @@
       zen-browser = pkgs.callPackage ./packages/zen-browser {};
       nixpak = import ./packages/nixpak {
         inherit (pkgs) lib;
-        inherit pkgs inputs;
+        inherit pkgs inputs self;
       };
     });
   };
