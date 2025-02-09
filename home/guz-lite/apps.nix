@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  self,
+  ...
+}: {
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = let
     browser = "zen.desktop";
@@ -18,6 +22,7 @@
 
   # Zen Browser (Main browser)
   programs.zen-browser.enable = true;
+  programs.zen-browser.package = self.packages.${pkgs.system}.nixpak.zen-browser;
 
   # Brave (Work browser)
   programs.chromium.enable = true;
