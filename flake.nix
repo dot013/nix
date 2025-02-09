@@ -24,6 +24,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixpak = {
+      url = "github:nixpak/nixpak";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Dependecy of the Neovim configuration at ./modules/home-manager/devenv.nix
     dot013-nvim = {
       url = "github:dot013/nvim";
@@ -110,6 +115,10 @@
 
     packages = forAllSystems (pkgs: {
       zen-browser = pkgs.callPackage ./packages/zen-browser {};
+      nixpak = import ./packages/nixpak {
+        inherit (pkgs) lib;
+        inherit pkgs inputs;
+      };
     });
   };
 }
