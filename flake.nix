@@ -111,6 +111,7 @@
     homeManagerModules = {
       devenv = ./modules/home-manager/devenv.nix;
       zen-browser = ./modules/home-manager/zen-browser.nix;
+      eww = ./modules/home-manager/eww.nix;
     };
 
     packages = forAllSystems (pkgs: {

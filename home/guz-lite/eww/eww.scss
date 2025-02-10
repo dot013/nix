@@ -1,0 +1,43 @@
+.body {
+  background-color: red;
+  border-radius: $rounding;
+
+  font-family: $font-monospace;
+  font-weight: bold;
+  color: $base05;
+
+  padding: 0px $gaps-out;
+}
+
+.workspaces {
+  font-family: $font-emoji;
+  font-size: 0.7rem;
+}
+
+.day {
+  padding-left: $gaps-out;
+}
+
+.valuebar {
+  scale {
+    min-height: 5px;
+  }
+
+  scale trough {
+    all: unset;
+    background: darkgreen;
+    border-radius: 50px;
+    min-height: 5px;
+    min-width: 50px;
+
+    slider {
+      all: unset;
+    }
+
+    highlight {
+      all: unset;
+      background: green;
+      border-radius: 10px;
+    }
+  }
+}

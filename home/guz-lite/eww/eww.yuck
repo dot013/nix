@@ -1,0 +1,95 @@
+(defpoll time :interval "10s" :initial "00:00" `date +%H:%M`)
+(defpoll date :interval "1m" :initial "00/00" `date +%d/%m`)
+(defpoll week-day :interval "1m" :initial "1" `date +%w`)
+
+(defvar bar1g (geometry
+		:x "0%" :y "0%"
+		:width "2560px"
+		:height "20px"
+		:anchor "top center"))
+
+(defwindow statusbarcomplete
+	:monitor 0
+	:stacking "fg"
+	:exclusive true
+	:reserve (struts :distance "20px" :side "top")
+	:windowtype "dock"
+	:focusable false
+	:geometry bar1g
+	(box
+		:orientation "h"
+		:class "topbar-shell"
+		(centerbox
+			:orientation "h"
+			:class "body"
+			(box
+				:halign "start"
+				(day))
+			(empty)
+			(box
+				:halign "end"
+				(statuses)))))
+
+
+;; (defwidget workspaces [workspace]
+;; 	(box
+;; 		:class "workspaces"
+;; 		:orientation "h"
+;; 		"${
+;; 			workspace == 1 ? '' : ''
+;; 		} ${
+;; 			workspace == 2 ? '' : ''
+;; 		} ${
+;; 			workspace == 3 ? '' : ''
+;; 		} ${
+;; 			workspace == 4 ? '' : ''
+;; 		} ${
+;; 			workspace == 5 ? '' : ''
+;; 		}"))
+
+(defwidget day []
+  (box
+	:orientation "h"
+	:class "day"
+		; Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn
+		"${[" Sun", " Mon", " Tue", "󰬸 Wed", "󱡓 Thu", " Fri", " Sat"][week-day]} ${date} - ${time}"))
+
+(defwidget statuses []
+	(box
+		:class "statuses"
+		:orientation "h"
+		(box
+			(valuebar
+				:label ""
+				:value-text "Ram: ${round(EWW_RAM.used_mem_perc, 2)}% used"
+				:value "${EWW_RAM.used_mem_perc}"))
+		(box
+			(valuebar
+				:label ""
+				:value-text "CPU ${round(EWW_CPU.avg, 2)}"
+				:value "${EWW_CPU.avg}"))
+		(box
+			(valuebar
+				:label "󰨣"
+				:value-text "Disk: ${round(EWW_DISK["/"].used_perc, 2)}% used"
+				:value "${EWW_DISK["/"].used_perc}"))))
+
+(defwidget valuebar [label value ?value-text ?onchange ?onclick]
+	(box
+		:class "valuebar"
+		:orientation "h"
+		:space-evenly false
+		:tooltip "${value-text == "" ? value : value-text}"
+		(box
+			:orientation "h"
+			:space-evenly false
+			:class "label"
+			label)
+		(scale
+			:min 0
+			:max 101
+			:active {onchange != ""}
+			:onchange onchange
+			:value value)))
+
+(defwidget empty [] "")
