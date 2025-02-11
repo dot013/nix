@@ -1,8 +1,8 @@
-{...}: {
+{pkgs, ...}: {
   services.flatpak.packages = [
     "com.bitwarden.desktop"
     "io.freetubeapp.FreeTube"
-    "org.kde.krita"
+    # "org.kde.krita" Currently borked, mising qt plugin/platform
     "org.inkscape.Inkscape"
     "md.obsidian.Obsidian"
     "com.github.vikdevelop.photopea_app"
@@ -15,4 +15,9 @@
     "com.github.vikdevelop.photopea_app" = {Context.sockets = ["x11"];};
     "dev.vencord.Vesktop" = {Context.sockets = ["x11"];};
   };
+
+  qt.enable = true;
+  home.packages = with pkgs; [
+    krita
+  ];
 }
