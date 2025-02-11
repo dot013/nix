@@ -124,6 +124,18 @@
               "r" = {set_mode = MODE_RESIZING;};
             };
           };
+
+          # Kick move to workspace
+          "super-shift-1" = {launch = switchTileWorkspace "1";};
+          "super-shift-2" = {launch = switchTileWorkspace "2";};
+          "super-shift-3" = {launch = switchTileWorkspace "3";};
+          "super-shift-4" = {launch = switchTileWorkspace "4";};
+          "super-shift-5" = {launch = switchTileWorkspace "5";};
+          "super-shift-6" = {launch = switchTileWorkspace "6";};
+          "super-shift-7" = {launch = switchTileWorkspace "7";};
+          "super-shift-8" = {launch = switchTileWorkspace "8";};
+          "super-shift-9" = {launch = switchTileWorkspace "9";};
+          "super-shift-0" = {launch = switchTileWorkspace "10";};
         }
         // movementBinds;
       mode = MODE_DEFAULT;
