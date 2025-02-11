@@ -41,6 +41,7 @@
   };
   home.packages = [
     (pkgs.stdenv.mkDerivation rec {
+      name = "Cal Sans";
       pname = "calsans";
       version = "1.0.0";
       src = pkgs.fetchzip {
