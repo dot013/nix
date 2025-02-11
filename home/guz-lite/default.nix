@@ -4,7 +4,6 @@
 
   imports = [
     self.homeManagerModules.devenv
-    self.homeManagerModules.zen-browser
 
     ./apps.nix
     ./style.nix

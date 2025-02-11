@@ -22,6 +22,8 @@
   home-manager.extraSpecialArgs = {inherit inputs self;};
   home-manager.users.guz = import ./default.nix;
 
+  services.flatpak.enable = true;
+
   programs.zsh.enable = true;
   users.users."guz".shell = pkgs.zsh;
 

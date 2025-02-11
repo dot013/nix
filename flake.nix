@@ -24,6 +24,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-flatpak = {
+      url = "github:gmodena/nix-flatpak/?ref=latest";
+    };
+
     nixpak = {
       url = "github:nixpak/nixpak";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -64,6 +68,7 @@
   in {
     nixosConfigurations = {
       "battleship" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
         specialArgs = {inherit inputs self;};
         modules =
           homeNixOSModules
@@ -74,6 +79,7 @@
           ];
       };
       "fighter" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
         specialArgs = {inherit inputs self;};
         modules =
           homeNixOSModules
@@ -94,7 +100,6 @@
           inputs.xremap.homeManagerModules.default
           ./home/guz-lite
         ];
-        pkgs = import nixpkgs {system = "x86_64-linux";};
       };
       "guz" = home-manager.lib.homeManagerConfiguration {
         extraSpecialArgs = {inherit inputs self;};
@@ -104,22 +109,12 @@
           inputs.xremap.homeManagerModules.default
           ./home/guz
         ];
-        pkgs = import nixpkgs {system = "x86_64-linux";};
       };
     };
 
     homeManagerModules = {
       devenv = ./modules/home-manager/devenv.nix;
-      zen-browser = ./modules/home-manager/zen-browser.nix;
       eww = ./modules/home-manager/eww.nix;
     };
-
-    packages = forAllSystems (pkgs: {
-      zen-browser = pkgs.callPackage ./packages/zen-browser {};
-      nixpak = import ./packages/nixpak {
-        inherit (pkgs) lib;
-        inherit pkgs inputs self;
-      };
-    });
   };
 }
