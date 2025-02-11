@@ -24,11 +24,17 @@
   };
 
   # Steam (cannot be [properly] installed just in one user)
-  #programs.steam.enable = true;
+  programs.steam.enable = true;
   programs.steam.gamescopeSession.enable = true;
   programs.steam.extraCompatPackages = with pkgs; [
     proton-ge-bin
   ];
+
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "steam"
+      "steam-unwrapped"
+    ];
 
   # OpenTabletDriver
   hardware.opentabletdriver.enable = true;

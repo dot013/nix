@@ -7,7 +7,6 @@
     "md.obsidian.Obsidian"
     "com.github.vikdevelop.photopea_app"
     "com.rustdesk.RustDesk"
-    "com.valvesoftware.Steam"
     "dev.vencord.Vesktop"
   ];
   services.flatpak.overrides = {
