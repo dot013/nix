@@ -46,5 +46,6 @@
         XCURSOR_PATH = "$HOME/.icons";
       };
     };
+    "com.brave.Browser" = {Context.sockets = ["x11"];};
   };
 }
