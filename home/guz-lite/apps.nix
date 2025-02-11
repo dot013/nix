@@ -28,6 +28,8 @@
     "com.brave.Browser"
     # Zen (Main Browser)
     "app.zen_browser.zen"
+
+    "org.pulseaudio.pavucontrol"
   ];
   services.flatpak.update.onActivation = true;
   services.flatpak.overrides = {
