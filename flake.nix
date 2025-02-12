@@ -116,5 +116,9 @@
       devenv = ./modules/home-manager/devenv.nix;
       eww = ./modules/home-manager/eww.nix;
     };
+
+    packages = forAllSystems (pkgs: {
+      devkit = import ./packages/devkit {inherit pkgs;};
+    });
   };
 }
