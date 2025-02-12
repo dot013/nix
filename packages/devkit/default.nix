@@ -4,5 +4,9 @@
   lazygit = pkgs.callPackage ./lazygit {};
   starship = pkgs.callPackage ./starship {};
   yazi = pkgs.callPackage ./yazi {};
+  zellij = pkgs.callPackage ./zellij {
+    shell = zsh;
+    addPath = [ghostty git lazygit starship yazi zsh];
+  };
   zsh = pkgs.callPackage ./zsh {inherit starship;};
 }
