@@ -29,7 +29,7 @@
     }
   ];
   services.xremap.config.keymap = let
-    TERM = config.home.sessionVariables.TERM;
+    TERMINAL = config.home.sessionVariables.TERMINAL;
     EXPLORER = config.home.sessionVariables.EXPLORER;
     rofi = lib.getExe config.programs.rofi.finalPackage;
 
@@ -91,9 +91,9 @@
       name = "General Keybindings";
       remap = {
         # Terminal
-        "super-q" = {launch = exec "${TERM}";};
+        "super-q" = {launch = exec "${TERMINAL}";};
         # File explorer
-        "super-e" = {launch = exec ["${TERM}" "-e" "${EXPLORER}"];};
+        "super-e" = {launch = exec ["${TERMINAL}" "-e" "${EXPLORER}"];};
         # Web Browser
         "super-w" = {launch = exec ["xdg-open" "https://search.brave.com"];};
         # Launcher
