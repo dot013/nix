@@ -6,6 +6,8 @@
     self.homeManagerModules.devkit
   ];
 
+  devkit.enable = true;
+
   # The *state version* indicates which default
   # settings are in effect and will therefore help avoid breaking
   # program configurations. Switching to a higher state version
