@@ -4,15 +4,11 @@
   pkgs,
   lib,
   zsh ? pkgs.zsh,
-  starship ? pkgs.starship,
+  addPath ? [],
   # .zshrc
   zshrc-prepend ? "",
   zshrc-append ? "",
 }: let
-  packages = [
-    starship
-  ];
-
   zsh-syntax-highlighting = "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
   zsh-autosuggestions = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh";
 
@@ -20,13 +16,19 @@
   zshrc-append-file = pkgs.writeText ".zshrc_append" zshrc-append;
 
   drv = symlinkJoin ({
-      paths = zsh;
+      paths = pkgs.writeShellScriptBin "zsh" ''
+        ${
+          if (builtins.length addPath) > 0
+          then "export PATH=\"$PATH:${lib.makeBinPath addPath}\""
+          else ""
+        }
+        ${lib.getExe zsh} "$@"
+      '';
 
       nativeBuildInputs = [makeWrapper];
 
       postBuild = ''
         wrapProgram $out/bin/zsh \
-          --set-default 'PATH' '${lib.makeBinPath packages}:$PATH' \
           --set-default 'ZSH_PLUGIN_SYNTAXHIGHLIGHING' '${zsh-syntax-highlighting}' \
           --set-default 'ZSH_PLUGIN_AUTOSUGGESTIONS' '${zsh-autosuggestions}' \
           --set-default 'ZSHRC_PREPEND' '${zshrc-prepend-file}' \

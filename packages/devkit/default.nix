@@ -8,5 +8,7 @@
     shell = zsh;
     addPath = [ghostty git lazygit starship yazi zsh];
   };
-  zsh = pkgs.callPackage ./zsh {inherit starship;};
+  zsh = pkgs.callPackage ./zsh {
+    addPath = [git lazygit starship yazi];
+  };
 }

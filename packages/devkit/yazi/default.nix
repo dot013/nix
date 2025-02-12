@@ -4,7 +4,6 @@
   pkgs,
   lib,
   yazi ? pkgs.yazi,
-  paths ? [],
 }: let
   drv = symlinkJoin ({
       paths = yazi;
@@ -12,11 +11,8 @@
       nativeBuildInputs = [makeWrapper];
 
       postBuild = ''
-        wrapProgram $out/bin/yazi ${
-          if (builtins.length paths) > 0
-          then "$PATH:${lib.makeBinPath paths}"
-          else ""
-        } --set-default YAZI_CONFIG_HOME ${./.}
+        wrapProgram $out/bin/yazi \
+          --set-default YAZI_CONFIG_HOME ${./.}
       '';
     }
     // {inherit (yazi) name pname meta;});

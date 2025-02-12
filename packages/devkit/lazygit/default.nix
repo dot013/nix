@@ -4,7 +4,6 @@
   pkgs,
   lib,
   lazygit ? pkgs.lazygit,
-  paths ? [],
   settings ? {},
 }: let
   # YAML is a superset of JSON, so any JSON is valid YAML.
@@ -33,11 +32,8 @@
       nativeBuildInputs = [makeWrapper];
 
       postBuild = ''
-        wrapProgram $out/bin/lazygit ${
-          if (builtins.length paths) > 0
-          then "$PATH:${lib.makeBinPath paths}"
-          else ""
-        } --add-flags '--use-config-file' --add-flags '${cfg}'
+        wrapProgram $out/bin/lazygit \
+          --add-flags '--use-config-file' --add-flags '${cfg}'
       '';
     }
     // {inherit (lazygit) name pname meta;});

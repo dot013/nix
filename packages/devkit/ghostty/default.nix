@@ -4,7 +4,6 @@
   pkgs,
   lib,
   ghostty ? pkgs.ghostty,
-  paths ? [],
 }: let
   colors = import ../colors.nix;
   theme = pkgs.writeText "theme" ''
@@ -37,14 +36,11 @@
       nativeBuildInputs = [makeWrapper];
 
       postBuild = ''
-        wrapProgram $out/bin/ghostty ${
-          if (builtins.length paths) > 0
-          then "$PATH:${lib.makeBinPath paths}"
-          else ""
-        } --add-flags '--theme=${theme}'
+        wrapProgram $out/bin/ghostty \
+          --add-flags '--theme=${theme}'
       '';
     }
-    // {inherit (ghostty) name pname meta;});
+    // {inherit (ghostty) name pname meta man shell_integration terminfo;});
 in
   pkgs.stdenv.mkDerivation (rec {
       name = drv.name;
@@ -64,4 +60,4 @@ in
         cp ${desktopEntry}/share/applications/${pname}.desktop $out/share/applications/${pname}.desktop
       '';
     }
-    // {inherit (ghostty) meta;})
+    // {inherit (ghostty) meta man shell_integration terminfo;})

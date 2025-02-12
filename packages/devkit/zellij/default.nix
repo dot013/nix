@@ -50,14 +50,20 @@
     '';
 
   drv = symlinkJoin ({
-      paths = zellij;
+      paths = pkgs.writeShellScriptBin "zellij" ''
+        ${
+          if (builtins.length addPath) > 0
+          then "export PATH=\"$PATH:${lib.makeBinPath addPath}\""
+          else ""
+        }
+        ${lib.getExe zellij} "$@"
+      '';
 
       nativeBuildInputs = [makeWrapper];
 
       postBuild = ''
         wrapProgram $out/bin/zellij \
-          --set-default ZELLIJ_CONFIG_FILE ${config} \
-          --set PATH "${lib.makeBinPath addPath}"
+          --set-default ZELLIJ_CONFIG_FILE ${config}
       '';
     }
     // {inherit (zellij) name pname meta;});
