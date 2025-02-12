@@ -113,7 +113,7 @@
     };
 
     homeManagerModules = {
-      devenv = ./modules/home-manager/devenv.nix;
+      devkit = ./modules/home-manager/devkit.nix;
       eww = ./modules/home-manager/eww.nix;
     };
 
