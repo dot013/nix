@@ -4,4 +4,5 @@
   lazygit = pkgs.callPackage ./lazygit {};
   starship = pkgs.callPackage ./starship {};
   yazi = pkgs.callPackage ./yazi {};
+  zsh = pkgs.callPackage ./zsh {inherit starship;};
 }
