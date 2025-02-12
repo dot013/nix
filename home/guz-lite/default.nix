@@ -3,7 +3,7 @@
   home.homeDirectory = "/home/guz";
 
   imports = [
-    self.homeManagerModules.devenv
+    self.homeManagerModules.devkit
 
     ./apps.nix
     ./style.nix
