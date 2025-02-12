@@ -45,17 +45,17 @@ in {
       default = cfg.enable;
     };
   };
-  config = {
+  config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       ouch
     ];
 
     home.sessionVariables = rec {
       # EDITOR = "nvim"; # Default editor, already defined by dot013-nvim
-      SHELL = lib.mkIf cfg.zsh "${config.programs.zsh.package}";
-      TERM = lib.mkIf cfg.ghostty "${config.programs.ghostty.package}";
-      TERMINAL = lib.mkIf cfg.ghostty TERM;
-      EXPLORER = lib.mkIf cfg.yazi "${config.programs.yazi.package}";
+      SHELL = lib.mkIf cfg.zsh.enable "${lib.getExe config.programs.zsh.package}";
+      TERM = lib.mkIf cfg.ghostty.enable "xterm-ghostty";
+      TERMINAL = lib.mkIf cfg.ghostty.enable "${lib.getExe config.programs.ghostty.package}";
+      EXPLORER = lib.mkIf cfg.yazi.enable "${lib.getExe config.programs.yazi.package}";
     };
 
     # Local development shells
@@ -93,49 +93,55 @@ in {
     # Devkit packages
 
     ## Ghostty (Terminal)
-    programs.ghostty = lib.mkIf cfg.ghostty {
+    programs.ghostty = lib.mkIf cfg.ghostty.enable {
       enable = true;
       package = devkitPkgs.ghostty;
+      # package = pkgs.ghostty;
     };
 
     ## Git
-    programs.git = lib.mkIf cfg.git {
+    programs.git = lib.mkIf cfg.git.enable {
       enable = true;
       userEmail = "contact@guz.one";
       userName = "Gustavo \"Guz\" L de Mello";
     };
 
     ## Lazygit (Git TUI)
-    programs.lazygit = lib.mkIf cfg.lazygit {
+    programs.lazygit = lib.mkIf cfg.lazygit.enable {
       enable = true;
       package = devkitPkgs.lazygit;
+      # package = pkgs.lazygit;
     };
 
     ## Neovim (Editor)
     ## programs.neovim.enable = true; # Already enabled by dot013-nvim
 
     ## Starship (Shell decoration)
-    programs.starship = lib.mkIf cfg.starship {
+    programs.starship = lib.mkIf cfg.starship.enable {
       enable = true;
       package = devkitPkgs.starship;
+      # package = pkgs.starship;
     };
 
     ## Yazi (File manager)
-    programs.yazi = lib.mkIf cfg.yazi {
+    programs.yazi = lib.mkIf cfg.yazi.enable {
       enable = true;
       package = devkitPkgs.yazi;
+      # package = pkgs.yazi;
     };
 
     ## Zellij (Terminal multiplexer)
-    programs.zellij = lib.mkIf cfg.zellij {
+    programs.zellij = lib.mkIf cfg.zellij.enable {
       enable = true;
       package = devkitPkgs.zellij;
+      # package = pkgs.zellij;
     };
 
     ## ZSH (Default shell)
-    programs.zsh = lib.mkIf cfg.zsh {
+    programs.zsh = lib.mkIf cfg.zsh.enable {
       enable = true;
-      package = devkitPkgs.zsh;
+      # package = devkitPkgs.zsh;
+      package = pkgs.zsh;
     };
   };
 }
