@@ -4,8 +4,7 @@
   pkgs,
   self,
   ...
-}: let
-in {
+}: {
   imports = [self.homeManagerModules.eww];
 
   # Hyprland
