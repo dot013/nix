@@ -50,7 +50,7 @@ in {
       ouch
     ];
 
-    home.sessionVariables = rec {
+    home.sessionVariables = {
       # EDITOR = "nvim"; # Default editor, already defined by dot013-nvim
       SHELL = lib.mkIf cfg.zsh.enable "${lib.getExe config.programs.zsh.package}";
       TERM = lib.mkIf cfg.ghostty.enable "xterm-ghostty";
