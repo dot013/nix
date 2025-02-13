@@ -104,6 +104,7 @@ in {
       enable = true;
       userEmail = "contact@guz.one";
       userName = "Gustavo \"Guz\" L de Mello";
+      package = devkitPkgs.git;
     };
 
     ## Lazygit (Git TUI)
