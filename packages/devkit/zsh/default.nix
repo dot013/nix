@@ -4,7 +4,6 @@
   pkgs,
   lib,
   zsh ? pkgs.zsh,
-  addPath ? [],
   # .zshrc
   zshrc-prepend ? "",
   zshrc-append ? "",
@@ -16,14 +15,7 @@
   zshrc-append-file = pkgs.writeText ".zshrc_append" zshrc-append;
 
   drv = symlinkJoin ({
-      paths = pkgs.writeShellScriptBin "zsh" ''
-        ${
-          if (builtins.length addPath) > 0
-          then "export PATH=\"$PATH:${lib.makeBinPath addPath}\""
-          else ""
-        }
-        ${lib.getExe zsh} "$@"
-      '';
+      paths = zsh;
 
       nativeBuildInputs = [makeWrapper];
 

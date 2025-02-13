@@ -5,7 +5,6 @@
   lib,
   zellij ? pkgs.zellij,
   shell ? pkgs.zsh,
-  addPath ? [],
 }: let
   colors = import ../colors.nix;
 
@@ -50,14 +49,7 @@
     '';
 
   drv = symlinkJoin ({
-      paths = pkgs.writeShellScriptBin "zellij" ''
-        ${
-          if (builtins.length addPath) > 0
-          then "export PATH=\"$PATH:${lib.makeBinPath addPath}\""
-          else ""
-        }
-        ${lib.getExe zellij} "$@"
-      '';
+      paths = zellij;
 
       nativeBuildInputs = [makeWrapper];
 

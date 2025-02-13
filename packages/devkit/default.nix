@@ -6,9 +6,6 @@
   yazi = pkgs.callPackage ./yazi {};
   zellij = pkgs.callPackage ./zellij {
     shell = zsh;
-    addPath = [ghostty git lazygit starship yazi zsh];
   };
-  zsh = pkgs.callPackage ./zsh {
-    addPath = [git lazygit starship yazi];
-  };
+  zsh = pkgs.callPackage ./zsh {};
 }

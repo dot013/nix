@@ -33,8 +33,10 @@ setopt SHARE_HISTORY
 unsetopt EXTENDED_HISTORY
 
 # Start starship for interactive shells
-if [[ "$TERM" != "dump" ]]; then
-	eval "$(starship init zsh)"
+if command -v "starship" >/dev/null 2>&1; then
+	if [[ "$TERM" != "dump" ]]; then
+		eval "$(starship init zsh)"
+	fi
 fi
 
 # Syntax highlighting
