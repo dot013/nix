@@ -6,6 +6,8 @@
   imports = [
     ./hardware-configuration.nix
     ../../configuration.nix
+
+    ./home.nix
   ];
 
   users.users."guz" = {
