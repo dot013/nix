@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   services.flatpak.packages = [
+    "org.darktable.Darktable"
     "com.bitwarden.desktop"
     "io.freetubeapp.FreeTube"
     # "org.kde.krita" Currently borked, mising qt plugin/platform
