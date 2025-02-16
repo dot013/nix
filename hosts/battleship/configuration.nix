@@ -30,10 +30,14 @@
     proton-ge-bin
   ];
 
+  # Xbox Controller driver
+  hardware.xone.enable = true;
+
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "steam"
       "steam-unwrapped"
+      "xow_dongle-firmware"
     ];
 
   # OpenTabletDriver
