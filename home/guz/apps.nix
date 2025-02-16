@@ -4,6 +4,7 @@
     "io.freetubeapp.FreeTube"
     # "org.kde.krita" Currently borked, mising qt plugin/platform
     "org.inkscape.Inkscape"
+    "org.libreoffice.LibreOffice"
     "md.obsidian.Obsidian"
     "com.github.vikdevelop.photopea_app"
     "com.rustdesk.RustDesk"
