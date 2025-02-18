@@ -3,9 +3,9 @@
   git = pkgs.callPackage ./git {};
   lazygit = pkgs.callPackage ./lazygit {};
   starship = pkgs.callPackage ./starship {};
+  tmux = pkgs.callPackage ./tmux {shell = zsh;};
   yazi = pkgs.callPackage ./yazi {};
-  zellij = pkgs.callPackage ./zellij {
-    shell = zsh;
-  };
+  # CURRENTLY BORKED https://github.com/zellij-org/zellij/issues/3970
+  # zellij = pkgs.callPackage ./zellij {shell = zsh;};
   zsh = pkgs.callPackage ./zsh {};
 }
