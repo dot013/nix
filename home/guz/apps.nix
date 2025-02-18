@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   services.flatpak.packages = [
+    "org.blender.Blender"
     "org.darktable.Darktable"
     "com.bitwarden.desktop"
     "io.freetubeapp.FreeTube"
