@@ -18,6 +18,9 @@
     "dev.vencord.Vesktop" = {Context.sockets = ["x11"];};
   };
 
+  services.kdeconnect.enable = true;
+  services.kdeconnect.indicator = true;
+
   qt.enable = true;
   home.packages = with pkgs; [
     krita
