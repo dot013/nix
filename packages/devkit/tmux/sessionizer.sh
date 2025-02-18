@@ -12,10 +12,11 @@ function tmux_sessionizer() {
 		fi
 	done
 
+	local selected=""
 	if [[ $# -eq 1 ]]; then
 		selected="$1"
 	else
-		selected="$(find "${paths[@]}" -mindepth 1 -maxdepth 1 -type d | fzf)"]
+		selected="$(find "${paths[@]}" -mindepth 1 -maxdepth 1 -type d | fzf)"
 	fi
 
 	if [[ -z "$selected" ]]; then
