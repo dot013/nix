@@ -10,6 +10,10 @@
     "md.obsidian.Obsidian"
     "com.github.vikdevelop.photopea_app"
     "com.rustdesk.RustDesk"
+    {
+      flatpakref = "https://sober.vinegarhq.org/sober.flatpakref";
+      sha256 = "1pj8y1xhiwgbnhrr3yr3ybpfis9slrl73i0b1lc9q89vhip6ym2l";
+    }
     # "dev.vencord.Vesktop" Currently borked
   ];
   services.flatpak.overrides = {
