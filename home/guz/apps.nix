@@ -28,6 +28,7 @@
   qt.enable = true;
   home.packages = with pkgs; [
     krita
+    megasync
     vesktop
   ];
 }
