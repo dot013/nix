@@ -33,6 +33,18 @@
   # Xbox Controller driver
   hardware.xone.enable = true;
 
+  hardware.bluetooth.settings.General = {
+    experimental = true;
+
+    Privacy = "device";
+    JustWorksRepairing = "always";
+    Class = "0x000100";
+    FastConnectable = true;
+  };
+  boot.extraModprobeConfig = ''
+    options bluetooth disable_ertm=Y
+  '';
+
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "megasync"
