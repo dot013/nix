@@ -35,6 +35,7 @@
 
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
+      "megasync"
       "steam"
       "steam-unwrapped"
       "xow_dongle-firmware"
