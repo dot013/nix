@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   inputs,
   pkgs,
   self,
@@ -20,15 +21,16 @@
   home-manager.useUserPackages = true;
   home-manager.backupFileExtension = "bkp";
   home-manager.extraSpecialArgs = {inherit inputs self;};
-  home-manager.users.guz = import ./default.nix;
-
-  services.flatpak.enable = true;
+  home-manager.users.guz = lib.mkDefault (import ./default.nix);
 
   programs.zsh.enable = true;
   users.users."guz".shell = pkgs.zsh;
 
-  # Xremap run-as-user
-  hardware.uinput.enable = true;
-  users.groups.uinput.members = ["guz"];
-  users.groups.input.members = ["guz"];
+  # Podman (not necessarily user-specific, but environment specific)
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerCompat = true;
+  virtualisation.podman.dockerSocket.enable = true;
+  virtualisation.podman.extraPackages = with pkgs; [
+    podman-compose
+  ];
 }

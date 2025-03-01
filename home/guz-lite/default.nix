@@ -1,17 +1,15 @@
-{self, ...}: {
+{...}: {
   home.username = "guz";
   home.homeDirectory = "/home/guz";
 
   imports = [
-    self.homeManagerModules.devkit
+    ../worm/default.nix
 
     ./apps.nix
     ./style.nix
     ./desktop.nix
     ./keymaps.nix
   ];
-
-  devkit.enable = true;
 
   # The *state version* indicates which default
   # settings are in effect and will therefore help avoid breaking

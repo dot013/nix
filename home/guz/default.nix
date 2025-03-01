@@ -3,7 +3,7 @@
   home.homeDirectory = "/home/guz";
 
   imports = [
-    ../guz-lite
+    ../guz-lite/default.nix
 
     ./apps.nix
   ];
