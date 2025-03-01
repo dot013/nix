@@ -100,7 +100,6 @@ in {
     programs.ghostty = lib.mkIf cfg.ghostty.enable {
       enable = true;
       package = devkitPkgs.ghostty;
-      # package = pkgs.ghostty;
     };
 
     ## Git
@@ -135,53 +134,19 @@ in {
       # package = pkgs.yazi;
     };
 
-    ## Zellij (Terminal multiplexer)
-    #
+    # Zellij (Terminal multiplexer)
+
     # CURRENTLY BORKED https://github.com/zellij-org/zellij/issues/3970
-    #
-    # programs.zellij = lib.mkIf cfg.zellij.enable {
-    #   enable = true;
-    #   package = devkitPkgs.zellij;
-    #   # package = pkgs.zellij;
-    # };
+
+    programs.zellij = lib.mkIf cfg.zellij.enable {
+      enable = true;
+      package = devkitPkgs.zellij;
+    };
 
     ## Tmux (Backup terminal multiplexer)
     programs.tmux = lib.mkIf cfg.tmux.enable {
       enable = true;
       package = devkitPkgs.tmux;
-      # baseIndex = 1;
-      # keyMode = "vi";
-      # mouse = true;
-      # prefix = "Ctrl-G";
-      # shell = lib.getExe config.programs.zsh.package;
-      # terminal = "screen-256color";
-      # plugins = with pkgs; [
-      #   {
-      #     plugin = tmuxPlugins.catppuccin.overrideAttrs (_: {
-      #       src = fetchFromGitHub {
-      #         owner = "guz013";
-      #         repo = "frappuccino-tmux";
-      #         rev = "4255b0a769cc6f35e12595fe5a33273a247630aa";
-      #         sha256 = "0k8yprhx5cd8v1ddpcr0dkssspc17lq2a51qniwafkkzxi3kz3i5";
-      #       };
-      #     });
-      #   }
-      #   {plugin = tmuxPlugins.better-mouse-mode;}
-      #   {
-      #     plugin = tmuxPlugins.mkTmuxPlugin {
-      #       pluginName = "tmux.nvim";
-      #       version = "unstable-2024-04-05";
-      #       src = fetchFromGitHub {
-      #         owner = "aserowy";
-      #         repo = "tmux.nvim";
-      #         rev = "63e9c5e054099dd30af306bd8ceaa2f1086e1b07";
-      #         sha256 = "0ynzljwq6hv7415p7pr0aqx8kycp84p3p3dy4jcx61dxfgdpgc4c";
-      #       };
-      #     };
-      #   }
-      #   {plugin = tmuxPlugins.resurrect;}
-      #   {plugin = tmuxPlugins.continuum;}
-      # ];
     };
 
     ## ZSH (Default shell)

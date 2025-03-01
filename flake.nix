@@ -118,7 +118,7 @@
     };
 
     packages = forAllSystems (pkgs: {
-      devkit = import ./packages/devkit {inherit pkgs;};
+      devkit = import ./packages/devkit {inherit pkgs inputs;};
     });
   };
 }
