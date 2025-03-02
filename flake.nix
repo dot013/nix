@@ -142,5 +142,17 @@
         ${lib.getExe self.packages.${pkgs.system}.devkit.zsh} "$@"
       '';
     });
+
+    devShells = forAllSystems ({
+      lib,
+      pkgs,
+      ...
+    }: {
+      devkit = pkgs.mkShell {
+        name = "devkit-shell";
+        shellHook = "${lib.getExe self.packages.${pkgs.system}.devkit-shell}";
+      };
+      default = self.devShells.${pkgs.system}.devkit;
+    });
   };
 }
