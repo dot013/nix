@@ -126,8 +126,10 @@
       ...
     }: {
       devkit = import ./packages/devkit {inherit pkgs inputs;};
-      devkit-shell = pkgs.writeShellScriptBin "devkit-shell" ''
-        export PATH="$PATH:${lib.makeBinPath (with self.packages.${pkgs.system}.devkit; [
+      devkit-shell = let
+        devkit = self.packages.${pkgs.system}.devkit;
+        packages =
+          (with devkit; [
             git
             lazygit
             starship
@@ -136,7 +138,7 @@
             zellij
             zsh
           ])
-          + [
+          ++ [
             inputs.dot013-nvim.packages.${pkgs.system}.default
 
             # Useful on new Nix installations
@@ -145,9 +147,12 @@
                 --experimental-features 'nix-command flakes' \
                 "$@"
             '')
-          ]}"
-        ${lib.getExe self.packages.${pkgs.system}.devkit.zsh} "$@"
-      '';
+          ];
+      in
+        pkgs.writeShellScriptBin "devkit-shell" ''
+          export PATH="$PATH:${lib.makeBinPath packages}"
+          ${lib.getExe devkit.zsh} "$@"
+        '';
     });
 
     devShells = forAllSystems ({
