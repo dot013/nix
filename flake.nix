@@ -138,6 +138,7 @@
           zsh
         '';
       };
+      default = self.devShells.${pkgs.system}.devkit;
     });
   };
 }
