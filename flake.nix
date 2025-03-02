@@ -58,7 +58,10 @@
       nixpkgs.lib.genAttrs systems (system: let
         pkgs = import nixpkgs {inherit system;};
       in
-        f pkgs);
+        f {
+          inherit pkgs;
+          inherit (pkgs) lib;
+        });
 
     # Home manager NixOS module
     homeNixOSModules = [
@@ -117,15 +120,17 @@
       eww = ./modules/home-manager/eww.nix;
     };
 
-    packages = forAllSystems (pkgs: {
+    packages = forAllSystems ({pkgs, ...}: {
       devkit = import ./packages/devkit {inherit pkgs inputs;};
     });
 
-    devShells = forAllSystems (pkgs: {
-      devkit = pkgs.mkShell {
-        name = "devkit";
-        buildInputs = with self.packages.${pkgs.system}.devkit; [
-          ghostty
+    devShells = forAllSystems ({
+      pkgs,
+      lib,
+      ...
+    }: let
+      shell = pkgs.writeShellScriptBin "devkit-shell" ''
+        export PATH="$PATH:${lib.makeBinPath (with self.packages.${pkgs.system}.devkit; [
           git
           lazygit
           starship
@@ -133,16 +138,14 @@
           yazi
           zellij
           zsh
-
-          # Useful on new installations of Nix
-          (pkgs.writeShellScriptBin "nix" ''
-            ${pkgs.lib.getExe pkgs.nix} \
-              --extra-experimental-features 'nix-command flakes' \
-              "$@"
-          '')
-        ];
+        ])}"
+        ${lib.getExe self.packages.${pkgs.system}.devkit.zsh} "$@"
+      '';
+    in {
+      devkit = pkgs.mkShell {
+        name = "devkit";
         shellHook = ''
-          zsh
+          ${lib.getExe shell}
         '';
       };
       default = self.devShells.${pkgs.system}.devkit;
