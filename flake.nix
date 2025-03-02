@@ -120,16 +120,13 @@
       eww = ./modules/home-manager/eww.nix;
     };
 
-    packages = forAllSystems ({pkgs, ...}: {
-      devkit = import ./packages/devkit {inherit pkgs inputs;};
-    });
-
-    devShells = forAllSystems ({
-      pkgs,
+    packages = forAllSystems ({
       lib,
+      pkgs,
       ...
-    }: let
-      shell = pkgs.writeShellScriptBin "devkit-shell" ''
+    }: {
+      devkit = import ./packages/devkit {inherit pkgs inputs;};
+      devkit-shell = pkgs.writeShellScriptBin "devkit-shell" ''
         export PATH="$PATH:${lib.makeBinPath (with self.packages.${pkgs.system}.devkit; [
           git
           lazygit
@@ -141,14 +138,6 @@
         ])}"
         ${lib.getExe self.packages.${pkgs.system}.devkit.zsh} "$@"
       '';
-    in {
-      devkit = pkgs.mkShell {
-        name = "devkit";
-        shellHook = ''
-          ${lib.getExe shell}
-        '';
-      };
-      default = self.devShells.${pkgs.system}.devkit;
     });
   };
 }
