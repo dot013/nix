@@ -9,6 +9,7 @@
     "org.libreoffice.LibreOffice"
     "md.obsidian.Obsidian"
     "com.github.vikdevelop.photopea_app"
+    "org.prismlauncher.PrismLauncher"
     "com.rustdesk.RustDesk"
     {
       flatpakref = "https://sober.vinegarhq.org/sober.flatpakref";
@@ -19,6 +20,7 @@
   services.flatpak.overrides = {
     "com.bitwarden.desktop" = {Context.sockets = ["x11"];};
     "com.github.vikdevelop.photopea_app" = {Context.sockets = ["x11"];};
+    "org.prismlauncher.PrismLauncher" = {Context.sockets = ["x11"];};
     # "dev.vencord.Vesktop" = {Context.sockets = ["x11"];};
   };
 
