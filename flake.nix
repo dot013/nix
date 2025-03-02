@@ -120,5 +120,24 @@
     packages = forAllSystems (pkgs: {
       devkit = import ./packages/devkit {inherit pkgs inputs;};
     });
+
+    devShells = forAllSystems (pkgs: {
+      devkit = pkgs.mkShell {
+        name = "devkit";
+        packages = with self.packages.${pkgs.system}.devkit; [
+          ghostty
+          git
+          lazygit
+          starship
+          tmux
+          yazi
+          zellij
+          zsh
+        ];
+        shellHook = ''
+          zsh
+        '';
+      };
+    });
   };
 }
