@@ -133,6 +133,13 @@
           yazi
           zellij
           zsh
+
+          # Useful on new installations of Nix
+          (pkgs.writeShellScriptBin "nix" ''
+            ${pkgs.lib.getExe pkgs.nix} \
+              --extra-experimental-features 'nix-command flakes' \
+              "$@"
+          '')
         ];
         shellHook = ''
           zsh
