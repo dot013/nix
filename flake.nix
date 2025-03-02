@@ -128,14 +128,17 @@
       devkit = import ./packages/devkit {inherit pkgs inputs;};
       devkit-shell = pkgs.writeShellScriptBin "devkit-shell" ''
         export PATH="$PATH:${lib.makeBinPath (with self.packages.${pkgs.system}.devkit; [
-          git
-          lazygit
-          starship
-          tmux
-          yazi
-          zellij
-          zsh
-        ])}"
+            git
+            lazygit
+            starship
+            tmux
+            yazi
+            zellij
+            zsh
+          ])
+          + [
+            inputs.dot013-nvim.packages.${pkgs.system}.default
+          ]}"
         ${lib.getExe self.packages.${pkgs.system}.devkit.zsh} "$@"
       '';
     });
