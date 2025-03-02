@@ -124,7 +124,7 @@
     devShells = forAllSystems (pkgs: {
       devkit = pkgs.mkShell {
         name = "devkit";
-        packages = with self.packages.${pkgs.system}.devkit; [
+        buildInputs = with self.packages.${pkgs.system}.devkit; [
           ghostty
           git
           lazygit
