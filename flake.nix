@@ -138,6 +138,13 @@
           ])
           + [
             inputs.dot013-nvim.packages.${pkgs.system}.default
+
+            # Useful on new Nix installations
+            (pkgs.writeShellScriptBin "nix" ''
+              ${lib.getExe pkgs.nix} \
+                --experimental-features 'nix-command flakes' \
+                "$@"
+            '')
           ]}"
         ${lib.getExe self.packages.${pkgs.system}.devkit.zsh} "$@"
       '';
