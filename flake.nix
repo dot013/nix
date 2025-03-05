@@ -33,11 +33,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Dependecy of the Neovim configuration at ./modules/home-manager/devenv.nix
-    dot013-nvim = {
-      url = "github:dot013/nvim";
-      # url = "git+file:///home/guz/.projects/dot013-nvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+    neovim = {
+      url = "git+https://forge.capytal.company/dot013/nvim";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
 
@@ -125,29 +123,32 @@
       pkgs,
       ...
     }: {
-      devkit = import ./packages/devkit {inherit pkgs inputs;};
+      neovim = inputs.neovim.packages.${pkgs.system}.default;
+
+      devkit =
+        (import ./packages/devkit {inherit pkgs inputs;})
+        // {
+          neovim = self.packages.${pkgs.system}.neovim;
+        };
       devkit-shell = let
         devkit = self.packages.${pkgs.system}.devkit;
-        packages =
-          (with devkit; [
-            git
-            lazygit
-            starship
-            tmux
-            yazi
-            zellij
-            zsh
-          ])
-          ++ [
-            inputs.dot013-nvim.packages.${pkgs.system}.default
+        packages = with devkit; [
+          git
+          lazygit
+          neovim
+          starship
+          tmux
+          yazi
+          zellij
+          zsh
 
-            # Useful on new Nix installations
-            (pkgs.writeShellScriptBin "nix" ''
-              ${lib.getExe pkgs.nix} \
-                --experimental-features 'nix-command flakes' \
-                "$@"
-            '')
-          ];
+          # Useful on new Nix installations
+          (pkgs.writeShellScriptBin "nix" ''
+            ${lib.getExe pkgs.nix} \
+              --experimental-features 'nix-command flakes' \
+              "$@"
+          '')
+        ];
       in
         pkgs.writeShellScriptBin "devkit-shell" ''
           export PATH="$PATH:${lib.makeBinPath packages}"

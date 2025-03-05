@@ -10,9 +10,6 @@
 
   devkitPkgs = self.packages.${pkgs.system}.devkit;
 in {
-  imports = [
-    inputs.dot013-nvim.homeManagerModules.neovim
-  ];
   options.devkit = with lib; {
     enable = mkEnableOption "Enable devkit configuration and packages";
 
@@ -118,7 +115,8 @@ in {
     };
 
     ## Neovim (Editor)
-    ## programs.neovim.enable = true; # Already enabled by dot013-nvim
+    programs.neovim.enable = true; # Already enabled by dot013-nvim
+    programs.neovim.package = devkitPkgs.neovim;
 
     ## Starship (Shell decoration)
     programs.starship = lib.mkIf cfg.starship.enable {
