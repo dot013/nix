@@ -10,6 +10,9 @@
 
   devkitPkgs = self.packages.${pkgs.system}.devkit;
 in {
+  imports = [
+    self.homeManagerModules.neovim
+  ];
   options.devkit = with lib; {
     enable = mkEnableOption "Enable devkit configuration and packages";
 
@@ -22,6 +25,10 @@ in {
       default = cfg.enable;
     };
     lazygit.enable = mkOption {
+      type = with types; bool;
+      default = cfg.enable;
+    };
+    neovim.enable = mkOption {
       type = with types; bool;
       default = cfg.enable;
     };
@@ -52,7 +59,6 @@ in {
     ];
 
     home.sessionVariables = {
-      # EDITOR = "nvim"; # Default editor, already defined by dot013-nvim
       SHELL = lib.mkIf cfg.zsh.enable "${lib.getExe config.programs.zsh.package}";
       TERM = lib.mkIf cfg.ghostty.enable "xterm-ghostty";
       TERMINAL = lib.mkIf cfg.ghostty.enable "${lib.getExe config.programs.ghostty.package}";
@@ -115,8 +121,7 @@ in {
     };
 
     ## Neovim (Editor)
-    programs.neovim.enable = true; # Already enabled by dot013-nvim
-    programs.neovim.package = devkitPkgs.neovim;
+    neovim.enable = cfg.neovim.enable;
 
     ## Starship (Shell decoration)
     programs.starship = lib.mkIf cfg.starship.enable {
@@ -133,9 +138,6 @@ in {
     };
 
     # Zellij (Terminal multiplexer)
-
-    # CURRENTLY BORKED https://github.com/zellij-org/zellij/issues/3970
-
     programs.zellij = lib.mkIf cfg.zellij.enable {
       enable = true;
       package = devkitPkgs.zellij;

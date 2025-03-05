@@ -35,7 +35,6 @@
 
     neovim = {
       url = "git+https://forge.capytal.company/dot013/nvim";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
 
@@ -113,8 +112,13 @@
       };
     };
 
+    nixosModules = {
+      neovim = inputs.neovim.nixosModules.default;
+    };
+
     homeManagerModules = {
       devkit = ./modules/home-manager/devkit.nix;
+      neovim = inputs.neovim.homeManagerModules.default;
       eww = ./modules/home-manager/eww.nix;
     };
 
