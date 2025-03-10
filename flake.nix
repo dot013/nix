@@ -91,8 +91,9 @@
       };
     };
 
-    homeConfigurations = {
+    homeConfigurations = forAllSystems ({pkgs, ...}: {
       "guz" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
         extraSpecialArgs = {inherit inputs self;};
         modules = [
           inputs.stylix.homeManagerModules.stylix
@@ -102,6 +103,7 @@
         ];
       };
       "guz-lite" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
         extraSpecialArgs = {inherit inputs self;};
         modules = [
           inputs.stylix.homeManagerModules.stylix
@@ -111,12 +113,13 @@
         ];
       };
       "worm" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
         extraSpecialArgs = {inherit inputs self;};
         modules = [
           ./home/worm
         ];
       };
-    };
+    });
 
     nixosModules = {
       neovim = inputs.neovim.nixosModules.default;
