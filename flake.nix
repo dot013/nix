@@ -92,6 +92,15 @@
     };
 
     homeConfigurations = {
+      "guz" = home-manager.lib.homeManagerConfiguration {
+        extraSpecialArgs = {inherit inputs self;};
+        modules = [
+          inputs.stylix.homeManagerModules.stylix
+          ./colors.nix
+          inputs.xremap.homeManagerModules.default
+          ./home/guz
+        ];
+      };
       "guz-lite" = home-manager.lib.homeManagerConfiguration {
         extraSpecialArgs = {inherit inputs self;};
         modules = [
@@ -101,13 +110,10 @@
           ./home/guz-lite
         ];
       };
-      "guz" = home-manager.lib.homeManagerConfiguration {
+      "worm" = home-manager.lib.homeManagerConfiguration {
         extraSpecialArgs = {inherit inputs self;};
         modules = [
-          inputs.stylix.homeManagerModules.stylix
-          ./colors.nix
-          inputs.xremap.homeManagerModules.default
-          ./home/guz
+          ./home/worm
         ];
       };
     };
