@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
     inputs.nix-flatpak.homeManagerModules.nix-flatpak
   ];
@@ -48,4 +52,8 @@
     };
     "com.brave.Browser" = {Context.sockets = ["x11"];};
   };
+
+  home.packages = with pkgs; [
+    nautilus
+  ];
 }
