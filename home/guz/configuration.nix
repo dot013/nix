@@ -30,6 +30,7 @@
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "davinci-resolve"
+      "megasync"
       "steam"
       "steam-unwrapped"
       "xow_dongle-firmware"

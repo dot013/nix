@@ -30,9 +30,4 @@
   boot.extraModprobeConfig = ''
     options bluetooth disable_ertm=Y
   '';
-
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "megasync"
-    ];
 }
