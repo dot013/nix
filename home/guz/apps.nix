@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  self,
+  pkgs,
+  ...
+}: {
   services.flatpak.packages = [
     "org.blender.Blender"
     "org.darktable.Darktable"
@@ -28,9 +32,15 @@
   services.kdeconnect.indicator = true;
 
   qt.enable = true;
-  home.packages = with pkgs; [
-    krita
-    megasync
-    vesktop
-  ];
+  home.packages =
+    (with pkgs; [
+      megasync
+
+      vesktop
+
+      # Media
+      ffmpeg
+      krita
+      davinci-resolve
+    ]);
 }

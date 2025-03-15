@@ -6,4 +6,8 @@
   ];
 
   home-manager.users.guz = import ./default.nix;
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "davinci-resolve"
+    ];
 }
