@@ -40,11 +40,13 @@
 
       # Media
       ffmpeg
+      exiftool
       krita
       davinci-resolve
     ])
     # Utils
     ++ (with self.packages.${pkgs.system}; [
       davincify
+      untrack
     ]);
 }

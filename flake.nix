@@ -137,6 +137,8 @@
       ...
     }: {
       davincify = pkgs.callPackage ./packages/davincify {};
+      untrack = pkgs.callPackage ./packages/untrack {};
+
       neovim = inputs.neovim.packages.${pkgs.system}.default;
 
       devkit =
