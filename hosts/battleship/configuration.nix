@@ -23,13 +23,6 @@
     #wireless.enable = lib.mkForce true;
   };
 
-  # Steam (cannot be [properly] installed just in one user)
-  programs.steam.enable = true;
-  programs.steam.gamescopeSession.enable = true;
-  programs.steam.extraCompatPackages = with pkgs; [
-    proton-ge-bin
-  ];
-
   # Xbox Controller driver
   hardware.xone.enable = true;
 
@@ -48,8 +41,6 @@
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "megasync"
-      "steam"
-      "steam-unwrapped"
       "xow_dongle-firmware"
     ];
 
