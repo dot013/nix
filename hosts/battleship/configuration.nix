@@ -34,12 +34,5 @@
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "megasync"
-      "xow_dongle-firmware"
     ];
-
-  # OpenTabletDriver
-  hardware.opentabletdriver.enable = true;
-  services.udev.extraRules = ''
-    KERNEL=="hidraw", SUBSYSTEM=="hidraw", MODE="0660", GROUP="plugdev"
-  '';
 }

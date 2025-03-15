@@ -21,10 +21,17 @@
   # Xbox Controller driver
   hardware.xone.enable = true;
 
+  # OpenTabletDriver
+  hardware.opentabletdriver.enable = true;
+  services.udev.extraRules = ''
+    KERNEL=="hidraw", SUBSYSTEM=="hidraw", MODE="0660", GROUP="plugdev"
+  '';
+
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "davinci-resolve"
       "steam"
       "steam-unwrapped"
+      "xow_dongle-firmware"
     ];
 }
