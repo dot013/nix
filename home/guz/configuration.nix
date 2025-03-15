@@ -18,6 +18,9 @@
     proton-ge-bin
   ];
 
+  # Xbox Controller driver
+  hardware.xone.enable = true;
+
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "davinci-resolve"

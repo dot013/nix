@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{lib, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./gpu-configuration.nix
@@ -22,9 +18,6 @@
     hostName = lib.mkForce "battleship";
     #wireless.enable = lib.mkForce true;
   };
-
-  # Xbox Controller driver
-  hardware.xone.enable = true;
 
   hardware.bluetooth.settings.General = {
     experimental = true;
