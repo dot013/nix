@@ -18,16 +18,4 @@
     hostName = lib.mkForce "battleship";
     #wireless.enable = lib.mkForce true;
   };
-
-  hardware.bluetooth.settings.General = {
-    experimental = true;
-
-    Privacy = "device";
-    JustWorksRepairing = "always";
-    Class = "0x000100";
-    FastConnectable = true;
-  };
-  boot.extraModprobeConfig = ''
-    options bluetooth disable_ertm=Y
-  '';
 }
