@@ -136,6 +136,7 @@
       pkgs,
       ...
     }: {
+      davincify = pkgs.callPackage ./packages/davincify {};
       neovim = inputs.neovim.packages.${pkgs.system}.default;
 
       devkit =

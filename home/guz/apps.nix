@@ -42,5 +42,9 @@
       ffmpeg
       krita
       davinci-resolve
+    ])
+    # Utils
+    ++ (with self.packages.${pkgs.system}; [
+      davincify
     ]);
 }
