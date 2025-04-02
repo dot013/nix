@@ -5,7 +5,10 @@
 }: {
   imports = [
     inputs.nix-flatpak.homeManagerModules.nix-flatpak
+    inputs.rec-sh.homeManagerModules.rec-sh
   ];
+
+  programs.rec-sh.enable = true;
 
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = let

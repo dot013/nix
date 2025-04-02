@@ -36,6 +36,11 @@
     neovim = {
       url = "git+https://forge.capytal.company/dot013/nvim";
     };
+
+    rec-sh = {
+      url = "git+https://forge.capytal.company/dot013/rec.sh";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
