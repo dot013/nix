@@ -43,7 +43,7 @@
       ffmpeg
       exiftool
       krita
-      davinci-resolve
+      # davinci-resolve # Currently borked
     ])
     # Utils
     ++ (with self.packages.${pkgs.system}; [
