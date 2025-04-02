@@ -10,6 +10,7 @@
     "org.darktable.Darktable"
     "io.freetubeapp.FreeTube"
     # "org.kde.krita" Currently borked, mising qt plugin/platform
+    "org.kde.kdenlive"
     "org.inkscape.Inkscape"
     "org.libreoffice.LibreOffice"
     "md.obsidian.Obsidian"
