@@ -5,8 +5,9 @@
 }: {
   services.flatpak.packages = [
     "org.blender.Blender"
-    "org.darktable.Darktable"
+    "org.beeref.BeeRef"
     "com.bitwarden.desktop"
+    "org.darktable.Darktable"
     "io.freetubeapp.FreeTube"
     # "org.kde.krita" Currently borked, mising qt plugin/platform
     "org.inkscape.Inkscape"
