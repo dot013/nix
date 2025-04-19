@@ -1,18 +1,11 @@
 {
   config,
-  inputs,
   lib,
   pkgs,
-  self,
   ...
 }: let
   cfg = config.devkit;
-
-  devkitPkgs = self.packages.${pkgs.system}.devkit;
 in {
-  imports = [
-    self.homeManagerModules.neovim
-  ];
   options.devkit = with lib; {
     enable = mkEnableOption "Enable devkit configuration and packages";
 
@@ -102,7 +95,7 @@ in {
     ## Ghostty (Terminal)
     programs.ghostty = lib.mkIf cfg.ghostty.enable {
       enable = true;
-      package = devkitPkgs.ghostty;
+      package = config._devkit.packages.ghostty;
     };
 
     ## Git
@@ -110,13 +103,13 @@ in {
       enable = true;
       userEmail = "contact@guz.one";
       userName = "Gustavo \"Guz\" L de Mello";
-      package = devkitPkgs.git;
+      package = config._devkit.packages.git;
     };
 
     ## Lazygit (Git TUI)
     programs.lazygit = lib.mkIf cfg.lazygit.enable {
       enable = true;
-      package = devkitPkgs.lazygit;
+      package = config._devkit.packages.lazygit;
       # package = pkgs.lazygit;
     };
 
@@ -126,33 +119,33 @@ in {
     ## Starship (Shell decoration)
     programs.starship = lib.mkIf cfg.starship.enable {
       enable = true;
-      package = devkitPkgs.starship;
+      package = config._devkit.packages.starship;
       # package = pkgs.starship;
     };
 
     ## Yazi (File manager)
     programs.yazi = lib.mkIf cfg.yazi.enable {
       enable = true;
-      package = devkitPkgs.yazi;
+      package = config._devkit.packages.yazi;
       # package = pkgs.yazi;
     };
 
     # Zellij (Terminal multiplexer)
     programs.zellij = lib.mkIf cfg.zellij.enable {
       enable = true;
-      package = devkitPkgs.zellij;
+      package = config._devkit.packages.zellij;
     };
 
     ## Tmux (Backup terminal multiplexer)
     programs.tmux = lib.mkIf cfg.tmux.enable {
       enable = true;
-      package = devkitPkgs.tmux;
+      package = config._devkit.packages.tmux;
     };
 
     ## ZSH (Default shell)
     programs.zsh = lib.mkIf cfg.zsh.enable {
       enable = true;
-      package = devkitPkgs.zsh;
+      package = config._devkit.packages.zsh;
       # package = pkgs.zsh;
     };
   };

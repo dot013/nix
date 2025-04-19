@@ -805,11 +805,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1742219868,
-        "narHash": "sha256-EW4nbQb+4ss9PAf4PjGAdrBaqtJ/oSsppmaTQoMYpEI=",
+        "lastModified": 1744832736,
+        "narHash": "sha256-jpIIfUgRgIWMMXzG3qFCMxoZWB871LLTcOd9ccOFYxk=",
         "ref": "refs/heads/main",
-        "rev": "6ec8fa8e35898bccd79d324d3120aaaa95b95b0d",
-        "revCount": 114,
+        "rev": "56d8f75abc4774732082c79de8871c48d9318eb6",
+        "revCount": 122,
         "type": "git",
         "url": "https://forge.capytal.company/dot013/nvim"
       },

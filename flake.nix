@@ -131,7 +131,37 @@
     };
 
     homeManagerModules = {
-      devkit = ./modules/home-manager/devkit.nix;
+      devkit = {
+        lib,
+        pkgs,
+        ...
+      }: let
+        devkitPkgs = self.packages.${pkgs.system}.devkit;
+      in {
+        imports = [
+          ./modules/home-manager/devkit.nix
+          self.homeManagerModules.neovim
+        ];
+        options._devkit = with lib; let
+          mkPkgOption = pkg:
+            mkOption {
+              type = with types; package;
+              default = pkg;
+              readOnly = true;
+            };
+        in {
+          packages = {
+            ghostty = mkPkgOption devkitPkgs.ghostty;
+            git = mkPkgOption devkitPkgs.git;
+            lazygit = mkPkgOption devkitPkgs.lazygit;
+            starship = mkPkgOption devkitPkgs.starship;
+            yazi = mkPkgOption devkitPkgs.yazi;
+            zellij = mkPkgOption devkitPkgs.zellij;
+            tmux = mkPkgOption devkitPkgs.tmux;
+            zsh = mkPkgOption devkitPkgs.zsh;
+          };
+        };
+      };
       neovim = inputs.neovim.homeManagerModules.default;
       eww = ./modules/home-manager/eww.nix;
     };
