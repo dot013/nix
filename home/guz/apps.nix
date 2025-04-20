@@ -35,6 +35,7 @@
     "fm.reaper.Reaper"
 
     # 3D modeling
+    "net.blockbench.Blockbench"
     "org.blender.Blender"
   ];
   services.flatpak.overrides = {
