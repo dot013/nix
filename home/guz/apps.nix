@@ -32,6 +32,7 @@
     # "org.kde.krita" Currently borked, mising qt plugin/platform
     "com.obsproject.Studio"
     "org.kde.kdenlive"
+    "fm.reaper.Reaper"
 
     # 3D modeling
     "org.blender.Blender"
