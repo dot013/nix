@@ -4,24 +4,37 @@
   ...
 }: {
   services.flatpak.packages = [
-    "org.blender.Blender"
-    "org.beeref.BeeRef"
+    # Management
     "com.bitwarden.desktop"
-    "org.darktable.Darktable"
-    "io.freetubeapp.FreeTube"
-    # "org.kde.krita" Currently borked, mising qt plugin/platform
-    "org.kde.kdenlive"
-    "org.inkscape.Inkscape"
-    "org.libreoffice.LibreOffice"
-    "md.obsidian.Obsidian"
-    "com.github.vikdevelop.photopea_app"
-    "org.prismlauncher.PrismLauncher"
     "com.rustdesk.RustDesk"
+
+    # Social
+    # "dev.vencord.Vesktop" Currently borked
+
+    # Games
+    "org.prismlauncher.PrismLauncher"
     {
       flatpakref = "https://sober.vinegarhq.org/sober.flatpakref";
       sha256 = "1pj8y1xhiwgbnhrr3yr3ybpfis9slrl73i0b1lc9q89vhip6ym2l";
     }
-    # "dev.vencord.Vesktop" Currently borked
+
+    # Note taking
+    "md.obsidian.Obsidian"
+
+    # Office
+    "org.libreoffice.LibreOffice"
+
+    # Media creation
+    "org.beeref.BeeRef"
+    "com.github.vikdevelop.photopea_app"
+    "org.darktable.Darktable"
+    "org.inkscape.Inkscape"
+    # "org.kde.krita" Currently borked, mising qt plugin/platform
+    "com.obsproject.Studio"
+    "org.kde.kdenlive"
+
+    # 3D modeling
+    "org.blender.Blender"
   ];
   services.flatpak.overrides = {
     "com.bitwarden.desktop" = {Context.sockets = ["x11"];};
@@ -36,14 +49,16 @@
   qt.enable = true;
   home.packages =
     (with pkgs; [
+      # Management
       megasync
 
+      # Social
       vesktop
 
-      # Media
+      # Media creation
+      krita
       ffmpeg
       exiftool
-      krita
       # davinci-resolve # Currently borked
     ])
     # Utils
