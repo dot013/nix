@@ -22,6 +22,12 @@
   programs.hyprland.withUWSM = true;
   programs.hyprlock.enable = true;
 
+  ### Freedesktop providers
+
+  #### Secrets
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services."gdm".enableGnomeKeyring = true;
+
   ### File picker and other portals not implemented by XDPH
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk
