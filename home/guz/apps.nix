@@ -11,6 +11,9 @@
     # Social
     # "dev.vencord.Vesktop" Currently borked
 
+    # Services
+    "app.moosync.moosync"
+
     # Games
     "org.prismlauncher.PrismLauncher"
     {
