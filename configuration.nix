@@ -65,7 +65,7 @@
   security.rtkit.enable = true;
   hardware.pulseaudio.enable = lib.mkForce false;
   environment.systemPackages = with pkgs; [
-    pavucontrol
+    pwvucontrol
   ];
 
   # Networking
