@@ -62,6 +62,8 @@
       megasync
 
       # Games
+      lutris
+      winePackages.waylandFull
       pcsx2
 
       # Social
