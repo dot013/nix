@@ -35,7 +35,7 @@
     # "org.kde.krita" Currently borked, mising qt plugin/platform
     "com.obsproject.Studio"
     "org.kde.kdenlive"
-    "fm.reaper.Reaper"
+    # "fm.reaper.Reaper"
 
     # 3D modeling
     "net.blockbench.Blockbench"
@@ -62,6 +62,7 @@
 
       # Media creation
       krita
+      reaper
       ffmpeg
       exiftool
       # davinci-resolve # Currently borked

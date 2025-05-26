@@ -31,6 +31,7 @@
     builtins.elem (lib.getName pkg) [
       "davinci-resolve"
       "megasync"
+      "reaper"
       "steam"
       "steam-unwrapped"
       "xow_dongle-firmware"
