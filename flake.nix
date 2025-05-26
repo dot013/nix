@@ -46,8 +46,8 @@
   outputs = {
     self,
     nixpkgs,
-    home-manager,
     nixpkgs-unstable,
+    home-manager,
     ...
   } @ inputs: let
     systems = [
@@ -72,9 +72,16 @@
     ];
   in {
     nixosConfigurations = {
-      "battleship" = nixpkgs.lib.nixosSystem {
+      "battleship" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = {inherit inputs self;};
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
         modules =
           homeNixOSModules
           ++ [
@@ -83,9 +90,15 @@
             ./home/guz/configuration.nix
           ];
       };
-      "fighter" = nixpkgs.lib.nixosSystem {
+      "fighter" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = {inherit inputs self;};
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
         modules =
           homeNixOSModules
           ++ [
@@ -99,7 +112,13 @@
     homeConfigurations = forAllSystems ({pkgs, ...}: {
       "guz" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = {inherit inputs self;};
+        extraSpecialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            system = pkgs.system;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
         modules = [
           inputs.stylix.homeManagerModules.stylix
           ./colors.nix
@@ -109,7 +128,13 @@
       };
       "guz-lite" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = {inherit inputs self;};
+        extraSpecialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            system = pkgs.system;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
         modules = [
           inputs.stylix.homeManagerModules.stylix
           ./colors.nix
@@ -119,7 +144,13 @@
       };
       "worm" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        extraSpecialArgs = {inherit inputs self;};
+        extraSpecialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            system = pkgs.system;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
         modules = [
           ./home/worm
         ];
