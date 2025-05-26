@@ -16,6 +16,7 @@
 
     # Games
     "org.prismlauncher.PrismLauncher"
+    # "net.pcsx2.PCSX2" Currently borked, mising qt plugin/platform
     {
       flatpakref = "https://sober.vinegarhq.org/sober.flatpakref";
       sha256 = "1pj8y1xhiwgbnhrr3yr3ybpfis9slrl73i0b1lc9q89vhip6ym2l";
@@ -57,6 +58,9 @@
     (with pkgs; [
       # Management
       megasync
+
+      # Games
+      pcsx2
 
       # Social
       vesktop
