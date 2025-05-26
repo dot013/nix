@@ -49,6 +49,10 @@
     flake = "/home/guz/.projects/dot013-nix";
   };
 
+  # QMK keyboard
+  hardware.keyboard.qmk.enable = true;
+  services.udev.packages = [pkgs.via];
+
   # Enable Nix-LD for standalone binaries (useful for development)
   programs.nix-ld.enable = true;
 
@@ -72,6 +76,7 @@
   hardware.pulseaudio.enable = lib.mkForce false;
   environment.systemPackages = with pkgs; [
     pwvucontrol
+    via
   ];
 
   # Networking

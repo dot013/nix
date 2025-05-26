@@ -65,6 +65,9 @@
       ffmpeg
       exiftool
       # davinci-resolve # Currently borked
+
+      # Keyboard
+      vial
     ])
     # Utils
     ++ (with self.packages.${pkgs.system}; [
