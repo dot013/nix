@@ -29,6 +29,7 @@
     "org.libreoffice.LibreOffice"
 
     # Media creation
+    "fr.natron.Natron"
     "org.beeref.BeeRef"
     "com.github.vikdevelop.photopea_app"
     "org.darktable.Darktable"
@@ -45,6 +46,7 @@
   services.flatpak.overrides = {
     "net.blockbench.Blockbench" = {Context.sockets = ["x11"];};
     "com.bitwarden.desktop" = {Context.sockets = ["x11"];};
+    "fr.natron.Natron" = {Context.sockets = ["x11"];};
     "com.github.vikdevelop.photopea_app" = {Context.sockets = ["x11"];};
     "org.prismlauncher.PrismLauncher" = {Context.sockets = ["x11"];};
     # "dev.vencord.Vesktop" = {Context.sockets = ["x11"];};
