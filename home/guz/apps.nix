@@ -42,6 +42,7 @@
     "org.blender.Blender"
   ];
   services.flatpak.overrides = {
+    "net.blockbench.Blockbench" = {Context.sockets = ["x11"];};
     "com.bitwarden.desktop" = {Context.sockets = ["x11"];};
     "com.github.vikdevelop.photopea_app" = {Context.sockets = ["x11"];};
     "org.prismlauncher.PrismLauncher" = {Context.sockets = ["x11"];};
