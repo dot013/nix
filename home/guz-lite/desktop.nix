@@ -110,6 +110,8 @@
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk
   ];
+  xdg.portal.config.common.default = ["gtk"];
+  xdg.portal.xdgOpenUsePortal = true;
 
   # Status bar
   # programs.eww-custom.enable = true;
