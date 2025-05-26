@@ -3,6 +3,7 @@
   lib,
   inputs,
   pkgs,
+  pkgs-unstable,
   self,
   ...
 }: {
@@ -20,7 +21,7 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.backupFileExtension = "bkp";
-  home-manager.extraSpecialArgs = {inherit inputs self;};
+  home-manager.extraSpecialArgs = {inherit inputs self pkgs-unstable;};
   home-manager.users.guz = lib.mkDefault (import ./default.nix);
 
   programs.zsh.enable = true;
