@@ -12,21 +12,21 @@
   services.xremap.enable = true;
   services.xremap.withHypr = true;
   services.xremap.config.modmap = [
-    {
-      name = "main remaps";
-      remap = {
-        # Capslock as esc and ctrl on hold
-        "CapsLock" = {
-          held = "leftctrl";
-          alone = "esc";
-          alone_timeout_millis = 150;
-        };
-        # Esc to single- and double-quote
-        "Esc" = "grave";
-        # single-quotes as Capslock
-        "Grave" = "CapsLock";
-      };
-    }
+    # {
+    #   name = "main remaps";
+    #   remap = {
+    #     # Capslock as esc and ctrl on hold
+    #     "CapsLock" = {
+    #       held = "leftctrl";
+    #       alone = "esc";
+    #       alone_timeout_millis = 150;
+    #     };
+    #     # Esc to single- and double-quote
+    #     "Esc" = "grave";
+    #     # single-quotes as Capslock
+    #     "Grave" = "CapsLock";
+    #   };
+    # }
   ];
   services.xremap.config.keymap = let
     TERMINAL = config.home.sessionVariables.TERMINAL;
