@@ -798,18 +798,35 @@
         "type": "github"
       }
     },
+    "mdfmt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1543379285,
+        "narHash": "sha256-5LQ7S/CZXCa/zrUcIbDfD2Ji8Kjc3/Cengw8UmVOU4g=",
+        "owner": "moorereason",
+        "repo": "mdfmt",
+        "rev": "29e3d55cbe5af4cfc31b172aed1d69b9a5a22c5b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "moorereason",
+        "repo": "mdfmt",
+        "type": "github"
+      }
+    },
     "neovim": {
       "inputs": {
         "blink-cmp": "blink-cmp",
         "go-grip": "go-grip",
+        "mdfmt": "mdfmt",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1744832736,
-        "narHash": "sha256-jpIIfUgRgIWMMXzG3qFCMxoZWB871LLTcOd9ccOFYxk=",
+        "lastModified": 1748265934,
+        "narHash": "sha256-LHNa1oHyroiz2tOG8yYN8ZfYsGK+uNZDqB6dE5ezgTE=",
         "ref": "refs/heads/main",
-        "rev": "56d8f75abc4774732082c79de8871c48d9318eb6",
-        "revCount": 122,
+        "rev": "605b4eec66857d645bfc9e54cf6c2f211571155d",
+        "revCount": 131,
         "type": "git",
         "url": "https://forge.capytal.company/dot013/nvim"
       },
