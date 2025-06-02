@@ -31,7 +31,7 @@
     selection-foreground = ${colors.base07}
   '';
   drv = symlinkJoin ({
-      paths = ghostty;
+      paths = [ghostty];
 
       nativeBuildInputs = [makeWrapper];
 

@@ -49,7 +49,7 @@
     '';
 
   drv = symlinkJoin ({
-      paths = zellij;
+      paths = [zellij];
 
       nativeBuildInputs = [makeWrapper];
 

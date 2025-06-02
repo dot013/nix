@@ -6,7 +6,7 @@
   yazi ? pkgs.yazi,
 }: let
   drv = symlinkJoin ({
-      paths = yazi;
+      paths = [yazi];
 
       nativeBuildInputs = [makeWrapper];
 

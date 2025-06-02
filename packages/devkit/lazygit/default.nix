@@ -27,7 +27,7 @@
     // settings));
 
   drv = symlinkJoin ({
-      paths = lazygit;
+      paths = [lazygit];
 
       nativeBuildInputs = [makeWrapper];
 

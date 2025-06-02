@@ -15,7 +15,7 @@
   zshrc-append-file = pkgs.writeText ".zshrc_append" zshrc-append;
 
   drv = symlinkJoin ({
-      paths = zsh;
+      paths = [zsh];
 
       nativeBuildInputs = [makeWrapper];
 

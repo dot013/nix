@@ -6,7 +6,7 @@
   git ? pkgs.git,
 }: let
   drv = symlinkJoin ({
-      paths = git;
+      paths = [git];
 
       nativeBuildInputs = [makeWrapper];
 

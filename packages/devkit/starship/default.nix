@@ -6,7 +6,7 @@
   starship ? pkgs.starship,
 }: let
   drv = symlinkJoin ({
-      paths = starship;
+      paths = [starship];
 
       nativeBuildInputs = [makeWrapper];
 

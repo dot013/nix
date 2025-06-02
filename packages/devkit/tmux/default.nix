@@ -47,7 +47,7 @@
   '';
 
   drv = symlinkJoin ({
-      paths = tmux;
+      paths = [tmux];
 
       nativeBuildInputs = [makeWrapper];
 
