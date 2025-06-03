@@ -88,7 +88,7 @@ in {
 
     services.gpg-agent.enable = true;
     services.gpg-agent.defaultCacheTtl = 3600 * 24;
-    services.gpg-agent.pinentryPackage = pkgs.pinentry-gtk2;
+    services.gpg-agent.pinentry.package = pkgs.pinentry-gtk2;
 
     # Devkit packages
 
