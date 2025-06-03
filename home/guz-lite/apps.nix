@@ -6,13 +6,14 @@
   imports = [
     inputs.nix-flatpak.homeManagerModules.nix-flatpak
     inputs.rec-sh.homeManagerModules.rec-sh
+    ./browser.nix
   ];
 
   programs.rec-sh.enable = true;
 
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = let
-    browser = "app.zen-browser.zen.desktop";
+    browser = "qutebrowser.desktop";
     email = "org.mozilla.Thunderbird.desktop";
   in {
     "text/html" = browser;
