@@ -194,7 +194,6 @@
         };
       };
       neovim = inputs.neovim.homeManagerModules.default;
-      eww = ./modules/home-manager/eww.nix;
       qutebrowser-profiles = ./modules/home-manager/qutebrowser-profiles.nix;
     };
 

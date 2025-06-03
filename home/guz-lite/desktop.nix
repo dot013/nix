@@ -2,11 +2,8 @@
   config,
   lib,
   pkgs,
-  self,
   ...
 }: {
-  imports = [self.homeManagerModules.eww];
-
   home.pointerCursor.enable = true;
   home.pointerCursor.name = "Vanilla-DMZ";
   home.pointerCursor.package = pkgs.vanilla-dmz;
