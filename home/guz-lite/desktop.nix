@@ -7,6 +7,13 @@
 }: {
   imports = [self.homeManagerModules.eww];
 
+  home.pointerCursor.enable = true;
+  home.pointerCursor.name = "Vanilla-DMZ";
+  home.pointerCursor.package = pkgs.vanilla-dmz;
+  home.pointerCursor.gtk.enable = true;
+  home.pointerCursor.x11.enable = true;
+  home.pointerCursor.hyprcursor.enable = true;
+
   # Hyprland
   wayland.windowManager.hyprland.enable = true;
   wayland.windowManager.hyprland.xwayland.enable = true;
