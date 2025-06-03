@@ -92,17 +92,23 @@
       ];
     })
   ];
-  programs.qutebrowser.profiles = {
+  programs.qutebrowser.profiles = let
+    programmingSearchEngines = {
+      # Languages
+      go = "https://pkg.go.dev/search?q={}";
+    };
+  in {
     "art" = {};
     "personal" = {};
     "work" = {
-      searchEngines = {
-        # Languages
-        go = "https://pkg.go.dev/search?q={}";
-      };
+      searchEngines = programmingSearchEngines;
     };
     "job" = {
       settings.confirm_quit = ["always"];
+      settings = {
+        content.webgl = true;
+      };
+      searchEngines = programmingSearchEngines;
     };
     "shopping" = {};
     "goverment" = {};
