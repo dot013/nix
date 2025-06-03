@@ -136,6 +136,7 @@
 
     modules-left = [
       "hyprland/workspaces"
+      "hyprland/window"
     ];
 
     "hyprland/workspaces" = {
@@ -153,6 +154,11 @@
         active = "";
       };
     };
+
+    "hyprland/window" = {
+      format = "{title}";
+    };
+
     modules-center = [
       "clock"
     ];
@@ -174,10 +180,6 @@
           today = "<span color='${base07}'><b>{}</b></span>";
         };
       };
-    };
-
-    "hyprland/window" = {
-      format = "{title}";
     };
 
     modules-right = [
