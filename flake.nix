@@ -195,6 +195,7 @@
       };
       neovim = inputs.neovim.homeManagerModules.default;
       eww = ./modules/home-manager/eww.nix;
+      qutebrowser-profiles = ./modules/home-manager/qutebrowser-profiles.nix;
     };
 
     packages = forAllSystems ({
@@ -208,7 +209,7 @@
       neovim = inputs.neovim.packages.${pkgs.system}.default;
 
       devkit =
-        (import ./packages/devkit {inherit pkgs inputs;})
+        (import ./packages/devkit {inherit inputs pkgs;})
         // {
           neovim = self.packages.${pkgs.system}.neovim;
         };

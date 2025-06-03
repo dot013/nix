@@ -3,6 +3,10 @@
   pkgs,
   ...
 }: {
+  imports = [
+    self.homeManagerModules.qutebrowser-profiles
+  ];
+
   programs.qutebrowser.enable = true;
   programs.qutebrowser.settings = {
     auto_save.session = true;
@@ -88,4 +92,19 @@
       ];
     })
   ];
+  programs.qutebrowser.profiles = {
+    "art" = {};
+    "personal" = {};
+    "work" = {
+      searchEngines = {
+        # Languages
+        go = "https://pkg.go.dev/search?q={}";
+      };
+    };
+    "job" = {
+      settings.confirm_quit = ["always"];
+    };
+    "shopping" = {};
+    "goverment" = {};
+  };
 }
