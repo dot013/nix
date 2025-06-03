@@ -126,6 +126,8 @@
   };
   console.keyMap = "br-abnt2";
 
+  security.polkit.enable = true;
+
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
