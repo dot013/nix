@@ -13,6 +13,8 @@
     auto_save.session = true;
     confirm_quit = ["downloads"];
 
+    tabs.position = "left";
+
     # Colors
     colors.tabs.pinned.even.bg = mkForce "#181818";
     colors.tabs.pinned.odd.bg = mkForce "#181818";
