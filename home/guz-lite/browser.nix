@@ -1,6 +1,7 @@
 {
   self,
   pkgs,
+  lib,
   ...
 }: {
   imports = [
@@ -8,9 +9,21 @@
   ];
 
   programs.qutebrowser.enable = true;
-  programs.qutebrowser.settings = {
+  programs.qutebrowser.settings = with lib; {
     auto_save.session = true;
     confirm_quit = ["downloads"];
+
+    # Colors
+    colors.tabs.pinned.even.bg = mkForce "#181818";
+    colors.tabs.pinned.odd.bg = mkForce "#181818";
+
+    colors.tabs.selected.even.bg = mkForce "#CDD6F4"; # Catppuccin's Text
+    colors.tabs.selected.odd.bg = mkForce "#CDD6F4"; # Catppuccin's Text
+    colors.tabs.selected.even.fg = mkForce "#111111";
+    colors.tabs.selected.odd.fg = mkForce "#111111";
+
+    colors.tabs.pinned.selected.even.bg = mkForce "#CDD6F4"; # Catppuccin's Text
+    colors.tabs.pinned.selected.odd.bg = mkForce "#CDD6F4"; # Catppuccin's Text
 
     # Prevent fingerprinting
     content.canvas_reading = false;
