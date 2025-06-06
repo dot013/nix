@@ -49,6 +49,10 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       ouch
+      # TODO: move this to neovim configuration/derivation
+      (pkgs.writeShellScriptBin "gvim" ''
+        ${lib.getExe config.programs.neovide.package} -- "$@"
+      '')
     ];
 
     home.sessionVariables = {
@@ -115,6 +119,7 @@ in {
 
     ## Neovim (Editor)
     neovim.enable = cfg.neovim.enable;
+    programs.neovide.enable = true;
 
     ## Starship (Shell decoration)
     programs.starship = lib.mkIf cfg.starship.enable {
