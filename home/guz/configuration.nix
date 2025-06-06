@@ -18,6 +18,8 @@
     proton-ge-bin
   ];
 
+  virtualisation.podman.enable = true;
+
   # Xbox Controller driver
   hardware.xone.enable = true;
 

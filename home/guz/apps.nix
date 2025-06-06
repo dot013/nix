@@ -74,7 +74,6 @@
       reaper
       ffmpeg
       exiftool
-      # davinci-resolve # Currently borked
 
       # Keyboard
       vial
@@ -84,4 +83,11 @@
       davincify
       untrack
     ]);
+
+  programs.distrobox.enable = true;
+  programs.distrobox.containers = {
+    "davincibox" = {
+      image = "ghcr.io/zelikos/davincibox-opencl:latest";
+    };
+  };
 }
