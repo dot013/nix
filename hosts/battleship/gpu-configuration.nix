@@ -16,6 +16,12 @@
   hardware.graphics.extraPackages = with pkgs; [
     # OpenCL
     rocmPackages.clr.icd
-    clinfo
+    rocmPackages.rocm-runtime
+    rocmPackages.rocminfo
+    amdvlk
+  ];
+
+  systemd.tmpfiles.rules = [
+    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
   ];
 }
