@@ -25,6 +25,11 @@
     colors.tabs.pinned.selected.even.bg = mkForce "#CDD6F4"; # Catppuccin's Text
     colors.tabs.pinned.selected.odd.bg = mkForce "#CDD6F4"; # Catppuccin's Text
 
+    ## Darkmode
+    colors.webpage.darkmode.enabled = true;
+    colors.webpage.darkmode.algorithm = "lightness-cielab";
+    colors.webpage.darkmode.policy.images = "never";
+
     # Prevent fingerprinting
     content.canvas_reading = false;
     content.cookies.accept = "all";
@@ -33,6 +38,19 @@
     content.webgl = false;
     content.webrtc_ip_handling_policy = "default-public-interface-only";
   };
+  programs.qutebrowser.extraConfig = ''
+    config.set('colors.webpage.darkmode.enabled', False, 'file://*')
+    config.set('colors.webpage.darkmode.enabled', False, 'http://*:*/*')
+
+    config.set('colors.webpage.darkmode.enabled', False, 'capytal.company')
+    config.set('colors.webpage.darkmode.enabled', False, '*.capytal.company')
+    config.set('colors.webpage.darkmode.enabled', False, 'capytal.cc')
+    config.set('colors.webpage.darkmode.enabled', False, '*.capytal.cc')
+    config.set('colors.webpage.darkmode.enabled', False, 'lored.dev')
+    config.set('colors.webpage.darkmode.enabled', False, '*.lored.dev')
+    config.set('colors.webpage.darkmode.enabled', False, 'guz.one')
+    config.set('colors.webpage.darkmode.enabled', False, '*.guz.one')
+  '';
   programs.qutebrowser.searchEngines = {
     DEFAULT = "https://search.brave.com/search?q={}";
     # Nix
