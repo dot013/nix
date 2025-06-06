@@ -129,19 +129,58 @@
       go = "https://pkg.go.dev/search?q={}";
     };
   in {
-    "art" = {};
-    "personal" = {};
-    "work" = {
-      searchEngines = programmingSearchEngines;
-    };
-    "job" = {
-      settings.confirm_quit = ["always"];
+    "art" = {
       settings = {
-        content.webgl = true;
+        colors.tabs.selected.even.bg = "#CBA6F7"; # Catppuccin's Mauve
+        colors.tabs.selected.odd.bg = "#CBA6F7"; # Catppuccin's Mauve
+        colors.tabs.pinned.selected.even.bg = "#CBA6F7"; # Catppuccin's Mauve
+        colors.tabs.pinned.selected.odd.bg = "#CBA6F7"; # Catppuccin's Mauve
+      };
+    };
+    "personal" = {
+      settings = {
+        colors.tabs.selected.even.bg = "#F5E0DC"; # Catppuccin's Rosewater
+        colors.tabs.selected.odd.bg = "#F5E0DC"; # Catppuccin's Rosewater
+        colors.tabs.pinned.selected.even.bg = "#F5E0DC"; # Catppuccin's Rosewater
+        colors.tabs.pinned.selected.odd.bg = "#F5E0DC"; # Catppuccin's Rosewater
+      };
+    };
+    "work" = {
+      settings = {
+        colors.tabs.selected.even.bg = "#74C7EC"; # Catppuccin's Sapphire
+        colors.tabs.selected.odd.bg = "#74C7EC"; # Catppuccin's Sapphire
+        colors.tabs.pinned.selected.even.bg = "#74C7EC"; # Catppuccin's Sapphire
+        colors.tabs.pinned.selected.odd.bg = "#74C7EC"; # Catppuccin's Sapphire
       };
       searchEngines = programmingSearchEngines;
     };
-    "shopping" = {};
-    "goverment" = {};
+    "job" = {
+      settings = {
+        confirm_quit = ["always"];
+        content.webgl = true;
+
+        colors.tabs.selected.even.bg = "#A6E2A1"; #Catppuccin's Green
+        colors.tabs.selected.odd.bg = "#A6E2A1"; #Catppuccin's Green
+        colors.tabs.pinned.selected.even.bg = "#A6E2A1"; #Catppuccin's Green
+        colors.tabs.pinned.selected.odd.bg = "#A6E2A1"; #Catppuccin's Green
+      };
+      searchEngines = programmingSearchEngines;
+    };
+    "shopping" = {
+      settings = {
+        colors.tabs.selected.even.bg = "#F9E2AF"; # Catppuccin's Yellow
+        colors.tabs.selected.odd.bg = "#F9E2AF"; # Catppuccin's Yellow
+        colors.tabs.pinned.selected.even.bg = "#F9E2AF"; # Catppuccin's Yellow
+        colors.tabs.pinned.selected.odd.bg = "#F9E2AF"; # Catppuccin's Yellow
+      };
+    };
+    "goverment" = {
+      settings = {
+        colors.tabs.selected.even.bg = "#A6ADC8"; # Catppuccin's Subtext 1
+        colors.tabs.selected.odd.bg = "#A6ADC8"; # Catppuccin's Subtext 1
+        colors.tabs.pinned.selected.even.bg = "#A6ADC8"; # Catppuccin's Subtext 1
+        colors.tabs.pinned.selected.odd.bg = "#A6ADC8"; # Catppuccin's Subtext 1
+      };
+    };
   };
 }
