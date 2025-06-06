@@ -22,6 +22,8 @@
   programs.hyprland.withUWSM = true;
   programs.hyprlock.enable = true;
 
+  programs.xwayland.enable = true;
+
   ### Freedesktop providers
 
   #### Secrets
@@ -34,12 +36,6 @@
   ];
 
   services.xserver.displayManager.gdm.enable = true;
-
-  ## XFCE (fallback)
-  services.xserver.enable = true;
-  services.xserver.desktopManager = {
-    xfce.enable = true;
-  };
 
   # Yet another nix cli helper
   programs.nh = {
