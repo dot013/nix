@@ -32,10 +32,8 @@
   services.flatpak.packages = [
     # Thunder Bird (Email Client)
     "org.mozilla.Thunderbird"
-    # Brave (Work Browser)
+    # Brave (Job Browser)
     "com.brave.Browser"
-    # Zen (Main Browser)
-    "app.zen_browser.zen"
   ];
   services.flatpak.update.onActivation = true;
   services.flatpak.overrides = {
