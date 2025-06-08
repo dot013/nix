@@ -9,6 +9,13 @@
   ];
 
   programs.qutebrowser.enable = true;
+  programs.qutebrowser.keyBindings = {
+    normal = {
+      ",m" = "spawn umpv {url}";
+      ",M" = "hint links spawn umpv {hint-url}";
+      ";M" = "hint --rapid links spawn umpv {hint-url}";
+    };
+  };
   programs.qutebrowser.settings = with lib; {
     auto_save.session = true;
     confirm_quit = ["downloads"];
@@ -185,4 +192,10 @@
       };
     };
   };
+
+  programs.mpv.enable = true;
+  programs.mpv.scripts = with pkgs.mpvScripts; [
+    quality-menu
+    sponsorblock
+  ];
 }
