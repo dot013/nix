@@ -12,8 +12,9 @@
   ];
 
   devkit.enable = true;
-  devkit.git.wrapper = pkgs.writeShellScriptBin "git-script" ''
-    bash ${osConfig.sops.secrets."guz/git-script".path} "$@"
+  devkit.git.wrapper = pkgs.writeShellScriptBin "git-envs" ''
+    source ${osConfig.sops.secrets."guz/git-envs".path}
+    "$@"
   '';
 
   # The *state version* indicates which default
