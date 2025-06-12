@@ -19,4 +19,7 @@
   sops.secrets."guz/password" = {
     owner = config.users.users.guz.name;
   };
+  sops.secrets."guz/git-script" = {
+    owner = config.users.users.guz.name;
+  };
 }

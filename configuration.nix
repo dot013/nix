@@ -127,6 +127,7 @@
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernel.sysctl."kernel.yama.ptrace_scope" = lib.mkForce 0;
 
   # Nix
   nix.settings = {

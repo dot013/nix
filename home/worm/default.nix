@@ -1,4 +1,9 @@
-{self, ...}: {
+{
+  self,
+  pkgs,
+  osConfig,
+  ...
+}: {
   home.username = "guz";
   home.homeDirectory = "/home/guz";
 
@@ -7,6 +12,9 @@
   ];
 
   devkit.enable = true;
+  devkit.git.wrapper = pkgs.writeShellScriptBin "git-script" ''
+    bash ${osConfig.sops.secrets."guz/git-script".path} "$@"
+  '';
 
   # The *state version* indicates which default
   # settings are in effect and will therefore help avoid breaking

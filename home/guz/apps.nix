@@ -42,6 +42,9 @@
     # 3D modeling
     "net.blockbench.Blockbench"
     "org.blender.Blender"
+
+    # For sites that are incompatible with qutebrowser
+    "io.gitlab.librewolf-community"
   ];
   services.flatpak.overrides = {
     "net.blockbench.Blockbench" = {Context.sockets = ["x11"];};
@@ -65,6 +68,7 @@
       lutris
       winePackages.waylandFull
       pcsx2
+      mono # For city skylines mods
 
       # Social
       vesktop

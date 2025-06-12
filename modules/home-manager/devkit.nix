@@ -17,6 +17,10 @@ in {
       type = with types; bool;
       default = cfg.enable;
     };
+    git.wrapper = mkOption {
+      type = with types; nullOr package;
+      default = null;
+    };
     lazygit.enable = mkOption {
       type = with types; bool;
       default = cfg.enable;
@@ -107,7 +111,13 @@ in {
       enable = true;
       userEmail = "contact@guz.one";
       userName = "Gustavo \"Guz\" L de Mello";
-      package = config._devkit.packages.git;
+      package =
+        if isNull cfg.git.wrapper
+        then config._devkit.packages.git
+        else
+          pkgs.writeShellScriptBin "git" ''
+            ${lib.getExe cfg.git.wrapper} ${lib.getExe config._devkit.packages.git} "$@"
+          '';
     };
 
     ## Lazygit (Git TUI)
