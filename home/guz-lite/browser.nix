@@ -130,6 +130,9 @@
         "--replace"
         "youtube = [true, false]"
         "youtube = [false, false]"
+        "--replace"
+        "instagram = [true, true]"
+        "instagram = [false, false]"
       ];
     })
   ];
@@ -192,6 +195,7 @@
         colors.tabs.pinned.selected.odd.bg = "#A6ADC8"; # Catppuccin's Subtext 1
       };
     };
+    "facebook" = {};
   };
 
   programs.mpv.enable = true;
