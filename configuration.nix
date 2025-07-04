@@ -47,7 +47,7 @@
 
   # QMK keyboard
   hardware.keyboard.qmk.enable = true;
-  services.udev.packages = [pkgs.via];
+  services.udev.packages = with pkgs; [via vial];
 
   # Enable Nix-LD for standalone binaries (useful for development)
   programs.nix-ld.enable = true;
@@ -73,6 +73,7 @@
   environment.systemPackages = with pkgs; [
     pwvucontrol
     via
+    vial
   ];
 
   # Networking
