@@ -43,8 +43,9 @@
         sockets = ["wayland" "!x11" "!fallback-x11"];
         filesystems = [
           # Access to user themes
-          "$HOME/.icons"
-          "$HOME/.themes"
+          "$HOME/.icons:ro"
+          "$HOME/.themes:ro"
+          "$HOME/.local/share/fonts:ro"
         ];
       };
       Environment = {
