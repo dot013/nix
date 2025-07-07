@@ -22,9 +22,6 @@
       sha256 = "1pj8y1xhiwgbnhrr3yr3ybpfis9slrl73i0b1lc9q89vhip6ym2l";
     }
 
-    # Note taking
-    "md.obsidian.Obsidian"
-
     # Office
     "org.libreoffice.LibreOffice"
 
