@@ -1,5 +1,6 @@
 {
   lib,
+  inputs,
   pkgs,
   ...
 }: {
@@ -16,10 +17,10 @@
     ];
   };
 
-  # Hyprland compatibility
-  programs.hyprland.package = lib.mkForce (pkgs.hyprland.override {
-    legacyRenderer = true;
-  });
+  # Xremap run-as-user
+  hardware.uinput.enable = true;
+  users.groups.uinput.members = ["guz"];
+  users.groups.input.members = ["guz"];
 
   # Enable OpenGL
   hardware.graphics.enable = true;
