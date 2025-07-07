@@ -1,4 +1,10 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: let
+  pkgs-hyprland = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.system};
+in {
   imports = [];
 
   boot.kernelModules = ["amdgpu"];
@@ -12,7 +18,9 @@
   };
 
   hardware.graphics.enable = true;
+  hardware.graphics.package = pkgs-hyprland.mesa;
   hardware.graphics.enable32Bit = true;
+  hardware.graphics.package32 = pkgs-hyprland.mesa;
   hardware.graphics.extraPackages = with pkgs; [
     # OpenCL
     rocmPackages.clr.icd
