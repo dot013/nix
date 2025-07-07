@@ -41,6 +41,8 @@
       url = "git+https://forge.capytal.company/dot013/rec.sh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs = {
