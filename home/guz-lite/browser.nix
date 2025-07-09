@@ -2,7 +2,6 @@
   self,
   pkgs,
   lib,
-  config,
   ...
 }: {
   imports = [
@@ -134,6 +133,16 @@
         "instagram = [true, true]"
         "instagram = [false, false]"
       ];
+    })
+    # Aternos Anti-Anti-Adblock
+    (pkgs.fetchurl {
+      url = "https://gist.github.com/DvilMuck/f2b14f3f65e8f22974d781277158f82a/raw/66a0d8d9dd598fc516c3c9d9bbf6ef3f0f6a7a1e/aternosAntiAntiadblock.user.js";
+      hash = "sha256-PBFCt9o22D7WAN8S6C2BnLKgG3J5zZ/mWbWspCKcm6k=";
+    })
+    # Aternos block tracking
+    (pkgs.fetchurl {
+      url = "https://gist.github.com/DvilMuck/f2b14f3f65e8f22974d781277158f82a/raw/66a0d8d9dd598fc516c3c9d9bbf6ef3f0f6a7a1e/aternosBlockTracking.user.js";
+      hash = "sha256-GDDx3gbvh28qiB3Gi61k/pdM11wJhcV7dwCRGNvq30c=";
     })
   ];
   programs.qutebrowser.profiles = let
