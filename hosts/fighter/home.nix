@@ -5,6 +5,12 @@
       "$MONITOR-1" = lib.mkForce "eDP-1";
     };
 
+    programs.waybar.settings.single = {
+      modules-right = [
+        "battery"
+      ];
+    };
+
     services.xremap.config.modmap = [
       {
         name = "laptop remaps";
