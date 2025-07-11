@@ -9,6 +9,11 @@
       modules-right = [
         "battery"
       ];
+
+      "battery" = {
+        format-icons = ["" "" "" "" ""];
+        format = "{icon} {capacity}%";
+      };
     };
 
     services.xremap.config.modmap = [

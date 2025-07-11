@@ -1,65 +1,57 @@
 * {
-    border: none;
-    border-radius: 4px;
-    /* `ttf-font-awesome` is required to be installed for icons */
-    /* font-family: "Roboto Mono Medium", Helvetica, Arial, sans-serif; */
+  border: none;
+  border-radius: 4px;
+  /* `ttf-font-awesome` is required to be installed for icons */
+  /* font-family: "Roboto Mono Medium", Helvetica, Arial, sans-serif; */
 
-    /* adjust font-size value to your liking: */
-    font-size: 0.7rem;
-    font-weight: bold;
+  /* adjust font-size value to your liking: */
+  font-size: 0.7rem;
+  font-weight: bold;
 
-    min-height: 0;
+  min-height: 0;
 }
 
 window#waybar,
 tooltip {
-    background-color: @base01;
-    /* background-color: red; */
-    /* box-shadow: 0px -10px 10px #00000055; */
-    box-shadow: 0px -10px 10px #00ff0055;
-    /* border-bottom: 3px solid rgba(100, 114, 125, 0.5); */
-    color: @base05;
-    /* transition-property: background-color; */
-    /* transition-duration: .5s; */
-    /* border-radius: 0; */
-    padding: 0 10px;
+  background-color: @base01;
+  /* background-color: red; */
+  /* box-shadow: 0px -10px 10px #00000055; */
+  box-shadow: 0px -10px 10px #00ff0055;
+  /* border-bottom: 3px solid rgba(100, 114, 125, 0.5); */
+  color: @base05;
+  /* transition-property: background-color; */
+  /* transition-duration: .5s; */
+  /* border-radius: 0; */
+  padding: 0 10px;
 }
 
 #clock {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .modules-left {
-    padding-right: 10px;
+  padding-right: 10px;
 }
 
 .modules-left {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 
 .modules-left #workspaces {
-    padding: 0;
+  padding: 0;
 }
 
 .modules-left #workspaces button {
-    padding-left: 0;
-    padding-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 
-    /* Align icons */
-    padding-top: 6px;
+  /* Align icons */
+  padding-top: 6px;
 }
 
 .modules-left #workspaces button.active {
-    border-bottom-style: none;
+  border-bottom-style: none;
 
-    /* Align icons */
-    padding-top: 3px;
-}
-
-#pulseaudio {
-    background: @base05;
-    opacity: 1;
-    margin: 0px 0px 0px 0px;
-    padding-left: 3px;
-    padding-right: 3px;
+  /* Align icons */
+  padding-top: 3px;
 }

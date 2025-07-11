@@ -164,7 +164,7 @@
     ];
 
     "clock" = {
-      format = "{:%R}";
+      format = "{:%d  %R}";
       format-alt = "{:%B %d, 12.0%y (%A)}";
       tooltip-format = "<tt><small>{calendar}</small></tt>";
       calendar = {
@@ -189,9 +189,26 @@
       "disk"
     ];
 
+    "pulseaudio" = {
+      format = "{icon} {volume}%";
+      format-muted = "";
+      format-icons = {
+        default = ["" ""];
+      };
+      onclick = "${lib.getExe pkgs.pwvucontrol}";
+    };
+
+    "cpu" = {
+      format = " {usage}%";
+    };
+
+    "memory" = {
+      format = " {percentage}%";
+    };
+
     "disk" = {
       interval = 30;
-      format = "{specific_free:0.2f}";
+      format = "󰨣 {specific_free:0.2f}";
       unit = "GB";
     };
   };
