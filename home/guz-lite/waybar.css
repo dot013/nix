@@ -29,19 +29,19 @@ tooltip {
   background-color: transparent;
 }
 
-.modules-left {
+.modules-left,
+.modules-right {
   padding-right: 10px;
-}
-
-.modules-left {
   padding-left: 10px;
 }
 
-.modules-left #workspaces {
+.modules-left #workspaces,
+.modules-right #workspaces {
   padding: 0;
 }
 
-.modules-left #workspaces button {
+.modules-left #workspaces button,
+.modules-right #workspaces button {
   padding-left: 0;
   padding-right: 0;
 
@@ -49,7 +49,8 @@ tooltip {
   padding-top: 6px;
 }
 
-.modules-left #workspaces button.active {
+.modules-left #workspaces button.active,
+.modules-right #workspaces button.active {
   border-bottom-style: none;
 
   /* Align icons */
