@@ -70,7 +70,7 @@
     # Home manager NixOS module
     homeNixOSModules = [
       home-manager.nixosModules.home-manager
-      ./colors.nix
+      ./style.nix
     ];
   in {
     nixosConfigurations = {
@@ -123,7 +123,7 @@
         };
         modules = [
           inputs.stylix.homeManagerModules.stylix
-          ./colors.nix
+          ./style.nix
           inputs.xremap.homeManagerModules.default
           ./home/guz
         ];
@@ -139,7 +139,7 @@
         };
         modules = [
           inputs.stylix.homeManagerModules.stylix
-          ./colors.nix
+          ./style.nix
           inputs.xremap.homeManagerModules.default
           ./home/guz-lite
         ];
