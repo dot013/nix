@@ -35,6 +35,7 @@
   # Network
   networking = {
     hostName = lib.mkForce "fighter";
+    nameservers = ["192.168.0.110"];
     # wireless.enable = lib.mkForce true;
   };
 }

@@ -16,6 +16,7 @@
   # Network
   networking = {
     hostName = lib.mkForce "battleship";
+    nameservers = ["192.168.0.110"];
     #wireless.enable = lib.mkForce true;
   };
 }
