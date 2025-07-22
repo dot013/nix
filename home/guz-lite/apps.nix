@@ -34,6 +34,8 @@
     "org.mozilla.Thunderbird"
     # Brave (Job Browser)
     "com.brave.Browser"
+    # Obsidian (Notes)
+    "md.obsidian.Obsidian"
   ];
   services.flatpak.update.onActivation = true;
   services.flatpak.overrides = {
