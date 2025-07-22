@@ -92,7 +92,7 @@
             ./home/guz/configuration.nix
           ];
       };
-      "fighter" = nixpkgs.lib.nixosSystem rec {
+      "figther" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = {
           pkgs-unstable = import nixpkgs-unstable {
@@ -104,7 +104,7 @@
         modules =
           homeNixOSModules
           ++ [
-            ./hosts/fighter/configuration.nix
+            ./hosts/figther/configuration.nix
             inputs.stylix.nixosModules.stylix
             ./home/guz-lite/configuration.nix
           ];

@@ -13,7 +13,7 @@
 
   users.users."guz" = {
     openssh.authorizedKeys.keyFiles = [
-      ../../.ssh/guz-fighter.pub
+      ../../.ssh/guz-figther.pub
     ];
   };
 
@@ -34,7 +34,7 @@
 
   # Network
   networking = {
-    hostName = lib.mkForce "fighter";
+    hostName = lib.mkForce "figther";
     nameservers = ["192.168.0.110"];
     # wireless.enable = lib.mkForce true;
   };
