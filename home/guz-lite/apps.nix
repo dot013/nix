@@ -64,4 +64,16 @@
     # Social
     vesktop
   ];
+
+  # TODO: Move this server to a remote server
+  services.activitywatch = {
+    enable = true;
+    package = pkgs.aw-server-rust;
+    watchers = {
+      "awatcher" = {
+        executable = "awatcher";
+        package = pkgs.awatcher;
+      };
+    };
+  };
 }

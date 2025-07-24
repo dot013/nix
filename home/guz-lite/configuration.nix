@@ -38,4 +38,7 @@
   hardware.uinput.enable = true;
   users.groups.uinput.members = ["guz"];
   users.groups.input.members = ["guz"];
+
+  # TODO: Activity watch server
+  networking.firewall.allowedTCPPorts = [5600];
 }
