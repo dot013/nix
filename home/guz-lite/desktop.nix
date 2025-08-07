@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }: {
   home.pointerCursor.enable = true;
@@ -14,6 +13,7 @@
 
   # Hyprland
   wayland.windowManager.hyprland.enable = true;
+  wayland.windowManager.hyprland.systemd.enable = false;
   wayland.windowManager.hyprland.xwayland.enable = true;
   wayland.windowManager.hyprland.settings = {
     "$MOD" = "SUPER";
@@ -40,6 +40,7 @@
     exec-once = [
       "systemctl --user enable --now hyprpaper.service"
       "systemctl --user enable --now hypridle.service"
+      "systemctl --user restart --now activitywatch-watcher-awatcher.service"
     ];
 
     general = {
