@@ -11,6 +11,8 @@
   home.pointerCursor.x11.enable = true;
   home.pointerCursor.hyprcursor.enable = true;
 
+  home.sessionVariables.NIXOS_OZONE_WL = "1";
+
   # Hyprland
   wayland.windowManager.hyprland.enable = true;
   wayland.windowManager.hyprland.systemd.enable = false;
