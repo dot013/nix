@@ -1,10 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: let
-  pkgs-hyprland = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.system};
-in {
+{pkgs, ...}: {
   imports = [];
 
   boot.kernelModules = ["amdgpu"];
@@ -13,20 +7,29 @@ in {
   # services.xserver.enable = true;
   services.xserver.videoDrivers = ["amdgpu"];
 
+  # Configuration for davinci resolve based on
+  # https://wiki.nixos.org/wiki/DaVinci_Resolve
   environment.variables = {
+    RUSTICL_ENABLE = "radeonsi";
     ROC_ENABLE_PRE_VEGA = "1";
   };
 
+  environment.systemPackages = with pkgs; [
+    mesa-demos
+    vulkan-tools
+    clinfo
+  ];
+
   hardware.graphics.enable = true;
-  hardware.graphics.package = pkgs-hyprland.mesa;
   hardware.graphics.enable32Bit = true;
-  hardware.graphics.package32 = pkgs-hyprland.mesa;
   hardware.graphics.extraPackages = with pkgs; [
-    # OpenCL
-    rocmPackages.clr.icd
-    rocmPackages.rocm-runtime
-    rocmPackages.rocminfo
+    mesa
+    libva
+    libvdpau-va-gl
+    vulkan-loader
+    vulkan-validation-layers
     amdvlk
+    mesa.opencl
   ];
 
   systemd.tmpfiles.rules = [

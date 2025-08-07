@@ -19,4 +19,6 @@
     nameservers = ["192.168.0.110"];
     #wireless.enable = lib.mkForce true;
   };
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 }

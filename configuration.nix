@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  inputs,
   ...
 }: {
   imports = [
@@ -21,12 +20,12 @@
   ## Hyprland
   programs.hyprland.enable = true;
   programs.hyprland.withUWSM = true;
-  programs.hyprland.package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-  programs.hyprland.portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
 
   programs.hyprlock.enable = true;
 
   programs.xwayland.enable = true;
+
+  services.dbus.enable = true;
 
   ### Freedesktop providers
 
@@ -136,9 +135,6 @@
 
   # Nix
   nix.settings = {
-    substituters = ["https://hyprland.cachix.org"];
-    trusted-substituters = ["https://hyprland.cachix.org"];
-    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
     experimental-features = ["nix-command" "flakes"];
   };
 

@@ -78,6 +78,8 @@
 
       # Keyboard
       vial
+
+      davinci-resolve
     ])
     # Utils
     ++ (with self.packages.${pkgs.system}; [
