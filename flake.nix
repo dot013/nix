@@ -42,7 +42,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland";
+
+    # hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs = {
@@ -61,9 +62,13 @@
     forAllSystems = f:
       nixpkgs.lib.genAttrs systems (system: let
         pkgs = import nixpkgs {inherit system;};
+        pkgs-unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfreePredicate = _: true;
+        };
       in
         f {
-          inherit pkgs;
+          inherit pkgs pkgs-unstable;
           inherit (pkgs) lib;
         });
 
@@ -111,16 +116,13 @@
       };
     };
 
-    homeConfigurations = forAllSystems ({pkgs, ...}: {
+    homeConfigurations = forAllSystems ({
+      pkgs,
+      pkgs-unstable,
+      ...
+    }: {
       "guz" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            system = pkgs.system;
-            config.allowUnfreePredicate = _: true;
-          };
-          inherit inputs self;
-        };
+        inherit pkgs pkgs-unstable;
         modules = [
           inputs.stylix.homeManagerModules.stylix
           ./style.nix
@@ -129,14 +131,7 @@
         ];
       };
       "guz-lite" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            system = pkgs.system;
-            config.allowUnfreePredicate = _: true;
-          };
-          inherit inputs self;
-        };
+        inherit pkgs pkgs-unstable;
         modules = [
           inputs.stylix.homeManagerModules.stylix
           ./style.nix
@@ -145,14 +140,7 @@
         ];
       };
       "worm" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            system = pkgs.system;
-            config.allowUnfreePredicate = _: true;
-          };
-          inherit inputs self;
-        };
+        inherit pkgs pkgs-unstable;
         modules = [
           ./home/worm
         ];
@@ -202,6 +190,7 @@
     packages = forAllSystems ({
       lib,
       pkgs,
+      pkgs-unstable,
       ...
     }: {
       davincify = pkgs.callPackage ./packages/davincify {};
@@ -210,7 +199,7 @@
       neovim = inputs.neovim.packages.${pkgs.system}.default;
 
       devkit =
-        (import ./packages/devkit {inherit inputs pkgs;})
+        (import ./packages/devkit {inherit inputs pkgs pkgs-unstable;})
         // {
           neovim = self.packages.${pkgs.system}.neovim;
         };
