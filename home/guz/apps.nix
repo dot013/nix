@@ -17,10 +17,7 @@
     # Games
     "org.prismlauncher.PrismLauncher"
     # "net.pcsx2.PCSX2" Currently borked, mising qt plugin/platform
-    {
-      flatpakref = "https://sober.vinegarhq.org/sober.flatpakref";
-      sha256 = "1pj8y1xhiwgbnhrr3yr3ybpfis9slrl73i0b1lc9q89vhip6ym2l";
-    }
+    "org.vinegarhq.Sober"
 
     # Office
     "org.libreoffice.LibreOffice"
@@ -49,6 +46,7 @@
     "fr.natron.Natron" = {Context.sockets = ["x11"];};
     "com.github.vikdevelop.photopea_app" = {Context.sockets = ["x11"];};
     "org.prismlauncher.PrismLauncher" = {Context.sockets = ["x11"];};
+    "org.vinegarhq.Sober" = {Context.device = "input";};
     # "dev.vencord.Vesktop" = {Context.sockets = ["x11"];};
   };
 
