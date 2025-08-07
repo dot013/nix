@@ -85,6 +85,15 @@
       untrack
     ]);
 
+  xdg.desktopEntries."davinci-resolve-zsh" = rec {
+    name = "Davinci Resolve (Zsh)";
+    genericName = name;
+    mimeType = ["application/x-resolveproj"];
+    # INFO: For some reason this works and removes the "Unsupported GPU" error
+    exec = "${lib.getExe config.programs.zsh.package} -c ${lib.getExe pkgs.davinci-resolve}";
+  };
+
+  # TODO: Remove this
   programs.distrobox.enable = true;
   programs.distrobox.containers = {
     "davincibox" = {
