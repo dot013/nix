@@ -1,10 +1,11 @@
-{self, ...}: {
+{...}: {
   home.username = "guz";
   home.homeDirectory = "/home/guz";
 
   imports = [
     ../guz-lite/default.nix
 
+    ./browser.nix
     ./apps.nix
   ];
 
