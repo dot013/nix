@@ -22,7 +22,7 @@ symbol = " "
 format = '\[[$symbol($version)]($style)\]'
 
 [cmd_duration]
-format = '\[[⏱ $duration]($style)\]'
+format = '\[took [$duration]($style)\]'
 
 [cobol]
 format = '\[[$symbol($version)]($style)\]'
