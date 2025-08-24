@@ -26,6 +26,7 @@
 
   programs.zsh.enable = true;
   users.users."guz".shell = pkgs.zsh;
+  environment.pathsToLink = ["/share/zsh"];
 
   # Podman (not necessarily user-specific, but environment specific)
   virtualisation.podman.enable = true;
