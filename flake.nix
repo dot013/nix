@@ -85,6 +85,8 @@
       ./style.nix
     ];
   in {
+    formatter = forAllSystems ({pkgs, ...}: pkgs.alejandra);
+
     nixosConfigurations = {
       "battleship" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
