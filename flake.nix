@@ -42,6 +42,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      # url = "git+file:///home/guz/.projects/dot013-zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.home-manager.follows = "home-manager";
+    };
 
     # hyprland.url = "github:hyprwm/Hyprland";
   };
@@ -187,6 +193,7 @@
       };
       neovim = inputs.neovim.homeManagerModules.default;
       qutebrowser-profiles = ./modules/home-manager/qutebrowser-profiles.nix;
+      zen-browser = ./modules/home-manager/zen-browser;
     };
 
     packages = forAllSystems ({
