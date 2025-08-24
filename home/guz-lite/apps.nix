@@ -1,4 +1,5 @@
 {
+  lib,
   inputs,
   pkgs,
   ...
@@ -56,6 +57,8 @@
 
     # Social
     vesktop
+
+    alacritty
   ];
 
   # TODO: Move this server to a remote server
