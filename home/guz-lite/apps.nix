@@ -13,15 +13,8 @@
 
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = let
-    browser = "qutebrowser.desktop";
     email = "org.mozilla.Thunderbird.desktop";
   in {
-    "text/html" = browser;
-    "x-scheme-handler/http" = browser;
-    "x-scheme-handler/https" = browser;
-    "x-scheme-handler/about" = browser;
-    "x-scheme-handler/unknown" = browser;
-
     "message/rfc822" = email;
     "x-scheme-handler/mailto" = email;
     "text/calendar" = email;
