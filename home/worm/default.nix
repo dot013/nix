@@ -1,5 +1,6 @@
 {
   self,
+  lib,
   pkgs,
   osConfig,
   ...
@@ -12,10 +13,10 @@
   ];
 
   devkit.enable = true;
-  devkit.git.wrapper = pkgs.writeShellScriptBin "git-envs" ''
+  devkit.git.wrapper = lib.mkIf (osConfig.context.job) (pkgs.writeShellScriptBin "git-envs" ''
     source ${osConfig.sops.secrets."guz/git-envs".path}
     "$@"
-  '';
+  '');
 
   # The *state version* indicates which default
   # settings are in effect and will therefore help avoid breaking

@@ -94,6 +94,7 @@
           ++ [
             ./hosts/battleship/configuration.nix
             inputs.stylix.nixosModules.stylix
+            ./modules/nixos/context.nix
             ./home/guz/configuration.nix
           ];
       };
@@ -111,6 +112,7 @@
           ++ [
             ./hosts/figther/configuration.nix
             inputs.stylix.nixosModules.stylix
+            ./modules/nixos/context.nix
             ./home/guz-lite/configuration.nix
           ];
       };

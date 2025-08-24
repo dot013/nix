@@ -7,6 +7,10 @@
     ./secrets.nix
   ];
 
+  context = {
+    job = false;
+  };
+
   # GnuPG keyring
   programs.gnupg.agent = {
     enable = true;
