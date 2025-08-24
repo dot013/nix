@@ -74,6 +74,17 @@
     jack.enable = true;
 
     wireplumber.enable = true;
+
+    extraConfig = {
+      pipewire-pulse."switch-on-connect.conf" = {
+        "pulse.cmd" = [
+          {
+            cmd = "load-module";
+            args = "module-switch-on-connect";
+          }
+        ];
+      };
+    };
   };
   security.rtkit.enable = true;
   services.pulseaudio.enable = lib.mkForce false;
