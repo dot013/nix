@@ -160,8 +160,11 @@ in {
     ## ZSH (Default shell)
     programs.zsh = lib.mkIf cfg.zsh.enable {
       enable = true;
-      package = config._devkit.packages.zsh;
-      # package = pkgs.zsh;
+      # package = config._devkit.packages.zsh;
+      package = pkgs.zsh;
+      autosuggestion.enable = true;
+      enableCompletion = true;
+      syntaxHighlighting.enable = true;
     };
   };
 }
