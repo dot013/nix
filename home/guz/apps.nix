@@ -14,7 +14,7 @@
     "app.moosync.moosync"
 
     # Games
-    "org.prismlauncher.PrismLauncher"
+    # "org.prismlauncher.PrismLauncher"
     # "net.pcsx2.PCSX2" Currently borked, mising qt plugin/platform
     "org.vinegarhq.Sober"
 
@@ -59,6 +59,7 @@
       lutris
       winePackages.waylandFull
       pcsx2
+      prismlauncher
       mono # For city skylines mods
 
       # Social
