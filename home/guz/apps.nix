@@ -1,5 +1,8 @@
 {
+  config,
+  lib,
   pkgs,
+  self,
   ...
 }: {
   services.flatpak.packages = [
@@ -8,7 +11,7 @@
     "com.rustdesk.RustDesk"
 
     # Social
-    # "dev.vencord.Vesktop" Currently borked
+    "dev.vencord.Vesktop"
 
     # Services
     "app.moosync.moosync"
@@ -43,7 +46,7 @@
     "com.github.vikdevelop.photopea_app" = {Context.sockets = ["x11"];};
     "org.prismlauncher.PrismLauncher" = {Context.sockets = ["x11"];};
     "org.vinegarhq.Sober" = {Context.device = "input";};
-    # "dev.vencord.Vesktop" = {Context.sockets = ["x11"];};
+    "dev.vencord.Vesktop" = {Context.sockets = ["x11"];};
   };
 
   services.kdeconnect.enable = true;
@@ -63,7 +66,7 @@
       mono # For city skylines mods
 
       # Social
-      vesktop
+      # vesktop
 
       # Media creation
       krita
