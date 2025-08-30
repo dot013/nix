@@ -13,6 +13,23 @@
           id = 3;
         };
       };
+      extensions.settings = {
+        "tridactyl.vim@cmcaine.co.uk".settings = {
+          userconfig = {
+            autocontain = let
+              containers = config.programs.zen-browser.profiles."default".containers;
+            in
+              lib.concatMapAttrs (n: v: {
+                "^https?://[^/]*\"${n}\"/" = v;
+                "^https?://[^/]*\"www.${n}\"/" = v;
+                "^https?://([^/]*\\.|)${n}\\.com/" = v;
+              }) {
+                "linkedin.com" = containers."Job".name;
+              };
+            autocontainmode = "relaxed";
+          };
+        };
+      };
       # modsForce = true;
       # mods = let
       #   store = inputs.zen-theme-store;

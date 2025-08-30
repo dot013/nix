@@ -5,8 +5,8 @@
   imports = [
     ../guz-lite/default.nix
 
-    ./browser.nix
     ./apps.nix
+    ./browser.nix
   ];
 
   # The *state version* indicates which default
