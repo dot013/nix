@@ -4,6 +4,7 @@
   pkgs,
   lib,
   ghostty ? pkgs.ghostty,
+  command ? null,
 }: let
   colors = import ../colors.nix;
   theme = pkgs.writeText "theme" ''
@@ -37,10 +38,14 @@
 
       postBuild = ''
         wrapProgram $out/bin/ghostty \
-          --add-flags '--theme=${theme}'
+          --add-flags '--theme=${theme}' ${
+          if !(isNull command)
+          then "--add-flags '-e' --add-flags '${command}'"
+          else ""
+        }
       '';
     }
-    // {inherit (ghostty) name pname meta man shell_integration terminfo;});
+    // {inherit (ghostty) name pname meta shell_integration terminfo;});
 in
   pkgs.stdenv.mkDerivation (rec {
       name = drv.name;
@@ -60,4 +65,4 @@ in
         cp ${desktopEntry}/share/applications/${pname}.desktop $out/share/applications/${pname}.desktop
       '';
     }
-    // {inherit (ghostty) meta man shell_integration terminfo;})
+    // {inherit (ghostty) meta shell_integration terminfo;})
