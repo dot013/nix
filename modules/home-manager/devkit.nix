@@ -57,6 +57,7 @@ in {
       (pkgs.writeShellScriptBin "gvim" ''
         ${lib.getExe config.programs.neovide.package} -- "$@"
       '')
+      git-lfs-transfer
     ];
 
     home.sessionVariables = {
@@ -118,6 +119,7 @@ in {
           pkgs.writeShellScriptBin "git" ''
             ${lib.getExe cfg.git.wrapper} ${lib.getExe config._devkit.packages.git} "$@"
           '';
+      lfs.enable = true;
     };
 
     ## Lazygit (Git TUI)
