@@ -19,31 +19,6 @@
   };
   services.pcscd.enable = true;
 
-  # Desktops
-
-  ## Hyprland
-  programs.hyprland.enable = true;
-  programs.hyprland.withUWSM = true;
-
-  programs.hyprlock.enable = true;
-
-  programs.xwayland.enable = true;
-
-  services.dbus.enable = true;
-
-  ### Freedesktop providers
-
-  #### Secrets
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services."gdm".enableGnomeKeyring = true;
-
-  ### File picker and other portals not implemented by XDPH
-  xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-gtk
-  ];
-
-  services.xserver.displayManager.gdm.enable = true;
-
   # Yet another nix cli helper
   programs.nh = {
     enable = true;

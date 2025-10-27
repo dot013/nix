@@ -7,6 +7,38 @@
 
   services.flatpak.enable = true;
 
+  # Desktops
+
+  ## Hyprland
+  programs.hyprland.enable = true;
+  programs.hyprland.withUWSM = true;
+
+  programs.hyprlock.enable = true;
+
+  programs.xwayland.enable = true;
+
+  services.dbus.enable = true;
+
+  ### Freedesktop providers
+
+  #### Secrets
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services."gdm".enableGnomeKeyring = true;
+
+  ### Force wayland
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  ### File picker and other portals not implemented by XDPH
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+  ];
+
+  environment.systemPackages = with pkgs; [
+    kdePackages.xwaylandvideobridge
+  ];
+
+  services.xserver.displayManager.gdm.enable = true;
+
   fonts.fontDir.enable = true;
   fonts.fontconfig.enable = true;
   fonts.packages = with pkgs; [
