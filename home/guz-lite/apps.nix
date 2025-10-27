@@ -54,10 +54,6 @@
 
   home.packages = with pkgs; [
     nautilus
-
-    # Social
-    vesktop
-
     alacritty
   ];
 
