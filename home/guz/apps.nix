@@ -11,7 +11,7 @@
     "com.rustdesk.RustDesk"
 
     # Social
-    "dev.vencord.Vesktop"
+    # "dev.vencord.Vesktop"
 
     # Services
     "app.moosync.moosync"
@@ -73,6 +73,7 @@
       reaper
       ffmpeg
       exiftool
+      legcord
 
       # Keyboard
       vial
