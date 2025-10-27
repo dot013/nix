@@ -9,6 +9,8 @@
     ../../configuration.nix
 
     ./home.nix
+
+    ./services.nix
   ];
 
   users.users."guz" = {

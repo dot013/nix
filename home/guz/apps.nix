@@ -25,6 +25,7 @@
     "org.libreoffice.LibreOffice"
 
     # Media creation
+    "com.nextcloud.desktopclient.nextcloud"
     "fr.natron.Natron"
     "org.beeref.BeeRef"
     "com.github.vikdevelop.photopea_app"

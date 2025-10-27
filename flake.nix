@@ -24,8 +24,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    heart-modpack = {
+      url = "git+file:///home/guz/.projects/heart-modpack";
+    };
+
     nix-flatpak = {
       url = "github:gmodena/nix-flatpak/?ref=latest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-minecraft = {
+      url = "github:infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
