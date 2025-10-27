@@ -67,12 +67,6 @@
 
       # Social
       # vesktop
-
-      # Media creation
-      krita
-      reaper
-      ffmpeg
-      exiftool
       legcord
 
       # Keyboard

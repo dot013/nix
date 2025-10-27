@@ -7,6 +7,7 @@
 
     ./apps.nix
     ./browser.nix
+    ./media.nix
   ];
 
   # The *state version* indicates which default
