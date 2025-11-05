@@ -151,17 +151,23 @@
           name = "Brave";
           urls = [{template = "https://search.brave.com/search?q={searchTerms}";}];
         };
-        nix-packages = {
-          name = "Nix Packages";
-          urls = [{template = "https://search.nixos.org/packages?query={searchTerms}";}];
-          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-          definedAliases = ["@pkg"];
+        go = {
+          name = "Go Packages";
+          urls = [{template = "https://pkg.go.dev/search?q={searchTerms}";}];
+          icon = pkgs.fetchurl {
+            url = "https://pkg.go.dev/static/shared/logo/go-white.svg";
+            hash = "sha256-oqFYZnPAxESEpY0Qcz5OPiCMTWXyI1nqOEYmsdbGqy4=";
+          };
+          definedAliases = ["@go"];
         };
-        nix-options = {
-          name = "Nix Options";
-          urls = [{template = "https://search.nixos.org/options?query={searchTerms}";}];
-          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-          definedAliases = ["@opt"];
+        mdn = {
+          name = "MDN";
+          urls = [{template = "https://developer.mozilla.org/en-US/search?q={searchTerms}";}];
+          icon = pkgs.fetchurl {
+            url = "https://developer.mozilla.org/static/client/mdn-m.70aac857e4a908d0.svg";
+            hash = "sha256-sTAKxjk5b8lUaa9057LOH0H3N54LeXkPF/mOe4gpHDI=";
+          };
+          definedAliases = ["@mdn"];
         };
         nix-home-manager = {
           name = "Home Manager";
@@ -174,6 +180,27 @@
           urls = [{template = "https://noogle.dev/q?term={searchTerms}";}];
           icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
           definedAliases = ["@lib"];
+        };
+        nix-options = {
+          name = "Nix Options";
+          urls = [{template = "https://search.nixos.org/options?query={searchTerms}";}];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = ["@opt"];
+        };
+        nix-packages = {
+          name = "Nix Packages";
+          urls = [{template = "https://search.nixos.org/packages?query={searchTerms}";}];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = ["@pkg"];
+        };
+        nix-wiki = {
+          name = "Nix Wiki";
+          urls = [
+            {template = "https://wiki.nixos.org/w/index.php?search={searchTerms}";}
+            {template = "https://nixos.wiki/index.php?search={searchTerms}";}
+          ];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = ["@wiki"];
         };
       };
       settings = with builtins;
