@@ -89,6 +89,12 @@
             ''))
           ];
         };
+        # Emoji picker
+        "super-i" = {
+          launch = exec [
+            (lib.getExe (pkgs.rofimoji))
+          ];
+        };
         # Toggle fullscreen
         "super-f" = {launch = toggleFullscreen "";};
         # Toggle floating

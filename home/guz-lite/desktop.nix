@@ -136,6 +136,7 @@
 
   # Application Launcher
   programs.rofi.enable = true;
+  programs.rofi.modes = ["drun" "emoji"];
 
   # Clipboard
   services.cliphist.enable = true;
