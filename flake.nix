@@ -8,6 +8,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    disko = {
+      url = "github:nix-community/disko/latest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     stylix = {
       url = "github:danth/stylix/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,9 +29,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    heart-modpack = {
-      url = "git+file:///home/guz/.projects/heart-modpack";
-    };
+    # heart-modpack = {
+    #   url = "git+file:///home/guz/.projects/heart-modpack";
+    # };
 
     nix-flatpak = {
       url = "github:gmodena/nix-flatpak/?ref=latest";
@@ -133,6 +138,20 @@
             ./modules/nixos/context.nix
             ./home/guz-lite/configuration.nix
           ];
+      };
+      "rusty" = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
+        modules = [
+          ./modules/nixos/context.nix
+          ./hosts/rusty/configuration.nix
+        ];
       };
     };
 
