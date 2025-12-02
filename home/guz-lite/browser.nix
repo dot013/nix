@@ -285,6 +285,10 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/dearrow/latest.xpi";
           installation_mode = "force_installed";
         };
+        "extraneous@sysrqmagician.github.io" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/extraneous/latest.xpi";
+          installation_mode = "force_installed";
+        };
         "idcac-pub@guus.ninja" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/istilldontcareaboutcookies/latest.xpi";
           installation_mode = "force_installed";
