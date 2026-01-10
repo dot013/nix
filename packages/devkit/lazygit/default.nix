@@ -9,8 +9,12 @@
   # YAML is a superset of JSON, so any JSON is valid YAML.
   colors = import ../colors.nix;
   cfg = pkgs.writeText "config.yml" (builtins.toJSON ({
-      git.paging.colorArg = "always";
-      git.paging.pager = "${lib.getExe pkgs.delta} --dark --paging=never";
+      git.pagers = [
+        {
+          colorArg = "always";
+          pager = "${lib.getExe pkgs.delta} --dark --paging=never";
+        }
+      ];
 
       gui.theme = {
         activeBorderColor = [colors.base07 "bold"];

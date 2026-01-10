@@ -62,8 +62,9 @@ in {
 
     home.sessionVariables = {
       SHELL = lib.mkIf cfg.zsh.enable "${lib.getExe config.programs.zsh.package}";
-      TERM = lib.mkIf cfg.ghostty.enable "xterm-ghostty";
-      TERMINAL = lib.mkIf cfg.ghostty.enable "${lib.getExe config.programs.ghostty.package}";
+      TERM = lib.mkIf cfg.ghostty.enable "xterm-256color";
+      # Used to be ghostty, but it is borked
+      TERMINAL = lib.mkIf cfg.ghostty.enable "${lib.getExe config.programs.wezterm.package}";
       EXPLORER = lib.mkIf cfg.yazi.enable "${lib.getExe config.programs.yazi.package}";
     };
 
@@ -106,6 +107,8 @@ in {
       enable = true;
       package = config._devkit.packages.ghostty;
     };
+
+    programs.wezterm.enable = true;
 
     ## Git
     programs.git = lib.mkIf cfg.git.enable {

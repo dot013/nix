@@ -33,10 +33,6 @@
     xdg-desktop-portal-gtk
   ];
 
-  environment.systemPackages = with pkgs; [
-    kdePackages.xwaylandvideobridge
-  ];
-
   services.xserver.displayManager.gdm.enable = true;
 
   fonts.fontDir.enable = true;

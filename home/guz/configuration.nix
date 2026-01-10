@@ -22,6 +22,7 @@
 
   # Xbox Controller driver
   hardware.xone.enable = true;
+  hardware.xpad-noone.enable = lib.mkForce false; # Build failure https://github.com/NixOS/nixpkgs/issues/467803
 
   # OpenTabletDriver
   hardware.opentabletdriver.enable = true;
@@ -32,7 +33,6 @@
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "davinci-resolve"
-      "megasync"
       "reaper"
       "steam"
       "steam-unwrapped"

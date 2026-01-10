@@ -79,4 +79,4 @@ in
         cp ${desktopEntry}/share/applications/${pname}.desktop $out/share/applications/${pname}.desktop
       '';
     }
-    // {inherit (zellij) meta;})
+    // {inherit (zellij) meta version;})
