@@ -18,6 +18,9 @@
     proton-ge-bin
   ];
 
+  # Backup environment
+  services.desktopManager.gnome.enable = true;
+
   virtualisation.podman.enable = true;
 
   # Xbox Controller driver
