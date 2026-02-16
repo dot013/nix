@@ -233,6 +233,7 @@
     }: {
       davincify = pkgs.callPackage ./packages/davincify {};
       untrack = pkgs.callPackage ./packages/untrack {};
+      audacity4 = pkgs.callPackage ./packages/audacity4 {};
 
       neovim = inputs.neovim.packages.${pkgs.system}.default;
 

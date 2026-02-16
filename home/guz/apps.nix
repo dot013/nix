@@ -94,9 +94,9 @@
       androidenv.androidPkgs.emulator
       androidenv.androidPkgs.ndk-bundle
     ])
-    # Utils
     ++ (with self.packages.${pkgs.system}; [
       davincify
+      audacity4
       untrack
     ]);
 
