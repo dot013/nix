@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  pkgs-unstable,
   self,
   ...
 }: {
@@ -68,7 +69,7 @@
       # Keyboard
       vial
 
-      davinci-resolve
+      pkgs-unstable.davinci-resolve
 
       blender
     ])
@@ -83,7 +84,7 @@
     genericName = name;
     mimeType = ["application/x-resolveproj"];
     # INFO: For some reason this works and removes the "Unsupported GPU" error
-    exec = "${lib.getExe config.programs.zsh.package} -c ${lib.getExe pkgs.davinci-resolve}";
+    exec = "${lib.getExe config.programs.zsh.package} -c ${lib.getExe pkgs-unstable.davinci-resolve}";
   };
 
   services.easyeffects.enable = true;
