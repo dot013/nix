@@ -10,9 +10,6 @@
     "com.bitwarden.desktop"
     "com.rustdesk.RustDesk"
 
-    # Social
-    # "dev.vencord.Vesktop"
-
     # Services
     "app.moosync.moosync"
 
@@ -67,8 +64,7 @@
       mono # For city skylines mods
 
       # Social
-      # vesktop
-      legcord
+      webcord
 
       # Keyboard
       vial
