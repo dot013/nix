@@ -38,4 +38,6 @@
       "steam-unwrapped"
       "xow_dongle-firmware"
     ];
+
+  nixpkgs.config.android_sdk.accept_license = true;
 }

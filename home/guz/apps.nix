@@ -72,6 +72,27 @@
       pkgs-unstable.davinci-resolve
 
       blender
+      (callPackage ({
+        pkgs,
+        makeWrapper,
+        symlinkJoin,
+        ...
+      }:
+        symlinkJoin {
+          inherit (pkgs.godot) name pname meta man;
+          paths = [pkgs.godot];
+          nativeBuildInputs = [makeWrapper];
+          postBuild = ''
+            wrapProgram $out/bin/godot \
+              --add-flags '--single-window'
+          '';
+        }) {})
+
+      android-studio
+      android-tools
+      androidenv.androidPkgs.androidsdk
+      androidenv.androidPkgs.emulator
+      androidenv.androidPkgs.ndk-bundle
     ])
     # Utils
     ++ (with self.packages.${pkgs.system}; [
@@ -79,12 +100,35 @@
       untrack
     ]);
 
+  home.file = let
+    templates = pkgs.godot-export-templates-bin;
+    name = builtins.replaceStrings ["-"] ["."] templates.version;
+  in {
+    ".bin/blender" = {
+      source = lib.getExe pkgs.blender;
+    };
+    ".local/share/godot/export_templates/${name}" = {
+      source = "${templates}/share/godot/export_templates/${name}";
+    };
+  };
+
+  neovim.integrations.godot.enable = true;
+
   xdg.desktopEntries."davinci-resolve-zsh" = rec {
     name = "Davinci Resolve (Zsh)";
     genericName = name;
     mimeType = ["application/x-resolveproj"];
     # INFO: For some reason this works and removes the "Unsupported GPU" error
     exec = "${lib.getExe config.programs.zsh.package} -c ${lib.getExe pkgs-unstable.davinci-resolve}";
+  };
+
+  wayland.windowManager.hyprland.settings = {
+    windowrulev2 = [
+      # Godot
+      "tile,initialTitle:^(Godot)$,initialClass:^(Godot)$" # Main editor tiled
+      # Everything else float
+      "float,title:^((.*)(DEBUG)),initialClass:^(Godot)$,initialTitle:^(.*)(DEBUG)(.*)$,class:^(Godot)$"
+    ];
   };
 
   services.easyeffects.enable = true;
