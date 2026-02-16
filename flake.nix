@@ -51,7 +51,10 @@
     };
 
     rec-sh = {
-      url = "git+https://forge.capytal.company/dot013/rec.sh";
+      url = "git+https://code.capytal.cc/dot013/rec.sh/?ref=main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
