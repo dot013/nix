@@ -38,7 +38,7 @@
       in {
         enable = true;
         autoStart = false;
-        package = pkgs.fabricServers.${serverVersion}.override {loaderVersion = fabricVersion;};
+        package = pkgs.fabricServers.${serverVersion}.override {loaderVersion = "0.17.3";};
         symlinks = {
           "mods" = "${modpack}/mods";
         };

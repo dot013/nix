@@ -29,14 +29,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # heart-modpack = {
-    #   url = "git+file:///home/guz/.projects/heart-modpack";
-    # };
-
-    nix-flatpak = {
-      url = "github:gmodena/nix-flatpak/?ref=latest";
-      inputs.nixpkgs.follows = "nixpkgs";
+    heart-modpack = {
+      url = "git+ssh://gitea@spacestation/heart/modpack.git";
+      # url = "git+file:///home/guz/.projects/heart-modpack";
     };
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
     nix-minecraft = {
       url = "github:infinidoge/nix-minecraft";
