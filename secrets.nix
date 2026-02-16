@@ -14,7 +14,7 @@
 
   sops.defaultSopsFile = ./secrets.yaml;
   sops.defaultSopsFormat = "yaml";
-  sops.age.keyFile = "/sops/keys.txt";
+  sops.age.keyFile = "${config.users.users."guz".home}/.config/age/keys.txt";
 
   sops.secrets."guz/password" = {
     owner = config.users.users.guz.name;
