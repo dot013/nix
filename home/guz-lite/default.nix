@@ -5,6 +5,8 @@
   imports = [
     ../worm/default.nix
 
+    ./desktop
+
     ./apps.nix
     ./style.nix
     ./desktop.nix
