@@ -21,6 +21,8 @@
   # Backup environment
   services.desktopManager.gnome.enable = true;
 
+  programs.java.enable = true;
+
   virtualisation.podman.enable = true;
 
   # Xbox Controller driver
