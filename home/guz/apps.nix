@@ -35,7 +35,6 @@
 
     # 3D modeling
     "net.blockbench.Blockbench"
-    "org.blender.Blender"
   ];
   services.flatpak.overrides = {
     "net.blockbench.Blockbench" = {Context.sockets = ["x11"];};
@@ -70,6 +69,8 @@
       vial
 
       davinci-resolve
+
+      blender
     ])
     # Utils
     ++ (with self.packages.${pkgs.system}; [
