@@ -5,8 +5,18 @@
 }: {
   imports = [
     ../../configuration.nix
+    ../../home/worm/configuration.nix
+
     inputs.disko.nixosModules.disko
+    ./disks.nix
+    ./hardware-configuration.nix
   ];
+
+  users.users."guz" = {
+    openssh.authorizedKeys.keyFiles = [
+      ../../.ssh/guz-figther.pub
+    ];
+  };
 
   # Network
   networking = {
@@ -14,37 +24,22 @@
     #wireless.enable = lib.mkForce true;
   };
 
-  disko.devices.disk.main = {
-    device = "/dev/sda"; # This will be overwritten by disko-install
-    type = "disk";
-    content = {
-      type = "gpt";
-      partitions = {
-        ESP = {
-          size = "500M";
-          content = {
-            type = "filesystem";
-            format = "vfat";
-            mountpoint = "/boot/efi";
-            mountOptions = ["dmask=0022" "fmask=0022" "nofail"];
-          };
-        };
-        root = {
-          size = "100%";
-          content = {
-            type = "filesystem";
-            format = "ext4";
-            mountpoint = "/";
-          };
-        };
-      };
-    };
-  };
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "via"
+    ];
 
-  boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
-  boot.loader.grub = {
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-    device = "nodev";
+  # Laptop features
+  services.logind.lidSwitch = "suspend";
+  services.logind.lidSwitchExternalPower = "lock";
+
+  boot.supportedFilesystems = {
+    btrfs = true;
   };
+  boot.kernelParams = ["resume_offset=533760"];
+  boot.resumeDevice = "/dev/disk/by-label/nixos";
+
+  # HACK: Acer Aspire is a Bitch
+  boot.loader.systemd-boot.enable = lib.mkForce true;
+  boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
 }
