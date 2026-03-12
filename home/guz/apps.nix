@@ -53,8 +53,6 @@
   qt.enable = true;
   home.packages =
     (with pkgs; [
-      # Management
-      megasync
 
       # Games
       lutris
