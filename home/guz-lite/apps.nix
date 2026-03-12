@@ -7,7 +7,6 @@
   imports = [
     inputs.nix-flatpak.homeManagerModules.nix-flatpak
     inputs.rec-sh.homeManagerModules.rec-sh
-    ./browser.nix
   ];
 
   programs.rec-sh.enable = true;

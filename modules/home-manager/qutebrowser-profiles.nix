@@ -174,7 +174,7 @@ in
     in
       mkIf (cfg.enable && cfg.profiles != {}) {
         programs.qutebrowser.package = pkgs.stdenv.mkDerivation {
-          inherit (pkgs.qutebrowser) name pname meta;
+          inherit (pkgs.qutebrowser) name pname;
           buildCommand = let
             desktopEntry = pkgs.makeDesktopItem {
               name = "qutebrowser";
@@ -208,6 +208,11 @@ in
             }
           '';
           dontBuild = true;
+          meta =
+            meta
+            // {
+              desktopFileName = "qutebrowser.desktop";
+            };
         };
 
         xdg.desktopEntries = mergeAttrsList (mapAttrsToList (n: v: let

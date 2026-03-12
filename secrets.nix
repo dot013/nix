@@ -22,4 +22,8 @@
   sops.secrets."guz/git-envs" = {
     owner = config.users.users.guz.name;
   };
+
+  # sops.secrets."services/minio/credentialsFile" = {
+  #   owner = config.users.users.minio.name;
+  # };
 }

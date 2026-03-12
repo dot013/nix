@@ -13,6 +13,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "";
+      inputs.home-manager.follows = "";
+    };
+
     stylix = {
       url = "github:danth/stylix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,7 +53,8 @@
     };
 
     neovim = {
-      url = "git+https://forge.capytal.company/dot013/nvim";
+      # url = "git+https://code.capytal.cc/dot013/nvim";
+      url = "git+file:///home/guz/.projects/dot013-nvim";
     };
 
     rec-sh = {
@@ -55,17 +62,34 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # affinity = {
+    #   url = "github:mrshmllow/affinity-nix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake?tag=1.16t-1759964276";
+      url = "github:0xc000022070/zen-browser-flake";
       # url = "git+file:///home/guz/.projects/dot013-zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.home-manager.follows = "home-manager";
     };
 
     # hyprland.url = "github:hyprwm/Hyprland";
+
+    nixpkgs-2505.url = "github:nixos/nixpkgs/nixos-25.05";
+    disko-2505 = {
+      url = "github:nix-community/disko/v1.12.0";
+      inputs.nixpkgs.follows = "nixpkgs-2505";
+    };
+    home-manager-2505 = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs-2505";
+    };
+    stylix-2505 = {
+      url = "github:danth/stylix/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs-2505";
+      inputs.home-manager.follows = "home-manager-2505";
+    };
   };
 
   outputs = {
@@ -140,7 +164,27 @@
             ./home/guz-lite/configuration.nix
           ];
       };
-      "rusty" = nixpkgs.lib.nixosSystem rec {
+      "rusty" = inputs.nixpkgs-2505.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
+        modules =
+          [
+            inputs.home-manager-2505.nixosModules.home-manager
+            ./style.nix
+          ]
+          ++ [
+            inputs.stylix-2505.nixosModules.stylix
+            ./modules/nixos/context.nix
+            ./hosts/rusty/configuration.nix
+          ];
+      };
+      "virus" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = {
           pkgs-unstable = import nixpkgs-unstable {
@@ -150,8 +194,7 @@
           inherit inputs self;
         };
         modules = [
-          ./modules/nixos/context.nix
-          ./hosts/rusty/configuration.nix
+          ./hosts/virus/configuration.nix
         ];
       };
     };
@@ -195,6 +238,7 @@
       devkit = {
         lib,
         pkgs,
+        stdenv,
         ...
       }: let
         devkitPkgs = self.packages.${pkgs.system}.devkit;
@@ -235,6 +279,7 @@
       ...
     }: {
       davincify = pkgs.callPackage ./packages/davincify {};
+      dotstate = pkgs.callPackage ./packages/dotstate {};
       untrack = pkgs.callPackage ./packages/untrack {};
       audacity4 = pkgs.callPackage ./packages/audacity4 {};
 

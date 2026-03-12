@@ -4,11 +4,14 @@
   ...
 }: {
   imports = [
-    ../../configuration.nix
+    ./base.nix
+
     ../../home/worm/configuration.nix
 
-    inputs.disko.nixosModules.disko
+    inputs.disko-2505.nixosModules.disko
     ./disks.nix
+    # ./impermanence.nix
+
     ./hardware-configuration.nix
   ];
 
@@ -32,12 +35,6 @@
   # Laptop features
   services.logind.lidSwitch = "suspend";
   services.logind.lidSwitchExternalPower = "lock";
-
-  boot.supportedFilesystems = {
-    btrfs = true;
-  };
-  boot.kernelParams = ["resume_offset=533760"];
-  boot.resumeDevice = "/dev/disk/by-label/nixos";
 
   # HACK: Acer Aspire is a Bitch
   boot.loader.systemd-boot.enable = lib.mkForce true;

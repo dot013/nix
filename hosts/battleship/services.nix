@@ -48,4 +48,28 @@
       };
     };
   };
+
+  services.gitea = {
+    enable = false;
+    settings = {
+      server = rec {
+        HTTP_PORT = 3617;
+        DOMAIN = "localhost:${toString HTTP_PORT}";
+
+        ROOT_URL = "http://${DOMAIN}";
+      };
+      service = {
+        ENABLE_USER_HEATMAP = true;
+      };
+      ui = {
+        DEFAULT_THEME = "capytal-dark";
+        THEMES = lib.concatStringsSep "," [
+          "lored-dark"
+          "lored-light"
+          "forgejo-dark"
+        ];
+        FILE_ICON_THEME = "material";
+      };
+    };
+  };
 }

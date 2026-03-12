@@ -6,6 +6,7 @@
     ../worm/default.nix
 
     ./desktop
+    ./browser
 
     ./apps.nix
     ./style.nix

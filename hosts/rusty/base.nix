@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ./secrets.nix
+    ../../secrets.nix
   ];
 
   context = {
