@@ -209,6 +209,7 @@
   in [
     "SUPER, V, exec, cliphist list | ${rofi} -dmenu | cliphist decode | wl-copy" # For some reason this doesn't work on xremap
     ",Print, exec, ${grim} -g \"$(${slurp} -d)\" - | wl-copy"
+    "SUPER, P, exec, ${lib.getExe pkgs.hyprpicker} | wl-copy"
   ];
   wayland.windowManager.hyprland.settings.bindm = [
     # Left-click
