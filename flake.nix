@@ -61,35 +61,6 @@
       url = "git+https://code.capytal.cc/dot013/rec.sh/?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # affinity = {
-    #   url = "github:mrshmllow/affinity-nix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
-      # url = "git+file:///home/guz/.projects/dot013-zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    # hyprland.url = "github:hyprwm/Hyprland";
-
-    nixpkgs-2505.url = "github:nixos/nixpkgs/nixos-25.05";
-    disko-2505 = {
-      url = "github:nix-community/disko/v1.12.0";
-      inputs.nixpkgs.follows = "nixpkgs-2505";
-    };
-    home-manager-2505 = {
-      url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs-2505";
-    };
-    stylix-2505 = {
-      url = "github:danth/stylix/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs-2505";
-      inputs.home-manager.follows = "home-manager-2505";
-    };
   };
 
   outputs = {
