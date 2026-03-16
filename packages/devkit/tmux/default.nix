@@ -45,36 +45,13 @@
 
     bind -T prefix g run-shell "tmux neww ${lib.getExe sessionizer}"
   '';
-
-  drv = symlinkJoin ({
+in
+  symlinkJoin ({
       paths = [tmux];
-
       nativeBuildInputs = [makeWrapper];
-
       postBuild = ''
         wrapProgram $out/bin/tmux  \
           --add-flags '-f' --add-flags '${cfg}'
       '';
     }
-    // {inherit (tmux) name pname man meta;});
-in
-  pkgs.stdenv.mkDerivation (rec {
-      name = drv.name;
-      pname = drv.pname;
-
-      buildCommand = let
-        desktopEntry = pkgs.makeDesktopItem {
-          name = pname;
-          desktopName = name;
-          exec = "${lib.getExe drv}";
-          terminal = true;
-        };
-      in ''
-        mkdir -p $out/bin
-        cp ${lib.getExe drv} $out/bin
-
-        mkdir -p $out/share/applications
-        cp ${desktopEntry}/share/applications/${pname}.desktop $out/share/applications/${pname}.desktop
-      '';
-    }
-    // {inherit (tmux) man meta;})
+    // {inherit (tmux) name pname man meta;})

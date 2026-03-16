@@ -6,7 +6,7 @@
   ghostty ? pkgs.ghostty,
   command ? null,
 }: let
-  colors = import ../colors.nix;
+  colors = import ./colors.nix;
   theme = pkgs.writeText "theme" ''
     palette = 0=${colors.base00}
     palette = 1=${colors.base08}
@@ -31,7 +31,8 @@
     selection-background = ${colors.base02}
     selection-foreground = ${colors.base07}
   '';
-  drv = symlinkJoin ({
+in
+  symlinkJoin ({
       paths = [ghostty];
 
       nativeBuildInputs = [makeWrapper];
@@ -45,24 +46,4 @@
         }
       '';
     }
-    // {inherit (ghostty) name pname meta shell_integration terminfo;});
-in
-  pkgs.stdenv.mkDerivation (rec {
-      name = drv.name;
-      pname = drv.pname;
-
-      buildCommand = let
-        desktopEntry = pkgs.makeDesktopItem {
-          name = pname;
-          desktopName = name;
-          exec = "${lib.getExe drv}";
-        };
-      in ''
-        mkdir -p $out/bin
-        cp ${lib.getExe drv} $out/bin
-
-        mkdir -p $out/share/applications
-        cp ${desktopEntry}/share/applications/${pname}.desktop $out/share/applications/${pname}.desktop
-      '';
-    }
-    // {inherit (ghostty) meta shell_integration terminfo;})
+    // {inherit (ghostty) name pname meta shell_integration terminfo;})

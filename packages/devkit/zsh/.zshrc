@@ -82,3 +82,10 @@ alias -- yy='yazi'
 if [ -f "$ZSHRC_APPEND" ]; then
 	source "$ZSHRC_APPEND"
 fi
+
+# Fetch intro
+if command -v "fastfetch" >/dev/null 2>&1; then
+	if [[ "$TERM" != "dump" ]]; then
+		fastfetch
+	fi
+fi
