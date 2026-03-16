@@ -108,14 +108,13 @@
           };
           inherit inputs self;
         };
-        modules =
-          homeNixOSModules
-          ++ [
-            ./hosts/battleship/configuration.nix
-            inputs.stylix.nixosModules.stylix
-            ./modules/nixos/context.nix
-            ./home/guz/configuration.nix
-          ];
+        modules = [
+          ./hosts/battleship-mk2/configuration.nix
+          ./modules/nixos/context.nix
+          ./home/terminal/configuration.nix
+          inputs.stylix.nixosModules.stylix
+          ./style.nix
+        ];
       };
       "figther" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
