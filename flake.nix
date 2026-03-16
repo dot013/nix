@@ -47,11 +47,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpak = {
-      url = "github:nixpak/nixpak";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     neovim = {
       # url = "git+https://code.capytal.cc/dot013/nvim";
       url = "git+file:///home/guz/.projects/dot013-nvim";
