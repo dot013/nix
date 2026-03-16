@@ -167,6 +167,20 @@
           ./hosts/virus/configuration.nix
         ];
       };
+      "infiltrator" = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
+        modules = [
+          ./hosts/infriltrator/configuration.nix
+        ];
+      };
     };
 
     homeConfigurations = forAllSystems ({
