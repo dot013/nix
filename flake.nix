@@ -48,8 +48,8 @@
     };
 
     neovim = {
-      # url = "git+https://code.capytal.cc/dot013/nvim";
-      url = "git+file:///home/guz/.projects/dot013-nvim";
+      url = "git+https://code.capytal.cc/dot013/nvim";
+      # url = "git+file:///home/guz/.projects/dot013-nvim";
     };
 
     rec-sh = {
