@@ -27,6 +27,7 @@
       palette = 15=${base07}
 
       background = ${base00}
+      background-opacity = 0.9
       foreground = ${base05}
       cursor-color = ${base05}
       selection-background = ${base02}
