@@ -22,7 +22,6 @@
     stylix = {
       url = "github:danth/stylix/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
 
     sops-nix = {
@@ -254,14 +253,9 @@
     packages = forAllSystems ({
       lib,
       pkgs,
-      pkgs-unstable,
       ...
     }: {
-      davincify = pkgs.callPackage ./packages/davincify {};
-      dotstate = pkgs.callPackage ./packages/dotstate {};
-      untrack = pkgs.callPackage ./packages/untrack {};
       audacity4 = pkgs.callPackage ./packages/audacity4 {};
-
       neovim = inputs.neovim.packages.${pkgs.system}.default;
 
       devkit =
