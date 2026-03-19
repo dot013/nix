@@ -1,16 +1,24 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
-  pkgs-unstable,
   self,
   ...
-}: {
+} @ args: {
   imports = [
     inputs.home-manager.nixosModules.default
   ];
 
   # User
+  home-manager = {
+    backupFileExtension = "bkp";
+    extraSpecialArgs = {inherit (args) inputs self pkgs-unstable;};
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users."guz" = ./home.nix;
+  };
+
   users.users."guz" = {
     extraGroups = ["wheel" "guz"];
     isNormalUser = true;
@@ -19,15 +27,22 @@
   };
   users.groups."guz" = {};
 
-  home-manager.backupFileExtension = "bkp";
-  home-manager.extraSpecialArgs = {inherit inputs self pkgs-unstable;};
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users."guz" = ./home.nix;
+  # Shell
+  programs.zsh.enable = true;
 
   services.displayManager.sddm = {
     enable = true;
+    extraPackages = with pkgs; [
+      kdePackages.qtmultimedia
+      kdePackages.qtsvg
+      kdePackages.qtvirtualkeyboard
+    ];
+    theme = "${pkgs.sddm-astronaut.override {embeddedTheme = "hyprland_kath";}}/share/sddm/themes/sddm-astronaut-theme";
     wayland.enable = true;
+  };
+
+  services.desktopManager.gnome = {
+    enable = true;
   };
 
   programs.hyprland = {
@@ -36,9 +51,11 @@
     xwayland.enable = true;
   };
 
+  # Steam
+  programs.steam.enable = true;
+
   xdg.portal.xdgOpenUsePortal = true;
   xdg.portal.extraPortals = with pkgs; [xdg-desktop-portal-gtk];
 
-  # Shell
-  programs.zsh.enable = true;
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }

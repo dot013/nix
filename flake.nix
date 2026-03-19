@@ -29,11 +29,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    xremap = {
-      url = "github:xremap/nix-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     heart-modpack = {
       url = "git+ssh://gitea@spacestation/heart/modpack.git";
       # url = "git+file:///home/guz/.projects/heart-modpack";
@@ -54,6 +49,12 @@
     rec-sh = {
       url = "git+https://code.capytal.cc/dot013/rec.sh/?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.home-manager.follows = "home-manager";
     };
   };
 

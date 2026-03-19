@@ -1,242 +1,364 @@
 {
   config,
   lib,
+  osConfig,
   pkgs,
   self,
   ...
-}:
-with lib; {
+}: {
   imports = [
-    self.homeManagerModules.qutebrowser-profiles
-    ./scripts.nix
-    ./profiles.nix
+    self.homeManagerModules.zen-browser
   ];
 
-  programs.qutebrowser = {
-    enable = true;
+  xdg.mimeApps.defaultApplications = with lib;
+    listToAttrs (map (name: {
+        inherit name;
+        value = config.programs.zen-browser.package.meta.desktopFileName;
+      }) [
+        "application/x-extension-shtml"
+        "application/x-extension-xhtml"
+        "application/x-extension-html"
+        "application/x-extension-xht"
+        "application/x-extension-htm"
+        "x-scheme-handler/unknown"
+        "x-scheme-handler/mailto"
+        "x-scheme-handler/chrome"
+        "x-scheme-handler/about"
+        "x-scheme-handler/https"
+        "x-scheme-handler/http"
+        "application/xhtml+xml"
+        "application/json"
+        "text/plain"
+        "text/html"
+      ]);
 
-    keyBindings = {
-      normal = {
-        ",m" = "spawn umpv {url}";
-        ",M" = "hint links spawn umpv {hint-url}";
-        ";M" = "hint --rapid links spawn umpv {hint-url}";
-        "tD" = "config-cycle -t -u {url} colors.webpage.darkmode.enabled false true ;; reload";
-      };
+  programs.zen-browser = let
+    locked = v: {
+      Value = v;
+      Status = "locked";
     };
-
     settings = {
-      auto_save.session = true;
-      confirm_quit = ["downloads"];
-
-      tabs.width = builtins.floor (1920 * 0.1);
-      tabs.position = "left";
-
-      # Colors
-      colors.tabs.pinned.even.bg = mkForce "#181818";
-      colors.tabs.pinned.odd.bg = mkForce "#181818";
-
-      colors.tabs.selected.even.bg = mkForce "#CDD6F4"; # Catppuccin's Text
-      colors.tabs.selected.odd.bg = mkForce "#CDD6F4"; # Catppuccin's Text
-      colors.tabs.selected.even.fg = mkForce "#111111";
-      colors.tabs.selected.odd.fg = mkForce "#111111";
-
-      colors.tabs.pinned.selected.even.bg = mkForce "#CDD6F4"; # Catppuccin's Text
-      colors.tabs.pinned.selected.odd.bg = mkForce "#CDD6F4"; # Catppuccin's Text
-
-      ## Darkmode
-      colors.webpage.darkmode.enabled = true;
-      colors.webpage.darkmode.algorithm = "lightness-cielab";
-      colors.webpage.darkmode.policy.images = "never";
-
-      # Prevent fingerprinting
-      content.canvas_reading = false;
-      content.cookies.accept = "all";
-      content.cookies.store = true;
-      content.geolocation = false;
-      content.webgl = false;
-      content.webrtc_ip_handling_policy = "default-public-interface-only";
+      "beacon.enabled" = locked false;
+      "browser.startup.page" = locked 3;
+      "device.sensors.enabled" = locked false;
+      "dom.battery.enabled" = locked false;
+      "dom.event.clipboardevents.enabled" = locked false;
+      "geo.enabled" = locked false;
+      "media.peerconnection.enabled" = locked false;
+      "privacy.clearHistory.cookiesAndStorage" = locked false;
+      "privacy.clearHistory.siteSettings" = locked false;
+      "privacy.firstparty.isolate" = locked true;
+      "privacy.resistFingerprinting" = locked true;
+      "privacy.trackingprotection.enabled" = locked true;
+      "privacy.trackingprotection.socialtracking.enabled" = locked true;
+      "webgl.disabled" = true;
+      "zen.view.use-single-toolbar" = false;
     };
-
-    extraConfig = ''
-      config.set('colors.webpage.darkmode.enabled', False, 'file://*')
-      config.set('colors.webpage.darkmode.enabled', False, 'http://*:*/*')
-
-      config.set('colors.webpage.darkmode.enabled', False, 'capytal.company')
-      config.set('colors.webpage.darkmode.enabled', False, '*.capytal.company')
-      config.set('colors.webpage.darkmode.enabled', False, 'capytal.cc')
-      config.set('colors.webpage.darkmode.enabled', False, '*.capytal.cc')
-      config.set('colors.webpage.darkmode.enabled', False, 'lored.dev')
-      config.set('colors.webpage.darkmode.enabled', False, '*.lored.dev')
-      config.set('colors.webpage.darkmode.enabled', False, 'guz.one')
-      config.set('colors.webpage.darkmode.enabled', False, '*.guz.one')
-
-      # Thanks to @hseg on GitHub (https://github.com/qutebrowser/qutebrowser/issues/6880#issuecomment-1815248845)
-      config.bind('o', 'cmd-set-text -s :open -s')
-      config.bind('go', 'cmd-set-text :open -s {url:pretty}')
-      config.bind('O', 'cmd-set-text -s :open -s -t')
-      config.bind('gO', 'cmd-set-text :open -s -t -r {url:pretty}')
-      config.bind('xo', 'cmd-set-text -s :open -s -b')
-      config.bind('xO', 'cmd-set-text :open -s -b -r {url:pretty}')
-      config.bind('wo', 'cmd-set-text -s :open -s -w')
-      config.bind('wO', 'cmd-set-text :open -s -w {url:pretty}')
-      config.bind('pp', 'open -s -- {clipboard}')
-      config.bind('pP', 'open -s -- {primary}')
-      config.bind('Pp', 'open -s -t -- {clipboard}')
-      config.bind('PP', 'open -s -t -- {primary}')
-      config.bind('wp', 'open -s -w -- {clipboard}')
-      config.bind('wP', 'open -s -w -- {primary}')
-    '';
-
-    searchEngines = {
-      DEFAULT = "https://search.brave.com/search?q={}";
-      # Nix
-      pkg = "https://search.nixos.org/packages?query={}";
-      opt = "https://search.nixos.org/options?query={}";
-      lib = "https://noogle.dev/q?term={}";
-      hm = "https://home-manager-options.extranix.com/?query={}";
-      wiki = "https://wiki.nixos.org/w/index.php?search={}";
-
-      # Wikipedia
-      w = "https://en.wikipedia.org/wiki/Special:Search?search={}&go=Go&ns0=1";
-      wpt = "https://pt.wikipedia.org/wiki/Special:Search?search={}&go=Go&ns0=1";
-    };
-
-    profiles = let
-      programmingSearchEngines = {
-        # Languages
-        go = "https://pkg.go.dev/search?q={}";
-      };
-      setColor = c: {
-        colors.tabs.selected.even.bg = c;
-        colors.tabs.selected.odd.bg = c;
-        colors.tabs.pinned.selected.even.bg = c;
-        colors.tabs.pinned.selected.odd.bg = c;
-      };
-    in {
-      "art".settings = setColor "#CBA6F7"; # Catppuccin's Mauve;
-      "personal".settings = setColor "#F5E0DC"; # Catppuccin's Rosewater
-      "work" = {
-        settings = setColor "#74C7EC"; # Catppuccin's Sapphire
-        searchEngines = programmingSearchEngines;
-      };
-      "job" = {
-        settings =
-          (config.programs.qutebrowser.profiles."work".settings)
-          // {
-            confirm_quit = ["always"];
-            content.webgl = true;
-          }
-          // (setColor "#A6E2A1"); # Catppuccin's Green
-        searchEngines = programmingSearchEngines;
-      };
-      "shopping".settings = setColor "#F9E2AF"; # Catppuccin's Yellow
-      "goverment".settings = setColor "#A6ADC8"; # Catppuccin's Subtext 1
-      "academic".settings =
-        {
-          confirm_quit = ["always"];
-          content.webgl = true;
-        }
-        // setColor "#19236F";
-      "facebook".settings = setColor "#1877F2"; # Facebook's Blue
-      "yt-music".settings =
-        {
-          tabs.width = 10;
-        }
-        // (setColor "#FF0000"); # Youtube's Red
-    };
-
-    greasemonkey = [
-      # Youtube Adblocking
-      (pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/afreakk/greasemonkeyscripts/refs/heads/master/youtube_adblock.js";
-        hash = "sha256-AyD9VoLJbKPfqmDEwFIEBMl//EIV/FYnZ1+ona+VU9c=";
-      })
-
-      # Youtube Sponsorblock
-      (pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/afreakk/greasemonkeyscripts/refs/heads/master/youtube_sponsorblock.js";
-        hash = "sha256-nwNade1oHP+w5LGUPJSgAX1+nQZli4Rhe8FFUoF5mLE=";
-      })
-
-      # Reddit adblock
-      (pkgs.fetchurl {
-        url = "https://github.com/afreakk/greasemonkeyscripts/raw/refs/heads/master/reddit_adblock.js";
-        hash = "sha256-KmCXL4GrZtwPLRyAvAxADpyjbdY5UFnS/XKZFKtg7tk=";
-      })
-
-      # Pinterest adblock
-      (pkgs.writeText "pinterest_adblock.js" ''
-        // ==UserScript==
-        // @name         remove ads from pinterest
-        // @version      1.0.0
-        // @author       guz
-        // @match        *://*.pinterest.com/*
-        // ==/UserScript==
-
-        const removeShit = () => {
-            document.querySelectorAll('[data-grid-item]:has([title="Promoted by"])').forEach((e) => e.remove());
-            document.querySelectorAll('[data-grid-item]:has([data-test-id="oneTapPromotedPin"])').forEach((e) => e.remove());
-            document.querySelectorAll('[data-grid-item]:has([aria-label="Product Pin"])').forEach((e) => e.remove());
-            // document.querySelectorAll('[data-grid-item]:has-text(ideas you might love)').forEach((e) => e.remove());
-            // document.querySelectorAll('[data-grid-item]:has-text(Seaches to try)').forEach((e) => e.remove());
+  in {
+    enable = true;
+    profiles."default" = {
+      containersForce = true;
+      containers = {
+        Personal = {
+          color = "purple";
+          icon = "fingerprint";
+          id = 1;
         };
-        (trySetInterval = () => {
-            window.setInterval(removeShit, 1000);
-        })();
-      '')
-
-      # Privacy Redirector
-      (pkgs.substitute {
-        src = pkgs.fetchurl {
-          url = "https://github.com/dybdeskarphet/privacy-redirector/raw/refs/heads/main/privacy-redirector.user.js";
-          hash = "sha256-xj36+/3coiStIxftWCJUWHokSEmr+YRLOTktbmn5TkU=";
+        Work = {
+          color = "blue";
+          icon = "fingerprint";
+          id = 2;
         };
-        substitutions = [
-          # ON-OFF (Redirection / Farside)
-          "--replace"
-          "pinterest = [true, true]"
-          "pinterest = [false, false]"
-          "--replace"
-          "tumblr = [true, false]"
-          "tumblr = [false, false]"
-          "--replace"
-          "wikipedia = [true, false]"
-          "wikipedia = [false, false]"
-          "--replace"
-          "youtube = [true, false]"
-          "youtube = [false, false]"
-          "--replace"
-          "instagram = [true, true]"
-          "instagram = [false, false]"
-        ];
-      })
-    ];
+        Shopping = {
+          color = "yellow";
+          icon = "cart";
+          id = 4;
+        };
+        Goverment = {
+          color = "orange";
+          icon = "dollar";
+          id = 5;
+        };
+        Academic = {
+          color = "orange";
+          icon = "briefcase";
+          id = 6;
+        };
+      };
+      extensions.force = true;
+      extensions.settings = {
+        "tridactyl.vim@cmcaine.co.uk".settings = {
+          userconfig = {
+            configVersion = "2.0";
+            nmaps = {
+              "K" = "tabprev";
+              "J" = "tabnext";
+            };
+            theme = "midnight";
+            searchurls = with lib;
+              mapAttrs' (n: v:
+                nameValuePair
+                (
+                  if v?definedAliases
+                  then elemAt v.definedAliases 0
+                  else n
+                )
+                (replaceString "{searchTerms}" "" (elemAt v.urls 0).template))
+              config.programs.zen-browser.profiles."default".search.engines;
+          };
+        };
+        "uBlock0@raymondhill.net".settings = {
+          selectedFilterLists = [
+            "user-filters"
+            "ublock-filters"
+            "ublock-badware"
+            "ublock-privacy"
+            "ublock-unbreak"
+            "ublock-quick-fixes"
+            "easylist"
+            "easyprivacy"
+            "urlhaus-1"
+            "plowe-0"
+          ];
+          dynamicFilteringString = ''
+            behind-the-scene * * noop
+            behind-the-scene * inline-script noop
+            behind-the-scene * 1p-script noop
+            behind-the-scene * 3p-script noop
+            behind-the-scene * 3p-frame noop
+            behind-the-scene * image noop
+            behind-the-scene * 3p noop
+            * * 3p-script block
+            * * 3p-frame block
+            capytal.cc * * noop
+            capytal.company * * noop
+            guz.one * * noop
+            keikos.work * * noop
+            lored.dev * * noop
+            home-manager-options.extranix.com extranix.com * noop
+            home-manager-options.extranix.com home-manager-options.extranix.com * noop
+          '';
+        };
+        "{ef87d84c-2127-493f-b952-5b4e744245bc}".settings = {
+          baseUrl = "http://127.0.0.1:5600";
+          consentRequired = true;
+          consent = true;
+          hostname = osConfig.networking.hostName;
+          enabled = true;
+          browserName = "zen";
+        };
+        "7esoorv3@alefvanoon.anonaddy.me".settings = with builtins; fromJSON (readFile ./libredirect.json);
+      };
+      search.default = "brave";
+      search.force = true;
+      search.engines = {
+        brave = {
+          name = "Brave";
+          urls = [{template = "https://search.brave.com/search?q={searchTerms}";}];
+        };
+        go = {
+          name = "Go Packages";
+          urls = [{template = "https://pkg.go.dev/search?q={searchTerms}";}];
+          icon = pkgs.fetchurl {
+            url = "https://pkg.go.dev/static/shared/logo/go-white.svg";
+            hash = "sha256-oqFYZnPAxESEpY0Qcz5OPiCMTWXyI1nqOEYmsdbGqy4=";
+          };
+          definedAliases = ["@go"];
+        };
+        mdn = {
+          name = "MDN";
+          urls = [{template = "https://developer.mozilla.org/en-US/search?q={searchTerms}";}];
+          icon = pkgs.fetchurl {
+            url = "https://developer.mozilla.org/static/client/mdn-m.70aac857e4a908d0.svg";
+            hash = "sha256-sTAKxjk5b8lUaa9057LOH0H3N54LeXkPF/mOe4gpHDI=";
+          };
+          definedAliases = ["@mdn"];
+        };
+        nix-home-manager = {
+          name = "Home Manager";
+          urls = [{template = "https://home-manager-options.extranix.com/?query={searchTerms}";}];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = ["@hm"];
+        };
+        nix-noodle = {
+          name = "Noodle";
+          urls = [{template = "https://noogle.dev/q?term={searchTerms}";}];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = ["@lib"];
+        };
+        nix-options = {
+          name = "Nix Options";
+          urls = [{template = "https://search.nixos.org/options?query={searchTerms}";}];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = ["@opt"];
+        };
+        nix-packages = {
+          name = "Nix Packages";
+          urls = [{template = "https://search.nixos.org/packages?query={searchTerms}";}];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = ["@pkg"];
+        };
+        nix-wiki = {
+          name = "Nix Wiki";
+          urls = [
+            {template = "https://wiki.nixos.org/w/index.php?search={searchTerms}";}
+            {template = "https://nixos.wiki/index.php?search={searchTerms}";}
+          ];
+          icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+          definedAliases = ["@wiki"];
+        };
+      };
+      settings = with builtins;
+        mapAttrs (n: v:
+          if isAttrs v
+          then v.Value
+          else v)
+        settings;
+      shortcuts = {
+        "key_search" = {key = "";};
+        "key_search2" = {key = "";};
+        "zen-workspace-forward" = {
+          key = "j";
+          modifiers = {
+            control = true;
+          };
+          action = "cmd_zenWorkspaceForward";
+        };
+        "zen-workspace-backward" = {
+          key = "k";
+          modifiers = {
+            control = true;
+          };
+          action = "cmd_zenWorkspaceBackward";
+        };
+      };
+      spacesForce = true;
+      spaces = let
+        containers = config.programs.zen-browser.profiles."default".containers;
+      in {
+        "Space" = {
+          id = "c6de089c-410d-4206-961d-ab11f988d40a";
+          position = 1000;
+        };
+        "Work" = {
+          id = "cdd10fab-4fc5-494b-9041-325e5759195b";
+          icon = "chrome://browser/skin/zen-icons/selectable/star-1.svg";
+          container = containers."Work".id;
+          position = 7000;
+        };
+        "Work 2" = {
+          id = "761ecf8e-5850-4030-b0d8-0d4c0efe1a2e";
+          icon = "chrome://browser/skin/zen-icons/selectable/star.svg";
+          container = containers."Work".id;
+          position = 6000;
+        };
+        "Work 3" = {
+          id = "fdbed307-bad6-4ddb-bb6d-2d1bab864162";
+          icon = "chrome://browser/skin/zen-icons/selectable/sun.svg";
+          container = containers."Work".id;
+          position = 5000;
+        };
+        "Academic" = {
+          id = "92529b12-d9ab-4a65-887c-056e041ff497";
+          icon = "chrome://browser/skin/zen-icons/selectable/school.svg";
+          container = containers."Academic".id;
+          position = 4000;
+        };
+        "Goverment" = {
+          id = "7e83e835-caef-4b94-be0c-b6b3959d0830";
+          icon = "chrome://browser/skin/zen-icons/selectable/folder.svg";
+          container = containers."Goverment".id;
+          position = 3000;
+        };
+        "Shopping" = {
+          id = "78aabdad-8aae-4fe0-8ff0-2a0c6c4ccc24";
+          icon = "chrome://browser/skin/zen-icons/selectable/basket.svg";
+          container = containers."Shopping".id;
+          position = 2000;
+        };
+      };
+    };
+    policies = {
+      AutofillAdressEnabled = true;
+      AutofillCreditCardEnabled = false;
+      EnableTrackingProtection = {
+        Value = true;
+        Locked = true;
+        Cryptomining = true;
+        Fingerprinting = true;
+      };
+      ExtensionSettings = {
+        "@contain-facebook" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/facebook-container/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "7esoorv3@alefvanoon.anonaddy.me" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/libredirect/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "addon@darkreader.org" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "addon@simplelogin" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/simplelogin/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "deArrow@ajay.app" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/dearrow/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "extraneous@sysrqmagician.github.io" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/extraneous/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "idcac-pub@guus.ninja" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/istilldontcareaboutcookies/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "tridactyl.vim@cmcaine.co.uk" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/tridactyl-vim/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "sponsorBlocker@ajay.app" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "uBlock0@raymondhill.net" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "{74145f27-f039-47ce-a470-a662b129930a}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "{aecec67f-0d10-4fa7-b7c7-609a2db280cf}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/violentmonkey/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        "{ef87d84c-2127-493f-b952-5b4e744245bc}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/aw-watcher-web/latest.xpi";
+          installation_mode = "force_installed";
+        };
+      };
+      DisableAppUpdate = true;
+      DisableFeedbackCommands = true;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DisableTelemetry = true;
+      DontCheckDefaultBrowser = true;
+      NoDefaultBookmarks = true;
+      OfferToSaveLogins = false;
+      Preferences = with builtins;
+        mapAttrs (
+          n: v:
+            if isAttrs v
+            then v
+            else {Value = v;}
+        )
+        settings;
+      ShowHomeButton = false;
+      WindowsSSO = false;
+    };
   };
-
-  programs.mpv.enable = true;
-  programs.mpv.scripts = with pkgs.mpvScripts; [
-    quality-menu
-    sponsorblock
-  ];
-
-  xdg.mimeApps.defaultApplications = listToAttrs (map (name: {
-      inherit name;
-      value = config.programs.qutebrowser.package.meta.desktopFileName;
-    }) [
-      "application/x-extension-shtml"
-      "application/x-extension-xhtml"
-      "application/x-extension-html"
-      "application/x-extension-xhtm"
-      "application/x-extension-htm"
-      "x-scheme-handler/unknown"
-      "x-scheme-handler/mailto"
-      "x-scheme-handler/chrome"
-      "x-scheme-handler/about"
-      "x-scheme-handler/https"
-      "x-scheme-handler/http"
-      "application/xhtml+xml"
-      "application/json"
-      "text/plain"
-      "text/html"
-    ]);
 }
