@@ -1,5 +1,7 @@
 {
   lib,
+  pkgs,
+  self,
   ...
 }: {
   imports = [
@@ -8,7 +10,28 @@
     ./impermanence.nix
   ];
 
+  home.packages =
+    (with pkgs; [
+      bitwarden-desktop
+      obs-studio
+      wezterm
+      webcord
+    ])
+    ++ (with self.packages.${pkgs.stdenv.hostPlatform.system}.devkit; [
+      git
+      ghostty
+      lazygit
+      starship
+      yazi
+      zellij
+      zsh
+      neovim
     ]);
+
+  home.sessionVariables = {
+    EDITOR = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.neovim}";
+    TERMINAL = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.ghostty}";
+  };
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
