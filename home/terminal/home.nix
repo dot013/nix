@@ -1,16 +1,13 @@
 {
   lib,
-  options,
   ...
-}:
-with lib; {
-  imports =
-    [
-      ./browser.nix
-      ./desktop.nix
-    ]
-    ++ (optionals (options.home?persistence) [
-      ./impermanence.nix
+}: {
+  imports = [
+    ./browser.nix
+    ./desktop.nix
+    ./impermanence.nix
+  ];
+
     ]);
 
   # This value determines the Home Manager release that your
