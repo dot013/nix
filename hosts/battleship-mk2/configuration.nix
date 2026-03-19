@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   pkgs,
   ...
 }: {
@@ -74,6 +75,12 @@
 
   # Nix
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "via"
+      "steam"
+      "steam-unwrapped"
+    ];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
