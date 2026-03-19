@@ -16,6 +16,7 @@
       "/etc/NetworkManager/system-connections"
       "/etc/secureboot"
       "/var/db/sudo"
+      "/var/keys"
       "/var/log"
       "/var/lib/bluetooth"
       "/var/lib/nixos"
@@ -29,10 +30,6 @@
     ];
     files = [
       "/etc/machine-id"
-      {
-        file = "/var/keys/secret_file";
-        parentDirectory = {mode = "u=rwx,g=,o=";};
-      }
     ];
   };
 
@@ -41,7 +38,7 @@
     script = pkgs.writeShellScriptBin "rollback" ''
       mkdir -p /btrfs_tmp
 
-      mount -o subvol=/ /dev/mapper/enc /btrfs_tmp
+      mount -o subvol=/ /dev/mapper/cryptroot /btrfs_tmp
 
       if [[ -e /btrfs_tmp/root ]]; then
         mkdir -p /btrfs_tmp/old_roots
