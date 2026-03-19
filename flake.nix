@@ -257,36 +257,18 @@
     }: {
       audacity4 = pkgs.callPackage ./packages/audacity4 {};
       neovim = inputs.neovim.packages.${pkgs.system}.default;
-
-      devkit =
-        (import ./packages/devkit {inherit inputs pkgs pkgs-unstable;})
-        // {
-          neovim = self.packages.${pkgs.system}.neovim;
+      devkit = {
+        ghostty = pkgs.callPackage ./packages/devkit/ghostty.nix {
+          command = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh}";
         };
-      devkit-shell = let
-        devkit = self.packages.${pkgs.system}.devkit;
-        packages = with devkit; [
-          git
-          lazygit
-          neovim
-          starship
-          tmux
-          yazi
-          zellij
-          zsh
-
-          # Useful on new Nix installations
-          (pkgs.writeShellScriptBin "nix" ''
-            ${lib.getExe pkgs.nix} \
-              --experimental-features 'nix-command flakes' \
-              "$@"
-          '')
-        ];
-      in
-        pkgs.writeShellScriptBin "devkit-shell" ''
-          export PATH="$PATH:${lib.makeBinPath packages}"
-          ${lib.getExe devkit.zsh} "$@"
-        '';
+        git = pkgs.callPackage ./packages/devkit/git.nix {};
+        lazygit = pkgs.callPackage ./packages/devkit/lazygit.nix {};
+        starship = pkgs.callPackage ./packages/devkit/starship {};
+        yazi = pkgs.callPackage ./packages/devkit/yazi {};
+        zellij = pkgs.callPackage ./packages/devkit/zellij {};
+        zsh = pkgs.callPackage ./packages/devkit/zsh {};
+        neovim = self.packages.${pkgs.system}.neovim;
+      };
     });
 
     devShells = forAllSystems ({
@@ -296,7 +278,18 @@
     }: {
       devkit = pkgs.mkShell {
         name = "devkit-shell";
-        shellHook = "${lib.getExe self.packages.${pkgs.system}.devkit-shell}";
+        packages = with self.packages.${pkgs.stdenv.hostPlatform.system}.devkit; [
+          ghostty
+          git
+          lazygit
+          starship
+          yazi
+          zellij
+          zsh
+          neovim
+        ];
+        shellHook = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh}";
+        EDITOR = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.neovim}";
       };
       default = self.devShells.${pkgs.system}.devkit;
     });
