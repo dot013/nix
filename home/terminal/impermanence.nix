@@ -4,8 +4,8 @@ with lib; {
     directories = map (d:
       if isList d
       then {
-        directory = elemAt 1 d;
-        mode = elemAt 0 d;
+        directory = elemAt d 1;
+        mode = elemAt d 0;
       }
       else d) [
       ["0755" "Documents"]
