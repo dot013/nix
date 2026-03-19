@@ -7,30 +7,31 @@
   command ? null,
 }: let
   colors = import ./colors.nix;
-  theme = pkgs.writeText "theme" ''
-    palette = 0=${colors.base00}
-    palette = 1=${colors.base08}
-    palette = 2=${colors.base0B}
-    palette = 3=${colors.base0A}
-    palette = 4=${colors.base0D}
-    palette = 5=${colors.base0E}
-    palette = 6=${colors.base0C}
-    palette = 7=${colors.base05}
-    palette = 8=${colors.base03}
-    palette = 9=${colors.base08}
-    palette = 10=${colors.base0B}
-    palette = 11=${colors.base0A}
-    palette = 12=${colors.base0D}
-    palette = 13=${colors.base0E}
-    palette = 14=${colors.base0C}
-    palette = 15=${colors.base07}
+  theme = with colors;
+    pkgs.writeText "theme" ''
+      palette = 0=${base00}
+      palette = 1=${base08}
+      palette = 2=${base0B}
+      palette = 3=${base0A}
+      palette = 4=${base0D}
+      palette = 5=${base0E}
+      palette = 6=${base0C}
+      palette = 7=${base05}
+      palette = 8=${base03}
+      palette = 9=${base08}
+      palette = 10=${base0B}
+      palette = 11=${base0A}
+      palette = 12=${base0D}
+      palette = 13=${base0E}
+      palette = 14=${base0C}
+      palette = 15=${base07}
 
-    background = ${colors.base00}
-    foreground = ${colors.base05}
-    cursor-color = ${colors.base05}
-    selection-background = ${colors.base02}
-    selection-foreground = ${colors.base07}
-  '';
+      background = ${base00}
+      foreground = ${base05}
+      cursor-color = ${base05}
+      selection-background = ${base02}
+      selection-foreground = ${base07}
+    '';
 in
   symlinkJoin ({
       paths = [ghostty];
