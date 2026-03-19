@@ -16,7 +16,7 @@ keybinds clear-defaults=true {
                 floating true
                 move_to_focused_tab true
                 cwd "/"
-                root_dirs "/home/guz/.projects;/home/guz/.job;/home/guz/.work"
+                root_dirs "/home/guz/Projects;/home/guz/Job;/home/guz/Academic"
                 session ":default"
             }
             SwitchToMode "Locked"
@@ -154,7 +154,7 @@ keybinds clear-defaults=true {
                 floating true
                 move_to_focused_tab true
                 cwd "/"
-                root_dirs "/home/guz/.projects;/home/guz/.job;/home/guz/.work"
+                root_dirs "/home/guz/Projects;/home/guz/Job;/home/guz/Academic"
                 session ":default"
             }
             SwitchToMode "Locked"
