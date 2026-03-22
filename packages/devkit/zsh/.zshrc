@@ -3,6 +3,8 @@ if [ -f "$HOME/.zshrc" ]; then
 	source "$HOME/.zshrc"
 fi
 
+#@zshrc-prepend@
+
 typeset -U auto cdpath fpath manpath
 
 if [ -f "$ZSHRC_PREPEND" ]; then
@@ -12,9 +14,7 @@ fi
 # Autocompletion
 autoload -U compinit && compinit
 
-# Autosuggestion
-source "$ZSH_PLUGIN_AUTOSUGGESTIONS"
-ZSH_AUTOSUGGEST_STRATEGY=(history)
+#@zsh-plugin-autosuggestions@
 
 # Command history
 HISTSIZE=1000
@@ -39,9 +39,7 @@ if command -v "starship" >/dev/null 2>&1; then
 	fi
 fi
 
-# Syntax highlighting
-source "$ZSH_PLUGIN_SYNTAXHIGHLIGHING"
-ZSH_HIGHLIGHT_HIGHLIGHTERS+=()
+#@zsh-plugin-syntaxhighlighing@
 
 # Integration for Zellij
 if command -v "zellij" >/dev/null 2>&1; then
@@ -67,17 +65,29 @@ alias -- vim='nvim'
 alias -- vimdiff='nvim -d'
 alias -- lg='lazygit'
 
-# Yazi alias (with wrapper to change cwd)
-function y() {
-	local tmp="$(mktemp -t "yazi-cmd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
-}
-# Yazi alias (without wrapper to change cwd)
-alias -- yy='yazi'
+if command -v "yazi" >/dev/null 2>&1; then
+	# Yazi alias (with wrapper to change cwd)
+	function y() {
+		local tmp="$(mktemp -t "yazi-cmd.XXXXXX")" cwd
+		yazi "$@" --cwd-file="$tmp"
+		if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+			builtin cd -- "$cwd"
+		fi
+		rm -f -- "$tmp"
+	}
+	# Yazi alias (without wrapper to change cwd)
+	alias -- yy='yazi'
+fi
+
+if command -v "nvim" >/dev/null 2>&1; then
+	EDITOR="nvim"
+elif command -v "vim" >/dev/null 2>&1; then
+	EDITOR="vim"
+elif command -v "vi" >/dev/null 2>&1; then
+	EDITOR="vi"
+fi
+
+#@zshrc-append@
 
 if [ -f "$ZSHRC_APPEND" ]; then
 	source "$ZSHRC_APPEND"
