@@ -46,6 +46,9 @@ in
         sed -i \
           "s|Exec=.*|Exec=$out/bin/ghostty --gtk-single-instance=true|" \
           $out/share/applications/com.mitchellh.ghostty.desktop
+        sed -i \
+          "s|TryExec=.*|TryExec=$out/bin/ghostty|" \
+          $out/share/applications/com.mitchellh.ghostty.desktop
       '';
     }
     // {inherit (ghostty) name pname meta shell_integration terminfo;})
