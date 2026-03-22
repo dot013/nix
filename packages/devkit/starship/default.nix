@@ -2,7 +2,6 @@
   symlinkJoin,
   makeWrapper,
   pkgs,
-  lib,
   starship ? pkgs.starship,
 }:
 symlinkJoin ({
