@@ -133,4 +133,8 @@ with lib; {
       name = "FiraCode Nerd Font";
     };
   };
+
+  # Nextcloud
+  services.nextcloud-client.enable = true;
+  services.nextcloud-client.startInBackground = true;
 }
