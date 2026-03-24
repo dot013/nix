@@ -1,7 +1,7 @@
 # Source OS-specific configurations
-if [ -f "$HOME/.zshrc" ]; then
-	source "$HOME/.zshrc"
-fi
+# if [ -f "$HOME/.zshrc" ]; then
+# 	source "$HOME/.zshrc"
+# fi
 
 #@zshrc-prepend@
 

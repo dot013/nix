@@ -5,6 +5,8 @@
   ...
 }: {
   imports = [
+    self.homeManagerModules.devkit
+
     ./browser.nix
     ./desktop.nix
     ./impermanence.nix
@@ -19,20 +21,8 @@
       wezterm
       webcord
     ])
-    ++ (with self.packages.${pkgs.stdenv.hostPlatform.system}.devkit; [
-      git
-      ghostty
-      lazygit
-      starship
-      yazi
-      zellij
-      zsh
-      neovim
     ]);
 
-  home.sessionVariables = {
-    EDITOR = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.neovim}";
-    TERMINAL = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.ghostty}";
   };
 
   # This value determines the Home Manager release that your

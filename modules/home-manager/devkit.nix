@@ -2,174 +2,91 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: let
-  cfg = config.devkit;
+  devkitPkgs = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit;
 in {
-  options.devkit = with lib; {
-    enable = mkEnableOption "Enable devkit configuration and packages";
+  # Direnv
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
 
-    ghostty.enable = mkOption {
-      type = with types; bool;
-      default = cfg.enable;
+  # Ghostty
+  programs.ghostty.enable = true;
+  programs.ghostty.systemd.enable = true;
+  programs.ghostty.package = devkitPkgs.ghostty;
+
+  # Git
+  programs.git.enable = true;
+  programs.git.package = devkitPkgs.git;
+  programs.git.lfs.package = devkitPkgs.git;
+
+  # GPG Keyring
+  programs.gpg.enable = true;
+  programs.gpg.mutableKeys = true;
+  programs.gpg.mutableTrust = true;
+
+  # GPG Agent
+  services.gpg-agent.enable = true;
+  services.gpg-agent.defaultCacheTtl = 3600 * 24;
+  services.gpg-agent.pinentry.package = pkgs.pinentry-gtk2;
+
+  # Lazy
+  programs.lazygit.enable = true;
+  programs.lazygit.package = devkitPkgs.lazygit;
+
+  # Neovim
+  neovim.enable = true;
+
+  # SSH
+  programs.ssh.enable = true;
+  programs.ssh.matchBlocks = {
+    "*" = {
+      identitiesOnly = true;
+      user = "${config.home.username}";
     };
-    git.enable = mkOption {
-      type = with types; bool;
-      default = cfg.enable;
+    "spacestation" = {
+      hostname = "spacestation";
+      identityFile = "${config.home.homeDirectory}/.ssh/spacestation";
     };
-    git.wrapper = mkOption {
-      type = with types; nullOr package;
-      default = null;
+    "battleship" = {
+      hostname = "battleship";
+      identityFile = "${config.home.homeDirectory}/.ssh/battleship";
     };
-    lazygit.enable = mkOption {
-      type = with types; bool;
-      default = cfg.enable;
-    };
-    neovim.enable = mkOption {
-      type = with types; bool;
-      default = cfg.enable;
-    };
-    starship.enable = mkOption {
-      type = with types; bool;
-      default = cfg.enable;
-    };
-    tmux.enable = mkOption {
-      type = with types; bool;
-      default = cfg.enable;
-    };
-    yazi.enable = mkOption {
-      type = with types; bool;
-      default = cfg.enable;
-    };
-    zellij.enable = mkOption {
-      type = with types; bool;
-      default = cfg.enable;
-    };
-    zsh.enable = mkOption {
-      type = with types; bool;
-      default = cfg.enable;
+    "fithter" = {
+      hostname = "fighter";
+      identityFile = "${config.home.homeDirectory}/.ssh/figther";
     };
   };
-  config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      ouch
-      # TODO: move this to neovim configuration/derivation
-      (pkgs.writeShellScriptBin "gvim" ''
-        ${lib.getExe config.programs.neovide.package} -- "$@"
-      '')
-      git-lfs-transfer
-    ];
 
-    home.sessionVariables = {
-      SHELL = lib.mkIf cfg.zsh.enable "${lib.getExe config.programs.zsh.package}";
-      TERM = lib.mkIf cfg.ghostty.enable "xterm-256color";
-      # Used to be ghostty, but it is borked
-      TERMINAL = lib.mkIf cfg.ghostty.enable "${lib.getExe config.programs.wezterm.package}";
-      EXPLORER = lib.mkIf cfg.yazi.enable "${lib.getExe config.programs.yazi.package}";
-    };
+  # Starship
+  programs.starship.enable = true;
+  programs.starship.package = devkitPkgs.starship;
 
-    # Local development shells
-    programs.direnv.enable = true;
-    programs.direnv.nix-direnv.enable = true;
+  # Yazi
+  programs.yazi.enable = true;
+  programs.yazi.package = devkitPkgs.yazi;
 
-    # SSH
-    programs.ssh.enable = true;
-    programs.ssh.matchBlocks = {
-      "battleship" = {
-        hostname = "battleship";
-        user = "${config.home.username}";
-        identitiesOnly = true;
-        identityFile = "${config.home.homeDirectory}/home/battleship";
-        extraOptions = {RequestTTY = "yes";};
-      };
-      "fithter" = {
-        hostname = "fighter";
-        user = "${config.home.username}";
-        identitiesOnly = true;
-        identityFile = "${config.home.homeDirectory}/home/fighter";
-        extraOptions = {RequestTTY = "yes";};
-      };
-    };
+  # Zellij
+  programs.zellij.enable = true;
+  programs.zellij.package = devkitPkgs.zellij;
 
-    # GPG Keyring
-    programs.gpg.enable = true;
-    programs.gpg.mutableKeys = true;
-    programs.gpg.mutableTrust = true;
+  ## ZSH
+  programs.zsh.enable = true;
+  programs.zsh.package = devkitPkgs.zsh;
 
-    services.gpg-agent.enable = true;
-    services.gpg-agent.defaultCacheTtl = 3600 * 24;
-    services.gpg-agent.pinentry.package = pkgs.pinentry-gtk2;
+  home.packages = with pkgs; [
+    # TODO: move this to neovim configuration/derivation
+    (pkgs.writeShellScriptBin "gvim" ''
+      ${lib.getExe config.programs.neovide.package} -- "$@"
+    '')
+    git-lfs-transfer
+  ];
 
-    # Devkit packages
-
-    ## Ghostty (Terminal)
-    programs.ghostty = lib.mkIf cfg.ghostty.enable {
-      enable = true;
-      package = config._devkit.packages.ghostty;
-    };
-
-    programs.wezterm.enable = true;
-
-    ## Git
-    programs.git = lib.mkIf cfg.git.enable {
-      enable = true;
-      userEmail = "contact@guz.one";
-      userName = "Gustavo \"Guz\" L de Mello";
-      package =
-        if isNull cfg.git.wrapper
-        then config._devkit.packages.git
-        else
-          pkgs.writeShellScriptBin "git" ''
-            ${lib.getExe cfg.git.wrapper} ${lib.getExe config._devkit.packages.git} "$@"
-          '';
-      lfs.enable = true;
-    };
-
-    ## Lazygit (Git TUI)
-    programs.lazygit = lib.mkIf cfg.lazygit.enable {
-      enable = true;
-      package = config._devkit.packages.lazygit;
-      # package = pkgs.lazygit;
-    };
-
-    ## Neovim (Editor)
-    neovim.enable = cfg.neovim.enable;
-    programs.neovide.enable = true;
-
-    ## Starship (Shell decoration)
-    programs.starship = lib.mkIf cfg.starship.enable {
-      enable = true;
-      package = config._devkit.packages.starship;
-      # package = pkgs.starship;
-    };
-
-    ## Yazi (File manager)
-    programs.yazi = lib.mkIf cfg.yazi.enable {
-      enable = true;
-      package = config._devkit.packages.yazi;
-      # package = pkgs.yazi;
-    };
-
-    # Zellij (Terminal multiplexer)
-    programs.zellij = lib.mkIf cfg.zellij.enable {
-      enable = true;
-      package = config._devkit.packages.zellij;
-    };
-
-    ## Tmux (Backup terminal multiplexer)
-    programs.tmux = lib.mkIf cfg.tmux.enable {
-      enable = true;
-      package = config._devkit.packages.tmux;
-    };
-
-    ## ZSH (Default shell)
-    programs.zsh = lib.mkIf cfg.zsh.enable {
-      enable = true;
-      # package = config._devkit.packages.zsh;
-      package = pkgs.zsh;
-      autosuggestion.enable = true;
-      enableCompletion = true;
-      syntaxHighlighting.enable = true;
-    };
+  home.sessionVariables = {
+    EXPLORER = "${lib.getExe config.programs.yazi.package}";
+    SHELL = "${lib.getExe config.programs.zsh.package}";
+    TERM = "xterm-256color";
+    TERMINAL = "${lib.getExe config.programs.ghostty.package}";
   };
 }
