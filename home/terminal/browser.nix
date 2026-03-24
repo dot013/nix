@@ -361,4 +361,15 @@
       WindowsSSO = false;
     };
   };
+
+  # For ones that don't work on Firefox
+  programs.vivaldi.enable = true;
+  programs.vivaldi.extensions = [
+    {id = "nglaklhklhcoonedhgnpgddginnjdadi";} # ActivityWatch
+    {id = "eimadpbcbfnmbkopoojfekhnkhdbieeh";} # Dark Reader
+    {id = "enamippconapkdmgfgjchkhakpfinmaj";} # DeArrow
+    {id = "edibdbjcniadpccecjdfdjjppcpchdlm";} # I Still Don't Care About Cookies
+    {id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";} # uBlock Origin
+    {id = "mnjggcdmjocbbbhaepdhchncahnbgone";} # SponsorBlock
+  ];
 }

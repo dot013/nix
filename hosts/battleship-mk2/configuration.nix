@@ -77,9 +77,10 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
-      "via"
       "steam"
       "steam-unwrapped"
+      "via"
+      "vivaldi"
     ];
 
   # Bootloader
