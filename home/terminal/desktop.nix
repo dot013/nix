@@ -1,33 +1,37 @@
 {
   config,
+  lib,
   pkgs,
   ...
-}: {
+}:
+with lib; {
+  # Activity Watch
+  services.activitywatch.enable = true;
+  services.activitywatch.package = pkgs.aw-server-rust;
+  services.activitywatch.watchers = {
+    "awatcher".package = pkgs.awatcher;
+  };
+
+  # GNOME
   programs.gnome-shell.enable = true;
   programs.gnome-shell.extensions = with pkgs.gnomeExtensions; [
+    {package = activitywatch-status;}
     {package = arcmenu;}
     {package = blur-my-shell;}
+    {package = focused-window-d-bus;}
     {package = forge;}
     {package = gsconnect;}
+    {package = soft-brightness-plus;}
+    {package = static-workspace-background;}
   ];
 
   dconf.enable = true;
   dconf.settings = {
-    "org/gnome/shell" = {
-      disable-user-extensions = false;
-      enabled-extensions = with pkgs.gnomeExtensions; [
-        arcmenu.extensionUuid
-        blur-my-shell.extensionUuid
-        forge.extensionUuid
-        gsconnect.extensionUuid
-      ];
+    "org/gnome/desktop/interface" = {
+      accent-color = "slate";
     };
-    "org/gnome/shell/app-switcher" = {
-      current-workspace-only = true;
-    };
-    "org/gnome/mutter" = {
-      dynamic-workspaces = false;
-      num-workspaces = 5;
+    "org/gnome/desktop/peripherals/tablets/256c:006d" = {
+      keep-aspect = true;
     };
     "org/gnome/desktop/wm/keybindings" = {
       close = ["<Super>C"];
@@ -47,11 +51,16 @@
     "org/gnome/desktop/wm/preferences" = {
       focus-mode = "mouse";
     };
-    "org/gnome/settings-daemon/plugins/media-keys" = {
-      screensaver = [];
+    "org/gnome/shell" = {
+      disable-user-extensions = false;
+      enabled-extensions = map (e:
+        if e.package?extensionUuid
+        then e.package.extensionUuid
+        else e.id)
+      config.programs.gnome-shell.extensions;
     };
-    "org/gtk/gtk4/settings/file-chooser" = {
-      show-hidden = true;
+    "org/gnome/shell/app-switcher" = {
+      current-workspace-only = true;
     };
     "org/gnome/shell/extensions/arcmenu" = {
       menu-button-appearance = "None";
@@ -71,10 +80,39 @@
       window-toggle-float = ["<Shift><Super>F"];
       window-toggle-always-float = [];
     };
+    "org/gnome/shell/keybindings" =
+      # Remove keybindings for things such as Calendar, File Explorer, etc
+      (genAttrs (map
+        (n: "switch-to-application-${toString n}")
+        (range 1 9))
+      (n: []))
+      // (genAttrs (map
+        (n: "open-new-window-application-${toString n}")
+        (range 1 9))
+      (n: []));
+    "org/gnome/mutter" = {
+      dynamic-workspaces = false;
+      num-workspaces = 5;
+      workspace-only-on-primary = true;
+    };
+    "org/gnome/settings-daemon/plugins/color" = {
+      night-light-enabled = true;
+      night-light-schedule-to = 6.0;
+      night-light-schedule-from = 21.0;
+      night-light-temperature = 2700;
+    };
+    "org/gnome/settings-daemon/plugins/house-keeping" = {
+      donation-reminder-enabled = false; # Sorry :(
+    };
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      screensaver = [];
+    };
+    "org/gtk/gtk4/settings/file-chooser" = {
+      show-hidden = true;
+    };
   };
 
   home.packages = with pkgs; [
-    gnome-extension-manager
     gnome-tweaks
   ];
 
