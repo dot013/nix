@@ -10,7 +10,7 @@
     inputs.home-manager.nixosModules.default
   ];
 
-  # User
+  # Home Manager
   home-manager = {
     backupFileExtension = "bkp";
     extraSpecialArgs = {inherit (args) inputs self pkgs-unstable;};
@@ -41,6 +41,7 @@
     wayland.enable = true;
   };
 
+  # GNOME (Desktop Manager)
   services.desktopManager.gnome = {
     enable = true;
   };
@@ -50,6 +51,10 @@
     withUWSM = true;
     xwayland.enable = true;
   };
+
+  # Mosh
+  programs.mosh.enable = true;
+  programs.mosh.openFirewall = true;
 
   # Steam
   programs.steam.enable = true;
