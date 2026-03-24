@@ -1,13 +1,13 @@
 {
   config,
+  inputs,
   lib,
   osConfig,
   pkgs,
-  self,
   ...
 }: {
   imports = [
-    self.homeManagerModules.zen-browser
+    inputs.zen-browser.homeModules.twilight
   ];
 
   xdg.mimeApps.defaultApplications = with lib;
@@ -214,24 +214,24 @@
           then v.Value
           else v)
         settings;
-      shortcuts = {
-        "key_search" = {key = "";};
-        "key_search2" = {key = "";};
-        "zen-workspace-forward" = {
-          key = "j";
-          modifiers = {
-            control = true;
-          };
-          action = "cmd_zenWorkspaceForward";
-        };
-        "zen-workspace-backward" = {
-          key = "k";
-          modifiers = {
-            control = true;
-          };
-          action = "cmd_zenWorkspaceBackward";
-        };
-      };
+      # shortcuts = {
+      #   "key_search" = {key = "";};
+      #   "key_search2" = {key = "";};
+      #   "zen-workspace-forward" = {
+      #     key = "j";
+      #     modifiers = {
+      #       control = true;
+      #     };
+      #     action = "cmd_zenWorkspaceForward";
+      #   };
+      #   "zen-workspace-backward" = {
+      #     key = "k";
+      #     modifiers = {
+      #       control = true;
+      #     };
+      #     action = "cmd_zenWorkspaceBackward";
+      #   };
+      # };
       spacesForce = true;
       spaces = let
         containers = config.programs.zen-browser.profiles."default".containers;

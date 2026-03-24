@@ -1,3 +1,0 @@
-[submodule "flakes/neovim"]
-	path = flakes/neovim
-	url = https://forge.capytal.company/dot013/nvim

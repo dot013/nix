@@ -29,26 +29,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    heart-modpack = {
-      url = "git+ssh://gitea@spacestation/heart/modpack.git";
-      # url = "git+file:///home/guz/.projects/heart-modpack";
-    };
-
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-
-    nix-minecraft = {
-      url = "github:infinidoge/nix-minecraft";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # heart-modpack = {
+    #   url = "git+ssh://gitea@spacestation/heart/modpack.git";
+    #   # url = "git+file:///home/guz/.projects/heart-modpack";
+    # };
+    #
+    # nix-minecraft = {
+    #   url = "github:infinidoge/nix-minecraft";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     neovim = {
       url = "git+https://code.capytal.cc/dot013/nvim";
       # url = "git+file:///home/guz/.projects/dot013-nvim";
-    };
-
-    rec-sh = {
-      url = "git+https://code.capytal.cc/dot013/rec.sh/?ref=main";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     zen-browser = {
@@ -83,12 +76,6 @@
           inherit pkgs pkgs-unstable;
           inherit (pkgs) lib;
         });
-
-    # Home manager NixOS module
-    homeNixOSModules = [
-      home-manager.nixosModules.home-manager
-      ./style.nix
-    ];
   in {
     formatter = forAllSystems ({pkgs, ...}: pkgs.alejandra);
 
@@ -104,62 +91,10 @@
           inherit inputs self;
         };
         modules = [
-          ./hosts/battleship-mk2/configuration.nix
-          ./modules/nixos/context.nix
+          ./hosts/battleship/configuration.nix
           ./home/terminal/configuration.nix
           inputs.stylix.nixosModules.stylix
           ./style.nix
-        ];
-      };
-      "figther" = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        specialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfreePredicate = _: true;
-          };
-          inherit inputs self;
-        };
-        modules =
-          homeNixOSModules
-          ++ [
-            ./hosts/figther/configuration.nix
-            inputs.stylix.nixosModules.stylix
-            ./modules/nixos/context.nix
-            ./home/guz-lite/configuration.nix
-          ];
-      };
-      "rusty" = inputs.nixpkgs-2505.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        specialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfreePredicate = _: true;
-          };
-          inherit inputs self;
-        };
-        modules =
-          [
-            inputs.home-manager-2505.nixosModules.home-manager
-            ./style.nix
-          ]
-          ++ [
-            inputs.stylix-2505.nixosModules.stylix
-            ./modules/nixos/context.nix
-            ./hosts/rusty/configuration.nix
-          ];
-      };
-      "virus" = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        specialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfreePredicate = _: true;
-          };
-          inherit inputs self;
-        };
-        modules = [
-          ./hosts/virus/configuration.nix
         ];
       };
       "infiltrator" = nixpkgs.lib.nixosSystem rec {
@@ -183,28 +118,10 @@
       pkgs-unstable,
       ...
     }: {
-      "guz" = home-manager.lib.homeManagerConfiguration {
+      "terminal" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs pkgs-unstable;
         modules = [
-          inputs.stylix.homeManagerModules.stylix
-          ./style.nix
-          inputs.xremap.homeManagerModules.default
-          ./home/guz
-        ];
-      };
-      "guz-lite" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs pkgs-unstable;
-        modules = [
-          inputs.stylix.homeManagerModules.stylix
-          ./style.nix
-          inputs.xremap.homeManagerModules.default
-          ./home/guz-lite
-        ];
-      };
-      "worm" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs pkgs-unstable;
-        modules = [
-          ./home/worm
+          ./home/terminal/home.nix
         ];
       };
     });
@@ -221,8 +138,6 @@
         ];
       };
       neovim = inputs.neovim.homeManagerModules.default;
-      qutebrowser-profiles = ./modules/home-manager/qutebrowser-profiles.nix;
-      zen-browser = ./modules/home-manager/zen-browser;
     };
 
     packages = forAllSystems ({

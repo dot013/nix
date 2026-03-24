@@ -18,10 +18,12 @@
     users."guz" = ./home.nix;
   };
 
+  # Users
   users.users."guz" = {
     extraGroups = ["wheel" "guz"];
     isNormalUser = true;
-    hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
+    password = "1313";
+    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
     shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
   };
   users.groups."guz" = {};
@@ -29,14 +31,10 @@
   # Shell
   programs.zsh.enable = true;
 
+  # SDDM (Display Manager)
   services.displayManager.sddm = {
     enable = true;
-    extraPackages = with pkgs; [
-      kdePackages.qtmultimedia
-      kdePackages.qtsvg
-      kdePackages.qtvirtualkeyboard
-    ];
-    theme = "${pkgs.sddm-astronaut.override {embeddedTheme = "hyprland_kath";}}/share/sddm/themes/sddm-astronaut-theme";
+    theme = "${pkgs.sddm-sugar-dark.override {}}/share/sddm/themes/sugar-dark";
     wayland.enable = true;
   };
 
