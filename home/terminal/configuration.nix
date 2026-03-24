@@ -1,7 +1,6 @@
 {
   config,
   inputs,
-  lib,
   pkgs,
   self,
   ...
@@ -59,8 +58,8 @@
   # Steam
   programs.steam.enable = true;
 
-  xdg.portal.xdgOpenUsePortal = true;
-  xdg.portal.extraPortals = with pkgs; [xdg-desktop-portal-gtk];
+  # Drawing Tablet
+  hardware.opentabletdriver.enable = true;
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }
