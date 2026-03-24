@@ -256,8 +256,8 @@
       pkgs,
       ...
     }: {
-      audacity4 = pkgs.callPackage ./packages/audacity4 {};
       neovim = inputs.neovim.packages.${pkgs.system}.default;
+      audacity = pkgs.callPackage ./packages/audacity.nix {};
       cal-sans = pkgs.callPackage ./packages/cal-sans.nix {};
       devkit = {
         ghostty = pkgs.callPackage ./packages/devkit/ghostty.nix {

@@ -11,7 +11,9 @@
   ];
 
   home.packages =
+    # Programs
     (with pkgs; [
+      self.packages.${pkgs.stdenv.hostPlatform.system}.audacity
       bitwarden-desktop
       obs-studio
       wezterm
