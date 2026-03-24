@@ -258,6 +258,7 @@
     }: {
       audacity4 = pkgs.callPackage ./packages/audacity4 {};
       neovim = inputs.neovim.packages.${pkgs.system}.default;
+      cal-sans = pkgs.callPackage ./packages/cal-sans.nix {};
       devkit = {
         ghostty = pkgs.callPackage ./packages/devkit/ghostty.nix {
           command = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh}";
