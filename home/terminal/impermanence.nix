@@ -33,7 +33,6 @@ with lib; {
       ["0700" ".cache/wezterm"]
       ["0755" ".cache/zellij"]
       ["0700" ".cache/zen"]
-      ["0755" ".config/sops/age"]
       ["0755" ".config/Audacity"]
       ["0755" ".config/audacity4"]
       ["0755" ".config/blender"]
@@ -48,6 +47,7 @@ with lib; {
       ["0755" ".local/share/audacity4"]
       ["0755" ".local/share/direnv"]
       ["0700" ".local/share/keyrings"]
+      ["0700" ".local/share/Steam"]
     ];
   };
 }
