@@ -48,6 +48,7 @@ with lib; {
       ["0755" ".local/share/audacity4"]
       ["0755" ".local/share/direnv"]
       ["0755" ".local/share/flatpak"]
+      ["0755" ".local/share/godot"]
       ["0700" ".local/share/keyrings"]
       ["0700" ".local/share/Steam"]
     ];

@@ -141,6 +141,7 @@
           ./modules/home-manager/devkit.nix
         ];
       };
+      godot = ./modules/home-manager/godot.nix;
       neovim = inputs.neovim.homeManagerModules.default;
     };
 

@@ -9,6 +9,7 @@
   imports = [
     inputs.nix-flatpak.homeManagerModules.nix-flatpak
     self.homeManagerModules.devkit
+    self.homeManagerModules.godot
 
     ./browser.nix
     ./desktop.nix
@@ -26,7 +27,6 @@
       self.packages.${pkgs.stdenv.hostPlatform.system}.audacity
       blender
       bitwarden-desktop
-      godot
       inkscape
       krita
       nextcloud-client
@@ -43,14 +43,8 @@
       self.packages.${pkgs.stdenv.hostPlatform.system}.cal-sans
     ]);
 
-  home.file = let
-    godottemplates = pkgs.godot-export-templates-bin;
-    godotname = builtins.replaceStrings ["-"] ["."] godottemplates.version;
-  in {
-    ".local/share/godot/export_templates/${godotname}" = {
-      source = "${godottemplates}/share/godot/export_templates/${godotname}";
-    };
-  };
+  # Godot
+  programs.godot.enable = true;
 
   # OBS Studio
   programs.obs-studio.enable = true;
