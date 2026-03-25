@@ -24,6 +24,7 @@ with lib; {
       ["0755" ".steam"]
       ["0755" ".cache/Audacity"]
       ["0755" ".cache/blender"]
+      ["0755" ".cache/flatpak"]
       ["0755" ".cache/go-build"]
       ["0755" ".cache/godot"]
       ["0700" ".cache/gopls"]
@@ -46,6 +47,7 @@ with lib; {
       ["0755" ".local/share/Audacity"]
       ["0755" ".local/share/audacity4"]
       ["0755" ".local/share/direnv"]
+      ["0755" ".local/share/flatpak"]
       ["0700" ".local/share/keyrings"]
       ["0700" ".local/share/Steam"]
     ];

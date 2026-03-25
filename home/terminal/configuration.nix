@@ -28,6 +28,8 @@
   };
   users.groups."guz" = {};
 
+  services.flatpak.enable = true;
+
   # Shell
   programs.zsh.enable = true;
 

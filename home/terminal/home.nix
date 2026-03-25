@@ -1,4 +1,5 @@
 {
+  inputs,
   lib,
   osConfig,
   pkgs,
@@ -6,11 +7,17 @@
   ...
 }: {
   imports = [
+    inputs.nix-flatpak.homeManagerModules.nix-flatpak
     self.homeManagerModules.devkit
 
     ./browser.nix
     ./desktop.nix
     ./impermanence.nix
+  ];
+
+  services.flatpak.enable = true;
+  services.flatpak.packages = [
+    "org.vinegarhq.Sober"
   ];
 
   home.packages =
