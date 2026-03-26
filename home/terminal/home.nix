@@ -35,6 +35,7 @@
 
       # System
       pwvucontrol
+      xorg.xprop # Annoying notification if it is not found
     ])
     # Fonts
     ++ (with pkgs; [
