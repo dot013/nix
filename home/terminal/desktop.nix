@@ -123,6 +123,11 @@ with lib; {
     "org/gnome/settings-daemon/plugins/media-keys" = {
       screensaver = [];
     };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+      binding = "<Super>q";
+      command = lib.getExe config.programs.ghostty.package;
+      name = "Launch Ghostty";
+    };
     "org/gtk/gtk4/settings/file-chooser" = {
       show-hidden = true;
     };
