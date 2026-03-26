@@ -44,6 +44,9 @@
       self.packages.${pkgs.stdenv.hostPlatform.system}.cal-sans
     ]);
 
+  # Element (Matrix)
+  programs.element-desktop.enable = true;
+
   # Godot
   programs.godot.enable = true;
 
