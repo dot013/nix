@@ -15,14 +15,15 @@ with lib; {
   # GNOME
   programs.gnome-shell.enable = true;
   programs.gnome-shell.extensions = with pkgs.gnomeExtensions; [
-    {package = activitywatch-status;}
     {package = arcmenu;}
     {package = blur-my-shell;}
     {package = focused-window-d-bus;}
     {package = forge;}
     {package = gsconnect;}
+    {package = rounded-window-corners-reborn;}
     {package = soft-brightness-plus;}
     {package = static-workspace-background;}
+    {package = unite;}
   ];
 
   dconf.enable = true;
@@ -79,6 +80,21 @@ with lib; {
       move-pointer-focus-enabled = true;
       window-toggle-float = ["<Shift><Super>F"];
       window-toggle-always-float = [];
+    };
+    "org/gnome/shell/extensions/unite" = {
+      extend-left-box = false;
+      grayscale-tray-icons = true;
+      hide-activities-button = "never";
+      hide-window-titlebars = "always";
+      notifications-position = "right";
+      reduce-panel-spacing = false;
+      restrict-to-primary-screen = false;
+      show-appmenu-button = false;
+      show-desktop-name = false;
+      show-legacy-tray = true;
+      show-window-title = "never";
+      show-window-buttons = "never";
+      use-activities-text = false;
     };
     "org/gnome/shell/keybindings" =
       # Remove keybindings for things such as Calendar, File Explorer, etc
