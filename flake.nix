@@ -115,6 +115,20 @@
           ./hosts/infriltrator/configuration.nix
         ];
       };
+      "fighter" = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
+        modules = [
+          ./hosts/fighter/configuration.nix
+        ];
+      };
       "lost-home" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = {
