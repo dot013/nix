@@ -55,7 +55,7 @@
   # SSH
   services.openssh.enable = true;
   services.openssh.settings = {
-    PasswordAuthentication = true;
+    PasswordAuthentication = false;
     PermitRootLogin = "forced-commands-only";
   };
 
