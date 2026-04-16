@@ -2,7 +2,6 @@
   inputs,
   lib,
   pkgs,
-  self,
   ...
 }: {
   imports = [
@@ -12,16 +11,6 @@
 
     ./hardware-configuration.nix
   ];
-
-  # Users
-  users.users."guz" = {
-    extraGroups = ["wheel" "guz"];
-    isNormalUser = true;
-    password = "1313";
-    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
-    shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
-  };
-  users.groups."guz" = {};
 
   # GnuPG keyring
   programs.gnupg.agent = {
