@@ -27,6 +27,7 @@
     (with pkgs; [
       self.packages.${pkgs.stdenv.hostPlatform.system}.audacity
       blender
+      blockbench
       bitwarden-desktop
       inkscape
       nextcloud-client
