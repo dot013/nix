@@ -87,14 +87,6 @@
 
   # Nix
   nix.settings.experimental-features = ["nix-command" "flakes"];
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "obsidian"
-      "steam"
-      "steam-unwrapped"
-      "via"
-      "vivaldi"
-    ];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;

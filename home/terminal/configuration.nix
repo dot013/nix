@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   inputs,
   pkgs,
   self,
@@ -60,6 +61,16 @@
 
   # Drawing Tablet
   hardware.opentabletdriver.enable = true;
+
+  # Nixpkgs
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "obsidian"
+      "steam"
+      "steam-unwrapped"
+      "via"
+      "vivaldi"
+    ];
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }

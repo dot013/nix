@@ -84,10 +84,6 @@
 
   # Nix
   nix.settings.experimental-features = ["nix-command" "flakes"];
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "via"
-    ];
 
   # Bootloader
   boot.loader.grub.enable = lib.mkForce true;
