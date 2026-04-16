@@ -1,7 +1,7 @@
 {
   disko.devices = {
     disk.main = {
-      device = "/dev/sdd"; # This will be overwritten by disko-install
+      device = "/dev/sda"; # This will be overwritten by disko-install
       type = "disk";
       content = {
         type = "gpt";
