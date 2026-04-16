@@ -31,6 +31,10 @@ with lib; {
     "org/gnome/desktop/interface" = {
       accent-color = "slate";
     };
+    "org/gnome/desktop/media-handling" = {
+      automount = false;
+      automount-open = false;
+    };
     "org/gnome/desktop/peripherals/tablets/256c:006d" = {
       keep-aspect = true;
     };
