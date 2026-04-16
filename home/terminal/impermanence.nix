@@ -38,8 +38,6 @@ with lib; {
       ["0755" ".config/audacity4"]
       ["0755" ".config/blender"]
       ["0751" ".config/inkscape"]
-      ["0600" ".config/kritarc"]
-      ["0644" ".config/kritadisplayrc"]
       ["0755" ".config/sops/age"]
       ["0755" ".config/vivaldi"]
       ["0755" ".config/zen"]
@@ -50,6 +48,7 @@ with lib; {
       ["0755" ".local/share/flatpak"]
       ["0755" ".local/share/godot"]
       ["0700" ".local/share/keyrings"]
+      ["0755" ".local/share/krita"]
       ["0700" ".local/share/Steam"]
     ];
   };

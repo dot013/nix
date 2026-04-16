@@ -18,6 +18,7 @@
 
   services.flatpak.enable = true;
   services.flatpak.packages = [
+    "org.kde.krita"
     "org.vinegarhq.Sober"
   ];
 
@@ -28,7 +29,6 @@
       blender
       bitwarden-desktop
       inkscape
-      krita
       nextcloud-client
       obsidian
       prismlauncher
