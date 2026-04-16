@@ -10,27 +10,9 @@
     inputs.zen-browser.homeModules.twilight
   ];
 
-  xdg.mimeApps.defaultApplications = with lib;
-    listToAttrs (map (name: {
-        inherit name;
-        value = config.programs.zen-browser.package.meta.desktopFileName;
-      }) [
-        "application/x-extension-shtml"
-        "application/x-extension-xhtml"
-        "application/x-extension-html"
-        "application/x-extension-xht"
-        "application/x-extension-htm"
-        "x-scheme-handler/unknown"
-        "x-scheme-handler/mailto"
-        "x-scheme-handler/chrome"
-        "x-scheme-handler/about"
-        "x-scheme-handler/https"
-        "x-scheme-handler/http"
-        "application/xhtml+xml"
-        "application/json"
-        "text/plain"
-        "text/html"
-      ]);
+  xdg.mimeApps.defaultApplicationPackages = [
+    config.programs.zen-browser.package
+  ];
 
   programs.zen-browser = let
     locked = v: {
@@ -139,6 +121,7 @@
             home-manager-options.extranix.com home-manager-options.extranix.com * noop
           '';
         };
+        # Activity Watch
         "{ef87d84c-2127-493f-b952-5b4e744245bc}".settings = {
           baseUrl = "http://127.0.0.1:5600";
           consentRequired = true;
@@ -328,14 +311,17 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
           installation_mode = "force_installed";
         };
+        # ClearURLs
         "{74145f27-f039-47ce-a470-a662b129930a}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi";
           installation_mode = "force_installed";
         };
+        # Violent Monkey
         "{aecec67f-0d10-4fa7-b7c7-609a2db280cf}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/violentmonkey/latest.xpi";
           installation_mode = "force_installed";
         };
+        # Activity Watch
         "{ef87d84c-2127-493f-b952-5b4e744245bc}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/aw-watcher-web/latest.xpi";
           installation_mode = "force_installed";

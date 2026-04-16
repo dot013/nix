@@ -133,6 +133,14 @@ with lib; {
     };
   };
 
+  xdg.mimeApps.enable = true;
+  xdg.mimeApps.defaultApplicationPackages = with pkgs; [
+    blender
+    bitwarden-desktop
+    inkscape
+    prismlauncher
+  ];
+
   home.packages = with pkgs; [
     gnome-tweaks
   ];
