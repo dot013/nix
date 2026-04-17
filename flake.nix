@@ -118,6 +118,23 @@
           ./style.nix
         ];
       };
+      "rusty" = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
+        modules = [
+          ./hosts/lost-home/configuration.nix
+          ./home/terminal/configuration.nix
+          inputs.stylix.nixosModules.stylix
+          ./style.nix
+        ];
+      };
       "infiltrator" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = {
@@ -130,20 +147,6 @@
         };
         modules = [
           ./hosts/infriltrator/configuration.nix
-        ];
-      };
-      "lost-home" = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        specialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
-            config.allowUnfreePredicate = _: true;
-          };
-          inherit inputs self;
-        };
-        modules = [
-          ./hosts/lost-home/configuration.nix
         ];
       };
     };
