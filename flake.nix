@@ -113,9 +113,7 @@
         };
         modules = [
           ./hosts/battleship/configuration.nix
-          ./home/terminal/configuration.nix
-          inputs.stylix.nixosModules.stylix
-          ./style.nix
+          ./home/worm/configuration.nix
         ];
       };
       "fighter" = nixpkgs.lib.nixosSystem rec {
@@ -179,6 +177,12 @@
           ./home/terminal/home.nix
         ];
       };
+      "worm" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs pkgs-unstable;
+        modules = [
+          ./home/worm/home.nix
+        ];
+      };
     });
 
     nixosModules = {
@@ -203,7 +207,6 @@
     }: {
       audacity = pkgs.callPackage ./packages/audacity.nix {};
       cal-sans = pkgs.callPackage ./packages/cal-sans.nix {};
-      neovim = inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default;
       devkit = {
         ghostty = pkgs.callPackage ./packages/devkit/ghostty.nix {
           command = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh}";
@@ -216,6 +219,7 @@
         zsh = pkgs.callPackage ./packages/devkit/zsh {};
         neovim = self.packages.${pkgs.system}.neovim;
       };
+      neovim = inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default;
     });
 
     devShells = forAllSystems ({
