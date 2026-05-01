@@ -64,6 +64,32 @@
         };
       };
     };
+    disk.storage = {
+      type = "disk";
+      device = "/dev/sda";
+      content = {
+        type = "gpt";
+        partitions.luksstorage = {
+          size = "100%";
+          label = "luks";
+          content = {
+            type = "luks";
+            name = "cryptstorage";
+            extraOpenArgs = [
+              "--allow-discards"
+              "--perf-no_read_workqueue"
+              "--perf-no_write_workqueue"
+            ];
+            settings = {crypttabExtraOpts = ["fido2-device=auto" "token-timeout=10"];};
+            content = {
+              type = "filesystem";
+              format = "ext4";
+              mountpoint = "/";
+            };
+          };
+        };
+      };
+    };
   };
 
   fileSystems."/persist".neededForBoot = true;
