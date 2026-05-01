@@ -84,6 +84,23 @@
     formatter = forAllSystems ({pkgs, ...}: pkgs.alejandra);
 
     nixosConfigurations = {
+      "dreadnought" = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
+        modules = [
+          ./hosts/dreadnought/configuration.nix
+          ./home/terminal/configuration.nix
+          inputs.stylix.nixosModules.stylix
+          ./style.nix
+        ];
+      };
       "battleship" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = {
