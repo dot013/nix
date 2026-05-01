@@ -69,9 +69,9 @@
       device = "/dev/sda";
       content = {
         type = "gpt";
-        partitions.luksstorage = {
+        partitions.luks = {
           size = "100%";
-          label = "luks";
+          label = "luksstorage";
           content = {
             type = "luks";
             name = "cryptstorage";
@@ -84,7 +84,7 @@
             content = {
               type = "filesystem";
               format = "ext4";
-              mountpoint = "/";
+              mountpoint = "/run/media/cryptstorage";
             };
           };
         };

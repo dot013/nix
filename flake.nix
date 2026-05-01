@@ -185,6 +185,11 @@
       };
     });
 
+    diskoConfigurations = {
+      "battleship" = import ./hosts/battleship/disko.nix;
+      "dreadnought" = import ./hosts/dreadnought/disko.nix;
+    };
+
     nixosModules = {
       neovim = inputs.neovim.nixosModules.default;
     };
