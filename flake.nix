@@ -192,6 +192,7 @@
 
     nixosModules = {
       neovim = inputs.neovim.nixosModules.default;
+      playit = ./modules/playit.nix;
     };
 
     homeManagerModules = {
@@ -210,6 +211,7 @@
       pkgs,
       ...
     }: {
+      playit-agent = pkgs.callPackage ./packages/playit-agent.nix {};
       audacity = pkgs.callPackage ./packages/audacity.nix {};
       cal-sans = pkgs.callPackage ./packages/cal-sans.nix {};
       devkit = {
