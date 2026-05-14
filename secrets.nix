@@ -1,9 +1,11 @@
 {
   config,
+  lib,
   inputs,
   pkgs,
   ...
-}: {
+}:
+with lib; {
   imports = [
     inputs.sops-nix.nixosModules.sops
   ];

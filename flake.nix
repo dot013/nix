@@ -33,11 +33,15 @@
     #   url = "git+ssh://gitea@spacestation/heart/modpack.git";
     #   # url = "git+file:///home/guz/.projects/heart-modpack";
     # };
-    #
-    # nix-minecraft = {
-    #   url = "github:infinidoge/nix-minecraft";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    favelasmp = {
+      # url = "path:///home/guz/Projects/heart-favelasmp";
+      url = "git+file:///home/guz/Projects/heart-favelasmp";
+    };
+
+    nix-minecraft = {
+      url = "github:infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     neovim = {
       url = "git+https://code.capytal.cc/dot013/nvim";
@@ -195,6 +199,7 @@
       playit = ./modules/playit.nix;
       services = {
         cloudflared = ./services/cloudflared.nix;
+        minecraft-servers = ./services/minecraft-servers.nix;
       };
     };
 
