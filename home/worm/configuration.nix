@@ -29,6 +29,5 @@
   users.groups."guz" = {};
 
   # Nixpkgs
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) ["via"];
+  nix.allowUnfreeList = ["via"];
 }

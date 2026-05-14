@@ -72,6 +72,22 @@
       "x86_64-darwin"
       "aarch64-darwin"
     ];
+    nixpkgsUnfree = {
+      config,
+      lib,
+      ...
+    }:
+      with lib; let
+        list = config.nix.allowUnfreeList;
+      in {
+        options.nix.allowUnfreeList = mkOption {
+          type = with types; listOf str;
+          default = [];
+        };
+        config.nixpkgs.config.allowUnfreePredicate = p:
+          builtins.elem (getName p) list;
+      };
+    commonModules = [nixpkgsUnfree];
     forAllSystems = f:
       nixpkgs.lib.genAttrs systems (system: let
         pkgs = import nixpkgs {inherit system;};
@@ -98,12 +114,14 @@
           };
           inherit inputs self;
         };
-        modules = [
-          ./hosts/dreadnought/configuration.nix
-          ./home/terminal/configuration.nix
-          inputs.stylix.nixosModules.stylix
-          ./style.nix
-        ];
+        modules =
+          [
+            ./hosts/dreadnought/configuration.nix
+            ./home/terminal/configuration.nix
+            inputs.stylix.nixosModules.stylix
+            ./style.nix
+          ]
+          ++ commonModules;
       };
       "battleship" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
@@ -115,10 +133,12 @@
           };
           inherit inputs self;
         };
-        modules = [
-          ./hosts/battleship/configuration.nix
-          ./home/worm/configuration.nix
-        ];
+        modules =
+          [
+            ./hosts/battleship/configuration.nix
+            ./home/worm/configuration.nix
+          ]
+          ++ commonModules;
       };
       "fighter" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
@@ -130,12 +150,14 @@
           };
           inherit inputs self;
         };
-        modules = [
-          ./hosts/fighter/configuration.nix
-          ./home/terminal/configuration.nix
-          inputs.stylix.nixosModules.stylix
-          ./style.nix
-        ];
+        modules =
+          [
+            ./hosts/fighter/configuration.nix
+            ./home/terminal/configuration.nix
+            inputs.stylix.nixosModules.stylix
+            ./style.nix
+          ]
+          ++ commonModules;
       };
       "rusty" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
@@ -147,12 +169,14 @@
           };
           inherit inputs self;
         };
-        modules = [
-          ./hosts/lost-home/configuration.nix
-          ./home/terminal/configuration.nix
-          inputs.stylix.nixosModules.stylix
-          ./style.nix
-        ];
+        modules =
+          [
+            ./hosts/lost-home/configuration.nix
+            ./home/terminal/configuration.nix
+            inputs.stylix.nixosModules.stylix
+            ./style.nix
+          ]
+          ++ commonModules;
       };
       "infiltrator" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
@@ -164,9 +188,11 @@
           };
           inherit inputs self;
         };
-        modules = [
-          ./hosts/infriltrator/configuration.nix
-        ];
+        modules =
+          [
+            ./hosts/infriltrator/configuration.nix
+          ]
+          ++ commonModules;
       };
     };
 

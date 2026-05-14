@@ -79,10 +79,7 @@
   # Nix
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "via"
-    ];
+  nix.allowUnfreeList = ["via"];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
