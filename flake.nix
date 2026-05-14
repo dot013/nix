@@ -193,6 +193,9 @@
     nixosModules = {
       neovim = inputs.neovim.nixosModules.default;
       playit = ./modules/playit.nix;
+      services = {
+        cloudflared = ./services/cloudflared.nix;
+      };
     };
 
     homeManagerModules = {
