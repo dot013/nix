@@ -62,7 +62,11 @@
   # Drawing Tablet
   hardware.opentabletdriver.enable = true;
 
-    ];
+  # Nix LD (Useful for devlopment)
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+  ];
 
   # Nixpkgs
   nix.allowUnfreeList = [
