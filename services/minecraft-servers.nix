@@ -42,14 +42,20 @@ in {
             hash = "sha256-bymzTBLn4rRajUWg74NE7i0nVY2ezTqzBaDq+iaQPR4=";
           }))
           // {
+            advanced = {
+              show-ping-requests = true;
+              tcp-fast-open = true;
+            };
             bind = "0.0.0.0:25565";
+            forced-hosts = {};
             online-mode = true;
             player-info-forwarding-mode = "modern";
-            forced-hosts = {};
+            ping-passthrough = "description";
             servers = {
               favelasmp = "127.0.0.1:30066";
               try = ["favelasmp"];
             };
+            show-max-players = 13;
           };
       };
       symlinks = {
@@ -144,6 +150,10 @@ in {
             config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
           "ops.json" =
             config.sops.secrets."services/minecraft/favelasmp-ops".path;
+          "mods/fabric-api-0.149.0+26.1.2.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/Sy2Bq7Xc/fabric-api-0.149.0%2B26.1.2.jar";
+            sha512 = "c7589aa4deeaa6dbefc13247eb5e0d4e257c152ef039937f54d6ee28282d3c84ccc96483d9c3950286fed6e3dcc546709898c8a446ab143d1663bc7d49649c54";
+          };
           "mods/FabricProxy-Lite-2.12.0.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/8dI2tmqs/versions/CsEpiziv/FabricProxy-Lite-2.12.0.jar";
             sha512 = "b479c3ed1fe83929cad40e5c925ae2702da879b88a0271a24266cd21ecc037953f347cbe61ac7b7334e087544ee2ce5bf1f041fc3e64f50474404ad564c146f7";
@@ -155,6 +165,10 @@ in {
           "mods/git-pack-manager-fabric-26.1-5.2.1+fabric+26.1.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/PV38O99l/versions/LmejPXPp/git-pack-manager-fabric-26.1-5.2.1%2Bfabric%2B26.1.jar";
             sha512 = "d87dadc0e6cff7126ea79acbcaf7df623c04c50edb7611672ad0e4802bae70e6046b428c87dce82c850354029887510c9e308a546df88cbc69567ca13b2a588f";
+          };
+          "mods/mc2discord-fabric-26.1-4.2.7.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/Cfbcv7uF/versions/gZNbQZKq/mc2discord-fabric-26.1-4.2.7.jar";
+            sha512 = "dd4dc476e835d9346482f8e64d2cbca7e1e868685162a038647d157beb6dab58c35ad31c041d4e0e3bb548e7c8e6008b181f07fa87dc69c547833539a0ab03f1";
           };
           "mods/mesh-lib-fabric-26.1-2.0.4+fabric+26.1.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/6HncyfPB/versions/wIXK3aQp/mesh-lib-fabric-26.1-2.0.4%2Bfabric%2B26.1.jar";
@@ -168,12 +182,31 @@ in {
             url = "https://cdn.modrinth.com/data/eXts2L7r/versions/b3IPAHgB/placeholder-api-3.0.0%2B26.1.jar";
             sha512 = "b559da0f13fef17967f2aff1d06b00995c7db21d9d5b7b580ab6eafdf2365e4ac86a7d094c2b481160a942f291bc2595f2cb8c91ce5e169f1c2f461782ecd2a8";
           };
-          "mods/fabric-api-0.149.0+26.1.2.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/Sy2Bq7Xc/fabric-api-0.149.0%2B26.1.2.jar";
-            sha512 = "c7589aa4deeaa6dbefc13247eb5e0d4e257c152ef039937f54d6ee28282d3c84ccc96483d9c3950286fed6e3dcc546709898c8a446ab143d1663bc7d49649c54";
-          };
         };
-      files =
+      files = let
+        createWebhook = {
+          title,
+          description,
+          color,
+        }: {
+          content = null;
+          embeds = [
+            {
+              inherit title description color;
+              fields = [
+                {
+                  name = "{newCommitHash}";
+                  value = "{longDescriptiopn}";
+                }
+              ];
+              author = {name = "{author}";};
+              footer = {text = "{timeOfCommit}";};
+            }
+          ];
+          username = "Git Pack Manager";
+          attachments = [];
+        };
+      in
         collectFilesAt modpack "config"
         // {
           "config/voicechat/voicechat-server.properties".value = {
@@ -184,10 +217,23 @@ in {
           };
           "config/git-pack-manager/main.json" =
             config.sops.secrets."services/minecraft/favelasmp-pack-manager".path;
+          "config/git-pack-manager/success_resourcepack_message.json".value = createWebhook {
+            title = "Resource Packs do Servidor Atualizadas";
+            description = ''
+              As resource packs do servidor foram atualizadas.
+
+              Use `/git-pack-manager request-pack` para atualizarem sem precisar sair do servidor.
+
+              Caso queiram baixar a resource pack diretamente; acesse o link:
+              {downloadUrl}'';
+            color = "#16d86b";
+          };
           "config/mesh-lib/main.json".value = {
             httpPort = serverProperties.server-port + 100;
             exposedPort = 443;
           };
+          "config/mc2discord.toml" =
+            config.sops.secrets."services/minecraft/favelasmp-discord".path;
         };
       environment = {
         FABRIC_PROXY_SECRET_FILE = config.sops.secrets."services/minecraft/proxy-secret".path;
@@ -198,7 +244,7 @@ in {
         enforce-secure-profile = false;
         gamemode = "survival";
         online-mode = true;
-        maxPlayers = 13;
+        maxPlayers = velocityToml.show-max-players;
         motd = "§k0§r Bem vindo a §6§lFavelaSMP! §r§k0§r";
         require-resource-pack = true;
         resource-pack-prompt = "O servidor usa uma §6resourcepack§r customizada para cosméticos e datapacks que foram adicionados no servidor. §cSem ela você não terá uma experiência completa e haverá bugs!§r";
@@ -237,10 +283,11 @@ in {
     "services/minecraft/playit-secret" = {};
     "services/minecraft/proxy-allowed-users".owner = config.services.minecraft-servers.user;
     "services/minecraft/proxy-geyser-config".owner = config.services.minecraft-servers.user;
-    "services/minecraft/proxy-voicechat-properties".owner = config.services.minecraft-servers.user;
     "services/minecraft/proxy-secret".owner = config.services.minecraft-servers.user;
-    "services/minecraft/favelasmp-whitelist".owner = config.services.minecraft-servers.user;
+    "services/minecraft/proxy-voicechat-properties".owner = config.services.minecraft-servers.user;
+    "services/minecraft/favelasmp-discord".owner = config.services.minecraft-servers.user;
     "services/minecraft/favelasmp-pack-manager".owner = config.services.minecraft-servers.user;
     "services/minecraft/favelasmp-ops".owner = config.services.minecraft-servers.user;
+    "services/minecraft/favelasmp-whitelist".owner = config.services.minecraft-servers.user;
   };
 }
