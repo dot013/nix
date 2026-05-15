@@ -137,6 +137,7 @@
           [
             ./hosts/battleship/configuration.nix
             ./home/worm/configuration.nix
+            {users.users."guz".openssh.authorizedKeys.keyFiles = [./.ssh/battleship.pub];}
           ]
           ++ commonModules;
       };
