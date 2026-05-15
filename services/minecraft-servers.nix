@@ -207,8 +207,9 @@ in {
           attachments = [];
         };
       in
-        collectFilesAt modpack "config"
-        // {
+        # collectFilesAt modpack "config"
+        # {
+        {
           "config/voicechat/voicechat-server.properties".value = {
             port = 24455;
           };

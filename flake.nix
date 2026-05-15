@@ -34,8 +34,8 @@
     #   # url = "git+file:///home/guz/.projects/heart-modpack";
     # };
     favelasmp = {
-      # url = "path:///home/guz/Projects/heart-favelasmp";
-      url = "git+file:///home/guz/Projects/heart-favelasmp";
+      url = "git+https://code.capytal.cc/sixsides/favelasmp";
+      # url = "git+file:///home/guz/Projects/heart-favelasmp";
     };
 
     nix-minecraft = {
