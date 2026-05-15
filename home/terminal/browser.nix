@@ -5,7 +5,8 @@
   osConfig,
   pkgs,
   ...
-}: {
+}:
+with lib; {
   imports = [
     inputs.zen-browser.homeModules.twilight
   ];
@@ -14,29 +15,7 @@
     config.programs.zen-browser.package
   ];
 
-  programs.zen-browser = let
-    locked = v: {
-      Value = v;
-      Status = "locked";
-    };
-    settings = {
-      "beacon.enabled" = locked false;
-      "browser.startup.page" = locked 3;
-      "device.sensors.enabled" = locked false;
-      "dom.battery.enabled" = locked false;
-      "dom.event.clipboardevents.enabled" = locked false;
-      "geo.enabled" = locked false;
-      "media.peerconnection.enabled" = locked false;
-      "privacy.clearHistory.cookiesAndStorage" = locked false;
-      "privacy.clearHistory.siteSettings" = locked false;
-      "privacy.firstparty.isolate" = locked true;
-      "privacy.resistFingerprinting" = locked true;
-      "privacy.trackingprotection.enabled" = locked true;
-      "privacy.trackingprotection.socialtracking.enabled" = locked true;
-      "webgl.disabled" = true;
-      "zen.view.use-single-toolbar" = false;
-    };
-  in {
+  programs.zen-browser = rec {
     enable = true;
     profiles."default" = {
       containersForce = true;
@@ -48,8 +27,13 @@
         };
         Work = {
           color = "blue";
-          icon = "fingerprint";
+          icon = "briefcase";
           id = 2;
+        };
+        Job = {
+          color = "green";
+          icon = "briefcase";
+          id = 3;
         };
         Shopping = {
           color = "yellow";
@@ -191,33 +175,42 @@
           definedAliases = ["@wiki"];
         };
       };
-      settings = with builtins;
-        mapAttrs (n: v:
-          if isAttrs v
-          then v.Value
-          else v)
-        settings;
-      # shortcuts = {
-      #   "key_search" = {key = "";};
-      #   "key_search2" = {key = "";};
-      #   "zen-workspace-forward" = {
-      #     key = "j";
-      #     modifiers = {
-      #       control = true;
-      #     };
-      #     action = "cmd_zenWorkspaceForward";
-      #   };
-      #   "zen-workspace-backward" = {
-      #     key = "k";
-      #     modifiers = {
-      #       control = true;
-      #     };
-      #     action = "cmd_zenWorkspaceBackward";
-      #   };
-      # };
+      settings = policies.Preferences;
+      keyboardShortcuts = [
+        {
+          id = "key_search";
+          key = "s";
+        }
+        {
+          id = "key_search2";
+          key = "o";
+        }
+        {
+          id = "zen-workspace-shortcut-forward";
+          key = "j";
+          modifiers = {control = true;};
+        }
+        {
+          id = "zen-workspace-shortcut-backward";
+          key = "k";
+          modifiers = {control = true;};
+        }
+      ];
+      keyboardShortcutsVersion = 18;
+      mods = [
+        "bc25808c-a012-4c0d-ad9a-aa86be616019" # Sleek Border
+        "f7c71d9a-bce2-420f-ae44-a64bd92975ab" # Better Unloaded Tabs
+        "0c3d77bf-44fc-47a6-a183-39205dfa5f7e" # Hidden Reset Button
+        "4ab93b88-151c-451b-a1b7-a1e0e28fa7f8" # No Sidebar Scrollbar
+        "d8b79d4a-6cba-4495-9ff6-d6d30b0e94fe" # Better Active Tab
+        "58649066-2b6f-4a5b-af6d-c3d21d16fc00" # Private Mode Highlight
+        "c8d9e6e6-e702-4e15-8972-3596e57cf398" # Zen Back Forward
+        "6f11c932-b992-433e-8c80-56a613cc511e" # Left Close Button
+        "cb5efa80-f1e1-43ce-8c0b-fece8462d225" # Container Halo
+      ];
       spacesForce = true;
       spaces = let
-        containers = config.programs.zen-browser.profiles."default".containers;
+        containers = profiles."default".containers;
       in {
         "Space" = {
           id = "c6de089c-410d-4206-961d-ab11f988d40a";
@@ -227,37 +220,37 @@
           id = "cdd10fab-4fc5-494b-9041-325e5759195b";
           icon = "chrome://browser/skin/zen-icons/selectable/star-1.svg";
           container = containers."Work".id;
-          position = 7000;
+          position = 2000;
         };
         "Work 2" = {
           id = "761ecf8e-5850-4030-b0d8-0d4c0efe1a2e";
           icon = "chrome://browser/skin/zen-icons/selectable/star.svg";
           container = containers."Work".id;
-          position = 6000;
+          position = 3000;
         };
         "Work 3" = {
           id = "fdbed307-bad6-4ddb-bb6d-2d1bab864162";
           icon = "chrome://browser/skin/zen-icons/selectable/sun.svg";
           container = containers."Work".id;
-          position = 5000;
+          position = 4000;
         };
         "Academic" = {
           id = "92529b12-d9ab-4a65-887c-056e041ff497";
           icon = "chrome://browser/skin/zen-icons/selectable/school.svg";
           container = containers."Academic".id;
-          position = 4000;
+          position = 5000;
         };
         "Goverment" = {
           id = "7e83e835-caef-4b94-be0c-b6b3959d0830";
           icon = "chrome://browser/skin/zen-icons/selectable/folder.svg";
           container = containers."Goverment".id;
-          position = 3000;
+          position = 6000;
         };
         "Shopping" = {
           id = "78aabdad-8aae-4fe0-8ff0-2a0c6c4ccc24";
           icon = "chrome://browser/skin/zen-icons/selectable/basket.svg";
           container = containers."Shopping".id;
-          position = 2000;
+          position = 7000;
         };
       };
     };
@@ -311,6 +304,11 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
           installation_mode = "force_installed";
         };
+        # BitWarden
+        "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
+          installation_mode = "force_installed";
+        };
         # ClearURLs
         "{74145f27-f039-47ce-a470-a662b129930a}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi";
@@ -335,14 +333,33 @@
       DontCheckDefaultBrowser = true;
       NoDefaultBookmarks = true;
       OfferToSaveLogins = false;
-      Preferences = with builtins;
+      Preferences = let
+        locked = v: {
+          Value = v;
+          Status = "locked";
+        };
+      in
         mapAttrs (
           n: v:
             if isAttrs v
             then v
             else {Value = v;}
-        )
-        settings;
+        ) {
+          "beacon.enabled" = locked false;
+          "browser.startup.page" = locked 3;
+          "device.sensors.enabled" = locked false;
+          "dom.battery.enabled" = locked false;
+          "dom.event.clipboardevents.enabled" = locked false;
+          "geo.enabled" = locked false;
+          "media.peerconnection.enabled" = locked false;
+          "privacy.clearHistory.cookiesAndStorage" = locked false;
+          "privacy.clearHistory.siteSettings" = locked false;
+          "privacy.firstparty.isolate" = locked true;
+          "privacy.resistFingerprinting" = locked true;
+          "privacy.trackingprotection.enabled" = locked true;
+          "privacy.trackingprotection.socialtracking.enabled" = locked true;
+          "zen.view.use-single-toolbar" = false;
+        };
       ShowHomeButton = false;
       WindowsSSO = false;
     };
@@ -350,6 +367,14 @@
 
   # For ones that don't work on Firefox
   programs.vivaldi.enable = true;
+  programs.vivaldi.dictionaries = with pkgs.hunspellDictsChromium; [
+    en_US
+    (mkDictFromChromium {
+      shortName = "pt-br";
+      dictFileName = "pt-BR-3-0.bdic";
+      shortDescription = "Portuguese (Brazillian)";
+    })
+  ];
   programs.vivaldi.extensions = [
     {id = "nglaklhklhcoonedhgnpgddginnjdadi";} # ActivityWatch
     {id = "eimadpbcbfnmbkopoojfekhnkhdbieeh";} # Dark Reader
