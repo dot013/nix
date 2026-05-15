@@ -1,18 +1,17 @@
 {
   inputs,
-  lib,
   pkgs,
   ...
 }: {
   imports = [
     ../../secrets.nix
     ./gpu.nix
-
     ./impermanence.nix
     inputs.disko.nixosModules.disko
     ./disko.nix
-
     ./hardware-configuration.nix
+
+    ./services.nix
   ];
 
   # GnuPG keyring
