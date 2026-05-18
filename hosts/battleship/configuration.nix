@@ -62,7 +62,7 @@
   };
 
   # Mosh
-  services.mosh.enable = true;
+  programs.mosh.enable = true;
 
   # Locale
   time.timeZone = "America/Sao_Paulo";
