@@ -241,6 +241,7 @@ in {
       };
       serverProperties = {
         broadcast-console-to-opts = true;
+        difficulty = "normal";
         enforce-whitelist = true;
         enforce-secure-profile = false;
         gamemode = "survival";
