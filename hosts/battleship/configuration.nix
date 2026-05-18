@@ -61,6 +61,9 @@
     PermitRootLogin = "forced-commands-only";
   };
 
+  # Mosh
+  services.mosh.enable = true;
+
   # Locale
   time.timeZone = "America/Sao_Paulo";
   i18n.defaultLocale = "en_US.UTF-8";
