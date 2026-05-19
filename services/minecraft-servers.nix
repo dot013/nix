@@ -151,6 +151,10 @@ in {
             config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
           "ops.json" =
             config.sops.secrets."services/minecraft/favelasmp-ops".path;
+          "mods/bluemap-5.20-fabric.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/swbUV1cr/versions/D9j76thC/bluemap-5.20-fabric.jar";
+            sha512 = "b140390c505655491130f74653fc0e9cd9501f35f001c174965c13bccf45bb91900c4ed439ecdb8d824723fb57688a20ce37582b7b3a4a04623af09854f6fb2d";
+          };
           "mods/fabric-api-0.149.0+26.1.2.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/P7dR8mSH/versions/Sy2Bq7Xc/fabric-api-0.149.0%2B26.1.2.jar";
             sha512 = "c7589aa4deeaa6dbefc13247eb5e0d4e257c152ef039937f54d6ee28282d3c84ccc96483d9c3950286fed6e3dcc546709898c8a446ab143d1663bc7d49649c54";
@@ -211,8 +215,25 @@ in {
         # collectFilesAt modpack "config"
         # {
         {
-          "config/voicechat/voicechat-server.properties".value = {
-            port = 24455;
+          "config/bluemap/core.conf" = {
+            format = pkgs.formats.keyValue {};
+            value = {
+              accept-download = true;
+              render-thread-count = 1;
+              metrics = false;
+            };
+          };
+          "config/bluemap/webserver.conf" = {
+            format = pkgs.formats.keyValue {};
+            value = {
+              port = serverProperties.server-port + 101;
+            };
+          };
+          "config/bluemap/webapp.conf" = {
+            format = pkgs.formats.keyValue {};
+            value = {
+              start-location = ''"world:2213:40:2551:236:0:0:0:0:perspective"'';
+            };
           };
           "config/FabricProxy-Lite.toml".value = {
             hackOnlineMode = true;
@@ -236,6 +257,9 @@ in {
           };
           "config/mc2discord.toml" =
             config.sops.secrets."services/minecraft/favelasmp-discord".path;
+          "config/voicechat/voicechat-server.properties".value = {
+            port = 24455;
+          };
         };
       environment = {
         FABRIC_PROXY_SECRET_FILE = config.sops.secrets."services/minecraft/proxy-secret".path;
@@ -261,6 +285,7 @@ in {
 
   services.caddy.virtualHosts."favelasmp.guz.one:80" = let
     meshLib = cfg.servers."favelasmp".files."config/mesh-lib/main.json".value;
+    bluemapServer = cfg.servers."favelasmp".files."config/bluemap/webserver.conf".value;
   in {
     extraConfig = ''
       header Content-Type text/html
@@ -273,6 +298,15 @@ in {
 
       handle /git-pack-manager* {
         reverse_proxy http://localhost:${toString meshLib.httpPort}
+      }
+
+      redir /map /map/ permanent
+      handle_path /map/* {
+        reverse_proxy http://localhost:${toString bluemapServer.port}
+      }
+
+      handle /* {
+        abort
       }
     '';
   };
