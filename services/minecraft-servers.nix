@@ -143,6 +143,7 @@ in {
         jre_headless = pkgs.jdk25_headless;
         loaderVersion = fabricVersion;
       };
+      managementSystem.systemd-socket.enable = true;
       symlinks =
         collectFilesAt modpack "mods"
         // {
@@ -240,6 +241,7 @@ in {
         FABRIC_PROXY_SECRET_FILE = config.sops.secrets."services/minecraft/proxy-secret".path;
       };
       serverProperties = {
+        allow-flight = true;
         broadcast-console-to-opts = true;
         difficulty = "normal";
         enforce-whitelist = true;
@@ -257,15 +259,22 @@ in {
     };
   };
 
-  services.cloudflared.tunnels."9ed8b48f-9585-4a67-9895-114b162172fb" = let
+  services.caddy.virtualHosts."favelasmp.guz.one:80" = let
     meshLib = cfg.servers."favelasmp".files."config/mesh-lib/main.json".value;
   in {
-    ingress = {
-      "favelasmp.guz.one" = {
-        service = "http://localhost:${toString meshLib.httpPort}";
-        path = "^/git-pack-manager.*$";
-      };
-    };
+    extraConfig = ''
+      header Content-Type text/html
+      respond <<HTML
+        <html>
+          <head><title>FavelaSMP</title></head>
+          <body><h1>Hello, FavelaSMP</h1></body>
+        </html>
+        HTML 200
+
+      handle /git-pack-manager* {
+        reverse_proxy http://localhost:${toString meshLib.httpPort}
+      }
+    '';
   };
 
   environment.persistence."/persist".directories = [

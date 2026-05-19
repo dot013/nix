@@ -222,6 +222,7 @@
     };
 
     nixosModules = {
+      cloudflared-caddy = ./modules/cloudflared-caddy.nix;
       neovim = inputs.neovim.nixosModules.default;
       playit = ./modules/playit.nix;
       services = {
