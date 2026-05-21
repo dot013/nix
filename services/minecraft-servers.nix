@@ -296,16 +296,22 @@ in {
         HTML 200
 
       handle /git-pack-manager* {
-        reverse_proxy http://localhost:${toString meshLib.httpPort}
+        reverse_proxy http://localhost:${toString meshLib.httpPort} {
+          header_up X-Real-Ip {header.Cf-Connecting-Ip}
+          header_up X-Forwarded-For {header.Cf-Connecting-Ip}
+          header_up X-Forwarded-Proto https
+          header_up Host {host}
+        }
       }
 
       redir /map /map/ permanent
       handle_path /map/* {
-        reverse_proxy http://localhost:${toString bluemapServer.port}
-      }
-
-      handle /* {
-        abort
+        reverse_proxy http://localhost:${toString bluemapServer.port} {
+          header_up X-Real-Ip {header.Cf-Connecting-Ip}
+          header_up X-Forwarded-For {header.Cf-Connecting-Ip}
+          header_up X-Forwarded-Proto https
+          header_up Host {host}
+        }
       }
     '';
   };
