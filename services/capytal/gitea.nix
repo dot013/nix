@@ -9,8 +9,8 @@
 in {
   services.gitea = {
     enable = true;
-    package = inputs.lored-gitea.packages.${pkgs.stdenv.hostPlatform.system}.default;
-    lfs.enable = true;
+    package = inputs.loreddev-gitea.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    # lfs.enable = true;
     settings = with lib; let
       initList = l: (concatStringsSep "," l);
     in rec {
@@ -72,7 +72,7 @@ in {
         DOMAIN = "code.capytal.cc";
         ROOT_URL = "https://${server.DOMAIN}";
         PUBLIC_URL_DETECTION = "auto";
-        HTTP_PORT = 9964;
+        HTTP_PORT = 9965;
       };
       database = {
         DB_TYPE = "sqlite3";
@@ -85,6 +85,7 @@ in {
         COOKIE_REMEMBER_NAME = "__Host-capytal_code_forge_incredible";
         PASSWORD_COMPLEXITY = initList ["lower" "upper" "digit" "spec"];
         PASSWORD_CHECK_PWN = true;
+        TWO_FACTOR_AUTH = "";
       };
       qos = {
         ENABLED = true; # For endpoints not protected by Anubis and protect from overload in general.
@@ -118,76 +119,77 @@ in {
       federation = {
         ENABLED = true;
       };
-      lfs = {};
-      storage = {
-        STORAGE_TYPE = "minio";
-        MINIO_USE_SSL = false;
-        MINIO_ENDPOINT = "localhost:3461";
-        MINIO_BUCKET = "gitea";
-        MINIO_LOCATION = config.services.garage.settings.s3_api.s3_region;
-      };
+      # lfs = {};
+      # storage = {
+      #   STORAGE_TYPE = "minio";
+      #   MINIO_USE_SSL = false;
+      #   MINIO_ENDPOINT = "localhost:3461";
+      #   MINIO_BUCKET = "gitea";
+      #   MINIO_LOCATION = config.services.garage.settings.s3_api.s3_region;
+      # };
       "storage.repo-archive" = {};
       "repo-archive" = {};
-      actions = {
-        ENABLE = true;
-        DEFAULT_ACTIONS_URL = "self";
-      };
-    };
-    secrets = {
-      server = {
-        LFS_JWT_SECRET = config.sops.secrets."gitea/server/lfs_jwt_secret".path;
-      };
-      security = {
-        SECRET_KEY = config.sops.secrets."gitea/security/secret_key".path;
-        INTERNAL_TOKEN = config.sops.secrets."gitea/security/internal_token".path;
-      };
-      oauth2 = {
-        JWT_SECRET = config.sops.secrets."gitea/oauth2/jwt_secret".path;
-      };
-      storage = {
-        MINIO_ACCESS_KEY_ID = config.sops.secrets."gitea/storage/access_key_id".path;
-        MINIO_SECRET_ACCESS_KEY = config.sops.secrets."gitea/storage/secret_access_key".path;
-      };
+      # actions = {
+      #   ENABLE = true;
+      #   DEFAULT_ACTIONS_URL = "self";
+      # };
     };
   };
 
-  services.gitea-actions-runner.instances = {
-    "gitea-runner" = {
-      enable = true;
-      name = "Gitea Runner (${config.networking.hostName}) 1";
-      url = cfg.settings.server.ROOT_URL;
-      tokenFile = config.sops.secrets."gitea/actions/token".path;
-      labels = ["nix-latest:docker://code.capytal.cc/images/nix:2.31.3"];
-    };
+  systemd.services.gitea.serviceConfig = {
+    EnvironmentFile = config.sops.secrets."services/gitea/env-file".path;
   };
 
-  services.anubis.instances."gitea".settings = {
-    BIND = ":${toString (cfg.settings.server.HTTP_PORT + 2)}";
-    BIND_NETWORK = "tcp";
-    METRICS_BIND = ":${toString (cfg.settings.server.HTTP_PORT + 3)}";
-    METRICS_BIND_NETWORK = "tcp";
-    SERVE_ROBOTS_TXT = true;
-    TARGET = "http://localhost:${toString cfg.settings.server.HTTP_PORT}";
-    ED25519_PRIVATE_KEY_HEX_FILE = config.sops.secrets."anubis/gitea/hex_file".path;
+  # services.gitea-actions-runner.instances = {
+  #   "gitea-runner" = {
+  #     enable = true;
+  #     name = "Gitea Runner (${config.networking.hostName}) 1";
+  #     url = cfg.settings.server.ROOT_URL;
+  #     tokenFile = config.sops.secrets."gitea/actions/token".path;
+  #     labels = ["nix-latest:docker://code.capytal.cc/images/nix:2.31.3"];
+  #   };
+  # };
+
+  # services.anubis.instances."gitea".settings = {
+  #   BIND = ":${toString (cfg.settings.server.HTTP_PORT + 2)}";
+  #   BIND_NETWORK = "tcp";
+  #   METRICS_BIND = ":${toString (cfg.settings.server.HTTP_PORT + 3)}";
+  #   METRICS_BIND_NETWORK = "tcp";
+  #   SERVE_ROBOTS_TXT = true;
+  #   TARGET = "http://localhost:${toString cfg.settings.server.HTTP_PORT}";
+  #   ED25519_PRIVATE_KEY_HEX_FILE = config.sops.secrets."anubis/gitea/hex_file".path;
+  # };
+
+  services.caddy.virtualHosts = {
+    "${cfg.settings.server.DOMAIN}:80".extraConfig = ''
+      header {
+        X-Frame-Options "SAMEORIGIN"
+        X-Content-Type-Options "nosniff"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' data:; upgrade-insecure-requests; report-to csp-endpoint"
+        -Server
+      }
+
+      reverse_proxy http://localhost:${toString cfg.settings.server.HTTP_PORT} {
+        header_up X-Real-Ip {header.Cf-Connecting-Ip}
+        header_up X-Forwarded-For {header.Cf-Connecting-Ip}
+        header_up X-Forwarded-Proto https
+        header_up Host {host}
+      }
+    '';
   };
 
-  services.caddy.virtualHosts = let
-    redir = {
-      extraConfig = ''
-        redir https://code.capytal.cc{uri} permanent
-      '';
-    };
-  in {
-    ":${toString (cfg.settings.server.HTTP_PORT + 1)}" = {
-      extraConfig = ''
-        request_body {
-          max_size 1GiB
-        }
-        reverse_proxy http://localhost:${toString cfg.settings.server.HTTP_PORT}
-      '';
-    };
-    # Old ports used by legacy https://forge.capytal.company
-    ":9961" = redir;
-    ":9962" = redir;
+  environment.persistence."/persist".directories = [
+    {
+      directory = cfg.stateDir;
+      user = cfg.user;
+      group = cfg.group;
+    }
+  ];
+
+  sops.secrets = {
+    "services/gitea/actions-token" = {owner = cfg.user;};
+    "services/gitea/env-file" = {owner = cfg.user;};
   };
 }

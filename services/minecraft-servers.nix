@@ -12,7 +12,6 @@ with lib; let
 in {
   imports = [
     self.nixosModules.playit
-    self.nixosModules.services.cloudflared
     inputs.nix-minecraft.nixosModules.minecraft-servers
   ];
 

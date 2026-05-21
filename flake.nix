@@ -38,6 +38,10 @@
       # url = "git+file:///home/guz/Projects/heart-favelasmp";
     };
 
+    loreddev-gitea = {
+      url = "git+https://code.capytal.cc/loreddev/gitea";
+    };
+
     nix-minecraft = {
       url = "github:infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -226,6 +230,7 @@
       neovim = inputs.neovim.nixosModules.default;
       playit = ./modules/playit.nix;
       services = {
+        capytal-gitea = ./services/capytal/gitea.nix;
         cloudflared = ./services/cloudflared.nix;
         minecraft-servers = ./services/minecraft-servers.nix;
       };
