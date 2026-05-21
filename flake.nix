@@ -230,6 +230,7 @@
       neovim = inputs.neovim.nixosModules.default;
       playit = ./modules/playit.nix;
       services = {
+        adguard = ./services/adguard.nix;
         capytal-gitea = ./services/capytal/gitea.nix;
         cloudflared = ./services/cloudflared.nix;
         minecraft-servers = ./services/minecraft-servers.nix;

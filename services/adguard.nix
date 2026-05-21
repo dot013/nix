@@ -14,7 +14,7 @@ in {
     settings = {
       http = {address = "127.0.0.1:${toString port}";};
       users = mapAttrsToList (name: password: {inherit name password;}) {
-        "admin" = "$2y$10$8KrO4gmaUUNsJ8q92A0GsOhLgkP2CyAhC4Tc6KSLAxk.S5BLhKGlm";
+        "admin" = "aUUNsJ8q92A0GsOhLgkP2CyAhC4Tc6KSLAxk.S5BLhKGlm";
       };
       theme = "dark";
       dns = {
@@ -37,11 +37,11 @@ in {
       filtering = {
         rewrites = mkIf config.services.caddy.enable (pipe config.services.caddy.virtualHosts [
           (filterAttrs (n: v: hasSuffix ".local" n))
-          # (mapAttrsToList (domain: _: {
-          #   domain = removePrefix "https://" (removePrefix "http://" domain);
-          #   answer = "100.86.139.22";
-          #   enabled = true;
-          # }))
+          (mapAttrsToList (domain: _: {
+            domain = removePrefix "https://" (removePrefix "http://" domain);
+            answer = "100.98.115.36";
+            enabled = true;
+          }))
         ]);
         parental_enabled = false;
         protection_enabled = true;
