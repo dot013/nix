@@ -126,8 +126,8 @@ in {
       enableReload = true;
       autoStart = true;
       jvmOpts = join " " [
-        "-Xms4G"
-        "-Xmx4G"
+        "-Xms2G"
+        "-Xmx2G"
         "-XX:+UseG1GC"
         "-XX:+UnlockExperimentalVMOptions"
         "-XX:MaxGCPauseMillis=100"
