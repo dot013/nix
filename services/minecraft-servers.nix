@@ -39,7 +39,7 @@ in {
         "velocity.toml".value =
           (importTOML (pkgs.fetchurl {
             url = "https://github.com/PaperMC/Velocity/raw/refs/heads/dev/3.0.0/proxy/src/main/resources/default-velocity.toml";
-            hash = "sha256-bymzTBLn4rRajUWg74NE7i0nVY2ezTqzBaDq+iaQPR4=";
+            hash = "sha256-WyTnwvR/JBR1ZP/cg7WTKjKzSTHli+m1N4DBpD6YWb4=";
           }))
           // {
             advanced = {
@@ -215,9 +215,8 @@ in {
           attachments = [];
         };
       in
-        # (collectFilesAt modpack "config")
-        # // {
-        {
+        collectFilesAt modpack "config"
+        // {
           "whitelist.json" =
             config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
           "ops.json" =
