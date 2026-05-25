@@ -27,6 +27,18 @@
       caddy-domain = "guz.one";
       default = "http_status:404";
     };
+    "7de4a448-cf2e-4fc1-b37c-85845e14af75" = {
+      certificateFile = config.sops.secrets."services/cloudflared/keikoswork-cert".path;
+      credentialsFile = config.sops.secrets."services/cloudflared/keikoswork-cred".path;
+      caddy-domain = "keikos.work";
+      default = "http_status:404";
+    };
+    "50cd6a81-1198-4b42-b26b-9b1a5ed2ebf8" = {
+      certificateFile = config.sops.secrets."services/cloudflared/koiswork-cert".path;
+      credentialsFile = config.sops.secrets."services/cloudflared/koiswork-cred".path;
+      caddy-domain = "kois.work";
+      default = "http_status:404";
+    };
   };
 
   services.caddy.enable = true;
@@ -38,5 +50,9 @@
     "services/cloudflared/capytalcompany-cred" = {};
     "services/cloudflared/guzone-cert" = {};
     "services/cloudflared/guzone-cred" = {};
+    "services/cloudflared/keikoswork-cert" = {};
+    "services/cloudflared/keikoswork-cred" = {};
+    "services/cloudflared/koiswork-cert" = {};
+    "services/cloudflared/koiswork-cred" = {};
   };
 }

@@ -35,6 +35,7 @@
     # };
     favelasmp.url = "git+https://code.capytal.cc/sixsides/favelasmp";
     guzone.url = "git+https://code.capytal.cc/dot013/guz.one";
+    keikos.url = "git+https://code.capytal.cc/guz013/keikos.work";
     loreddev-gitea.url = "git+https://code.capytal.cc/loreddev/gitea";
 
     nix-minecraft = {
@@ -229,6 +230,7 @@
         capytal-gitea = ./services/capytal/gitea.nix;
         cloudflared = ./services/cloudflared.nix;
         minecraft-servers = ./services/minecraft-servers.nix;
+        nextcloud = ./services/nextcloud.nix;
       };
     };
 
