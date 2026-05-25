@@ -158,10 +158,6 @@ in {
       symlinks =
         collectFilesAt modpack "mods"
         // {
-          "whitelist.json" =
-            config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
-          "ops.json" =
-            config.sops.secrets."services/minecraft/favelasmp-ops".path;
           "mods/bluemap-5.20-fabric.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/swbUV1cr/versions/D9j76thC/bluemap-5.20-fabric.jar";
             sha512 = "b140390c505655491130f74653fc0e9cd9501f35f001c174965c13bccf45bb91900c4ed439ecdb8d824723fb57688a20ce37582b7b3a4a04623af09854f6fb2d";
@@ -223,9 +219,13 @@ in {
           attachments = [];
         };
       in
-        # collectFilesAt modpack "config"
-        # {
+        # (collectFilesAt modpack "config")
+        # // {
         {
+          "whitelist.json" =
+            config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
+          "ops.json" =
+            config.sops.secrets."services/minecraft/favelasmp-ops".path;
           "config/bluemap/core.conf" = {
             format = pkgs.formats.keyValue {};
             value = {
