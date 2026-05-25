@@ -43,6 +43,7 @@ in {
           }))
           // {
             advanced = {
+              haproxy-protocol = true;
               show-ping-requests = true;
               tcp-fast-open = true;
             };
