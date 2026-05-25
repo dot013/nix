@@ -212,6 +212,7 @@ in {
             }
           ];
           username = "Git Pack Manager";
+          avatar_url = "https://favelasmp.guz.one/favicon.png";
           attachments = [];
         };
       in
@@ -334,6 +335,7 @@ in {
           }
           ],
           "username": "FavelaSMP"
+          "avatar_url": "https://favelasmp.guz.one/favicon.png"
         }' "$(date -u +%FT%TZ)")"
 
         ${getExe pkgs.curl} -X POST "$webhook" \
@@ -359,13 +361,8 @@ in {
     bluemapServer = cfg.servers."favelasmp".files."config/bluemap/webserver.conf".value;
   in {
     extraConfig = ''
-      header Content-Type text/html
-      respond <<HTML
-        <html>
-          <head><title>FavelaSMP</title></head>
-          <body><h1>Hello, FavelaSMP</h1></body>
-        </html>
-        HTML 200
+      root ${inputs.favelasmp.packages.${pkgs.stdenv.hostPlatform.system}.web}
+      file_server
 
       handle /git-pack-manager* {
         reverse_proxy http://localhost:${toString meshLib.httpPort} {
