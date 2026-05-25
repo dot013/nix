@@ -34,6 +34,7 @@ in {
       enable = true;
       enableReload = true;
       autoStart = true;
+      stopCommand = "end";
       files = {
         "velocity.toml".value =
           (importTOML (pkgs.fetchurl {
