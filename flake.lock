@@ -95,11 +95,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1779737395,
-        "narHash": "sha256-T3zeCIuR3yhCuuShS3gki7kovF430mGnU62h3tdgGhA=",
+        "lastModified": 1779744030,
+        "narHash": "sha256-zHLos5XCACV+73SYKqI50qjg0QUvOUyjMNUeUHIKpQE=",
         "ref": "refs/heads/main",
-        "rev": "c8513c3a285c241c4d7ca430478302028266febf",
-        "revCount": 14,
+        "rev": "94ec1f471a5407154407a15f6583ee8d3adc9ac6",
+        "revCount": 15,
         "type": "git",
         "url": "https://code.capytal.cc/sixsides/favelasmp"
       },
@@ -228,6 +228,24 @@
         "url": "https://code.capytal.cc/dot013/godotdev.nvim"
       }
     },
+    "guzone": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1771767546,
+        "narHash": "sha256-PK0tWwnuCJQyqVXVa/WTBpueaOvStC8FXLN3y7hrtV8=",
+        "ref": "refs/heads/main",
+        "rev": "d300de4601fba3a6a79a3e0ef47d3a0b339c111e",
+        "revCount": 85,
+        "type": "git",
+        "url": "https://code.capytal.cc/dot013/guz.one"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://code.capytal.cc/dot013/guz.one"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -270,7 +288,7 @@
     },
     "loreddev-gitea": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1765921137,
@@ -306,7 +324,7 @@
       "inputs": {
         "godotdev": "godotdev",
         "mdfmt": "mdfmt",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_4",
         "nvim-treesitter-main": "nvim-treesitter-main"
       },
       "locked": {
@@ -417,6 +435,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1771008912,
+        "narHash": "sha256-gf2AmWVTs8lEq7z/3ZAsgnZDhWIckkb+ZnAo5RzSxJg=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "a82ccc39b39b621151d6732718e3e250109076fa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1765779637,
         "narHash": "sha256-KJ2wa/BLSrTqDjbfyNx70ov/HdgNBCBBSQP3BIzKnv4=",
         "owner": "nixos",
@@ -431,7 +465,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1767892417,
         "narHash": "sha256-dhhvQY67aboBk8b0/u0XB6vwHdgbROZT3fJAjyNh5Ww=",
@@ -447,7 +481,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1767379071,
         "narHash": "sha256-EgE0pxsrW9jp9YFMkHL9JMXxcqi/OoumPJYwf+Okucw=",
@@ -463,7 +497,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_5": {
+    "nixpkgs_6": {
       "locked": {
         "lastModified": 1778737229,
         "narHash": "sha256-6xWoytx8jFW4PF1GjRm/i/53trbpKGfz6zjzQGBr4cI=",
@@ -523,7 +557,7 @@
     },
     "nvim-treesitter-main": {
       "inputs": {
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_5",
         "nvim-treesitter": "nvim-treesitter",
         "nvim-treesitter-textobjects": "nvim-treesitter-textobjects"
       },
@@ -562,13 +596,14 @@
       "inputs": {
         "disko": "disko",
         "favelasmp": "favelasmp",
+        "guzone": "guzone",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "loreddev-gitea": "loreddev-gitea",
         "neovim": "neovim",
         "nix-flatpak": "nix-flatpak",
         "nix-minecraft": "nix-minecraft_2",
-        "nixpkgs": "nixpkgs_5",
+        "nixpkgs": "nixpkgs_6",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix",
         "stylix": "stylix",

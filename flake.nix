@@ -33,14 +33,9 @@
     #   url = "git+ssh://gitea@spacestation/heart/modpack.git";
     #   # url = "git+file:///home/guz/.projects/heart-modpack";
     # };
-    favelasmp = {
-      url = "git+https://code.capytal.cc/sixsides/favelasmp";
-      # url = "git+file:///home/guz/Projects/heart-favelasmp";
-    };
-
-    loreddev-gitea = {
-      url = "git+https://code.capytal.cc/loreddev/gitea";
-    };
+    favelasmp.url = "git+https://code.capytal.cc/sixsides/favelasmp";
+    guzone.url = "git+https://code.capytal.cc/dot013/guz.one";
+    loreddev-gitea.url = "git+https://code.capytal.cc/loreddev/gitea";
 
     nix-minecraft = {
       url = "github:infinidoge/nix-minecraft";
