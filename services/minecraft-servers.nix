@@ -294,6 +294,7 @@ in {
     };
   };
 
+  networking.firewall.allowedUDPPorts = [24454 24455];
 
   systemd.services = let
     tellraw = c: t: ''/tellraw @a ["",{"text":"\n"},{"text":"<FavelaSMP>","bold":true,"color":"gold"},{"text":" O servidor irá reiniciar em "},{"text":"${t}","bold":true,"color":"${c}"},{"text":".\n "}]'';
