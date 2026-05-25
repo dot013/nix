@@ -294,6 +294,70 @@ in {
     };
   };
 
+
+  systemd.services = let
+    tellraw = c: t: ''/tellraw @a ["",{"text":"\n"},{"text":"<FavelaSMP>","bold":true,"color":"gold"},{"text":" O servidor irá reiniciar em "},{"text":"${t}","bold":true,"color":"${c}"},{"text":".\n "}]'';
+  in {
+    "minecraft-servers-restart-warning-10m" = {
+      script = "echo '${tellraw "yellow" "10 minutos"}' > ${cfg.runDir}/favelasmp.stdin";
+      serviceConfig = {
+        Type = "oneshot";
+        User = "${cfg.user}";
+      };
+      startAt = [
+        "11:50:00 ${config.time.timeZone}"
+        "23:50:00 ${config.time.timeZone}"
+      ];
+    };
+    "minecraft-servers-restart-warning-1m" = {
+      script = "echo '${tellraw "red" "1 minuto"}' > ${cfg.runDir}/favelasmp.stdin";
+      serviceConfig = {
+        Type = "oneshot";
+        User = "${cfg.user}";
+      };
+      startAt = [
+        "11:59:00 ${config.time.timeZone}"
+        "23:59:00 ${config.time.timeZone}"
+      ];
+    };
+    "minecraft-servers-restart" = {
+      script = ''
+        echo '/tellraw @a ["",{"text":"\n"},{"text":"<FavelaSMP>","bold":true,"color":"gold"},{"text":" Servidor reiniciando."},{"text":".\n "}]' > ${cfg.runDir}/favelasmp.stdin
+
+        webhook="$(cat ${config.sops.secrets."services/minecraft/discord-webhook".path})"
+        data="$(printf '{
+          "embeds": [
+          {
+            "title": "O Servidor Irá Reiniciar",
+            "color": 16418816,
+            "description": "O servidor irá reiniciar automaticamente para limpar a memória usada e evitar instabilidade.",
+            "footer": {
+            "text": "FavelaSMP"
+            },
+            "timestamp": "%s"
+          }
+          ],
+          "username": "FavelaSMP"
+        }' "$(date -u +%FT%TZ)")"
+
+        ${getExe pkgs.curl} -X POST "$webhook" \
+          -H "Content-Type: application/json" \
+          -d "$data"
+
+        sleep 1s
+
+        systemctl restart minecraft-server-favelasmp.service
+        systemctl restart minecraft-server-proxy.service
+        systemctl restart playit.service
+      '';
+      serviceConfig.Type = "oneshot";
+      startAt = [
+        "12:00:00 ${config.time.timeZone}"
+        "00:00:00 ${config.time.timeZone}"
+      ];
+    };
+  };
+
   services.caddy.virtualHosts."favelasmp.guz.one:80" = let
     meshLib = cfg.servers."favelasmp".files."config/mesh-lib/main.json".value;
     bluemapServer = cfg.servers."favelasmp".files."config/bluemap/webserver.conf".value;
@@ -342,6 +406,7 @@ in {
   ];
 
   sops.secrets = {
+    "services/minecraft/discord-webhook" = {};
     "services/minecraft/playit-secret" = {};
     "services/minecraft/proxy-allowed-users".owner = config.services.minecraft-servers.user;
     "services/minecraft/proxy-geyser-config".owner = config.services.minecraft-servers.user;
@@ -350,6 +415,7 @@ in {
     "services/minecraft/favelasmp-discord".owner = config.services.minecraft-servers.user;
     "services/minecraft/favelasmp-pack-manager".owner = config.services.minecraft-servers.user;
     "services/minecraft/favelasmp-ops".owner = config.services.minecraft-servers.user;
+    "services/minecraft/favelasmp-voicechat-properties".owner = config.services.minecraft-servers.user;
     "services/minecraft/favelasmp-whitelist".owner = config.services.minecraft-servers.user;
   };
 }
