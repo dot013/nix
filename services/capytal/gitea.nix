@@ -178,6 +178,12 @@ in {
         header_up Host {host}
       }
     '';
+    "forge.capytal.cc:80".extraConfig = ''
+      redir https://code.capytal.cc permanent
+    '';
+    "forge.capytal.company:80".extraConfig = ''
+      redir https://code.capytal.cc permanent
+    '';
   };
 
   environment.persistence."/persist".directories = [
