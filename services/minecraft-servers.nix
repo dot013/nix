@@ -124,6 +124,16 @@ in {
     in rec {
       enable = true;
       enableReload = true;
+      extraReload =
+        pipe ''
+          /bluemap reload light
+          /reload
+        '' [
+          (splitString "\n")
+          (filter (l: hasPrefix "/" l))
+          (map (c: "echo '${c}' > ${cfg.runDir}/favelasmp.stdin"))
+          (join "\n")
+        ];
       autoStart = true;
       jvmOpts = join " " [
         "-Xms2G"
