@@ -334,7 +334,7 @@ in {
             "timestamp": "%s"
           }
           ],
-          "username": "FavelaSMP"
+          "username": "FavelaSMP",
           "avatar_url": "https://favelasmp.guz.one/favicon.png"
         }' "$(date -u +%FT%TZ)")"
 
