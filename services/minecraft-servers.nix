@@ -129,6 +129,7 @@ in {
       extraReload =
         pipe ''
           /bluemap reload light
+          /whitelist reload
           /reload
         '' [
           (splitString "\n")
