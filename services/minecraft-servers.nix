@@ -67,26 +67,38 @@ in {
       symlinks = {
         "forwarding.secret" =
           config.sops.secrets."services/minecraft/proxy-secret".path;
+
         "plugins/global-whitelist-1.0.jar" = pkgs.fetchurl {
           url = "https://cdn.modrinth.com/data/aKrMZ5cC/versions/5GDSLhSp/global-whitelist-1.0.jar";
           sha512 = "908599f3674a93bc15b47caba3a22ffc12c0ecaa82b07ea3bc348a9466383b42af77dba9d23ec0af32f0639c3bcc061d366edb3d51eb2df58d95f9107fe4bc0c";
         };
         "plugins/global-whitelist/whitelist.json" =
           config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
+
         "plugins/limited-offline-mode-1.2.jar" = pkgs.fetchurl {
           url = "https://cdn.modrinth.com/data/cyWe0UpE/versions/39AVRi1e/limited-offline-mode-1.2.jar";
           sha512 = "bef617152931885b8a23c8e668e6a179d21c28fc27ecae1212ea6fbfcfc583db4c62f4f3bdd5c523dae6c5a12d18e4e709a24eadb8ac088979def530f8f824f3";
         };
         "plugins/limited-offline-mode/allowed-users.txt" =
           config.sops.secrets."services/minecraft/proxy-allowed-users".path;
+
         "plugins/Geyser-Velocity.jar" = pkgs.fetchurl {
           url = "https://cdn.modrinth.com/data/wKkoqHrH/versions/8L4eozIR/Geyser-Velocity.jar";
           sha512 = "3e8385e7bcde82f8e75c980b94f18188adf84847aefaded02918f5c9c9a93a12399977442ebbb231205ebb9ad627261b1b7a4b23e92777d4c27062091f592900";
         };
+        "plugins/Geyser-Velocity/config.yml" =
+          config.sops.secrets."services/minecraft/proxy-geyser-config".path;
+
         "plugins/floodgate-velocity.jar" = pkgs.fetchurl {
           url = "https://download.geysermc.org/v2/projects/floodgate/versions/2.2.5/builds/132/downloads/velocity";
           hash = "sha256-8liZUEOkhpy28e9gURCsHZBmpbHhsxZJWiWwavoMEGA=";
         };
+        "plugins/floodgate/config.yml".value =
+          cfg.servers."favelasmp".files."config/floodgate/config.yml".value
+          // {
+            send-floodgate-data = true;
+          };
+
         "plugins/ViaVersion-5.9.2-SNAPSHOT.jar" = pkgs.fetchurl {
           url = "https://cdn.modrinth.com/data/P1OZGk5p/versions/LXloXgE7/ViaVersion-5.9.2-SNAPSHOT.jar";
           sha512 = "55f6095de22481a0230e1cc419f333349156322924b9d5476cb4d4becc919cc6c522312ad325906a7e724fe45d68dee4cb938622285cf6d9ba5645e486f0b3ea";
@@ -99,19 +111,11 @@ in {
           url = "https://cdn.modrinth.com/data/TbHIxhx5/versions/cOg14EE7/ViaRewind-4.1.1.jar";
           sha512 = "1c1f4db775d9dfbe288776bdbd2e0b2f4910643b9034607d813ee509da25fc45e84cfb0183cdfc30560b2632f24c75dcc51a4a9bb0de8ff29ac9e24bd89efc94";
         };
+
         "plugins/voicechat-velocity-2.6.13.jar" = pkgs.fetchurl {
           url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/5SU8XYFw/voicechat-velocity-2.6.13.jar";
           sha512 = "1096d733949b5743ba4af83fd8648caa738ebbeeb9427427f46949c7f33f812aeb914422268f96a1f4c5cccd9e9187426015db6ea000c472a71d237555c17e28";
         };
-      };
-      files = {
-        "plugins/Geyser-Velocity/config.yml" =
-          config.sops.secrets."services/minecraft/proxy-geyser-config".path;
-        "plugins/floodgate/config.yml".value =
-          cfg.servers."favelasmp".files."config/floodgate/config.yml".value
-          // {
-            send-floodgate-data = true;
-          };
         "plugins/voicechat/voicechat-proxy.properties" =
           config.sops.secrets."services/minecraft/proxy-voicechat-properties".path;
       };
