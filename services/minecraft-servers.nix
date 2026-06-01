@@ -83,17 +83,10 @@ in {
           url = "https://cdn.modrinth.com/data/wKkoqHrH/versions/8L4eozIR/Geyser-Velocity.jar";
           sha512 = "3e8385e7bcde82f8e75c980b94f18188adf84847aefaded02918f5c9c9a93a12399977442ebbb231205ebb9ad627261b1b7a4b23e92777d4c27062091f592900";
         };
-        "plugins/Geyser-Velocity/config.yml" =
-          config.sops.secrets."services/minecraft/proxy-geyser-config".path;
         "plugins/floodgate-velocity.jar" = pkgs.fetchurl {
           url = "https://download.geysermc.org/v2/projects/floodgate/versions/2.2.5/builds/132/downloads/velocity";
           hash = "sha256-8liZUEOkhpy28e9gURCsHZBmpbHhsxZJWiWwavoMEGA=";
         };
-        "plugins/floodgate/config.yml".value =
-          cfg.servers."favelasmp".files."config/floodgate/config.yml".value
-          // {
-            send-floodgate-data = true;
-          };
         "plugins/ViaVersion-5.9.2-SNAPSHOT.jar" = pkgs.fetchurl {
           url = "https://cdn.modrinth.com/data/P1OZGk5p/versions/LXloXgE7/ViaVersion-5.9.2-SNAPSHOT.jar";
           sha512 = "55f6095de22481a0230e1cc419f333349156322924b9d5476cb4d4becc919cc6c522312ad325906a7e724fe45d68dee4cb938622285cf6d9ba5645e486f0b3ea";
@@ -110,6 +103,15 @@ in {
           url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/5SU8XYFw/voicechat-velocity-2.6.13.jar";
           sha512 = "1096d733949b5743ba4af83fd8648caa738ebbeeb9427427f46949c7f33f812aeb914422268f96a1f4c5cccd9e9187426015db6ea000c472a71d237555c17e28";
         };
+      };
+      files = {
+        "plugins/Geyser-Velocity/config.yml" =
+          config.sops.secrets."services/minecraft/proxy-geyser-config".path;
+        "plugins/floodgate/config.yml".value =
+          cfg.servers."favelasmp".files."config/floodgate/config.yml".value
+          // {
+            send-floodgate-data = true;
+          };
         "plugins/voicechat/voicechat-proxy.properties" =
           config.sops.secrets."services/minecraft/proxy-voicechat-properties".path;
       };
@@ -169,6 +171,10 @@ in {
       symlinks =
         collectFilesAt modpack "mods"
         // {
+          "whitelist.json" =
+            config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
+          "ops.json" =
+            config.sops.secrets."services/minecraft/favelasmp-ops".path;
           "mods/bluemap-5.20-fabric.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/swbUV1cr/versions/D9j76thC/bluemap-5.20-fabric.jar";
             sha512 = "b140390c505655491130f74653fc0e9cd9501f35f001c174965c13bccf45bb91900c4ed439ecdb8d824723fb57688a20ce37582b7b3a4a04623af09854f6fb2d";
@@ -229,10 +235,6 @@ in {
       in
         collectFilesAt modpack "config"
         // {
-          "whitelist.json" =
-            config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
-          "ops.json" =
-            config.sops.secrets."services/minecraft/favelasmp-ops".path;
           "config/bluemap/core.conf" = {
             format = pkgs.formats.keyValue {};
             value = {
@@ -320,7 +322,7 @@ in {
     };
   };
 
-  networking.firewall.allowedUDPPorts = [24454 24455];
+  networking.firewall.allowedUDPPorts = [24454 24455 19132 30066];
 
   systemd.services = let
     tellraw = c: t: ''/tellraw @a ["",{"text":"\n"},{"text":"<FavelaSMP>","bold":true,"color":"gold"},{"text":" O servidor irá reiniciar em "},{"text":"${t}","bold":true,"color":"${c}"},{"text":".\n "}]'';
