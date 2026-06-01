@@ -6,9 +6,14 @@
   self,
   ...
 }:
-with lib; let
+with lib;
+with builtins; let
   cfg = config.services.minecraft-servers;
   inherit (inputs.nix-minecraft.lib) collectFilesAt;
+
+  importYAML = drv:
+    fromJSON (readFile (pkgs.runCommand "from-yaml" {nativeBuildInputs = [pkgs.remarshal];}
+        "remarshal -if yaml -i \"${drv}\" -of json -o \"$out\""));
 in {
   imports = [
     self.nixosModules.playit
@@ -75,15 +80,20 @@ in {
         "plugins/limited-offline-mode/allowed-users.txt" =
           config.sops.secrets."services/minecraft/proxy-allowed-users".path;
         "plugins/Geyser-Velocity.jar" = pkgs.fetchurl {
-          url = "https://cdn.modrinth.com/data/wKkoqHrH/versions/x7XpMAYg/Geyser-Velocity.jar";
-          sha512 = "f497488eb730202d492a3a80788dfb1389b1a75459df4c258e1620f0655cef85dc58ce589b41cb9ff5b937cda18a2b1416348ce4bb59db2089b539a306289223";
+          url = "https://cdn.modrinth.com/data/wKkoqHrH/versions/8L4eozIR/Geyser-Velocity.jar";
+          sha512 = "3e8385e7bcde82f8e75c980b94f18188adf84847aefaded02918f5c9c9a93a12399977442ebbb231205ebb9ad627261b1b7a4b23e92777d4c27062091f592900";
         };
         "plugins/Geyser-Velocity/config.yml" =
           config.sops.secrets."services/minecraft/proxy-geyser-config".path;
         "plugins/floodgate-velocity.jar" = pkgs.fetchurl {
-          url = "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity";
+          url = "https://download.geysermc.org/v2/projects/floodgate/versions/2.2.5/builds/132/downloads/velocity";
           hash = "sha256-8liZUEOkhpy28e9gURCsHZBmpbHhsxZJWiWwavoMEGA=";
         };
+        "plugins/floodgate/config.yml".value =
+          cfg.servers."favelasmp".files."config/floodgate/config.yml".value
+          // {
+            send-floodgate-data = true;
+          };
         "plugins/ViaVersion-5.9.2-SNAPSHOT.jar" = pkgs.fetchurl {
           url = "https://cdn.modrinth.com/data/P1OZGk5p/versions/LXloXgE7/ViaVersion-5.9.2-SNAPSHOT.jar";
           sha512 = "55f6095de22481a0230e1cc419f333349156322924b9d5476cb4d4becc919cc6c522312ad325906a7e724fe45d68dee4cb938622285cf6d9ba5645e486f0b3ea";
@@ -246,6 +256,25 @@ in {
           "config/FabricProxy-Lite.toml".value = {
             hackOnlineMode = true;
           };
+          "config/floodgate/config.yml".value =
+            (importYAML (pkgs.fetchurl {
+              url = "https://github.com/GeyserMC/Floodgate/raw/refs/heads/master/core/src/main/resources/config.yml";
+              hash = "sha256-uHiq3TCdC1Rkw0wzLbm2/g8yq0HU+tNaKhxvJQi9feQ=";
+            }))
+            // {
+              key-file-name = "key.pem";
+              username-prefix = ".";
+              replace-spaces = true;
+              default-locale = "pt_BR";
+              player-link = {
+                enabled = true;
+                require-link = false;
+                enable-own-linking = false;
+                enable-global-linking = true;
+              };
+              metrics.enabled = false;
+              config-version = 3;
+            };
           "config/git-pack-manager/main.json" =
             config.sops.secrets."services/minecraft/favelasmp-pack-manager".path;
           "config/git-pack-manager/success_resourcepack_message.json".value = createWebhook {
