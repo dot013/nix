@@ -37,7 +37,6 @@
       lazygit
       neovim
       starship
-      tmux
       yazi
       zellij
       zsh
