@@ -29,9 +29,12 @@
       blender
       blockbench
       bitwarden-desktop
+      # davinci-resolve
       inkscape
+      kdePackages.kdenlive
       nextcloud-client
       obsidian
+      openrgb
       prismlauncher
       javaPackages.compiler.temurin-bin.jdk-25
 

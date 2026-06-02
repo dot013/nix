@@ -195,6 +195,24 @@
           ]
           ++ commonModules;
       };
+      "spacestation" = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        specialArgs = {
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+            config.allowUnfreePredicate = _: true;
+          };
+          inherit inputs self;
+        };
+        modules =
+          [
+            ./hosts/spacestation/configuration.nix
+            ./home/worm/configuration.nix
+            {users.users."guz".openssh.authorizedKeys.keyFiles = [./.ssh/spacestation.pub];}
+          ]
+          ++ commonModules;
+      };
     };
 
     homeConfigurations = forAllSystems ({

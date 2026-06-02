@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   inputs,
   pkgs,
   self,
@@ -32,7 +30,7 @@
   services.flatpak.enable = true;
 
   # Shell
-  programs.zsh.enable = true;
+  # programs.zsh.enable = true;
 
   # SDDM (Display Manager)
   services.displayManager.sddm = {

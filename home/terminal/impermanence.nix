@@ -1,6 +1,14 @@
 {lib, ...}:
 with lib; {
   home.persistence."/persist" = {
+    files = map (d:
+      if isList d
+      then {
+        file = elemAt d 1;
+        mode = elemAt d 0;
+      }
+      else d) [
+    ];
     directories = map (d:
       if isList d
       then {
