@@ -143,14 +143,13 @@ in {
       enable = true;
       enableReload = true;
       extraReload =
-        pipe ''
-          /bluemap reload light
-          /whitelist reload
-          /reload
-        '' [
-          (splitString "\n")
-          (filter (l: hasPrefix "/" l))
-          (map (c: "echo '${c}' > ${cfg.runDir}/favelasmp.stdin"))
+        pipe [
+          "/bluemap reload light"
+          "/git-pack-manager config reload"
+          "/whitelist reload"
+          "/reload"
+        ] [
+          (map (v: "echo '${v}' > ${cfg.runDir}/favelasmp.stdin"))
           (join "\n")
         ];
       autoStart = true;
@@ -329,10 +328,11 @@ in {
   networking.firewall.allowedUDPPorts = [24454 24455 19132 30066];
 
   systemd.services = let
-    tellraw = c: t: ''/tellraw @a ["",{"text":"\n"},{"text":"<FavelaSMP>","bold":true,"color":"gold"},{"text":" O servidor irá reiniciar em "},{"text":"${t}","bold":true,"color":"${c}"},{"text":".\n "}]'';
+    tellraw = msg: ''/tellraw @a ["",{"text":"\n"},{"text":"<FavelaSMP>","bold":true,"color":"gold"},{"text":" ${msg}"},{"text":".\n "}]'';
+    tellraw_restart = c: t: ''/tellraw @a ["",{"text":"\n"},{"text":"<FavelaSMP>","bold":true,"color":"gold"},{"text":" O servidor irá reiniciar em "},{"text":"${t}","bold":true,"color":"${c}"},{"text":".\n "}]'';
   in {
     "minecraft-servers-restart-warning-10m" = {
-      script = "echo '${tellraw "yellow" "10 minutos"}' > ${cfg.runDir}/favelasmp.stdin";
+      script = "echo '${tellraw_restart "yellow" "10 minutos"}' > ${cfg.runDir}/favelasmp.stdin";
       serviceConfig = {
         Type = "oneshot";
         User = "${cfg.user}";
@@ -343,7 +343,7 @@ in {
       ];
     };
     "minecraft-servers-restart-warning-1m" = {
-      script = "echo '${tellraw "red" "1 minuto"}' > ${cfg.runDir}/favelasmp.stdin";
+      script = "echo '${tellraw_restart "red" "1 minuto"}' > ${cfg.runDir}/favelasmp.stdin";
       serviceConfig = {
         Type = "oneshot";
         User = "${cfg.user}";
@@ -388,6 +388,23 @@ in {
       startAt = [
         "12:00:00 ${config.time.timeZone}"
         "00:00:00 ${config.time.timeZone}"
+      ];
+    };
+    "minecraft-server-favelasmp-maintainance" = {
+      script =
+        pipe [
+          "${tellraw "O servidor irá rodar alguns comandos de manutenção em plano de fundo, isso poderá causar um pouco de lag pela próxima hora."}"
+          "/voxyserver import existing all"
+        ] [
+          (map (v: "echo '${v}' > ${cfg.runDir}/favelasmp.stdin"))
+          (join "\n")
+        ];
+      serviceConfig = {
+        Type = "oneshot";
+        User = "${cfg.user}";
+      };
+      startAt = [
+        "04:00:00 ${config.time.timeZone}"
       ];
     };
   };
