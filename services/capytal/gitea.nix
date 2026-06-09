@@ -119,6 +119,48 @@ in {
       federation = {
         ENABLED = true;
       };
+      attachment = {
+        ENABLED = true;
+        ALLOWED_TYPES = initList [
+          ".avif"
+          ".bbmodel"
+          ".cpuprofile"
+          ".csv"
+          ".dmp"
+          ".docx"
+          ".fodg"
+          ".fodp"
+          ".fods"
+          ".fodt"
+          ".gif"
+          ".gz"
+          ".jpeg"
+          ".jpg"
+          ".json"
+          ".jsonc"
+          ".log"
+          ".md"
+          ".mov"
+          ".mp4"
+          ".odf"
+          ".odg"
+          ".odp"
+          ".ods"
+          ".odt"
+          ".patch"
+          ".pdf"
+          ".png"
+          ".pptx"
+          ".svg"
+          ".tgz"
+          ".txt"
+          ".webm"
+          ".webp"
+          ".xls"
+          ".xlsx"
+          ".zip"
+        ];
+      };
       # lfs = {};
       # storage = {
       #   STORAGE_TYPE = "minio";
