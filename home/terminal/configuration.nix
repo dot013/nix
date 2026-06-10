@@ -56,6 +56,8 @@
 
   # Steam
   programs.steam.enable = true;
+  programs.gamemode.enable = true;
+  programs.gamemode.enableRenice = true;
 
   # Drawing Tablet
   hardware.opentabletdriver.enable = true;
@@ -74,6 +76,9 @@
     "steam-unwrapped"
     "via"
     "vivaldi"
+  ];
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
   ];
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";

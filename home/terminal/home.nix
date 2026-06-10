@@ -52,6 +52,23 @@
   # Element (Matrix)
   programs.element-desktop.enable = true;
 
+  # Lutris
+  programs.lutris.enable = true;
+  # programs.lutris.package = pkgs.lutris.override {extraLibraries = p: [p.libunwind];};
+  programs.lutris.steamPackage = osConfig.programs.steam.package;
+  programs.lutris.extraPackages = with pkgs; [
+    libunwind
+    gamemode
+    mangohud
+  ];
+  programs.lutris.protonPackages = with pkgs; [
+    proton-ge-bin
+  ];
+  programs.lutris.winePackages = with pkgs; [
+    wine
+    wineWow64Packages.full
+  ];
+
   # Godot
   programs.godot.enable = true;
 
