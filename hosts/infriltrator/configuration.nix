@@ -45,26 +45,56 @@
   programs.zsh.enable = true;
   users.users.root.shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
 
-  environment.etc."nixos" = {
-    mode = "0600";
-    source = ../..;
-  };
+  environment.etc = with lib; let
+    joinPath = p: strings.normalizePath (join "/" (map (v: toString v) p));
+    readRecur = p:
+      pipe p [
+        readDir
+        (mapAttrs (n: v:
+          if v != "regular"
+          then readRecur (joinPath [p n])
+          else v))
+        (mapAttrsToList (n: v:
+          if isList v
+          then v
+          else (joinPath [p n])))
+        flatten
+      ];
+    listFiles = dir:
+      map (p:
+        pipe p [
+          (splitString "/")
+          (l: sublist 4 (length l) l)
+          joinPath
+          toString
+        ]) (readRecur dir);
+  in
+    pipe (listFiles ../..) [
+      (map (p: {
+        name = "nixos/${p}";
+        value = {
+          mode = "0755";
+          user = "root";
+          group = "root";
+          text = joinPath [../.. p];
+        };
+      }))
+      listToAttrs
+    ];
 
   # Locale
   time.timeZone = "America/Sao_Paulo";
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = let
-    locale = "pt_BR.UTF-8";
-  in {
-    LC_ADDRESS = locale;
-    LC_IDENTIFICATION = locale;
-    LC_MEASUREMENT = locale;
-    LC_MONETARY = locale;
-    LC_NAME = locale;
-    LC_NUMERIC = locale;
-    LC_PAPER = locale;
-    LC_TELEPHONE = locale;
-    LC_TIME = locale;
+  i18n.extraLocaleSettings = rec {
+    LC_ADDRESS = "pt_BR.UTF-8";
+    LC_IDENTIFICATION = LC_ADDRESS;
+    LC_MEASUREMENT = LC_ADDRESS;
+    LC_MONETARY = LC_ADDRESS;
+    LC_NAME = LC_ADDRESS;
+    LC_NUMERIC = LC_ADDRESS;
+    LC_PAPER = LC_ADDRESS;
+    LC_TELEPHONE = LC_ADDRESS;
+    LC_TIME = LC_ADDRESS;
   };
 
   # Keyboard
