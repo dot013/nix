@@ -19,6 +19,8 @@
       inputs.home-manager.follows = "";
     };
 
+    preservation.url = "github:nix-community/preservation";
+
     stylix = {
       url = "github:danth/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -281,9 +283,10 @@
         yazi = pkgs.callPackage ./packages/devkit/yazi {};
         zellij = pkgs.callPackage ./packages/devkit/zellij {};
         zsh = pkgs.callPackage ./packages/devkit/zsh {};
-        neovim = self.packages.${pkgs.system}.neovim;
+        neovim = self.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
       };
       neovim = inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
     });
 
     devShells = forAllSystems ({
