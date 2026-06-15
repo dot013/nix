@@ -4,7 +4,7 @@
 
   boot.zfs.requestEncryptionCredentials = true;
   boot.zfs.forceImportRoot = false;
-  boot.zfs.devNodes = "/dev/disk/by-id/";
+  boot.zfs.devNodes = "/dev/disk/by-partuuid";
 
   services.zfs.autoScrub.enable = true;
   services.zfs.autoScrub.interval = "monthly";
@@ -45,8 +45,14 @@
         };
       };
     in {
-      root = mkDisk "/dev/sda" "/boot";
-      mirror = mkDisk "/dev/sdb" "/boot-fallback";
+      root =
+        mkDisk
+        "/dev/disk/by-id/ata-WDC_WD5000LPCX-21VHAT0_WD-WX2A18L0ZJJ"
+        "/boot";
+      mirror =
+        mkDisk
+        "/dev/disk/by-id/ata-WDC_WD5000LPCX-00VHAT0_WD-WX91AA8JEYUV"
+        "/boot-fallback";
     };
     zpool = {
       zroot = {
