@@ -101,6 +101,7 @@
         f {
           inherit pkgs pkgs-unstable;
           inherit (pkgs) lib;
+          system = pkgs.stdenv.hostPlatform.system;
         });
   in {
     formatter = forAllSystems ({pkgs, ...}: pkgs.alejandra);
@@ -268,14 +269,15 @@
     packages = forAllSystems ({
       lib,
       pkgs,
+      system,
       ...
-    }: {
+    }: rec {
       playit-agent = pkgs.callPackage ./packages/playit-agent.nix {};
       audacity = pkgs.callPackage ./packages/audacity.nix {};
       cal-sans = pkgs.callPackage ./packages/cal-sans.nix {};
       devkit = {
         ghostty = pkgs.callPackage ./packages/devkit/ghostty.nix {
-          command = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh}";
+          command = "${lib.getExe devkit.zsh}";
         };
         git = pkgs.callPackage ./packages/devkit/git.nix {};
         lazygit = pkgs.callPackage ./packages/devkit/lazygit.nix {};
@@ -283,20 +285,21 @@
         yazi = pkgs.callPackage ./packages/devkit/yazi {};
         zellij = pkgs.callPackage ./packages/devkit/zellij {};
         zsh = pkgs.callPackage ./packages/devkit/zsh {};
-        neovim = self.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
+        neovim = self.packages.${system}.neovim;
       };
-      neovim = inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      neovim = inputs.neovim.packages.${system}.default;
       infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
     });
 
     devShells = forAllSystems ({
       lib,
       pkgs,
+      system,
       ...
     }: {
       devkit = pkgs.mkShell {
         name = "devkit-shell";
-        packages = with self.packages.${pkgs.stdenv.hostPlatform.system}.devkit; [
+        packages = with self.packages.${system}.devkit; [
           ghostty
           git
           lazygit
@@ -306,10 +309,30 @@
           zsh
           neovim
         ];
-        shellHook = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh}";
-        EDITOR = "${lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.neovim}";
+        shellHook = "${lib.getExe self.packages.${system}.devkit.zsh}";
+        EDITOR = "${lib.getExe self.packages.${system}.devkit.neovim}";
       };
-      default = self.devShells.${pkgs.stdenv.hostPlatform.system}.devkit;
+      default = pkgs.mkShell {
+        name = "devkit-shell";
+        packages = with self.packages.${system}.devkit; [
+          ghostty
+          git
+          lazygit
+          starship
+          yazi
+          zellij
+          zsh
+          neovim
+        ];
+        shellHook = ''
+          echo '${lib.toJSON {
+            workspace = {
+              library = ["${pkgs.hyprland}/share/hypr/stubs"];
+            };
+          }}' > ./.luarc.json
+
+        '';
+      };
     });
   };
 }

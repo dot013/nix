@@ -3,3 +3,5 @@
 *.iso
 result
 Session.vim
+/.direnv
+/.luarc.json
