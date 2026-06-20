@@ -250,6 +250,7 @@
         adguard = ./services/adguard.nix;
         capytal-gitea = ./services/capytal/gitea.nix;
         cloudflared = ./services/cloudflared.nix;
+        garage = ./services/garage.nix;
         minecraft-servers = ./services/minecraft-servers.nix;
         nextcloud = ./services/nextcloud.nix;
       };
