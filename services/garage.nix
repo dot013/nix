@@ -49,6 +49,8 @@ in {
   systemd.services.garage.serviceConfig = {
     User = "garage";
     Group = "garage";
+    DynamicUser = false;
+    StateDirectory = mkForce null;
   };
 
   users.users.garage = {

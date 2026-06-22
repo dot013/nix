@@ -1,33 +1,63 @@
-{inputs, ...}: {
+{
+  config,
+  lib,
+  inputs,
+  ...
+}:
+with lib; {
   imports = [
     inputs.preservation.nixosModules.preservation
   ];
 
   preservation.enable = true;
   preservation.preserveAt."/persist" = {
-    directories = [
-      "/etc/nixos"
-      "/etc/NetworkManager/system-connections"
-      "/etc/secureboot"
-      "/var/db/sudo"
-      "/var/keys"
-      "/var/log"
-      "/var/lib/bluetooth"
-      "/var/lib/power-profiles-daemon"
-      "/var/lib/systemd/coredump"
-      "/var/lib/systemd/timers"
-      "/var/lib/tailscale"
-      {
-        directory = "/var/lib/colord";
-        user = "colord";
-        group = "colord";
-        mode = "u=rwx,g=rx,o=";
-      }
-      {
-        directory = "/var/lib/nixos";
-        inInitrd = true;
-      }
-    ];
+    directories =
+      [
+        "/etc/nixos"
+        "/etc/NetworkManager/system-connections"
+        "/etc/secureboot"
+        "/var/db/sudo"
+        "/var/keys"
+        "/var/log"
+        "/var/lib/bluetooth"
+        "/var/lib/power-profiles-daemon"
+        "/var/lib/systemd/coredump"
+        "/var/lib/systemd/timers"
+        {
+          directory = "/var/lib/colord";
+          user = "colord";
+          group = "colord";
+          mode = "u=rwx,g=rx,o=";
+        }
+        {
+          directory = "/var/lib/nixos";
+          inInitrd = true;
+        }
+      ]
+      ++ (optionals config.services.tailscale.enable [
+        "/var/lib/tailscale"
+      ])
+      ++ (with config.services.garage;
+        optionals enable ([
+            {
+              directory = toString settings.metadata_dir;
+              user = "garage";
+              group = "garage";
+              mode = "u=rwx,g=rx,o=";
+            }
+          ]
+          ++ (
+            if isPath settings.data_dir
+            then toString settings.data_dir
+            else
+              map (dir: {
+                directory = toString dir.path;
+                user = "garage";
+                group = "garage";
+                mode = "u=rwx,g=rx,o=";
+              })
+              settings.data_dir
+          )));
     files = [
       {
         file = "/etc/machine-id";

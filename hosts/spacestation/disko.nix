@@ -104,15 +104,6 @@
             };
             mountpoint = "/persist";
           };
-          "s3" = {
-            type = "zfs_fs";
-            options = {
-              mountpoint = "/var/lib/garage/data";
-              compression = "lz4";
-              "com.sun:auto-snapshot" = "false"; # S3/Garage already snapshots
-            };
-            mountpoint = "/var/lib/garage/data";
-          };
         };
       };
     };
@@ -134,11 +125,6 @@
     device = "zroot/persist";
     fsType = "zfs";
     neededForBoot = true;
-    options = ["zfsutil"];
-  };
-  fileSystems."/var/lib/garage/data" = {
-    device = "zroot/s3";
-    fsType = "zfs";
     options = ["zfsutil"];
   };
 }
