@@ -74,6 +74,16 @@ in {
     };
     users.groups.garage = {};
 
+    users.users.guz.packages = [
+      (pkgs.writeShellScriptBin "s3" ''
+        export AWS_ACCESS_KEY_ID="$(cat ${config.sops.secrets."services/garage/admin_key".path})"
+        export AWS_SECRET_ACCESS_KEY="$(cat ${config.sops.secrets."services/garage/admin_secret".path})"
+        export AWS_DEFAULT_REGION='${cfg.settings.s3_api.s3_region}'
+        export AWS_ENDPOINT_URL='http://localhost:${toString cfg.settings.s3_api.api_bind_port}'
+        ${lib.getExe pkgs.awscli2} s3 "$@"
+      '')
+    ];
+
     services.caddy.virtualHosts = {
       "${removePrefix "." cfg.settings.s3_api.root_domain}".extraConfig = ''
         reverse_proxy http://spacestation:${toString cfg.settings.s3_api.api_bind_port}
