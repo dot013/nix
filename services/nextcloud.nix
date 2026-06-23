@@ -47,7 +47,7 @@ in {
         verify_bucket_exists = false;
         bucket = "nextcloud";
         hostname = "192.168.0.103";
-        port = config.services.garage.settings.s3_api.bind_port;
+        port = config.services.garage.settings.s3_api.api_bind_port;
         usePathStyle = true;
         useSsl = false;
         region = config.services.garage.settings.s3_api.s3_region;
