@@ -1,8 +1,10 @@
 {
   config,
+  lib,
   pkgs,
   ...
-}: let
+}:
+with lib; let
   cfg = config.services.nextcloud;
 in {
   imports = [
@@ -15,7 +17,7 @@ in {
   services.nextcloud = let
     version = "33";
   in {
-    enable = false;
+    enable = true;
     package = pkgs."nextcloud${version}";
     webserver = "caddy";
     hostName = "nextcloud.local";
@@ -40,19 +42,19 @@ in {
 
       dbtype = "pgsql";
 
-      # objectstore.s3 = {
-      #   enable = true;
-      #   verify_bucket_exists = false;
-      #   bucket = "nextcloud";
-      #   hostname = "localhost";
-      #   port = 3461;
-      #   usePathStyle = true;
-      #   useSsl = false;
-      #   region = config.services.garage.settings.s3_api.s3_region;
-      #   key = "GK7b6d9214adf40850e5f39d66";
-      #   secretFile = config.sops.secrets."nextcloud/s3/secret".path;
-      #   # sseCKeyFile = config.sops.secrets."nextcloud/s3/sseC".path; # Needs SSL
-      # };
+      objectstore.s3 = {
+        enable = true;
+        verify_bucket_exists = false;
+        bucket = "nextcloud";
+        hostname = "192.168.0.103";
+        port = config.services.garage.settings.s3_api.bind_port;
+        usePathStyle = true;
+        useSsl = false;
+        region = config.services.garage.settings.s3_api.s3_region;
+        key = "GKcfa3c7230bef3e521ac5dc20";
+        secretFile = config.sops.secrets."services/nextcloud/s3-secretFile".path;
+        # sseCKeyFile = config.sops.secrets."nextcloud/s3/sseC".path; # Needs SSL
+      };
     };
     settings = {
       "auth.authtoken.v1.disabled" = true;
@@ -80,13 +82,21 @@ in {
 
   environment.persistence."/persist".directories = [
     {
-      directory = cfg.datadir;
+      directory = "${cfg.home}";
       user = "nextcloud";
       group = "nextcloud";
     }
   ];
 
-  # sops.secrets = {
-  #   "services/nextcloud/adminpass" = {owner = "nextcloud";};
-  # };
+  systemd.tmpfiles.rules = [
+    "d ${cfg.home} 0750 nextcloud nextcloud -"
+    "d ${cfg.home}/apps 0750 nextcloud nextcloud -"
+    "d ${cfg.home}/config 0750 nextcloud nextcloud -"
+    "d ${cfg.home}/data 0750 nextcloud nextcloud -"
+  ];
+
+  sops.secrets = {
+    "services/nextcloud/adminpass" = {owner = "nextcloud";};
+    "services/nextcloud/s3-secretFile" = {owner = "nextcloud";};
+  };
 }

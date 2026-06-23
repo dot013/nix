@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   inputs,
   self,
   ...
@@ -13,9 +14,12 @@
       adguard
       capytal-gitea
       cloudflared
+      garage
       minecraft-servers
       nextcloud
     ]);
+
+  services.garage.enable = lib.mkForce false; # Just imported to configure .local domains
 
   services.guzone.enable = true;
   services.guzone.port = 9001;

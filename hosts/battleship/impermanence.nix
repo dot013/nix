@@ -1,9 +1,11 @@
 {
+  config,
   inputs,
   lib,
   pkgs,
   ...
-}: {
+}:
+with lib; {
   imports = [
     inputs.impermanence.nixosModules.impermanence
   ];
@@ -11,24 +13,34 @@
   environment.persistence."/persist" = {
     enable = true;
     hideMounts = true;
-    directories = [
-      "/etc/nixos"
-      "/etc/NetworkManager/system-connections"
-      "/etc/secureboot"
-      "/var/db/sudo"
-      "/var/keys"
-      "/var/log"
-      "/var/lib/bluetooth"
-      "/var/lib/nixos"
-      "/var/lib/systemd/coredump"
-      "/var/lib/tailscale"
-      {
-        directory = "/var/lib/colord";
-        user = "colord";
-        group = "colord";
-        mode = "u=rwx,g=rx,o=";
-      }
-    ];
+    directories =
+      [
+        "/etc/nixos"
+        "/etc/NetworkManager/system-connections"
+        "/etc/secureboot"
+        "/var/db/sudo"
+        "/var/keys"
+        "/var/log"
+        "/var/lib/bluetooth"
+        "/var/lib/nixos"
+        "/var/lib/systemd/coredump"
+        "/var/lib/tailscale"
+        "/var/lib/postgresql"
+        {
+          directory = "/var/lib/colord";
+          user = "colord";
+          group = "colord";
+          mode = "u=rwx,g=rx,o=";
+        }
+      ]
+      ++ (optionals config.services.postgresql.enable [
+        {
+          directory = config.services.postgresql.dataDir;
+          user = "postgres";
+          group = "postgres";
+          mode = "u=rwx,g=rx,o=";
+        }
+      ]);
     files = [
       "/etc/machine-id"
     ];
