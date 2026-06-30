@@ -83,8 +83,8 @@ in {
           config.sops.secrets."services/minecraft/proxy-allowed-users".path;
 
         "plugins/Geyser-Velocity.jar" = pkgs.fetchurl {
-          url = "https://cdn.modrinth.com/data/wKkoqHrH/versions/8L4eozIR/Geyser-Velocity.jar";
-          sha512 = "3e8385e7bcde82f8e75c980b94f18188adf84847aefaded02918f5c9c9a93a12399977442ebbb231205ebb9ad627261b1b7a4b23e92777d4c27062091f592900";
+          url = "https://download.geysermc.org/v2/projects/geyser/versions/2.10.1/builds/1172/downloads/velocity";
+          hash = "sha256-+yWiOsh/kSIXAo7gw2rwxGNwzGlxM98sKuJDua8F9Zo=";
         };
         "plugins/Geyser-Velocity/config.yml" =
           config.sops.secrets."services/minecraft/proxy-geyser-config".path;
