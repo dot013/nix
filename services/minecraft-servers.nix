@@ -302,6 +302,8 @@ in {
           "config/voicechat/voicechat-server.properties".value = {
             port = 24455;
           };
+          "config/voicechat-discord.yml" =
+            config.sops.secrets."services/minecraft/favelasmp-voicechat-discord".path;
         };
       environment = {
         FABRIC_PROXY_SECRET_FILE = config.sops.secrets."services/minecraft/proxy-secret".path;
@@ -462,6 +464,7 @@ in {
     "services/minecraft/favelasmp-pack-manager".owner = config.services.minecraft-servers.user;
     "services/minecraft/favelasmp-ops".owner = config.services.minecraft-servers.user;
     "services/minecraft/favelasmp-voicechat-properties".owner = config.services.minecraft-servers.user;
+    "services/minecraft/favelasmp-voicechat-discord".owner = config.services.minecraft-servers.user;
     "services/minecraft/favelasmp-whitelist".owner = config.services.minecraft-servers.user;
   };
 }
