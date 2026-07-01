@@ -142,6 +142,8 @@ in {
         "-XX:+ParallelRefProcEnabled"
         "-XX:+AlwaysPreTouch"
         "-XX:MaxInlineLevel=15"
+        "-Dvelocity.packet-decode-logging=true"
+        "-Dvelocity.max-plugin-message-payload-size=1730517"
       ];
       package = pkgs.velocityServers.velocity.override {
         url = "https://fill-data.papermc.io/v1/objects/0ec616020166465dacca3b790d3db2b246f8f7c13b3aaacaae60c825744a66e0/velocity-3.5.0-SNAPSHOT-605.jar";
@@ -195,6 +197,10 @@ in {
           "mods/bluemap-5.20-fabric.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/swbUV1cr/versions/D9j76thC/bluemap-5.20-fabric.jar";
             sha512 = "b140390c505655491130f74653fc0e9cd9501f35f001c174965c13bccf45bb91900c4ed439ecdb8d824723fb57688a20ce37582b7b3a4a04623af09854f6fb2d";
+          };
+          "mods/packetfixer-fabric-3.3.5-26.1.2.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/c7m1mi73/versions/OtkWHKqd/packetfixer-fabric-3.3.5-26.1.2.jar";
+            sha512 = "d2dd589516f70448af3844611c9da2aa33db17916f9ff462c6ac0d226e9fb101326546f3687a6a7c5b5e3b591b254025b664fe831d07853cd7b4d291f4cfd38e";
           };
           "mods/FabricProxy-Lite-2.12.0.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/8dI2tmqs/versions/CsEpiziv/FabricProxy-Lite-2.12.0.jar";
