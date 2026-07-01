@@ -97,14 +97,14 @@ in {
           config.sops.secrets."services/minecraft/proxy-allowed-users".path;
 
         "plugins/Geyser-Velocity.jar" = pkgs.fetchurl {
-          url = "https://download.geysermc.org/v2/projects/geyser/versions/2.10.1/builds/1172/downloads/velocity";
+          url = "https://download.geysermc.org/v2/projects/geyser/versions/2.10.1/builds/1177/downloads/velocity";
           hash = "sha256-+yWiOsh/kSIXAo7gw2rwxGNwzGlxM98sKuJDua8F9Zo=";
         };
         "plugins/Geyser-Velocity/config.yml" =
           config.sops.secrets."services/minecraft/proxy-geyser-config".path;
 
         "plugins/floodgate-velocity.jar" = pkgs.fetchurl {
-          url = "https://download.geysermc.org/v2/projects/floodgate/versions/2.2.5/builds/132/downloads/velocity";
+          url = "https://download.geysermc.org/v2/projects/floodgate/versions/2.2.5/builds/138/downloads/velocity";
           hash = "sha256-8liZUEOkhpy28e9gURCsHZBmpbHhsxZJWiWwavoMEGA=";
         };
         "plugins/floodgate/config.yml".value =
@@ -113,22 +113,22 @@ in {
             send-floodgate-data = true;
           };
 
-        "plugins/ViaVersion-5.9.2-SNAPSHOT.jar" = pkgs.fetchurl {
-          url = "https://cdn.modrinth.com/data/P1OZGk5p/versions/LXloXgE7/ViaVersion-5.9.2-SNAPSHOT.jar";
-          sha512 = "55f6095de22481a0230e1cc419f333349156322924b9d5476cb4d4becc919cc6c522312ad325906a7e724fe45d68dee4cb938622285cf6d9ba5645e486f0b3ea";
+        "plugins/ViaVersion-5.10.1-SNAPSHOT.jar" = pkgs.fetchurl {
+          url = "https://cdn.modrinth.com/data/P1OZGk5p/versions/cUZ7Yg3y/ViaVersion-5.10.1-SNAPSHOT.jar";
+          sha512 = "2923e378fe87026f05bff65f50bda18096af5307048f405b1a1b3bdd5c59cbf18b5b222a48ef940350f57cd124e233451b81b63d10eab728f63bec546bac0754";
         };
-        "plugins/ViaBackwards-5.9.2-SNAPSHOT.jar" = pkgs.fetchurl {
-          url = "https://cdn.modrinth.com/data/NpvuJQoq/versions/an2egx81/ViaBackwards-5.9.2-SNAPSHOT.jar";
-          sha512 = "94d0960df54cf351cfe20efb05d540b6600a53dc07456425199034f2228c59d7a97216f7a562202915ee08cc1c86d751e3ca8e98696b989fcbca985478de933c";
+        "plugins/ViaBackwards-5.10.1-SNAPSHOT.jar" = pkgs.fetchurl {
+          url = "https://cdn.modrinth.com/data/NpvuJQoq/versions/KXqWliHi/ViaBackwards-5.10.1-SNAPSHOT.jar";
+          sha512 = "b8e71a9bf651b48d69c99f5f8a81aad8d6516a021a6dc947ccbc523bbab91860afdb14a5122529dd7ed44c3270d69dd5797c800b2ed2c9a17859315737301374";
         };
-        "plugins/ViaRewind-4.1.1.jar" = pkgs.fetchurl {
-          url = "https://cdn.modrinth.com/data/TbHIxhx5/versions/cOg14EE7/ViaRewind-4.1.1.jar";
-          sha512 = "1c1f4db775d9dfbe288776bdbd2e0b2f4910643b9034607d813ee509da25fc45e84cfb0183cdfc30560b2632f24c75dcc51a4a9bb0de8ff29ac9e24bd89efc94";
+        "plugins/ViaRewind-4.1.3.jar" = pkgs.fetchurl {
+          url = "https://cdn.modrinth.com/data/TbHIxhx5/versions/2kfqNMlc/ViaRewind-4.1.3-SNAPSHOT.jar";
+          sha512 = "6c3081ea3012f1e4d0ec0650e18436ef9a615232b234c09bde00a3cb1b5674f2a73fe513bb2db2f1dc86abd879c0a7fd692671b59036968c174b2064fe4c717a";
         };
 
-        "plugins/voicechat-velocity-2.6.13.jar" = pkgs.fetchurl {
-          url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/5SU8XYFw/voicechat-velocity-2.6.13.jar";
-          sha512 = "1096d733949b5743ba4af83fd8648caa738ebbeeb9427427f46949c7f33f812aeb914422268f96a1f4c5cccd9e9187426015db6ea000c472a71d237555c17e28";
+        "plugins/voicechat-velocity-2.6.18.jar" = pkgs.fetchurl {
+          url = "https://cdn.modrinth.com/data/9eGKb6K1/versions/ES87t4lm/voicechat-velocity-2.6.18.jar";
+          sha512 = "ca8238c3f4d8c0f023912373f6dfe932961fcd83b061c70941b83cf29421d969c65d1771a4ebd7d1e5804057ae8fb92069fbc64a8e66668da119033e0e7ac3cf";
         };
         "plugins/voicechat/voicechat-proxy.properties" =
           config.sops.secrets."services/minecraft/proxy-voicechat-properties".path;
@@ -144,8 +144,8 @@ in {
         "-XX:MaxInlineLevel=15"
       ];
       package = pkgs.velocityServers.velocity.override {
-        url = "https://fill-data.papermc.io/v1/objects/88bc3a05a10f1031e007969d78f7b4f8c78722bb0c4633425e823e1e11928b04/velocity-3.5.0-SNAPSHOT-595.jar";
-        sha256 = "88bc3a05a10f1031e007969d78f7b4f8c78722bb0c4633425e823e1e11928b04";
+        url = "https://fill-data.papermc.io/v1/objects/0ec616020166465dacca3b790d3db2b246f8f7c13b3aaacaae60c825744a66e0/velocity-3.5.0-SNAPSHOT-605.jar";
+        sha256 = "0ec616020166465dacca3b790d3db2b246f8f7c13b3aaacaae60c825744a66e0";
         jre_headless = pkgs.jdk25_headless;
       };
     };
