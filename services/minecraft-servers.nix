@@ -38,6 +38,15 @@ in {
     "proxy" = {
       enable = true;
       enableReload = true;
+      extraReload =
+        pipe [
+          "/geyser reload"
+          "/globalwhitelist reload"
+          "/viaversion reload"
+        ] [
+          (map (v: "echo '${v}' > ${cfg.runDir}/proxy.stdin"))
+          (join "\n")
+        ];
       autoStart = true;
       stopCommand = "end";
       files = {
@@ -48,6 +57,7 @@ in {
           }))
           // {
             advanced = {
+              announce-proxy-commands = true;
               haproxy-protocol = true;
               show-ping-requests = true;
               tcp-fast-open = true;
@@ -74,6 +84,10 @@ in {
         };
         "plugins/global-whitelist/whitelist.json" =
           config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
+        "plugins/global-whitelist/config.properties".value = {
+          enforce-whitelist = true;
+          white-list = true;
+        };
 
         "plugins/limited-offline-mode-1.2.jar" = pkgs.fetchurl {
           url = "https://cdn.modrinth.com/data/cyWe0UpE/versions/39AVRi1e/limited-offline-mode-1.2.jar";
@@ -323,6 +337,7 @@ in {
         view-distance = 12;
         server-ip = elemAt (splitString ":" velocityToml.servers.favelasmp) 0;
         server-port = toInt (elemAt (splitString ":" velocityToml.servers.favelasmp) 1);
+        white-list = true;
       };
     };
   };
