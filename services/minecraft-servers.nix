@@ -279,6 +279,12 @@ in {
               start-location = ''"world:2213:40:2551:236:0:0:0:0:perspective"'';
             };
           };
+          "config/bluemap/plugin.conf" = {
+            format = pkgs.formats.keyValue {};
+            value = {
+              live-player-markers = false; # To prevent possible highjacks due to showing members' nickname
+            };
+          };
           "config/FabricProxy-Lite.toml".value = {
             hackOnlineMode = true;
           };
