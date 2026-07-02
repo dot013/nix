@@ -263,6 +263,7 @@ in {
             value = {
               accept-download = true;
               render-thread-count = 1;
+              scan-for-mod-resources = false; # We don't have any mod that has assets, so this isn't necessary
               metrics = false;
             };
           };
