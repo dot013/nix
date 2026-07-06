@@ -96,17 +96,11 @@ in {
         "plugins/limited-offline-mode/allowed-users.txt" =
           config.sops.secrets."services/minecraft/proxy-allowed-users".path;
 
-        "plugins/Geyser-Velocity.jar" = pkgs.fetchurl {
-          url = "https://download.geysermc.org/v2/projects/geyser/versions/2.10.1/builds/1177/downloads/velocity";
-          hash = "sha256-+yWiOsh/kSIXAo7gw2rwxGNwzGlxM98sKuJDua8F9Zo=";
-        };
+        "plugins/Geyser-Velocity.jar" = inputs.geysermc-velocity;
         "plugins/Geyser-Velocity/config.yml" =
           config.sops.secrets."services/minecraft/proxy-geyser-config".path;
 
-        "plugins/floodgate-velocity.jar" = pkgs.fetchurl {
-          url = "https://download.geysermc.org/v2/projects/floodgate/versions/2.2.5/builds/138/downloads/velocity";
-          hash = "sha256-8liZUEOkhpy28e9gURCsHZBmpbHhsxZJWiWwavoMEGA=";
-        };
+        "plugins/floodgate-velocity.jar" = inputs.floodgate-velocity;
         "plugins/floodgate/config.yml".value =
           cfg.servers."favelasmp".files."config/floodgate/config.yml".value
           // {
@@ -170,8 +164,8 @@ in {
         ];
       autoStart = true;
       jvmOpts = join " " [
-        "-Xms2G"
-        "-Xmx2G"
+        "-Xms8G"
+        "-Xmx8G"
         "-XX:+UseG1GC"
         "-XX:+UnlockExperimentalVMOptions"
         "-XX:MaxGCPauseMillis=100"
@@ -355,8 +349,6 @@ in {
     };
   };
 
-  networking.firewall.allowedUDPPorts = [24454 24455 19132 30066];
-
   systemd.services = let
     tellraw = msg: ''/tellraw @a ["",{"text":"\n"},{"text":"<FavelaSMP>","bold":true,"color":"gold"},{"text":" ${msg}"},{"text":".\n "}]'';
     tellraw_restart = c: t: ''/tellraw @a ["",{"text":"\n"},{"text":"<FavelaSMP>","bold":true,"color":"gold"},{"text":" O servidor irá reiniciar em "},{"text":"${t}","bold":true,"color":"${c}"},{"text":".\n "}]'';
@@ -467,6 +459,14 @@ in {
       }
     '';
   };
+
+  networking.firewall.allowedUDPPorts = [24454 24455 19132 30066];
+  networking.firewall.allowedUDPPortRanges = [
+    {
+      from = 50000;
+      to = 65535;
+    }
+  ]; # Discord <-> SVC bridge
 
   environment.persistence."/persist".directories = [
     cfg.dataDir

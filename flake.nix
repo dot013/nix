@@ -44,6 +44,14 @@
       url = "github:infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    geysermc-velocity = {
+      url = "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity";
+      flake = false;
+    };
+    floodgate-velocity = {
+      url = "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity";
+      flake = false;
+    };
 
     neovim = {
       url = "git+https://code.capytal.cc/dot013/nvim";

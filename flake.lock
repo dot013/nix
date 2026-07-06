@@ -210,6 +210,18 @@
         "type": "github"
       }
     },
+    "floodgate-velocity": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-0SWLTuXWz3jdHZz/Knz3NvJZKg39HmhZbOHWkIz9OdI=",
+        "type": "file",
+        "url": "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity"
+      }
+    },
     "fromYaml": {
       "flake": false,
       "locked": {
@@ -224,6 +236,18 @@
         "owner": "SenchoPens",
         "repo": "fromYaml",
         "type": "github"
+      }
+    },
+    "geysermc-velocity": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-HCv57ed9JwBB2D/fR8/cYc/6NUlp6zQLqE8YauMOxhs=",
+        "type": "file",
+        "url": "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity"
       }
     },
     "gitignore": {
@@ -689,6 +713,8 @@
       "inputs": {
         "disko": "disko",
         "favelasmp": "favelasmp",
+        "floodgate-velocity": "floodgate-velocity",
+        "geysermc-velocity": "geysermc-velocity",
         "guzone": "guzone",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
