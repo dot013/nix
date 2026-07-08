@@ -188,41 +188,41 @@ in {
             config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
           "ops.json" =
             config.sops.secrets."services/minecraft/favelasmp-ops".path;
-          "mods/bluemap-5.20-fabric.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/swbUV1cr/versions/D9j76thC/bluemap-5.20-fabric.jar";
-            sha512 = "b140390c505655491130f74653fc0e9cd9501f35f001c174965c13bccf45bb91900c4ed439ecdb8d824723fb57688a20ce37582b7b3a4a04623af09854f6fb2d";
-          };
-          "mods/packetfixer-fabric-3.3.5-26.1.2.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/c7m1mi73/versions/OtkWHKqd/packetfixer-fabric-3.3.5-26.1.2.jar";
-            sha512 = "d2dd589516f70448af3844611c9da2aa33db17916f9ff462c6ac0d226e9fb101326546f3687a6a7c5b5e3b591b254025b664fe831d07853cd7b4d291f4cfd38e";
+          "mods/bluemap-5.22-fabric.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/swbUV1cr/versions/VTvifNPN/bluemap-5.22-fabric.jar";
+            sha512 = "ec597df7e974f1f28baa15325373442968c9643a157a6d2627cd5c36f8841c3023f2c08023d203bcfa7e0e51bce69d4623ba712babb84da73bd40f0e0c7f4dbd";
           };
           "mods/FabricProxy-Lite-2.12.0.jar" = pkgs.fetchurl {
             url = "https://cdn.modrinth.com/data/8dI2tmqs/versions/CsEpiziv/FabricProxy-Lite-2.12.0.jar";
             sha512 = "b479c3ed1fe83929cad40e5c925ae2702da879b88a0271a24266cd21ecc037953f347cbe61ac7b7334e087544ee2ce5bf1f041fc3e64f50474404ad564c146f7";
           };
-          "mods/Floodgate-Fabric-2.2.6-b63.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/bWrNNfkb/versions/fD4J9lnX/Floodgate-Fabric-2.2.6-b63.jar";
-            sha512 = "54874033236df688da15fd4dd7d2d99d002e8955cb2d788d5ba409d753eb17629f53a6e976992de8cca8c8dd3663c70b283da88b5a12d72cef9647d09e04ae62";
+          # "mods/Floodgate-Fabric-2.2.6-b63.jar" = pkgs.fetchurl {
+          #   url = "https://cdn.modrinth.com/data/bWrNNfkb/versions/fD4J9lnX/Floodgate-Fabric-2.2.6-b63.jar";
+          #   sha512 = "54874033236df688da15fd4dd7d2d99d002e8955cb2d788d5ba409d753eb17629f53a6e976992de8cca8c8dd3663c70b283da88b5a12d72cef9647d09e04ae62";
+          # };
+          "mods/git-pack-manager-fabric-26.1-5.3.0+fabric+26.1.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/PV38O99l/versions/pvJwDlA8/git-pack-manager-fabric-26.1-5.3.0%2Bfabric%2B26.1.jar";
+            sha512 = "9d0f0957f4d9c2e4cc102756327ae226adce500de9c05f2c9980a9bc27606f0c01a4e708c1694390440a4742f13129a36974bd07bdbe38c279a3396413489dfe";
           };
-          "mods/git-pack-manager-fabric-26.1-5.2.1+fabric+26.1.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/PV38O99l/versions/LmejPXPp/git-pack-manager-fabric-26.1-5.2.1%2Bfabric%2B26.1.jar";
-            sha512 = "d87dadc0e6cff7126ea79acbcaf7df623c04c50edb7611672ad0e4802bae70e6046b428c87dce82c850354029887510c9e308a546df88cbc69567ca13b2a588f";
+          "mods/mesh-lib-fabric-26.1-2.1.0+fabric+26.1.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/6HncyfPB/versions/rr511CLW/mesh-lib-fabric-26.1-2.1.0%2Bfabric%2B26.1.jar";
+            sha512 = "f361f7ec0bf64168ea80fd5da7e1652583a15939efa3374ba7cd275b5d4329792498ac57aef11d48f71082f57bf2504b2c828a6e8150d3de28f380dffbc2b15d";
           };
-          "mods/mc2discord-fabric-26.1-4.2.7.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/Cfbcv7uF/versions/gZNbQZKq/mc2discord-fabric-26.1-4.2.7.jar";
-            sha512 = "dd4dc476e835d9346482f8e64d2cbca7e1e868685162a038647d157beb6dab58c35ad31c041d4e0e3bb548e7c8e6008b181f07fa87dc69c547833539a0ab03f1";
+          "mods/monkeylib538-fabric-26.2-5.0.0+fabric+26.2.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/gYap5A8T/versions/LDdUWGZa/monkeylib538-fabric-26.2-5.0.0%2Bfabric%2B26.2.jar";
+            sha512 = "bb3219ff755c191b85220fd50645d2aa816b140062f7e04a4f7fb8930f20705de523e5dfb4e7e480d1585d3a7ad9613ad02b845c6306eaf8079ba98c2f6f44e1";
           };
-          "mods/mesh-lib-fabric-26.1-2.0.4+fabric+26.1.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/6HncyfPB/versions/wIXK3aQp/mesh-lib-fabric-26.1-2.0.4%2Bfabric%2B26.1.jar";
-            sha512 = "55f180f4a2f2663d91a5286a4105657437ff884cf46bcc10f8d183173cc10dce3c8a7b8eb0c71d21d4d89a917b751f8a2901ddae6d061d7f53307bd6d2d2a4aa";
+          "mods/placeholder-api-3.1.0-beta.1+26.2.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/eXts2L7r/versions/NDqH16LT/placeholder-api-3.1.0-beta.1%2B26.2.jar";
+            sha512 = "07b6fc802559d54ec6577f6e2788926ef391d755206c2bfb0528280977885cae4bc0c517d8a53eb6f34092015ebe6c41210627d255aa6504662daefa8fb76397";
           };
-          "mods/monkeylib538-fabric-26.1-4.0.1+fabric+26.1.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/gYap5A8T/versions/nRrNqvwM/monkeylib538-fabric-26.1-4.0.1%2Bfabric%2B26.1.jar";
-            sha512 = "f86874822ca5aeb6c237acbe9cb54ecac78c4240204a5e632efad964f4343d94c4516ee5e45f8618593e2bce605238d75b9b3c4b3cadf012e3ad71efb91b9c91";
+          "mods/dcintegration-fabric-MC26.2-3.2.0.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/rbJ7eS5V/versions/ZZwadcBm/dcintegration-fabric-MC26.2-3.2.0.jar";
+            sha512 = "88f77aaf200e73dccc06bc94543f8c1a843715bb19d24ff5bc67506392f75d58ebde78e6edf29041f06a10e15cca16a0d125b56943c143bdab31f505f003b8a4";
           };
-          "mods/placeholder-api-3.0.0+26.1.jar" = pkgs.fetchurl {
-            url = "https://cdn.modrinth.com/data/eXts2L7r/versions/b3IPAHgB/placeholder-api-3.0.0%2B26.1.jar";
-            sha512 = "b559da0f13fef17967f2aff1d06b00995c7db21d9d5b7b580ab6eafdf2365e4ac86a7d094c2b481160a942f291bc2595f2cb8c91ce5e169f1c2f461782ecd2a8";
+          "mods/voicechat-discord-fabric-26.1-3.2.0.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/S1jG5YV5/versions/ugN1Nbnv/voicechat-discord-fabric-26.1-3.2.0.jar";
+            sha512 = "62bac33228875475841834c9a72178333d3ccb336590436a2e2907eed3d112947e95bad9afff23f3fe9aa2fbb1e065ef7396c364b532c61526b07592aa45eff5";
           };
         };
       files = let
@@ -318,7 +318,7 @@ in {
             httpPort = serverProperties.server-port + 100;
             exposedPort = 443;
           };
-          "config/mc2discord.toml" =
+          "config/Discord-Integration.toml" =
             config.sops.secrets."services/minecraft/favelasmp-discord".path;
           "config/voicechat/voicechat-server.properties".value = {
             port = 24455;
@@ -416,7 +416,6 @@ in {
       script =
         pipe [
           "${tellraw "O servidor irá rodar alguns comandos de manutenção em plano de fundo, isso poderá causar um pouco de lag pela próxima hora."}"
-          "/voxyserver import existing all"
         ] [
           (map (v: "echo '${v}' > ${cfg.runDir}/favelasmp.stdin"))
           (join "\n")
