@@ -164,8 +164,8 @@ in {
         ];
       autoStart = true;
       jvmOpts = join " " [
-        "-Xms8G"
-        "-Xmx8G"
+        "-Xms4G"
+        "-Xmx4G"
         "-XX:+UseG1GC"
         "-XX:+UnlockExperimentalVMOptions"
         "-XX:MaxGCPauseMillis=100"
