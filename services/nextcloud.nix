@@ -33,7 +33,7 @@ in {
         memories
         news
         notes
-        # recognize
+        recognize
         ;
     };
     config = {
