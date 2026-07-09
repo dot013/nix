@@ -73,6 +73,9 @@ in {
         ROOT_URL = "https://${server.DOMAIN}";
         PUBLIC_URL_DETECTION = "auto";
         HTTP_PORT = 9965;
+        LFS_START_SERVER = true;
+        LFS_JWT_SECRET = mkForce "";
+        LFS_JWT_SECRET_URI = "file:${config.sops.secrets."services/gitea/lfs-jwt-secret".path}";
       };
       database = {
         DB_TYPE = "sqlite3";
@@ -81,11 +84,15 @@ in {
         SQLITE_JOURNAL_MODE = "WAL";
       };
       security = {
+        INTERNAL_TOKEN = mkForce "";
+        INTERNAL_TOKEN_URI = "file:${config.sops.secrets."services/gitea/internal-token".path}";
         INSTALL_LOCK = true;
         COOKIE_REMEMBER_NAME = "__Host-capytal_code_forge_incredible";
         PASSWORD_COMPLEXITY = initList ["lower" "upper" "digit" "spec"];
         PASSWORD_CHECK_PWN = true;
         TWO_FACTOR_AUTH = "";
+        SECRET_KEY = mkForce "";
+        SECRET_KEY_URI = "file:${config.sops.secrets."services/gitea/secret-key".path}";
       };
       qos = {
         ENABLED = true; # For endpoints not protected by Anubis and protect from overload in general.
@@ -115,6 +122,8 @@ in {
       };
       oauth2 = {
         ENABLED = true;
+        JWT_SECRET = mkForce "";
+        JWT_SECRET_URI = "file:${config.sops.secrets."services/gitea/jwt-secret".path}";
       };
       federation = {
         ENABLED = true;
@@ -178,10 +187,6 @@ in {
     };
   };
 
-  systemd.services.gitea.serviceConfig = {
-    EnvironmentFile = config.sops.secrets."services/gitea/env-file".path;
-  };
-
   # services.gitea-actions-runner.instances = {
   #   "gitea-runner" = {
   #     enable = true;
@@ -238,6 +243,9 @@ in {
 
   sops.secrets = {
     "services/gitea/actions-token" = {owner = cfg.user;};
-    "services/gitea/env-file" = {owner = cfg.user;};
+    "services/gitea/internal-token" = {owner = cfg.user;};
+    "services/gitea/jwt-secret" = {owner = cfg.user;};
+    "services/gitea/lfs-jwt-secret" = {owner = cfg.user;};
+    "services/gitea/secret-key" = {owner = cfg.user;};
   };
 }
