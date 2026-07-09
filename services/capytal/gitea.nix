@@ -200,15 +200,15 @@ in {
   #   };
   # };
 
-  # services.anubis.instances."gitea".settings = {
-  #   BIND = ":${toString (cfg.settings.server.HTTP_PORT + 2)}";
-  #   BIND_NETWORK = "tcp";
-  #   METRICS_BIND = ":${toString (cfg.settings.server.HTTP_PORT + 3)}";
-  #   METRICS_BIND_NETWORK = "tcp";
-  #   SERVE_ROBOTS_TXT = true;
-  #   TARGET = "http://localhost:${toString cfg.settings.server.HTTP_PORT}";
-  #   ED25519_PRIVATE_KEY_HEX_FILE = config.sops.secrets."anubis/gitea/hex_file".path;
-  # };
+  services.anubis.instances."gitea".settings = {
+    BIND = ":${toString (cfg.settings.server.HTTP_PORT + 2)}";
+    BIND_NETWORK = "tcp";
+    METRICS_BIND = ":${toString (cfg.settings.server.HTTP_PORT + 3)}";
+    METRICS_BIND_NETWORK = "tcp";
+    SERVE_ROBOTS_TXT = true;
+    TARGET = "http://localhost:${toString cfg.settings.server.HTTP_PORT}";
+    ED25519_PRIVATE_KEY_HEX_FILE = config.sops.secrets."services/anubis/gitea-private-key".path;
+  };
 
   services.caddy.virtualHosts = {
     "${cfg.settings.server.DOMAIN}:80".extraConfig = ''
@@ -221,10 +221,11 @@ in {
         -Server
       }
 
-      reverse_proxy http://localhost:${toString cfg.settings.server.HTTP_PORT} {
+      reverse_proxy http://localhost:${toString (cfg.settings.server.HTTP_PORT + 2)} {
         header_up X-Real-Ip {header.Cf-Connecting-Ip}
         header_up X-Forwarded-For {header.Cf-Connecting-Ip}
         header_up X-Forwarded-Proto https
+        header_up X-Http-Version {http.request.proto}
         header_up Host {host}
       }
     '';
@@ -257,5 +258,7 @@ in {
     "services/gitea/minio-access-key-id" = {owner = cfg.user;};
     "services/gitea/minio-secret-access-key" = {owner = cfg.user;};
     "services/gitea/secret-key" = {owner = cfg.user;};
+    # Anubis
+    "services/anubis/gitea-private-key" = {owner = config.services.anubis.instances."gitea".user;};
   };
 }
