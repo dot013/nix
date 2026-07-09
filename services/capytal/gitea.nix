@@ -10,7 +10,6 @@ in {
   services.gitea = {
     enable = true;
     package = inputs.loreddev-gitea.packages.${pkgs.stdenv.hostPlatform.system}.default;
-    # lfs.enable = true;
     settings = with lib; let
       initList = l: (concatStringsSep "," l);
     in rec {
@@ -170,14 +169,16 @@ in {
           ".zip"
         ];
       };
-      # lfs = {};
-      # storage = {
-      #   STORAGE_TYPE = "minio";
-      #   MINIO_USE_SSL = false;
-      #   MINIO_ENDPOINT = "localhost:3461";
-      #   MINIO_BUCKET = "gitea";
-      #   MINIO_LOCATION = config.services.garage.settings.s3_api.s3_region;
-      # };
+      lfs = {};
+      storage = {
+        STORAGE_TYPE = "minio";
+        MINIO_USE_SSL = true;
+        MINIO_INSECURE_SKIP_VERIFY = true;
+        MINIO_ENDPOINT = "s3.garage.local";
+        MINIO_BUCKET = "gitea";
+        MINIO_LOCATION = config.services.garage.settings.s3_api.s3_region;
+        MINIO_BUCKET_LOOKUP_TYPE = "path";
+      };
       "storage.repo-archive" = {};
       "repo-archive" = {};
       # actions = {
@@ -185,6 +186,8 @@ in {
       #   DEFAULT_ACTIONS_URL = "self";
       # };
     };
+    minioAccessKeyId = config.sops.secrets."services/gitea/minio-access-key-id".path;
+    minioSecretAccessKey = config.sops.secrets."services/gitea/minio-secret-access-key".path;
   };
 
   # services.gitea-actions-runner.instances = {
@@ -235,6 +238,11 @@ in {
 
   environment.persistence."/persist".directories = [
     {
+      directory = cfg.repositoryRoot;
+      user = cfg.user;
+      group = cfg.group;
+    }
+    {
       directory = cfg.stateDir;
       user = cfg.user;
       group = cfg.group;
@@ -246,6 +254,8 @@ in {
     "services/gitea/internal-token" = {owner = cfg.user;};
     "services/gitea/jwt-secret" = {owner = cfg.user;};
     "services/gitea/lfs-jwt-secret" = {owner = cfg.user;};
+    "services/gitea/minio-access-key-id" = {owner = cfg.user;};
+    "services/gitea/minio-secret-access-key" = {owner = cfg.user;};
     "services/gitea/secret-key" = {owner = cfg.user;};
   };
 }
