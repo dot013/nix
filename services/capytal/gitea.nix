@@ -190,15 +190,19 @@ in {
     minioSecretAccessKey = config.sops.secrets."services/gitea/minio-secret-access-key".path;
   };
 
-  # services.gitea-actions-runner.instances = {
-  #   "gitea-runner" = {
-  #     enable = true;
-  #     name = "Gitea Runner (${config.networking.hostName}) 1";
-  #     url = cfg.settings.server.ROOT_URL;
-  #     tokenFile = config.sops.secrets."gitea/actions/token".path;
-  #     labels = ["nix-latest:docker://code.capytal.cc/images/nix:2.31.3"];
-  #   };
-  # };
+  services.gitea-actions-runner.instances = {
+    "gitea-runner" = {
+      enable = true;
+      name = "Gitea Runner (${config.networking.hostName}) 1";
+      url = cfg.settings.server.ROOT_URL;
+      tokenFile = config.sops.secrets."services/gitea/actions-token".path;
+      labels = ["nix-latest:docker://code.capytal.cc/images/nix:2.31.3"];
+    };
+  };
+
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerCompat = true;
+  virtualisation.podman.dockerSocket.enable = true;
 
   services.anubis.instances."gitea".settings = {
     BIND = ":${toString (cfg.settings.server.HTTP_PORT + 2)}";
