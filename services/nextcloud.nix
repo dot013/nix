@@ -44,9 +44,8 @@ in {
 
       objectstore.s3 = {
         enable = true;
-        verify_bucket_exists = false;
         bucket = "nextcloud";
-        hostname = "192.168.0.103";
+        hostname = "spacestation";
         port = config.services.garage.settings.s3_api.api_bind_port;
         usePathStyle = true;
         useSsl = false;
