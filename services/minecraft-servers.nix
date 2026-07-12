@@ -430,6 +430,19 @@ in {
         "04:00:00 ${config.time.timeZone}"
       ];
     };
+
+    "favelasmp-web-modpack" = {
+      enable = true;
+      after = ["network.target"];
+      wantedBy = ["default.target"];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${getExe inputs.favelasmp.packages.${pkgs.stdenv.hostPlatform.system}.web-modpack}";
+      };
+      environment = {
+        PORT = toString (cfg.servers."favelasmp".serverProperties.server-port + 110);
+      };
+    };
   };
 
   services.caddy.virtualHosts."favelasmp.guz.one:80" = let
@@ -452,6 +465,16 @@ in {
       redir /map /map/ permanent
       handle_path /map/* {
         reverse_proxy http://localhost:${toString bluemapServer.port} {
+          header_up X-Real-Ip {header.Cf-Connecting-Ip}
+          header_up X-Forwarded-For {header.Cf-Connecting-Ip}
+          header_up X-Forwarded-Proto https
+          header_up Host {host}
+        }
+      }
+
+      redir /modpack /FavelaSMP.mrpack permanent
+      handle /FavelaSMP.mrpack* {
+        reverse_proxy http://localhost:${config.systemd.services."favelasmp-web-modpack".environment.PORT} {
           header_up X-Real-Ip {header.Cf-Connecting-Ip}
           header_up X-Forwarded-For {header.Cf-Connecting-Ip}
           header_up X-Forwarded-Proto https

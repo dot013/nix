@@ -95,17 +95,17 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1783473771,
-        "narHash": "sha256-3tFntZXjIf00hNUR4g1ChPrmo4RVBc/heph0H77UzS0=",
+        "lastModified": 1783820788,
+        "narHash": "sha256-Zf646pc0/b7okLAp0ubMNWIcbOfoZSMSD62DbYdVeUs=",
         "ref": "refs/heads/main",
-        "rev": "6a147acd663af80570491c0529ba7db3c0ee904c",
-        "revCount": 32,
+        "rev": "c64658794dd1e3937d581ddf973a95fdd2ba3bdc",
+        "revCount": 35,
         "type": "git",
-        "url": "ssh://gitea@100.98.115.36/sixsides/favelasmp"
+        "url": "https://code.capytal.cc/sixsides/favelasmp"
       },
       "original": {
         "type": "git",
-        "url": "ssh://gitea@100.98.115.36/sixsides/favelasmp"
+        "url": "https://code.capytal.cc/sixsides/favelasmp"
       }
     },
     "firefox-gnome-theme": {

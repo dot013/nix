@@ -39,7 +39,7 @@
     #   url = "git+ssh://gitea@spacestation/heart/modpack.git";
     #   # url = "git+file:///home/guz/.projects/heart-modpack";
     # };
-    favelasmp.url = "git+ssh://gitea@100.98.115.36/sixsides/favelasmp";
+    favelasmp.url = "git+https://code.capytal.cc/sixsides/favelasmp";
     guzone.url = "git+https://code.capytal.cc/dot013/guz.one";
     keikos.url = "git+https://code.capytal.cc/guz013/keikos.work";
     loreddev-gitea.url = "git+https://code.capytal.cc/loreddev/gitea";
