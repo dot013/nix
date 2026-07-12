@@ -2,6 +2,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nix = {
+      url = "github:nixos/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -281,9 +285,14 @@
       system,
       ...
     }: rec {
-      playit-agent = pkgs.callPackage ./packages/playit-agent.nix {};
       audacity = pkgs.callPackage ./packages/audacity.nix {};
       cal-sans = pkgs.callPackage ./packages/cal-sans.nix {};
+      infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
+      neovim = inputs.neovim.packages.${system}.default;
+      playit-agent = pkgs.callPackage ./packages/playit-agent.nix {};
+      images = {
+        nix-runner = pkgs.callPackage ./packages/images/nix-runner.nix {nixSrc = inputs.nix;};
+      };
       devkit = {
         ghostty = pkgs.callPackage ./packages/devkit/ghostty.nix {
           command = "${lib.getExe devkit.zsh}";
@@ -296,8 +305,6 @@
         zsh = pkgs.callPackage ./packages/devkit/zsh {};
         neovim = self.packages.${system}.neovim;
       };
-      neovim = inputs.neovim.packages.${system}.default;
-      infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
     });
 
     devShells = forAllSystems ({

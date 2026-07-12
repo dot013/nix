@@ -196,13 +196,23 @@ in {
       name = "Gitea Runner (${config.networking.hostName}) 1";
       url = cfg.settings.server.ROOT_URL;
       tokenFile = config.sops.secrets."services/gitea/actions-token".path;
-      labels = ["nix-latest:docker://code.capytal.cc/images/nix:2.31.3"];
+      labels = ["nix-latest:docker://code.capytal.cc/dot013/nix-runner:latest"];
+      settings = {
+        cache.enabled = true;
+        cache.host = "battleship";
+        cache.port = cfg.settings.server.HTTP_PORT + 100;
+      };
     };
   };
 
   virtualisation.podman.enable = true;
   virtualisation.podman.dockerCompat = true;
   virtualisation.podman.dockerSocket.enable = true;
+  virtualisation.containers.containersConf.settings = {
+    network = {
+      dns_bind_port = 1053;
+    };
+  };
 
   services.anubis.instances."gitea".settings = {
     BIND = ":${toString (cfg.settings.server.HTTP_PORT + 2)}";
