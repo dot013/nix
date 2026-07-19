@@ -73,6 +73,12 @@
   # Drawing Tablet
   hardware.opentabletdriver.enable = true;
 
+  # OCI Containers
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerCompat = true;
+  virtualisation.podman.dockerSocket.enable = true;
+  environment.systemPackages = with pkgs; [podman-compose];
+
   # Nix LD (Useful for devlopment)
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [
