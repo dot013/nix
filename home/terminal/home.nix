@@ -18,19 +18,19 @@
 
   services.flatpak.enable = true;
   services.flatpak.packages = [
+    "org.inkscape.Inkscape"
     "org.kde.krita"
     "org.vinegarhq.Sober"
   ];
 
   home.packages =
     # Programs
-    (with pkgs; [
+    with pkgs; [
       self.packages.${pkgs.stdenv.hostPlatform.system}.audacity
       blender
       blockbench
       bitwarden-desktop
       # davinci-resolve
-      inkscape
       kdePackages.kdenlive
       nextcloud-client
       obsidian
