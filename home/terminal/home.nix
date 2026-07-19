@@ -41,13 +41,9 @@
       # System
       pwvucontrol
       xorg.xprop # Annoying notification if it is not found
-    ])
-    # Fonts
-    ++ (with pkgs; [
-      google-fonts
-      nerd-fonts.fira-code
-      self.packages.${pkgs.stdenv.hostPlatform.system}.cal-sans
-    ]);
+    ];
+
+  fonts.fontconfig.enable = true;
 
   # Element (Matrix)
   programs.element-desktop.enable = true;
