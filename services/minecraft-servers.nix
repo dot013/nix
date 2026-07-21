@@ -417,7 +417,7 @@ in {
     "minecraft-server-favelasmp-maintainance" = {
       script =
         pipe [
-          "${tellraw "O servidor irá rodar alguns comandos de manutenção em plano de fundo, isso poderá causar um pouco de lag pela próxima hora."}"
+          "${tellraw "O servidor irá rodar alguns comandos de manutenção em plano de fundo, isso poderá causar um pouco de lag pelas próximas horas da madrugada."}"
         ] [
           (map (v: "echo '${v}' > ${cfg.runDir}/favelasmp.stdin"))
           (join "\n")
@@ -427,7 +427,7 @@ in {
         User = "${cfg.user}";
       };
       startAt = [
-        "04:00:00 ${config.time.timeZone}"
+        "02:00:00 ${config.time.timeZone}"
       ];
     };
 

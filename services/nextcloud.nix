@@ -33,6 +33,7 @@ in {
         memories
         news
         notes
+        phonetrack
         recognize
         ;
     };
@@ -63,7 +64,7 @@ in {
       default_phone_region = "BR";
       default_timezone = config.time.timeZone;
       loglevel = 2;
-      maintenance_window_start = 4; # 1:00 AM at UTC-3
+      maintenance_window_start = 5; # 2:00 AM at UTC-3
       trusted_proxies = ["127.0.0.1"];
     };
     phpExtraExtensions = all:
