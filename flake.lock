@@ -95,11 +95,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1783820788,
-        "narHash": "sha256-Zf646pc0/b7okLAp0ubMNWIcbOfoZSMSD62DbYdVeUs=",
+        "lastModified": 1784077926,
+        "narHash": "sha256-KujZtCcc23pGIH5E+mHSwplklUuZA8+P+tx3iV/qeZg=",
         "ref": "refs/heads/main",
-        "rev": "c64658794dd1e3937d581ddf973a95fdd2ba3bdc",
-        "revCount": 35,
+        "rev": "73e90bd84759a33a3a7f1de27a96de0b50386001",
+        "revCount": 41,
         "type": "git",
         "url": "https://code.capytal.cc/sixsides/favelasmp"
       },
