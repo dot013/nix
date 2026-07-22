@@ -199,7 +199,10 @@ in {
       name = "Gitea Runner (${config.networking.hostName}) 1";
       url = cfg.settings.server.ROOT_URL;
       tokenFile = config.sops.secrets."services/gitea/actions-token".path;
-      labels = ["nix-latest:docker://code.capytal.cc/dot013/nix-runner:latest"];
+      labels = [
+        "nix-latest:docker://code.capytal.cc/dot013/nix-runner:latest"
+        "godot-latest:docker://barichello/godot-ci:4.7.1"
+      ];
       settings = {
         cache.enabled = true;
         cache.host = "battleship";
