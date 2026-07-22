@@ -76,6 +76,9 @@ in {
         LFS_JWT_SECRET = mkForce "";
         LFS_JWT_SECRET_URI = "file:${config.sops.secrets."services/gitea/lfs-jwt-secret".path}";
       };
+      service = {
+        DISABLE_REGISTRATION = false;
+      };
       database = {
         DB_TYPE = "sqlite3";
         NAME = "gitea";
