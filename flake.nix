@@ -42,7 +42,7 @@
     favelasmp.url = "git+https://code.capytal.cc/sixsides/favelasmp";
     guzone.url = "git+https://code.capytal.cc/dot013/guz.one";
     keikos.url = "git+https://code.capytal.cc/guz013/keikos.work";
-    loreddev-gitea.url = "git+https://code.capytal.cc/loreddev/gitea";
+    loreddev-gitea.url = "git+https://code.capytal.cc/loreddev/gitea?ref=release/v1.27-loreddev.0";
 
     nix-minecraft = {
       url = "github:infinidoge/nix-minecraft";

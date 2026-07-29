@@ -493,15 +493,16 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1765921137,
-        "narHash": "sha256-u4qyEOZm1+2LQDlG24smmEToO/r1T08s7MCYzE/DnjE=",
-        "ref": "refs/heads/main",
-        "rev": "96edd617d6daac89d00c080df561818b2fcd7da2",
-        "revCount": 19980,
+        "lastModified": 1785359801,
+        "narHash": "sha256-jy4dYoZXGfDPdyINH4OhdLhOwOLUHW1lXSyqepY5pbo=",
+        "ref": "release/v1.27-loreddev.0",
+        "rev": "d10a8c15d5753cfaf2facd029fda8355a638148d",
+        "revCount": 21177,
         "type": "git",
         "url": "https://code.capytal.cc/loreddev/gitea"
       },
       "original": {
+        "ref": "release/v1.27-loreddev.0",
         "type": "git",
         "url": "https://code.capytal.cc/loreddev/gitea"
       }
@@ -741,11 +742,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1765779637,
-        "narHash": "sha256-KJ2wa/BLSrTqDjbfyNx70ov/HdgNBCBBSQP3BIzKnv4=",
+        "lastModified": 1785090369,
+        "narHash": "sha256-m0pDuRJG7EDo9ri+4Ksu83VsI+PlxNC9lNBfydejce4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "1306659b587dc277866c7b69eb97e5f07864d8c4",
+        "rev": "624af665418d3c65d544145b4d34ad696439570e",
         "type": "github"
       },
       "original": {
