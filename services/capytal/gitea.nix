@@ -211,6 +211,14 @@ in {
     };
   };
 
+  services.gitea.dump = {
+    enable = true;
+    type = "tar.xz";
+    file = "gitea-dump.tar.xz";
+    backupDir = "/run/media/cryptstorage/gitea/dumps";
+    interval = "Sat *-*-* 04:00:00 ${config.time.timeZone}";
+  };
+
   virtualisation.podman.enable = true;
   virtualisation.podman.dockerCompat = true;
   virtualisation.podman.dockerSocket.enable = true;
