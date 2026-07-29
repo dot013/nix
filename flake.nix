@@ -260,6 +260,7 @@
       playit = ./modules/playit.nix;
       services = {
         adguard = ./services/adguard.nix;
+        anubis = ./services/anubis.nix;
         capytal-gitea = ./services/capytal/gitea.nix;
         cloudflared = ./services/cloudflared.nix;
         garage = ./services/garage.nix;

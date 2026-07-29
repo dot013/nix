@@ -220,14 +220,35 @@ in {
     };
   };
 
-  services.anubis.instances."gitea".settings = {
-    BIND = ":${toString (cfg.settings.server.HTTP_PORT + 2)}";
-    BIND_NETWORK = "tcp";
-    METRICS_BIND = ":${toString (cfg.settings.server.HTTP_PORT + 3)}";
-    METRICS_BIND_NETWORK = "tcp";
-    SERVE_ROBOTS_TXT = true;
-    TARGET = "http://localhost:${toString cfg.settings.server.HTTP_PORT}";
-    ED25519_PRIVATE_KEY_HEX_FILE = config.sops.secrets."services/anubis/gitea-private-key".path;
+  services.anubis.instances."gitea" = {
+    policy = {
+      useDefaultBotRules = true;
+      extraBots = [
+        {import = "(data)/apps/gitea-rss-feeds.yaml";}
+        {import = "(data)/clients/git.yaml";}
+        {import = "(data)/clients/go-get.yaml";}
+        {import = "(data)/common/keep-internet-working.yaml";}
+        {
+          name = "discord-webhook-avatars";
+          action = "ALLOW";
+          expression = {
+            all = [
+              ''userAgent.contains("Discordbot")''
+              ''path.startsWith("/avatars/")''
+            ];
+          };
+        }
+      ];
+    };
+    settings = {
+      BIND = ":${toString (cfg.settings.server.HTTP_PORT + 2)}";
+      BIND_NETWORK = "tcp";
+      METRICS_BIND = ":${toString (cfg.settings.server.HTTP_PORT + 3)}";
+      METRICS_BIND_NETWORK = "tcp";
+      SERVE_ROBOTS_TXT = true;
+      TARGET = "http://localhost:${toString cfg.settings.server.HTTP_PORT}";
+      ED25519_PRIVATE_KEY_HEX_FILE = config.sops.secrets."services/anubis/gitea-private-key".path;
+    };
   };
 
   services.caddy.virtualHosts = {

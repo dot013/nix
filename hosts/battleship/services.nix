@@ -12,6 +12,7 @@
     ]
     ++ (with self.nixosModules.services; [
       adguard
+      anubis
       capytal-gitea
       cloudflared
       garage
