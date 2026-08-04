@@ -3,6 +3,7 @@
   lib,
   osConfig,
   pkgs,
+  pkgs-unstable,
   self,
   ...
 }: {
@@ -67,6 +68,10 @@
 
   # Godot
   programs.godot.enable = true;
+  programs.godot.package = pkgs-unstable.godot_4_7;
+  programs.godot.templates-package = pkgs-unstable.godot_4_7-export-templates-bin;
+
+  home.file.".bin/blender" = {source = lib.getExe pkgs.blender;};
 
   # OBS Studio
   programs.obs-studio.enable = true;

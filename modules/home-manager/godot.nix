@@ -9,16 +9,23 @@ with lib; let
 in {
   options.programs.godot = {
     enable = mkEnableOption "";
+    package = mkOption {
+      type = with types; package;
+      default = pkgs.godot;
+    };
+    templates-package = mkOption {
+      type = with types; package;
+      default = pkgs.godot-export-templates-bin;
+    };
   };
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [godot];
+    home.packages = [cfg.package];
 
     home.file = let
-      godottemplates = pkgs.godot-export-templates-bin;
-      godotname = builtins.replaceStrings ["-"] ["."] godottemplates.version;
+      godotname = builtins.replaceStrings ["-"] ["."] cfg.templates-package.version;
     in {
       ".local/share/godot/export_templates/${godotname}" = {
-        source = "${godottemplates}/share/godot/export_templates/${godotname}";
+        source = "${cfg.templates-package}/share/godot/export_templates/${godotname}";
       };
     };
   };
