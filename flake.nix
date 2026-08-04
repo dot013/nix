@@ -277,6 +277,7 @@
         gnome = (import ./modules/features/gnome.nix).homeManager;
         zen-browser = ./modules/features/zen-browser.nix;
         vesktop = ./modules/features/vesktop.nix;
+        vivaldi = ./modules/features/vivaldi.nix;
       };
       devkit = {...}: {
         imports = [
