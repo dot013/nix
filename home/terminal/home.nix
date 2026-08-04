@@ -99,10 +99,6 @@
     };
   };
   programs.vesktop.vencord.themes = {
-    "no-extra" = pkgs.fetchurl {
-      url = "https://code.capytal.cc/guz013/no-bullshit-discord.css/raw/branch/main/no-extra.css";
-      hash = "sha256-IXFpptElljrt0G7NtNvPTCa2SORjwzGFY1Frll0FUUo=";
-    };
     "no-nitro" = pkgs.fetchurl {
       url = "https://code.capytal.cc/guz013/no-bullshit-discord.css/raw/branch/main/no-nitro.css";
       hash = "sha256-ouHW4KL+Jn5ERfFRcw7n15bWnzea7/lCLr4h0PsPQA8=";
