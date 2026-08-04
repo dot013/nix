@@ -267,9 +267,15 @@
         minecraft-servers = ./services/minecraft-servers.nix;
         nextcloud = ./services/nextcloud.nix;
       };
+      features = {
+        gnome = (import ./modules/features/gnome.nix).nixos;
+      };
     };
 
     homeManagerModules = {
+      features = {
+        gnome = (import ./modules/features/gnome.nix).homeManager;
+      };
       devkit = {...}: {
         imports = [
           self.homeManagerModules.neovim
