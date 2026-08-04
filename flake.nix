@@ -275,6 +275,7 @@
     homeManagerModules = {
       features = {
         gnome = (import ./modules/features/gnome.nix).homeManager;
+        zen-browser = ./modules/features/zen-browser.nix;
       };
       devkit = {...}: {
         imports = [
