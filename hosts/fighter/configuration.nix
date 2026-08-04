@@ -2,9 +2,12 @@
   inputs,
   lib,
   pkgs,
+  self,
   ...
 }: {
   imports = [
+    self.nixosModules.features.qmk-keyboard
+
     ./disko.nix
     inputs.disko.nixosModules.disko
     ./impermanence.nix
@@ -26,10 +29,6 @@
     clean.extraArgs = "--keep-since 7d --keep 3";
     flake = "/home/guz/Projects/dot013-nix";
   };
-
-  # QMK keyboard
-  hardware.keyboard.qmk.enable = true;
-  services.udev.packages = with pkgs; [via vial];
 
   # Pipewire
   security.rtkit.enable = true;

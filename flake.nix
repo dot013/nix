@@ -269,6 +269,7 @@
       };
       features = {
         gnome = (import ./modules/features/gnome.nix).nixos;
+        qmk-keyboard = ./modules/features/qmk-keyboard.nix;
       };
     };
 
