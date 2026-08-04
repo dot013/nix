@@ -169,7 +169,7 @@
         modules =
           [
             ./hosts/fighter/configuration.nix
-            ./home/terminal/configuration.nix
+            ./home/console/configuration.nix
             inputs.stylix.nixosModules.stylix
             ./style.nix
           ]
