@@ -281,6 +281,7 @@
       features = {
         gnome = (import ./modules/features/gnome.nix).homeManager;
         zen-browser = ./modules/features/zen-browser.nix;
+        vesktop = ./modules/features/vesktop.nix;
       };
       devkit = {...}: {
         imports = [
