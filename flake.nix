@@ -272,9 +272,15 @@
         postgresql = ./services/postgresql.nix;
         valkey = ./services/valkey.nix;
       };
+      features = {
+        gnome = (import ./modules/features/gnome.nix).nixos;
+      };
     };
 
     homeManagerModules = {
+      features = {
+        gnome = (import ./modules/features/gnome.nix).homeManager;
+      };
       devkit = {...}: {
         imports = [
           self.homeManagerModules.neovim
