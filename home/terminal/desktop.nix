@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 with lib; {
@@ -14,7 +15,7 @@ with lib; {
 
   # GNOME
   programs.gnome-shell.enable = true;
-  programs.gnome-shell.extensions = with pkgs.gnomeExtensions; [
+  programs.gnome-shell.extensions = with pkgs-unstable.gnomeExtensions; [
     {package = arcmenu;}
     {package = blur-my-shell;}
     {package = focused-window-d-bus;}
