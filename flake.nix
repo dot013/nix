@@ -270,6 +270,7 @@
       features = {
         devkit = (import ./modules/features/devkit.nix).nixos;
         flatpak = (import ./modules/features/flatpak.nix).nixos;
+        fonts = ./modules/features/fonts.nix;
         gnome = (import ./modules/features/gnome.nix).nixos;
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
         preservation = ./modules/features/preservation.nix;
