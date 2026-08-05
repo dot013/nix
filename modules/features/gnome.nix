@@ -92,7 +92,7 @@
           tabbed-tiling-mode-enabled = false;
           move-pointer-focus-enabled = true;
           window-toggle-float = ["<Shift><Super>F"];
-          window-toggle-always-float = [];
+          window-toggle-always-float = [""];
         };
         "org/gnome/shell/extensions/unite" = {
           extend-left-box = false;
