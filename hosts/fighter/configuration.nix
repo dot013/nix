@@ -12,6 +12,7 @@
 
     self.nixosModules.features.devkit
     self.nixosModules.features.flatpak
+    self.nixosModules.features.fonts
     self.nixosModules.features.gnome
     self.nixosModules.features.preservation
     self.nixosModules.features.qmk-keyboard
@@ -55,22 +56,7 @@
   };
   users.groups."guz" = {};
 
-  fonts.packages = with pkgs; [
-    google-fonts
-    nerd-fonts.fira-code
-    self.packages.${pkgs.stdenv.hostPlatform.system}.cal-sans
-  ];
-  fonts.fontDir.enable = true;
-  fonts.fontconfig.enable = true;
-
-  # GnuPG keyring
-  programs.gnupg.agent = {
-    enable = true;
-    pinentryPackage = pkgs.pinentry-gtk2;
-    settings.default-cache-ttl = 3600 * 24;
-  };
-
-  # Yet another nix cli helper
+  # NH
   programs.nh = {
     enable = true;
     clean.enable = true;
