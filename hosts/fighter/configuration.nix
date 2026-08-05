@@ -4,13 +4,14 @@
   pkgs,
   self,
   ...
-} @ args: {
+}: {
   imports = [
     inputs.home-manager.nixosModules.default
     inputs.disko.nixosModules.disko
     ./disko.nix
 
     self.nixosModules.features.devkit
+    self.nixosModules.features.flatpak
     self.nixosModules.features.gnome
     self.nixosModules.features.preservation
     self.nixosModules.features.qmk-keyboard
@@ -53,8 +54,6 @@
     shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
   };
   users.groups."guz" = {};
-
-  services.flatpak.enable = true;
 
   fonts.packages = with pkgs; [
     google-fonts
