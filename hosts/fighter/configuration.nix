@@ -17,6 +17,7 @@
     self.nixosModules.features.locale-brazil
     self.nixosModules.features.preservation
     self.nixosModules.features.qmk-keyboard
+    self.nixosModules.features.tailscale
 
     ./hardware-configuration.nix
   ];
@@ -73,9 +74,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
-  # Tailscale
-  services.tailscale.enable = true;
 
   # Networking
   networking.hostName = "lost-home";
