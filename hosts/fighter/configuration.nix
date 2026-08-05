@@ -4,16 +4,65 @@
   pkgs,
   self,
   ...
-}: {
+} @ args: {
   imports = [
-    self.nixosModules.features.qmk-keyboard
-
-    ./disko.nix
+    inputs.home-manager.nixosModules.default
     inputs.disko.nixosModules.disko
-    ./impermanence.nix
+    ./disko.nix
+
+    self.nixosModules.features.devkit
+    self.nixosModules.features.gnome
+    self.nixosModules.features.preservation
+    self.nixosModules.features.qmk-keyboard
 
     ./hardware-configuration.nix
   ];
+
+  # Home Manager
+  home-manager = {
+    backupFileExtension = "bkp";
+    extraSpecialArgs = {inherit (args) inputs self pkgs-unstable;};
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users."guz" = {...}: {
+      imports = [
+        self.homeManagerModules.features.devkit
+        self.homeManagerModules.features.gnome
+        self.homeManagerModules.features.zen-browser
+        self.homeManagerModules.features.vesktop
+      ];
+
+      # This value determines the Home Manager release that your
+      # configuration is compatible with. This helps avoid breakage
+      # when a new Home Manager release introduces backwards
+      # incompatible changes.
+      #
+      # You can update Home Manager without changing this value. See
+      # the Home Manager release notes for a list of state version
+      # changes in each release.
+      home.stateVersion = "25.11";
+    };
+  };
+
+  # Users
+  users.users."guz" = {
+    extraGroups = ["wheel" "guz"];
+    isNormalUser = true;
+    password = "1313";
+    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
+    shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
+  };
+  users.groups."guz" = {};
+
+  services.flatpak.enable = true;
+
+  fonts.packages = with pkgs; [
+    google-fonts
+    nerd-fonts.fira-code
+    self.packages.${pkgs.stdenv.hostPlatform.system}.cal-sans
+  ];
+  fonts.fontDir.enable = true;
+  fonts.fontconfig.enable = true;
 
   # GnuPG keyring
   programs.gnupg.agent = {
