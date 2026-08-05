@@ -271,6 +271,7 @@
         devkit = (import ./modules/features/devkit.nix).nixos;
         gnome = (import ./modules/features/gnome.nix).nixos;
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
+        preservation = ./modules/features/preservation.nix;
       };
     };
 
