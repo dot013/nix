@@ -274,6 +274,7 @@
       };
       features = {
         devkit = (import ./modules/features/devkit.nix).nixos;
+        flatpak = (import ./modules/features/flatpak.nix).nixos;
         gnome = (import ./modules/features/gnome.nix).nixos;
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
         preservation = ./modules/features/preservation.nix;
@@ -283,6 +284,7 @@
     homeManagerModules = {
       features = {
         devkit = (import ./modules/features/devkit.nix).homeManager;
+        flatpak = (import ./modules/features/flatpak.nix).homeManager;
         gnome = (import ./modules/features/gnome.nix).homeManager;
         zen-browser = ./modules/features/zen-browser.nix;
         vesktop = ./modules/features/vesktop.nix;
