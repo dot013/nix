@@ -1,10 +1,11 @@
 {self, ...}: {
   imports = [
+    self.homeManagerModules.features.devkit
     self.homeManagerModules.features.gnome
     self.homeManagerModules.features.zen-browser
     self.homeManagerModules.features.vesktop
 
-	./impermanence.nix
+    ./impermanence.nix
   ];
 
   # This value determines the Home Manager release that your
