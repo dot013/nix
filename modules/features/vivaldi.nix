@@ -25,6 +25,4 @@
     {id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";} # uBlock Origin
     {id = "mnjggcdmjocbbbhaepdhchncahnbgone";} # SponsorBlock
   ];
-
-  nix.allowUnfreeList = ["vivaldi"];
 }
