@@ -1,5 +1,9 @@
 {
-  nixos = {lib, ...}:
+  nixos = {
+    self,
+    lib,
+    ...
+  }:
     with lib; {
       # GNOME (Desktop Manager)
       services.desktopManager.gnome = {
@@ -10,6 +14,18 @@
       services.displayManager.gdm = {
         enable = mkDefault true;
       };
+
+      # Pipewire
+      security.rtkit.enable = true;
+      services.pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+      };
+
+      # Policy Kit
+      security.polkit.enable = true;
 
       environment.sessionVariables.NIXOS_OZONE_WL = "1";
     };
