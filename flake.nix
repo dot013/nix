@@ -272,6 +272,7 @@
         flatpak = (import ./modules/features/flatpak.nix).nixos;
         fonts = ./modules/features/fonts.nix;
         gnome = (import ./modules/features/gnome.nix).nixos;
+        locale-brazil = ./modules/features/locale-brazil.nix;
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
         preservation = ./modules/features/preservation.nix;
       };
