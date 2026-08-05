@@ -36,6 +36,8 @@
     home.stateVersion = "25.11";
   };
 
+  nix.allowUnfreeList = ["vivaldi"];
+
   # Users
   users.users."guz" = {
     extraGroups = ["wheel" "guz"];
