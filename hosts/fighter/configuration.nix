@@ -23,29 +23,17 @@
   ];
 
   # Home Manager
-  home-manager = {
-    backupFileExtension = "bkp";
-    extraSpecialArgs = {inherit (args) inputs self pkgs-unstable;};
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    users."guz" = {...}: {
-      imports = [
-        self.homeManagerModules.features.devkit
-        self.homeManagerModules.features.gnome
-        self.homeManagerModules.features.zen-browser
-        self.homeManagerModules.features.vesktop
-      ];
+  home-manager.users."guz" = {...}: {
+    imports = [
+      self.homeManagerModules.features.devkit
+      self.homeManagerModules.features.flatpak
+      self.homeManagerModules.features.gnome
+      self.homeManagerModules.features.zen-browser
+      self.homeManagerModules.features.vesktop
+      self.homeManagerModules.features.vivaldi
+    ];
 
-      # This value determines the Home Manager release that your
-      # configuration is compatible with. This helps avoid breakage
-      # when a new Home Manager release introduces backwards
-      # incompatible changes.
-      #
-      # You can update Home Manager without changing this value. See
-      # the Home Manager release notes for a list of state version
-      # changes in each release.
-      home.stateVersion = "25.11";
-    };
+    home.stateVersion = "25.11";
   };
 
   # Users
@@ -74,15 +62,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
-  # Networking
-  networking.hostName = "lost-home";
-  networking.networkmanager.enable = true;
-
-  # Firewall
-  networking.firewall.enable = true;
-  networking.firewall.allowedUDPPorts = [53];
-  networking.firewall.allowedTCPPorts = [80 433];
 
   # SSH
   services.openssh.enable = true;
