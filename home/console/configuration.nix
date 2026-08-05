@@ -8,6 +8,7 @@
     inputs.home-manager.nixosModules.default
 
     self.nixosModules.features.gnome
+    self.nixosModules.features.devkit
   ];
 
   # Home Manager
