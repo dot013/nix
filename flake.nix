@@ -86,22 +86,39 @@
       "x86_64-darwin"
       "aarch64-darwin"
     ];
-    nixpkgsUnfree = {
-      config,
-      lib,
-      ...
-    }:
-      with lib; let
-        list = config.nix.allowUnfreeList;
-      in {
-        options.nix.allowUnfreeList = mkOption {
-          type = with types; listOf str;
+    # Modules that all other modules expect to be imported/available
+    commonModules = [
+      ({...}: {
+        nix.settings.experimental-features = ["nix-command" "flakes"];
+      })
+      # "Cozy" Module
+      ({
+        config,
+        lib,
+        ...
+      }: {
+        options.nix.allowUnfreeList = lib.mkOption {
+          type = with lib.types; listOf str;
           default = [];
         };
         config.nixpkgs.config.allowUnfreePredicate = p:
-          builtins.elem (getName p) list;
-      };
-    commonModules = [nixpkgsUnfree];
+          builtins.elem (lib.getName p) config.nix.allowUnfreeList;
+      })
+      # Home-Manager setup
+      ({pkgs-unstable, ...}: {
+        imports = [
+          inputs.home-manager.nixosModules.default
+        ];
+        home-manager.backupFileExtension = "bkp";
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs = {
+          inherit inputs;
+          inherit (inputs) self;
+          inherit pkgs-unstable;
+        };
+      })
+    ];
     forAllSystems = f:
       nixpkgs.lib.genAttrs systems (system: let
         pkgs = import nixpkgs {inherit system;};
