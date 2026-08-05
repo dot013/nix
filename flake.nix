@@ -268,6 +268,7 @@
         nextcloud = ./services/nextcloud.nix;
       };
       features = {
+        devkit = (import ./modules/features/devkit.nix).nixos;
         gnome = (import ./modules/features/gnome.nix).nixos;
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
       };
@@ -275,6 +276,7 @@
 
     homeManagerModules = {
       features = {
+        devkit = (import ./modules/features/devkit.nix).homeManager;
         gnome = (import ./modules/features/gnome.nix).homeManager;
         zen-browser = ./modules/features/zen-browser.nix;
         vesktop = ./modules/features/vesktop.nix;
