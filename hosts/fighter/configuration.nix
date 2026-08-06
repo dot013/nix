@@ -15,6 +15,7 @@
     self.nixosModules.features.fonts
     self.nixosModules.features.gnome
     self.nixosModules.features.locale-brazil
+    self.nixosModules.features.plymouth
     self.nixosModules.features.preservation
     self.nixosModules.features.qmk-keyboard
     self.nixosModules.features.tailscale

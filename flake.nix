@@ -296,6 +296,7 @@
         gnome = (import ./modules/features/gnome.nix).nixos;
         locale-brazil = ./modules/features/locale-brazil.nix;
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
+        plymouth = ./modules/features/plymouth.nix;
         preservation = ./modules/features/preservation.nix;
         tailscale = ./modules/features/tailscale.nix;
       };
