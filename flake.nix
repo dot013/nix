@@ -293,6 +293,7 @@
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
         plymouth = ./modules/features/plymouth.nix;
         preservation = ./modules/features/preservation.nix;
+        sddm = ./modules/features/sddm.nix;
         tailscale = ./modules/features/tailscale.nix;
       };
     };
