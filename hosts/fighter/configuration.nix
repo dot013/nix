@@ -18,6 +18,7 @@
     self.nixosModules.features.plymouth
     self.nixosModules.features.preservation
     self.nixosModules.features.qmk-keyboard
+    self.nixosModules.features.sddm
     self.nixosModules.features.tailscale
 
     ./hardware-configuration.nix
