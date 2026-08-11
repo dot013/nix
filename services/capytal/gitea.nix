@@ -127,6 +127,10 @@ in {
         JWT_SECRET = mkForce "";
         JWT_SECRET_URI = "file:${config.sops.secrets."services/gitea/jwt-secret".path}";
       };
+      openid = {
+        ENABLE_OPENID_SIGNIN = true;
+        WHITELISTED_URIS = initList ["auth.capytal.cc"];
+      };
       federation = {
         ENABLED = true;
       };
