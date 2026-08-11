@@ -270,7 +270,7 @@ in {
         X-Content-Type-Options "nosniff"
         X-XSS-Protection "1; mode=block"
         Referrer-Policy "strict-origin-when-cross-origin"
-        Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' data:; upgrade-insecure-requests; report-to csp-endpoint"
+        Content-Security-Policy "default-src 'self'; worker-src 'self' blob: data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' data:; upgrade-insecure-requests; report-to csp-endpoint"
         -Server
       }
 
