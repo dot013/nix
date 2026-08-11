@@ -15,6 +15,7 @@
       anubis
       capytal-authelia
       capytal-gitea
+      capytal-matrix
       cloudflared
       garage
       minecraft-servers
