@@ -95,10 +95,10 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1785086076,
-        "narHash": "sha256-l7+sWi3AV/UqB7oZ10vpPn33GzSckFelzmf0TohToKI=",
+        "lastModified": 1786307017,
+        "narHash": "sha256-OM9aPhaWnV/oftT8QMtianJ44jhWVrTdfvr9JoobtnA=",
         "ref": "refs/heads/main",
-        "rev": "297f4bfc3d5dea6e74088ce2acd8580918db051c",
+        "rev": "0b0bb8a8aafa63ed529d247cc9d0d60e1dfbea66",
         "revCount": 47,
         "type": "git",
         "url": "https://code.capytal.cc/sixsides/favelasmp"
@@ -250,7 +250,7 @@
     "floodgate-velocity": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-0SWLTuXWz3jdHZz/Knz3NvJZKg39HmhZbOHWkIz9OdI=",
+        "narHash": "sha256-8OAVaDSr5ImryE1d8oWVdIrGe0hLnjf8msca7dn3KR4=",
         "type": "file",
         "url": "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity"
       },
@@ -278,7 +278,7 @@
     "geysermc-velocity": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-UZIaxNuzTedWWGumxPt3KVi65e6nETIrrT+eQPzQJnE=",
+        "narHash": "sha256-xyJYBtdg/BIFE2GXrBSvBdo2Z3zf7Zy/vYLjyDo+MsA=",
         "type": "file",
         "url": "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity"
       },

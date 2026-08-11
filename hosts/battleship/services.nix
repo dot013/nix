@@ -13,11 +13,14 @@
     ++ (with self.nixosModules.services; [
       adguard
       anubis
+      capytal-authelia
       capytal-gitea
       cloudflared
       garage
       minecraft-servers
       nextcloud
+      postgresql
+      valkey
     ]);
 
   services.garage.enable = lib.mkForce false; # Just imported to configure .local domains

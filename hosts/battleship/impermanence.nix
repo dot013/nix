@@ -33,6 +33,14 @@ with lib; {
           mode = "u=rwx,g=rx,o=";
         }
       ]
+      ++ (optionals config.services.lldap.enable [
+        {
+          directory = "/var/lib/lldap";
+          user = "lldap";
+          group = "lldap";
+          mode = "u=rwx,g=rx,o=";
+        }
+      ])
       ++ (optionals config.services.postgresql.enable [
         {
           directory = config.services.postgresql.dataDir;

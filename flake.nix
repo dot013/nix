@@ -261,11 +261,14 @@
       services = {
         adguard = ./services/adguard.nix;
         anubis = ./services/anubis.nix;
+        capytal-authelia = ./services/capytal/authelia.nix;
         capytal-gitea = ./services/capytal/gitea.nix;
         cloudflared = ./services/cloudflared.nix;
         garage = ./services/garage.nix;
         minecraft-servers = ./services/minecraft-servers.nix;
         nextcloud = ./services/nextcloud.nix;
+        postgresql = ./services/postgresql.nix;
+        valkey = ./services/valkey.nix;
       };
     };
 
