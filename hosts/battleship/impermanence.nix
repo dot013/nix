@@ -48,6 +48,22 @@ with lib; {
           group = "postgres";
           mode = "u=rwx,g=rx,o=";
         }
+      ])
+      ++ (optionals (config.services.matrix-continuwuity.enable) [
+        {
+          directory = config.services.matrix-continuwuity.settings.global.database_path;
+          user = config.services.matrix-continuwuity.user;
+          group = config.services.matrix-continuwuity.group;
+          mode = "u=rwx,g=rx,o=";
+        }
+      ])
+      ++ (optionals (config.services.mautrix-discord.enable) [
+        {
+          directory = config.services.mautrix-discord.dataDir;
+          user = "mautrix-discord";
+          group = "mautrix-discord";
+          mode = "u=rwx,g=rx,o=";
+        }
       ]);
     files = [
       "/etc/machine-id"

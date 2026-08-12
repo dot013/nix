@@ -21,6 +21,9 @@ in {
     ])
     ++ (optionals config.services.lldap.enable [
       "lldap"
+    ])
+    ++ (optionals config.services.mautrix-discord.enable [
+      "mautrix-discord"
     ]);
   services.postgresql.ensureUsers =
     []
@@ -33,6 +36,12 @@ in {
     ++ (optionals config.services.lldap.enable [
       {
         name = "lldap";
+        ensureDBOwnership = true;
+      }
+    ])
+    ++ (optionals config.services.mautrix-discord.enable [
+      {
+        name = "mautrix-discord";
         ensureDBOwnership = true;
       }
     ]);
