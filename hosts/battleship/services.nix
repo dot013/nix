@@ -43,15 +43,15 @@
       }
     '';
     "keikos.work:80".extraConfig = ''
-      redir https://kois.work{uri} permanent
-    '';
-    "kois.work:80".extraConfig = ''
       reverse_proxy http://localhost:${toString config.services.keikos.web.port} {
         header_up X-Real-Ip {header.Cf-Connecting-Ip}
         header_up X-Forwarded-For {header.Cf-Connecting-Ip}
         header_up X-Forwarded-Proto https
         header_up Host {host}
       }
+    '';
+    "kois.work:80".extraConfig = ''
+      redir https://kois.work{uri} permanent
     '';
   };
 
