@@ -174,6 +174,14 @@ with lib; {
           ".config/sops/age"
         ]
         # Audacity
+        ++ (optionals (isInstalled "affinity-v3"
+          || isInstalled "affinity-photo"
+          || isInstalled "affinity-designer"
+          || isInstalled "affinity-publisher")) [
+          ".local/share/affinity"
+          ".local/share/affinity-v3"
+        ]
+        # Audacity
         ++ (optionals (isInstalled "audacity" || isInstalled "audacity4")) [
           ".cache/Audacity"
           ".config/Audacity"

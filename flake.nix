@@ -44,6 +44,10 @@
     keikos.url = "git+https://code.capytal.cc/guz013/keikos.work";
     loreddev-gitea.url = "git+https://code.capytal.cc/loreddev/gitea?ref=release/v1.27-loreddev.0";
 
+    affinty-nix = {
+      url = "github:mrshmllow/affinity-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-minecraft = {
       url = "github:infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
