@@ -224,6 +224,10 @@ in {
             url = "https://cdn.modrinth.com/data/S1jG5YV5/versions/ugN1Nbnv/voicechat-discord-fabric-26.1-3.2.0.jar";
             sha512 = "62bac33228875475841834c9a72178333d3ccb336590436a2e2907eed3d112947e95bad9afff23f3fe9aa2fbb1e065ef7396c364b532c61526b07592aa45eff5";
           };
+          "mods/unplugged_afk-v0.2.4-mc26.2.jar" = pkgs.fetchurl {
+            url = "https://cdn.modrinth.com/data/VlR3taCz/versions/xUjF6XFK/unplugged_afk-v0.2.4-mc26.2.jar?mr_download_reason=standalone";
+            hash = "sha256-dtRoqP9VnGxSfNkGRk/nSLKsaIzYA/xB1UsArx3xDQU=";
+          };
         };
       files = let
         createWebhook = {
