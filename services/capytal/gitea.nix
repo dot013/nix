@@ -197,21 +197,38 @@ in {
     minioSecretAccessKey = config.sops.secrets."services/gitea/minio-secret-access-key".path;
   };
 
-  services.gitea-actions-runner.instances = {
+  services.gitea-actions-runner.instances = let
+    labels = [
+      "nix-latest:docker://code.capytal.cc/dot013/nix-runner:latest"
+      "godot-latest:docker://barichello/godot-ci:4.7.1"
+    ];
+    settings = {
+      cache.enabled = true;
+      cache.host = "battleship";
+      cache.port = cfg.settings.server.HTTP_PORT + 100;
+    };
+    tokenFile = config.sops.secrets."services/gitea/actions-token".path;
+    url = cfg.settings.server.ROOT_URL;
+  in {
     "gitea-runner" = {
       enable = true;
       name = "Gitea Runner (${config.networking.hostName}) 1";
-      url = cfg.settings.server.ROOT_URL;
-      tokenFile = config.sops.secrets."services/gitea/actions-token".path;
-      labels = [
-        "nix-latest:docker://code.capytal.cc/dot013/nix-runner:latest"
-        "godot-latest:docker://barichello/godot-ci:4.7.1"
-      ];
-      settings = {
-        cache.enabled = true;
-        cache.host = "battleship";
-        cache.port = cfg.settings.server.HTTP_PORT + 100;
-      };
+      inherit labels settings tokenFile url;
+    };
+    "gitea-runner-2" = {
+      enable = true;
+      name = "Gitea Runner (${config.networking.hostName}) 2";
+      inherit labels settings tokenFile url;
+    };
+    "gitea-runner-3" = {
+      enable = true;
+      name = "Gitea Runner (${config.networking.hostName}) 2";
+      inherit labels settings tokenFile url;
+    };
+    "gitea-runner-4" = {
+      enable = true;
+      name = "Gitea Runner (${config.networking.hostName}) 2";
+      inherit labels settings tokenFile url;
     };
   };
 
