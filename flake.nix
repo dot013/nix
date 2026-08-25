@@ -264,6 +264,7 @@
         capytal-authelia = ./services/capytal/authelia.nix;
         capytal-gitea = ./services/capytal/gitea.nix;
         capytal-matrix = ./services/capytal/matrix.nix;
+        capytal-websites = ./services/capytal/websites.nix;
         cloudflared = ./services/cloudflared.nix;
         garage = ./services/garage.nix;
         minecraft-servers = ./services/minecraft-servers.nix;

@@ -1,0 +1,4 @@
+Contact: mailto:security@capytal.cc
+Canonical: https://capytal.cc/.well-known/security.txt
+Encryption: https://capytal.cc/.well-known/security.pub
+Preferred-Languages: en, pt
