@@ -4,13 +4,14 @@
   inputs,
   pkgs,
   ...
-}: let
+}:
+with lib; let
   cfg = config.services.gitea;
 in {
   services.gitea = {
     enable = true;
     package = inputs.loreddev-gitea.packages.${pkgs.stdenv.hostPlatform.system}.default;
-    settings = with lib; let
+    settings = let
       initList = l: (concatStringsSep "," l);
     in rec {
       DEFAULT = {
@@ -282,22 +283,95 @@ in {
 
   services.caddy.virtualHosts = {
     "${cfg.settings.server.DOMAIN}:80".extraConfig = ''
+      log {
+        level DEBUG
+      }
       header {
         X-Frame-Options "SAMEORIGIN"
         X-Content-Type-Options "nosniff"
         X-XSS-Protection "1; mode=block"
         Referrer-Policy "strict-origin-when-cross-origin"
-        Content-Security-Policy "default-src 'self'; worker-src 'self' blob: data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' data:; upgrade-insecure-requests; report-to csp-endpoint"
+        Content-Security-Policy "${
+        join "; " [
+          "default-src 'self'"
+          "worker-src 'self' blob: data:"
+          "script-src 'self' 'unsafe-inline'"
+          "style-src 'self' 'unsafe-inline'"
+          "img-src https:"
+          "font-src 'self' data:"
+          "upgrade-insecure-requests"
+          "report-to csp-endpoint"
+        ]
+      }"
+        Cross-Origin-Opener-Policy "same-origin"
+        Cross-Origin-Resource-Policy "cross-origin"
+        Cross-Origin-Embedder-Policy "credentialless"
+        Permissions-Policy "${join ", " ([
+          "cross-origin-isolated=(\\\"https://code.capytal.cc\\\")"
+          "encrypted-media=(\\\"https://code.capytal.cc\\\")"
+          "picture-in-picture=(\\\"https://code.capytal.cc\\\")"
+        ]
+        ++ (map (d: "${d}=()") [
+          "accelerometer"
+          "ambient-light-sensor"
+          "attribution-reporting"
+          "bluetooth"
+          "browsing-topics"
+          "camera"
+          "captured-surface-control"
+          "ch-ua-high-entropy-values"
+          "compute-pressure"
+          "cross-origin-isolated"
+          "deferred-fetch"
+          "display-captured"
+          "fullscreen"
+          "gamepad"
+          "geolocation"
+          "gyroscope"
+          "hid"
+          "identity-credentials-get"
+          "idle-detection"
+          "language-detector"
+          "language-model"
+          "local-fonts"
+          "local-network"
+          "local-network-access"
+          "magnetometer"
+          "microphone"
+          "midi"
+          "on-device-speech-recognition"
+          "otp-credentials"
+          "payment"
+          "private-state-token-issuance"
+          "private-state-token-redemption"
+          "publickey-credentials-create"
+          "publickey-credentials-get"
+          "screen-wake-lock"
+          "serial"
+          "speaker-selection"
+          "storage-access"
+          "translator"
+          "summarizer"
+          "usb"
+          "web-share"
+          "window-management"
+          "xr-spatial-tracking"
+        ]))}"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
         -Server
       }
 
       reverse_proxy http://localhost:${toString (cfg.settings.server.HTTP_PORT + 2)} {
-        header_up X-Real-Ip {header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {header.Cf-Connecting-Ip}
+        # header_up X-Real-Ip {header.Cf-Connecting-Ip}
+        # header_up X-Forwarded-For {header.Cf-Connecting-Ip}
         header_up X-Forwarded-Proto https
         header_up X-Http-Version {http.request.proto}
         header_up Host {host}
       }
+    '';
+    "gitea.local".extraConfig = ''
+      reverse_proxy http://localhost:${toString (cfg.settings.server.HTTP_PORT)}
     '';
     "forge.capytal.cc:80".extraConfig = ''
       redir https://code.capytal.cc permanent
