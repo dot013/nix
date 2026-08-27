@@ -88,6 +88,72 @@ in {
 
   services.caddy = {
     virtualHosts."auth.capytal.cc:80".extraConfig = ''
+      import capytal-securitytxt
+
+      log {
+        level DEBUG
+      }
+      header {
+        X-Frame-Options "SAMEORIGIN"
+        X-Content-Type-Options "nosniff"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Cross-Origin-Opener-Policy "same-origin"
+        Cross-Origin-Resource-Policy "cross-origin"
+        Cross-Origin-Embedder-Policy "credentialless"
+        Permissions-Policy "${join ", " ([
+          "cross-origin-isolated=(\\\"https://auth.capytal.cc\\\")"
+          "encrypted-media=(\\\"https://auth.capytal.cc\\\")"
+        ]
+        ++ (map (d: "${d}=()") [
+          "accelerometer"
+          "ambient-light-sensor"
+          "attribution-reporting"
+          "bluetooth"
+          "browsing-topics"
+          "camera"
+          "captured-surface-control"
+          "ch-ua-high-entropy-values"
+          "compute-pressure"
+          "cross-origin-isolated"
+          "deferred-fetch"
+          "display-captured"
+          "fullscreen"
+          "gamepad"
+          "geolocation"
+          "gyroscope"
+          "hid"
+          "identity-credentials-get"
+          "idle-detection"
+          "language-detector"
+          "language-model"
+          "local-fonts"
+          "local-network"
+          "local-network-access"
+          "magnetometer"
+          "microphone"
+          "midi"
+          "on-device-speech-recognition"
+          "otp-credentials"
+          "payment"
+          "picture-in-picture"
+          "private-state-token-issuance"
+          "private-state-token-redemption"
+          "publickey-credentials-create"
+          "publickey-credentials-get"
+          "screen-wake-lock"
+          "serial"
+          "speaker-selection"
+          "storage-access"
+          "translator"
+          "summarizer"
+          "usb"
+          "web-share"
+          "window-management"
+          "xr-spatial-tracking"
+        ]))}"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+      }
       reverse_proxy :9091 {
         header_up X-Real-Ip {header.Cf-Connecting-Ip}
         header_up X-Forwarded-For {header.Cf-Connecting-Ip}
