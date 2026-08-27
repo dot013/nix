@@ -297,7 +297,7 @@ in {
           "worker-src 'self' blob: data:"
           "script-src 'self' 'unsafe-inline'"
           "style-src 'self' 'unsafe-inline'"
-          "img-src https:"
+          "img-src 'self' https: data:"
           "font-src 'self' data:"
           "upgrade-insecure-requests"
           "report-to csp-endpoint"
