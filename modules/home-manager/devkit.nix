@@ -4,7 +4,8 @@
   pkgs,
   self,
   ...
-}: let
+}:
+with lib; let
   devkitPkgs = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit;
 in {
   # Direnv
@@ -81,7 +82,24 @@ in {
       ${lib.getExe config.programs.neovide.package} -- "$@"
     '')
     git-lfs-transfer
+    opencode
   ];
+
+  xdg.configFile."opencode/opencode.json".text = toJSON {
+    provider = {
+      "llama.cpp" = {
+        npm = "@ai-sdk/openai-compatible";
+        name = "Ollama (local)";
+        options.baseURL = "http://localhost:${toString config.services.ollama.port}/v1";
+      };
+      models."llama2" = {
+        name = "Llama 2";
+      };
+    };
+  };
+
+  services.ollama.enable = true;
+  services.ollama.acceleration = "rocm";
 
   home.sessionVariables = {
     EXPLORER = "${lib.getExe config.programs.yazi.package}";
