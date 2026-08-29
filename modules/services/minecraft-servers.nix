@@ -3,7 +3,6 @@
   inputs,
   lib,
   pkgs,
-  self,
   ...
 }:
 with lib;
@@ -15,13 +14,7 @@ with builtins; let
     fromJSON (readFile (pkgs.runCommand "from-yaml" {nativeBuildInputs = [pkgs.remarshal];}
         "remarshal -if yaml -i \"${drv}\" -of json -o \"$out\""));
 in {
-  imports = [
-    self.nixosModules.playit
-    inputs.nix-minecraft.nixosModules.minecraft-servers
-  ];
-
-  services.playit.enable = true;
-  services.playit.secretPath = config.sops.secrets."services/minecraft/playit-secret".path;
+  imports = [inputs.nix-minecraft.nixosModules.minecraft-servers];
 
   services.minecraft-servers.enable = true;
   services.minecraft-servers.eula = true;
@@ -445,6 +438,82 @@ in {
       };
       environment = {
         PORT = toString (cfg.servers."favelasmp".serverProperties.server-port + 110);
+      };
+    };
+
+    playit = {
+      description = "Playit.gg agent";
+      wantedBy = ["multi-user.target"];
+      wants = ["network-online.target"];
+      after = ["network-online.target"];
+      environment = {
+        SECRET_PATH = "%d/secret";
+      };
+      serviceConfig = {
+        ExecStart = let
+          playit-agent = pkgs.callPackage (
+            {
+              fetchFromGitHub,
+              rustPlatform,
+              lib,
+              ...
+            }:
+              with lib;
+                rustPlatform.buildRustPackage rec {
+                  pname = "playit-agent";
+                  version = "0.17.1";
+
+                  src = cleanSource (fetchFromGitHub {
+                    owner = "playit-cloud";
+                    repo = "playit-agent";
+                    rev = "v${version}";
+                    hash = "sha256-kT7NLUcgGM/hxwK4PUDZ71PtYJqjR8i4yj/LhbXX1i0=";
+                  });
+                  cargoLock = {
+                    lockFile = "${src}/Cargo.lock";
+                  };
+
+                  strictDeps = true;
+                  # Requires internet access
+                  doCheck = false;
+
+                  meta = {
+                    description = "The playit program";
+                    license = licenses.bsd2;
+                    mainProgram = "playit-cli";
+                  };
+                }
+          ) {};
+        in ''${
+            lib.getExe playit-agent
+          } --stdout --secret_wait --secret_path "''${SECRET_PATH}" start'';
+        Restart = "on-failure";
+        StateDirectory = "playit";
+        LoadCredential = [
+          "secret:${config.sops.secrets."services/minecraft/playit-secret".path}"
+        ];
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+        ];
+        DeviceAllow = [""];
+        LockPersonality = true;
+        PrivateDevices = true;
+        PrivateTmp = true;
+        PrivateUsers = true;
+        DynamicUser = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        ProtectKernelLogs = true;
+        ProtectControlGroups = true;
+        ProtectSystem = "strict";
+        ProtectHome = "read-only";
+        RestrictSUIDSGID = true;
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        ProtectClock = true;
+        NoNewPrivileges = true;
+        CapabilityBoundingSet = [];
       };
     };
   };
