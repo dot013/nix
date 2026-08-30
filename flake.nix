@@ -270,7 +270,6 @@
         vesktop = ./modules/features/vesktop.nix;
         vivaldi = ./modules/features/vivaldi.nix;
       };
-      godot = ./modules/home-manager/godot.nix;
     };
 
     packages = forAllSystems ({
