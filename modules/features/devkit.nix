@@ -29,6 +29,12 @@
       programs.nix-ld.enable = true;
       programs.nix-ld.libraries = with pkgs; [stdenv.cc.cc];
 
+      # OCI Containers
+      virtualisation.podman.enable = true;
+      virtualisation.podman.dockerCompat = true;
+      virtualisation.podman.dockerSocket.enable = true;
+
+      environment.systemPackages = with pkgs; [podman-compose];
       environment.shells = [
         (getExe devkitPkgs.zsh)
       ];
