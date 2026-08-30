@@ -246,6 +246,7 @@
       };
       features = {
         devkit = (import ./modules/features/devkit.nix).nixos;
+        media = (import ./modules/features/media.nix).nixos;
         flatpak = (import ./modules/features/flatpak.nix).nixos;
         fonts = ./modules/features/fonts.nix;
         gnome = (import ./modules/features/gnome.nix).nixos;
@@ -261,6 +262,7 @@
     homeManagerModules = {
       features = {
         devkit = (import ./modules/features/devkit.nix).homeManager;
+        media = (import ./modules/features/media.nix).homeManager;
         flatpak = (import ./modules/features/flatpak.nix).homeManager;
         gnome = (import ./modules/features/gnome.nix).homeManager;
         zen-browser = ./modules/features/zen-browser.nix;
