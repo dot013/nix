@@ -288,6 +288,10 @@ with lib; {
         ++ (optionals value.programs.zen-browser.enable) [
           ".cache/zen"
           ".config/zen"
+        ]
+        # ZSH
+        ++ (optionals value.programs.zsh.enable) [
+          ".local/state/zsh"
         ];
       files =
         []

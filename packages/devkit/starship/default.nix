@@ -1,15 +1,11 @@
 {
-  symlinkJoin,
-  makeWrapper,
   pkgs,
+  wrapPackage,
+  # Package
   starship ? pkgs.starship,
 }:
-symlinkJoin ({
-    paths = [starship];
-    nativeBuildInputs = [makeWrapper];
-    postBuild = ''
-      wrapProgram $out/bin/starship \
-        --set-default 'STARSHIP_CONFIG' '${./config.toml}'
-    '';
-  }
-  // {inherit (starship) name pname meta;})
+wrapPackage {
+  inherit pkgs;
+  package = starship;
+  env.STARSHIP_CONFIG = ./config.toml;
+}
