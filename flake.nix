@@ -233,7 +233,6 @@
 
     nixosModules = {
       cloudflared-caddy = ./modules/cloudflared-caddy.nix;
-      neovim = inputs.neovim.nixosModules.default;
       services = {
         adguard = ./modules/services/adguard.nix;
         anubis = ./modules/services/anubis.nix;
@@ -271,14 +270,7 @@
         vesktop = ./modules/features/vesktop.nix;
         vivaldi = ./modules/features/vivaldi.nix;
       };
-      devkit = {...}: {
-        imports = [
-          self.homeManagerModules.neovim
-          ./modules/home-manager/devkit.nix
-        ];
-      };
       godot = ./modules/home-manager/godot.nix;
-      neovim = inputs.neovim.homeManagerModules.default;
     };
 
     packages = forAllSystems ({
@@ -292,7 +284,6 @@
       in {
         audacity = callPackage ./packages/audacity.nix {};
         infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
-        neovim = inputs.neovim.packages.${system}.default;
         playit-agent = callPackage ./packages/playit-agent.nix {};
         images = {
           nix-runner = callPackage ./packages/images/nix-runner.nix {nixSrc = inputs.nix;};
