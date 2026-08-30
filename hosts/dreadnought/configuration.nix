@@ -16,6 +16,7 @@
     self.nixosModules.features.devkit
     self.nixosModules.features.flatpak
     self.nixosModules.features.fonts
+    self.nixosModules.features.gaming
     self.nixosModules.features.gnome
     self.nixosModules.features.locale-brazil
     self.nixosModules.features.media
@@ -31,6 +32,7 @@
     imports = [
       self.homeManagerModules.features.devkit
       self.homeManagerModules.features.flatpak
+      self.homeManagerModules.features.gaming
       self.homeManagerModules.features.gnome
       self.homeManagerModules.features.media
       self.homeManagerModules.features.vesktop

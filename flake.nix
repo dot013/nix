@@ -249,6 +249,7 @@
         media = (import ./modules/features/media.nix).nixos;
         flatpak = (import ./modules/features/flatpak.nix).nixos;
         fonts = ./modules/features/fonts.nix;
+        gaming = (import ./modules/features/gaming.nix).nixos;
         gnome = (import ./modules/features/gnome.nix).nixos;
         locale-brazil = ./modules/features/locale-brazil.nix;
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
@@ -264,6 +265,7 @@
         devkit = (import ./modules/features/devkit.nix).homeManager;
         media = (import ./modules/features/media.nix).homeManager;
         flatpak = (import ./modules/features/flatpak.nix).homeManager;
+        gaming = (import ./modules/features/gaming.nix).homeManager;
         gnome = (import ./modules/features/gnome.nix).homeManager;
         zen-browser = ./modules/features/zen-browser.nix;
         vesktop = ./modules/features/vesktop.nix;

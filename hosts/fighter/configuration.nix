@@ -15,6 +15,7 @@
     self.nixosModules.features.fonts
     self.nixosModules.features.gnome
     self.nixosModules.features.locale-brazil
+    self.nixosModules.features.media
     self.nixosModules.features.plymouth
     self.nixosModules.features.preservation
     self.nixosModules.features.qmk-keyboard
@@ -28,9 +29,10 @@
       self.homeManagerModules.features.devkit
       self.homeManagerModules.features.flatpak
       self.homeManagerModules.features.gnome
-      self.homeManagerModules.features.zen-browser
+      self.homeManagerModules.features.media
       self.homeManagerModules.features.vesktop
       self.homeManagerModules.features.vivaldi
+      self.homeManagerModules.features.zen-browser
     ];
 
     features.devkit.full = true;
