@@ -1,30 +1,34 @@
 {
-  symlinkJoin,
-  makeWrapper,
-  pkgs,
   lib,
+  pkgs,
+  wrapPackage,
+  # Package
   git ? pkgs.git,
+  pager ? pkgs.delta,
 }:
-symlinkJoin ({
-    paths = [git];
-    nativeBuildInputs = [makeWrapper];
-    postBuild = ''
-      wrapProgram $out/bin/git \
-        --set-default 'GIT_CONFIG_COUNT' 7 \
-        --set-default 'GIT_CONFIG_KEY_0' 'core.pager' \
-        --set-default 'GIT_CONFIG_VALUE_0' '${lib.getExe pkgs.delta}' \
-        --set-default 'GIT_CONFIG_KEY_1' 'credentials.helper' \
-        --set-default 'GIT_CONFIG_VALUE_1' 'store' \
-        --set-default 'GIT_CONFIG_KEY_2' 'interactive.diffFilter' \
-        --set-default 'GIT_CONFIG_VALUE_2' '${lib.getExe pkgs.delta} --color-only' \
-        --set-default 'GIT_CONFIG_KEY_3' 'signing.signByDefault' \
-        --set-default 'GIT_CONFIG_VALUE_3' 'true' \
-        --set-default 'GIT_CONFIG_KEY_4' 'user.email' \
-        --set-default 'GIT_CONFIG_VALUE_4' 'contact@guz.one' \
-        --set-default 'GIT_CONFIG_KEY_5' 'user.name' \
-        --set-default 'GIT_CONFIG_VALUE_5' 'Gustavo "Guz" L de Mello' \
-        --set-default 'GIT_CONFIG_KEY_6' 'commit.gpgsign' \
-        --set-default 'GIT_CONFIG_VALUE_6' 'true'
-    '';
+with lib;
+  wrapPackage {
+    inherit pkgs;
+    package = git;
+    env =
+      pipe {
+        "core.pager" = getExe pager;
+        "credentials.helper" = "store";
+        "interactive.diffFilter" = "${getExe pager} --color-only";
+        "signing.signByDefault" = "true";
+        "user.email" = "contact@guz.one";
+        "user.name" = ''Gustavo \"Guz\" L de Mello'';
+        "commit.gpgsign" = "true";
+      } [
+        attrsToList
+        (imap0 (i: c: {
+          "GIT_CONFIG_KEY_${toString i}" = c.name;
+          "GIT_CONFIG_VALUE_${toString i}" = c.value;
+        }))
+        (l:
+          {
+            GIT_CONFIG_COUNT = length l;
+          }
+          // (mergeAttrsList l))
+      ];
   }
-  // {inherit (git) name pname meta;})

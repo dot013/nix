@@ -35,15 +35,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # heart-modpack = {
-    #   url = "git+ssh://gitea@spacestation/heart/modpack.git";
-    #   # url = "git+file:///home/guz/.projects/heart-modpack";
-    # };
+    capytalcc.url = "git+https://code.capytal.cc/capytal/capytal.cc";
     favelasmp.url = "git+https://code.capytal.cc/sixsides/favelasmp";
     guzone.url = "git+https://code.capytal.cc/dot013/guz.one";
     keikos.url = "git+https://code.capytal.cc/guz013/keikos.work";
     loreddev-gitea.url = "git+https://code.capytal.cc/loreddev/gitea?ref=release/v1.27-loreddev.0";
 
+    affinty-nix = {
+      url = "github:mrshmllow/affinity-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-minecraft = {
       url = "github:infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -86,22 +87,42 @@
       "x86_64-darwin"
       "aarch64-darwin"
     ];
-    nixpkgsUnfree = {
-      config,
-      lib,
-      ...
-    }:
-      with lib; let
-        list = config.nix.allowUnfreeList;
-      in {
-        options.nix.allowUnfreeList = mkOption {
-          type = with types; listOf str;
+    # Modules that all other modules expect to be imported/available
+    commonModules = [
+      ({...}: {
+        nix.settings.experimental-features = ["nix-command" "flakes"];
+      })
+      # "Cozy" Module
+      ({
+        config,
+        lib,
+        ...
+      }: {
+        options.nix.allowUnfreeList = lib.mkOption {
+          type = with lib.types; listOf str;
           default = [];
         };
         config.nixpkgs.config.allowUnfreePredicate = p:
-          builtins.elem (getName p) list;
-      };
-    commonModules = [nixpkgsUnfree];
+          builtins.elem (lib.getName p) config.nix.allowUnfreeList;
+      })
+      # Home-Manager setup
+      ({pkgs-unstable, ...}: {
+        imports = [
+          inputs.home-manager.nixosModules.default
+        ];
+        home-manager.backupFileExtension = "bkp";
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs = {
+          inherit inputs;
+          inherit (inputs) self;
+          inherit pkgs-unstable;
+        };
+      })
+      # Stylix
+      inputs.stylix.nixosModules.stylix
+      ./style.nix
+    ];
     forAllSystems = f:
       nixpkgs.lib.genAttrs systems (system: let
         pkgs = import nixpkgs {inherit system;};
@@ -116,6 +137,8 @@
           system = pkgs.stdenv.hostPlatform.system;
         });
   in {
+    lib = import ./lib {lib = nixpkgs.lib;};
+
     formatter = forAllSystems ({pkgs, ...}: pkgs.alejandra);
 
     nixosConfigurations = {
@@ -129,14 +152,7 @@
           };
           inherit inputs self;
         };
-        modules =
-          [
-            ./hosts/dreadnought/configuration.nix
-            ./home/terminal/configuration.nix
-            inputs.stylix.nixosModules.stylix
-            ./style.nix
-          ]
-          ++ commonModules;
+        modules = [./hosts/dreadnought/configuration.nix] ++ commonModules;
       };
       "battleship" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
@@ -148,13 +164,7 @@
           };
           inherit inputs self;
         };
-        modules =
-          [
-            ./hosts/battleship/configuration.nix
-            ./home/worm/configuration.nix
-            {users.users."guz".openssh.authorizedKeys.keyFiles = [./.ssh/battleship.pub];}
-          ]
-          ++ commonModules;
+        modules = [./hosts/battleship/configuration.nix] ++ commonModules;
       };
       "fighter" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
@@ -166,33 +176,7 @@
           };
           inherit inputs self;
         };
-        modules =
-          [
-            ./hosts/fighter/configuration.nix
-            ./home/terminal/configuration.nix
-            inputs.stylix.nixosModules.stylix
-            ./style.nix
-          ]
-          ++ commonModules;
-      };
-      "rusty" = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        specialArgs = {
-          pkgs-unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
-            config.allowUnfreePredicate = _: true;
-          };
-          inherit inputs self;
-        };
-        modules =
-          [
-            ./hosts/lost-home/configuration.nix
-            ./home/terminal/configuration.nix
-            inputs.stylix.nixosModules.stylix
-            ./style.nix
-          ]
-          ++ commonModules;
+        modules = [./hosts/fighter/configuration.nix] ++ commonModules;
       };
       "infiltrator" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
@@ -204,11 +188,7 @@
           };
           inherit inputs self;
         };
-        modules =
-          [
-            ./hosts/infriltrator/configuration.nix
-          ]
-          ++ commonModules;
+        modules = [./hosts/infriltrator/configuration.nix] ++ commonModules;
       };
       "spacestation" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
@@ -220,13 +200,7 @@
           };
           inherit inputs self;
         };
-        modules =
-          [
-            ./hosts/spacestation/configuration.nix
-            ./home/worm/configuration.nix
-            {users.users."guz".openssh.authorizedKeys.keyFiles = [./.ssh/spacestation.pub];}
-          ]
-          ++ commonModules;
+        modules = [./hosts/spacestation/configuration.nix] ++ commonModules;
       };
     };
 
@@ -256,33 +230,47 @@
 
     nixosModules = {
       cloudflared-caddy = ./modules/cloudflared-caddy.nix;
-      neovim = inputs.neovim.nixosModules.default;
-      playit = ./modules/playit.nix;
       services = {
-        adguard = ./services/adguard.nix;
-        anubis = ./services/anubis.nix;
-        capytal-authelia = ./services/capytal/authelia.nix;
-        capytal-gitea = ./services/capytal/gitea.nix;
-        capytal-matrix = ./services/capytal/matrix.nix;
-        capytal-websites = ./services/capytal/websites.nix;
-        cloudflared = ./services/cloudflared.nix;
-        garage = ./services/garage.nix;
-        minecraft-servers = ./services/minecraft-servers.nix;
-        nextcloud = ./services/nextcloud.nix;
-        postgresql = ./services/postgresql.nix;
-        valkey = ./services/valkey.nix;
+        adguard = ./modules/services/adguard.nix;
+        anubis = ./modules/services/anubis.nix;
+        capytal-authelia = ./modules/services/capytal/authelia.nix;
+        capytal-gitea = ./modules/services/capytal/gitea.nix;
+        capytal-matrix = ./modules/services/capytal/matrix.nix;
+        capytal-websites = ./modules/services/capytal/websites.nix;
+        cloudflared = ./modules/services/cloudflared.nix;
+        garage = ./modules/services/garage.nix;
+        minecraft-servers = ./modules/services/minecraft-servers.nix;
+        nextcloud = ./modules/services/nextcloud.nix;
+        postgresql = ./modules/services/postgresql.nix;
+        valkey = ./modules/services/valkey.nix;
+      };
+      features = {
+        devkit = (import ./modules/features/devkit.nix).nixos;
+        media = (import ./modules/features/media.nix).nixos;
+        flatpak = (import ./modules/features/flatpak.nix).nixos;
+        fonts = ./modules/features/fonts.nix;
+        gaming = (import ./modules/features/gaming.nix).nixos;
+        gnome = (import ./modules/features/gnome.nix).nixos;
+        locale-brazil = ./modules/features/locale-brazil.nix;
+        qmk-keyboard = ./modules/features/qmk-keyboard.nix;
+        plymouth = ./modules/features/plymouth.nix;
+        preservation = ./modules/features/preservation.nix;
+        sddm = ./modules/features/sddm.nix;
+        tailscale = ./modules/features/tailscale.nix;
       };
     };
 
     homeManagerModules = {
-      devkit = {...}: {
-        imports = [
-          self.homeManagerModules.neovim
-          ./modules/home-manager/devkit.nix
-        ];
+      features = {
+        devkit = (import ./modules/features/devkit.nix).homeManager;
+        media = (import ./modules/features/media.nix).homeManager;
+        flatpak = (import ./modules/features/flatpak.nix).homeManager;
+        gaming = (import ./modules/features/gaming.nix).homeManager;
+        gnome = (import ./modules/features/gnome.nix).homeManager;
+        zen-browser = ./modules/features/zen-browser.nix;
+        vesktop = ./modules/features/vesktop.nix;
+        vivaldi = ./modules/features/vivaldi.nix;
       };
-      godot = ./modules/home-manager/godot.nix;
-      neovim = inputs.neovim.homeManagerModules.default;
     };
 
     packages = forAllSystems ({
@@ -290,71 +278,72 @@
       pkgs,
       system,
       ...
-    }: rec {
-      audacity = pkgs.callPackage ./packages/audacity.nix {};
-      cal-sans = pkgs.callPackage ./packages/cal-sans.nix {};
-      infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
-      neovim = inputs.neovim.packages.${system}.default;
-      playit-agent = pkgs.callPackage ./packages/playit-agent.nix {};
-      images = {
-        nix-runner = pkgs.callPackage ./packages/images/nix-runner.nix {nixSrc = inputs.nix;};
-      };
-      devkit = {
-        ghostty = pkgs.callPackage ./packages/devkit/ghostty.nix {
-          command = "${lib.getExe devkit.zsh}";
+    }:
+      with lib; let
+        inherit (pkgs) callPackage;
+      in {
+        audacity = callPackage ./packages/audacity.nix {};
+        infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
+        playit-agent = callPackage ./packages/playit-agent.nix {};
+        images = {
+          nix-runner = callPackage ./packages/images/nix-runner.nix {nixSrc = inputs.nix;};
         };
-        git = pkgs.callPackage ./packages/devkit/git.nix {};
-        lazygit = pkgs.callPackage ./packages/devkit/lazygit.nix {};
-        starship = pkgs.callPackage ./packages/devkit/starship {};
-        yazi = pkgs.callPackage ./packages/devkit/yazi {};
-        zellij = pkgs.callPackage ./packages/devkit/zellij {};
-        zsh = pkgs.callPackage ./packages/devkit/zsh {};
-        neovim = self.packages.${system}.neovim;
-      };
-    });
+        devkit = let
+          callWrapper = p: as: callPackage p (as // {inherit (self.lib) wrapPackage;});
+        in rec {
+          ghostty = callWrapper ./packages/devkit/ghostty.nix {command = "${getExe zellij}";};
+          git = callWrapper ./packages/devkit/git.nix {};
+          lazygit = callWrapper ./packages/devkit/lazygit.nix {};
+          lynx = callWrapper ./packages/devkit/lynx.nix {};
+          starship = callWrapper ./packages/devkit/starship {};
+          yazi = callWrapper ./packages/devkit/yazi {};
+          zellij = callWrapper ./packages/devkit/zellij {
+            neovim = inputs.neovim.packages.${system}.neovim;
+            inherit git lazygit lynx starship yazi zsh;
+          };
+          zsh = callWrapper ./packages/devkit/zsh.nix {
+            neovim = inputs.neovim.packages.${system}.neovim;
+            inherit git lazygit lynx starship yazi;
+          };
+        };
+      });
 
     devShells = forAllSystems ({
       lib,
       pkgs,
       system,
       ...
-    }: {
-      devkit = pkgs.mkShell {
-        name = "devkit-shell";
-        packages = with self.packages.${system}.devkit; [
-          ghostty
-          git
-          lazygit
-          starship
-          yazi
-          zellij
-          zsh
-          neovim
-        ];
-        shellHook = "${lib.getExe self.packages.${system}.devkit.zsh}";
-        EDITOR = "${lib.getExe self.packages.${system}.devkit.neovim}";
-      };
-      default = pkgs.mkShell {
-        name = "devkit-shell";
-        packages = with self.packages.${system}.devkit; [
-          ghostty
-          git
-          lazygit
-          starship
-          yazi
-          zellij
-          zsh
-          neovim
-        ];
-        shellHook = ''
-          echo '${lib.toJSON {
-            workspace = {
-              library = ["${pkgs.hyprland}/share/hypr/stubs"];
-            };
-          }}' > ./.luarc.json
-
-        '';
-      };
-    });
+    }:
+      with lib; {
+        devkit = pkgs.mkShell {
+          name = "devkit-shell";
+          packages = with self.packages.${system}.devkit; [
+            ghostty
+            git
+            lazygit
+            lynx
+            starship
+            yazi
+            zellij
+            zsh
+            inputs.neovim.packages.${system}.neovim
+          ];
+          shellHook = "${getExe self.packages.${system}.devkit.zsh}";
+          EDITOR = "${getExe inputs.neovim.packages.${system}.neovim}";
+        };
+        default = pkgs.mkShell {
+          name = "devkit-shell";
+          packages = with self.packages.${system}.devkit; [
+            ghostty
+            git
+            lazygit
+            starship
+            yazi
+            zellij
+            zsh
+            inputs.neovim.packages.${system}.neovim
+          ];
+        };
+      });
   };
 }

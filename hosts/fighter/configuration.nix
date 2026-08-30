@@ -2,24 +2,57 @@
   inputs,
   lib,
   pkgs,
+  self,
   ...
 }: {
   imports = [
-    ./disko.nix
     inputs.disko.nixosModules.disko
-    ./impermanence.nix
-
+    ./disko.nix
     ./hardware-configuration.nix
+
+    self.nixosModules.features.devkit
+    self.nixosModules.features.flatpak
+    self.nixosModules.features.fonts
+    self.nixosModules.features.gnome
+    self.nixosModules.features.locale-brazil
+    self.nixosModules.features.media
+    self.nixosModules.features.plymouth
+    self.nixosModules.features.preservation
+    self.nixosModules.features.qmk-keyboard
+    self.nixosModules.features.sddm
+    self.nixosModules.features.tailscale
   ];
 
-  # GnuPG keyring
-  programs.gnupg.agent = {
-    enable = true;
-    pinentryPackage = pkgs.pinentry-gtk2;
-    settings.default-cache-ttl = 3600 * 24;
+  # Home Manager
+  home-manager.users."guz" = {...}: {
+    imports = [
+      self.homeManagerModules.features.devkit
+      self.homeManagerModules.features.flatpak
+      self.homeManagerModules.features.gnome
+      self.homeManagerModules.features.media
+      self.homeManagerModules.features.vesktop
+      self.homeManagerModules.features.vivaldi
+      self.homeManagerModules.features.zen-browser
+    ];
+
+    features.devkit.full = true;
+
+    home.stateVersion = "25.11";
   };
 
-  # Yet another nix cli helper
+  nix.allowUnfreeList = ["vivaldi"];
+
+  # Users
+  users.users."guz" = {
+    extraGroups = ["wheel" "guz"];
+    isNormalUser = true;
+    password = "1313";
+    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
+    shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
+  };
+  users.groups."guz" = {};
+
+  # NH
   programs.nh = {
     enable = true;
     clean.enable = true;
@@ -27,63 +60,12 @@
     flake = "/home/guz/Projects/dot013-nix";
   };
 
-  # QMK keyboard
-  hardware.keyboard.qmk.enable = true;
-  services.udev.packages = with pkgs; [via vial];
-
-  # Pipewire
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  # Tailscale
-  services.tailscale.enable = true;
-
-  # Networking
-  networking.hostName = "lost-home";
+  # Network
   networking.networkmanager.enable = true;
+  networking.hostName = "fighter";
 
-  # Firewall
+  ## Firewall
   networking.firewall.enable = true;
-  networking.firewall.allowedUDPPorts = [53];
-  networking.firewall.allowedTCPPorts = [80 433];
-
-  # SSH
-  services.openssh.enable = true;
-  services.openssh.settings = {
-    PasswordAuthentication = false;
-    PermitRootLogin = "forced-commands-only";
-  };
-
-  # Locale
-  time.timeZone = "America/Sao_Paulo";
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = let
-    locale = "pt_BR.UTF-8";
-  in {
-    LC_ADDRESS = locale;
-    LC_IDENTIFICATION = locale;
-    LC_MEASUREMENT = locale;
-    LC_MONETARY = locale;
-    LC_NAME = locale;
-    LC_NUMERIC = locale;
-    LC_PAPER = locale;
-    LC_TELEPHONE = locale;
-    LC_TIME = locale;
-  };
-
-  # Keyboard
-  services.xserver.xkb.layout = "br";
-  console.keyMap = "br-abnt2";
-
-  security.polkit.enable = true;
-
-  # Nix
-  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Bootloader
   boot.loader.grub.enable = lib.mkForce true;
