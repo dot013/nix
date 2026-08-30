@@ -137,6 +137,8 @@
           system = pkgs.stdenv.hostPlatform.system;
         });
   in {
+    lib = import ./lib {lib = nixpkgs.lib;};
+
     formatter = forAllSystems ({pkgs, ...}: pkgs.alejandra);
 
     nixosConfigurations = {
