@@ -35,10 +35,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # heart-modpack = {
-    #   url = "git+ssh://gitea@spacestation/heart/modpack.git";
-    #   # url = "git+file:///home/guz/.projects/heart-modpack";
-    # };
+    capytalcc.url = "git+https://code.capytal.cc/capytal/capytal.cc";
     favelasmp.url = "git+https://code.capytal.cc/sixsides/favelasmp";
     guzone.url = "git+https://code.capytal.cc/dot013/guz.one";
     keikos.url = "git+https://code.capytal.cc/guz013/keikos.work";
