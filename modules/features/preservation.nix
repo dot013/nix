@@ -2,8 +2,6 @@
   config,
   inputs,
   lib,
-  pkgs,
-  pkgs-unstable,
   ...
 }:
 with lib; {
@@ -58,6 +56,21 @@ with lib; {
               })
               settings.data_dir
           )))
+      # Gitea
+      ++ (optionals config.services.gitea.enable [
+        {
+          directory = config.services.gitea.repositoryRoot;
+          user = config.services.gitea.user;
+          group = config.services.gitea.group;
+          mode = "u=rwx,g=rx,o=";
+        }
+        {
+          directory = config.services.gitea.stateDir;
+          user = config.services.gitea.user;
+          group = config.services.gitea.group;
+          mode = "u=rwx,g=rx,o=";
+        }
+      ])
       # LLDAP
       ++ (optionals config.services.lldap.enable [
         {
@@ -285,7 +298,7 @@ with lib; {
           ".config/zellij"
         ]
         # Zen Browser
-        ++ (optionals value.programs.zen-browser.enable) [
+        ++ (optionals (value.programs?zen-browser && value.programs.zen-browser.enable)) [
           ".cache/zen"
           ".config/zen"
         ]
