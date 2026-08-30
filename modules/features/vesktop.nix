@@ -1,4 +1,10 @@
-{pkgs, ...}: {
+{
+  lib,
+  options,
+  pkgs,
+  ...
+}:
+with lib; {
   # Vesktop (Discord)
   programs.vesktop.enable = true;
   programs.vesktop.vencord = {
@@ -28,5 +34,12 @@
         hash = "sha256-ouHW4KL+Jn5ERfFRcw7n15bWnzea7/lCLr4h0PsPQA8=";
       };
     };
+  };
+
+  services = mkIf (options.services?flatpak) {
+    flatpak.packages = [
+      "io.github.wartybix.Constrict"
+      "com.protonvpn.www"
+    ];
   };
 }
