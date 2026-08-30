@@ -1,0 +1,15 @@
+root = true
+
+[*.nix]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+max_line_length = 120
+trim_trailinng_whitespace = true
+
+[{*.{yml,yaml},]
+indent_size = 2
+indent_style = space
+
