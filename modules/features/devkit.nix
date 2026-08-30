@@ -23,8 +23,11 @@
         PasswordAuthentication = false;
         PermitRootLogin = "forced-commands-only";
       };
-
       programs.mosh.enable = mkDefault true;
+
+      # Nix LD (Useful for devlopment)
+      programs.nix-ld.enable = true;
+      programs.nix-ld.libraries = with pkgs; [stdenv.cc.cc];
 
       environment.shells = [
         (getExe devkitPkgs.zsh)
