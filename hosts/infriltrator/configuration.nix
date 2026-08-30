@@ -5,45 +5,54 @@
   pkgs,
   self,
   ...
-}: {
+}:
+with lib; {
   imports = [
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
+
+    self.nixosModules.features.devkit
+    self.nixosModules.features.locale-brazil
+    self.nixosModules.features.qmk-keyboard
+    self.nixosModules.features.tailscale
   ];
 
-  networking.hostName = "infiltrator";
+  # Home Manager
+  home-manager.users."guz" = {...}: {
+    imports = [self.homeManagerModules.features.devkit];
+    services.ollama.enable = mkForce false;
+    home.stateVersion = "26.05";
+  };
 
-  environment.systemPackages =
-    [
+  # Users
+  users.users."guz" = {
+    extraGroups = ["wheel" "guz"];
+    isNormalUser = true;
+    password = "1313";
+    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
+    shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
+    packages = [
       inputs.disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
       inputs.disko.packages.${pkgs.stdenv.hostPlatform.system}.disko-install
+    ];
+  };
+  users.groups."guz" = {};
 
-      (pkgs.callPackage (
-        {
-          symlinkJoin,
-          fastfetchMinimal,
-          makeWrapper,
-          ...
-        }:
-          symlinkJoin ({
-              paths = [fastfetchMinimal];
-              nativeBuildInputs = [makeWrapper];
-              postBuild = "wrapProgram $out/bin/fastfetch --add-flags '-l ${../../static/infiltrator.txt} --color red'";
-            }
-            // {inherit (fastfetchMinimal) name passthru pname version;})
-      ) {})
-    ]
-    ++ (with self.packages.${pkgs.stdenv.hostPlatform.system}.devkit; [
-      git
-      lazygit
-      neovim
-      starship
-      yazi
-      zellij
-      zsh
-    ]);
+  # Network
+  networking.networkmanager.enable = true;
+  networking.hostName = "infiltrator";
 
-  programs.zsh.enable = true;
-  users.users.root.shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
+  ## Firewall
+  networking.firewall.enable = true;
+
+  services.ollama.enable = mkForce false;
+
+  # NH
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 7d --keep 3";
+    flake = "/etc/nixos";
+  };
 
   environment.etc = with lib; let
     joinPath = p: strings.normalizePath (join "/" (map (v: toString v) p));
@@ -82,39 +91,11 @@
       listToAttrs
     ];
 
-  # Locale
-  time.timeZone = "America/Sao_Paulo";
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = rec {
-    LC_ADDRESS = "pt_BR.UTF-8";
-    LC_IDENTIFICATION = LC_ADDRESS;
-    LC_MEASUREMENT = LC_ADDRESS;
-    LC_MONETARY = LC_ADDRESS;
-    LC_NAME = LC_ADDRESS;
-    LC_NUMERIC = LC_ADDRESS;
-    LC_PAPER = LC_ADDRESS;
-    LC_TELEPHONE = LC_ADDRESS;
-    LC_TIME = LC_ADDRESS;
-  };
-
-  # Keyboard
-  services.xserver.xkb.layout = "br";
-  console.keyMap = "br-abnt2";
-
-  # QMK keyboard
-  hardware.keyboard.qmk.enable = true;
-  services.udev.packages = with pkgs; [via vial];
-
-  # Nix
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
-  nix.allowUnfreeList = ["via"];
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "26.05"; # Did you read the comment?
 }

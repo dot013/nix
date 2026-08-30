@@ -122,6 +122,9 @@
           inherit pkgs-unstable;
         };
       })
+      # Stylix
+      inputs.stylix.nixosModules.stylix
+      ./style.nix
     ];
     forAllSystems = f:
       nixpkgs.lib.genAttrs systems (system: let
@@ -189,14 +192,7 @@
           };
           inherit inputs self;
         };
-        modules =
-          [
-            ./hosts/fighter/configuration.nix
-            # ./home/console/configuration.nix
-            inputs.stylix.nixosModules.stylix
-            ./style.nix
-          ]
-          ++ commonModules;
+        modules = [./hosts/fighter/configuration.nix] ++ commonModules;
       };
       "infiltrator" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
@@ -208,11 +204,7 @@
           };
           inherit inputs self;
         };
-        modules =
-          [
-            ./hosts/infriltrator/configuration.nix
-          ]
-          ++ commonModules;
+        modules = [./hosts/infriltrator/configuration.nix] ++ commonModules;
       };
       "spacestation" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
