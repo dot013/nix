@@ -343,14 +343,6 @@
             zsh
             inputs.neovim.packages.${system}.neovim
           ];
-          shellHook = ''
-            echo '${lib.toJSON {
-              workspace = {
-                library = ["${pkgs.hyprland}/share/hypr/stubs"];
-              };
-            }}' > ./.luarc.json
-
-          '';
         };
       });
   };
