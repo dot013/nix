@@ -34,6 +34,8 @@
       self.homeManagerModules.features.vivaldi
     ];
 
+    features.devkit.full = true;
+
     home.stateVersion = "25.11";
   };
 
