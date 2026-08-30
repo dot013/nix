@@ -18,6 +18,7 @@
   git ? pkgs.git,
   fzf ? pkgs.fzf,
   lazygit ? pkgs.lazygit,
+  lynx ? pkgs.lynx,
   neovim ? pkgs.neovim,
   starship ? pkgs.starship,
   yazi ? pkgs.yazi,
@@ -35,6 +36,7 @@ with lib;
       git
       fzf
       lazygit
+      lynx
       neovim
       yazi
     ];

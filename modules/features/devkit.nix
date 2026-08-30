@@ -1,5 +1,6 @@
 {
   nixos = {
+    inputs,
     lib,
     pkgs,
     self,
@@ -8,12 +9,19 @@
     with lib; let
       devkitPkgs = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit;
     in {
-      imports = [self.nixosModules.neovim];
+      imports = [inputs.neovim.nixosModules.default];
 
       programs.gnupg.agent = {
         enable = true;
         pinentryPackage = pkgs.pinentry-gtk2;
         settings.default-cache-ttl = 3600 * 24;
+      };
+
+      # SSH
+      services.openssh.enable = true;
+      services.openssh.settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "forced-commands-only";
       };
 
       programs.mosh.enable = mkDefault true;
@@ -36,7 +44,7 @@
     with lib; let
       devkitPkgs = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit;
     in {
-      imports = [self.homeManagerModules.neovim];
+      imports = [inputs.neovim.homeManagerModules.default];
 
       # Direnv
       programs.direnv = {
@@ -141,6 +149,8 @@
 
       # Godot
       home.packages = with pkgs-unstable; [
+        devkitPkgs.lynx
+
         godot
         opencode
       ];
@@ -166,8 +176,8 @@
         };
       };
 
-      services.ollama.enable = true;
-      services.ollama.acceleration = "rocm";
+      services.ollama.enable = mkDefault true;
+      services.ollama.acceleration = mkDefault "rocm";
 
       home.sessionVariables = {
         EXPLORER = "${getExe config.programs.yazi.package}";

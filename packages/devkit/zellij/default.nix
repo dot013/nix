@@ -7,6 +7,7 @@
   # Runtime Inputs
   git ? pkgs.git,
   lazygit ? pkgs.lazygit,
+  lynx ? pkgs.lynx,
   neovim ? pkgs.neovim,
   starship ? pkgs.starship,
   yazi ? pkgs.yazi,
@@ -16,7 +17,7 @@ with lib;
   wrapPackage {
     inherit pkgs;
     package = zellij;
-    runtimeInputs = [git lazygit neovim starship yazi zsh];
+    runtimeInputs = [git lazygit lynx neovim starship yazi zsh];
     env.ZELLIJ_CONFIG_FILE = let
       colors = import ../colors.nix;
     in
