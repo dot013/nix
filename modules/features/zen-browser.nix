@@ -15,6 +15,8 @@ with lib; {
     config.programs.zen-browser.package
   ];
 
+  stylix.targets.zen-browser.profileNames = ["default"];
+
   programs.zen-browser = rec {
     enable = true;
     profiles."default" = {
