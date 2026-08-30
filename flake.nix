@@ -155,14 +155,7 @@
           };
           inherit inputs self;
         };
-        modules =
-          [
-            ./hosts/dreadnought/configuration.nix
-            ./home/terminal/configuration.nix
-            inputs.stylix.nixosModules.stylix
-            ./style.nix
-          ]
-          ++ commonModules;
+        modules = [./hosts/dreadnought/configuration.nix] ++ commonModules;
       };
       "battleship" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
