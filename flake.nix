@@ -331,6 +331,7 @@
           ghostty = callWrapper ./packages/devkit/ghostty.nix {command = "${getExe zellij}";};
           git = callWrapper ./packages/devkit/git.nix {};
           lazygit = callWrapper ./packages/devkit/lazygit.nix {};
+          lynx = callWrapper ./packages/devkit/lynx.nix {};
           starship = callWrapper ./packages/devkit/starship {};
           yazi = callWrapper ./packages/devkit/yazi {};
           zellij = callWrapper ./packages/devkit/zellij {
@@ -357,6 +358,7 @@
             ghostty
             git
             lazygit
+            lynx
             starship
             yazi
             zellij
