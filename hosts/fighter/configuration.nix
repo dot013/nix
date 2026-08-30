@@ -6,7 +6,6 @@
   ...
 }: {
   imports = [
-    inputs.home-manager.nixosModules.default
     inputs.disko.nixosModules.disko
     ./disko.nix
 
@@ -58,30 +57,12 @@
     flake = "/home/guz/Projects/dot013-nix";
   };
 
-  # Pipewire
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  # SSH
-  services.openssh.enable = true;
-  services.openssh.settings = {
-    PasswordAuthentication = false;
-    PermitRootLogin = "forced-commands-only";
-  };
-
   # Network
   networking.networkmanager.enable = true;
   networking.hostName = "fighter";
 
   ## Firewall
   networking.firewall.enable = true;
-  # networking.firewall.allowedUDPPorts = [53];
-  # networking.firewall.allowedTCPPorts = [80 433];
 
   # Bootloader
   boot.loader.grub.enable = lib.mkForce true;
