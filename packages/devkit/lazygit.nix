@@ -1,40 +1,37 @@
 {
-  symlinkJoin,
-  makeWrapper,
-  pkgs,
   lib,
+  pkgs,
+  wrapPackage,
+  writers,
+  # Package
   lazygit ? pkgs.lazygit,
-  settings ? {},
+  pager ? pkgs.delta,
 }:
-symlinkJoin ({
-    paths = [lazygit];
-    nativeBuildInputs = [makeWrapper];
-    postBuild = ''
-      wrapProgram $out/bin/lazygit \
-        --add-flags '--use-config-file' \
-        --add-flags '${pkgs.writeText "config.yml" (builtins.toJSON ({
+with lib;
+  wrapPackage {
+    inherit pkgs;
+    package = lazygit;
+    flags = {
+      "--use-config-file" =
+        writers.writeJSON "config"
+        {
           git.pagers = [
             {
               colorArg = "always";
-              pager = "${lib.getExe pkgs.delta} --dark --paging=never";
+              pager = "${getExe pager} --dark --paging=never";
             }
           ];
-          gui.theme = let
-            colors = import ./colors.nix;
-          in
-            with colors; {
-              activeBorderColor = [base07 "bold"];
-              inactiveBorderColor = [base04];
-              searchingActiveBorderColor = [base02 "bold"];
-              optionsTextColor = [base06];
-              selectedLineBgColor = [base03];
-              cherryPickedCommitBgColor = [base02];
-              cherryPickedCommitFgColor = [base03];
-              unstagedChangesColor = [base08];
-              defaultFgColor = [base05];
-            };
-        }
-        // settings))}'
-    '';
+          gui.theme = with (import ./colors.nix); {
+            activeBorderColor = [base07 "bold"];
+            inactiveBorderColor = [base04];
+            searchingActiveBorderColor = [base02 "bold"];
+            optionsTextColor = [base06];
+            selectedLineBgColor = [base03];
+            cherryPickedCommitBgColor = [base02];
+            cherryPickedCommitFgColor = [base03];
+            unstagedChangesColor = [base08];
+            defaultFgColor = [base05];
+          };
+        };
+    };
   }
-  // {inherit (lazygit) name pname meta;})

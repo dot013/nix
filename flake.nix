@@ -313,71 +313,80 @@
       pkgs,
       system,
       ...
-    }: rec {
-      audacity = pkgs.callPackage ./packages/audacity.nix {};
-      cal-sans = pkgs.callPackage ./packages/cal-sans.nix {};
-      infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
-      neovim = inputs.neovim.packages.${system}.default;
-      playit-agent = pkgs.callPackage ./packages/playit-agent.nix {};
-      images = {
-        nix-runner = pkgs.callPackage ./packages/images/nix-runner.nix {nixSrc = inputs.nix;};
-      };
-      devkit = {
-        ghostty = pkgs.callPackage ./packages/devkit/ghostty.nix {
-          command = "${lib.getExe devkit.zsh}";
+    }:
+      with lib; let
+        inherit (pkgs) callPackage;
+      in {
+        audacity = callPackage ./packages/audacity.nix {};
+        cal-sans = callPackage ./packages/cal-sans.nix {};
+        infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
+        neovim = inputs.neovim.packages.${system}.default;
+        playit-agent = callPackage ./packages/playit-agent.nix {};
+        images = {
+          nix-runner = callPackage ./packages/images/nix-runner.nix {nixSrc = inputs.nix;};
         };
-        git = pkgs.callPackage ./packages/devkit/git.nix {};
-        lazygit = pkgs.callPackage ./packages/devkit/lazygit.nix {};
-        starship = pkgs.callPackage ./packages/devkit/starship {};
-        yazi = pkgs.callPackage ./packages/devkit/yazi {};
-        zellij = pkgs.callPackage ./packages/devkit/zellij {};
-        zsh = pkgs.callPackage ./packages/devkit/zsh {};
-        neovim = self.packages.${system}.neovim;
-      };
-    });
+        devkit = let
+          callWrapper = p: as: callPackage p (as // {inherit (self.lib) wrapPackage;});
+        in rec {
+          ghostty = callWrapper ./packages/devkit/ghostty.nix {command = "${getExe zellij}";};
+          git = callWrapper ./packages/devkit/git.nix {};
+          lazygit = callWrapper ./packages/devkit/lazygit.nix {};
+          starship = callWrapper ./packages/devkit/starship {};
+          yazi = callWrapper ./packages/devkit/yazi {};
+          zellij = callWrapper ./packages/devkit/zellij {
+            neovim = inputs.neovim.packages.${system}.neovim;
+            inherit git lazygit lynx starship yazi zsh;
+          };
+          zsh = callWrapper ./packages/devkit/zsh.nix {
+            neovim = inputs.neovim.packages.${system}.neovim;
+            inherit git lazygit lynx starship yazi;
+          };
+        };
+      });
 
     devShells = forAllSystems ({
       lib,
       pkgs,
       system,
       ...
-    }: {
-      devkit = pkgs.mkShell {
-        name = "devkit-shell";
-        packages = with self.packages.${system}.devkit; [
-          ghostty
-          git
-          lazygit
-          starship
-          yazi
-          zellij
-          zsh
-          neovim
-        ];
-        shellHook = "${lib.getExe self.packages.${system}.devkit.zsh}";
-        EDITOR = "${lib.getExe self.packages.${system}.devkit.neovim}";
-      };
-      default = pkgs.mkShell {
-        name = "devkit-shell";
-        packages = with self.packages.${system}.devkit; [
-          ghostty
-          git
-          lazygit
-          starship
-          yazi
-          zellij
-          zsh
-          neovim
-        ];
-        shellHook = ''
-          echo '${lib.toJSON {
-            workspace = {
-              library = ["${pkgs.hyprland}/share/hypr/stubs"];
-            };
-          }}' > ./.luarc.json
+    }:
+      with lib; {
+        devkit = pkgs.mkShell {
+          name = "devkit-shell";
+          packages = with self.packages.${system}.devkit; [
+            ghostty
+            git
+            lazygit
+            starship
+            yazi
+            zellij
+            zsh
+            inputs.neovim.packages.${system}.neovim
+          ];
+          shellHook = "${getExe self.packages.${system}.devkit.zsh}";
+          EDITOR = "${getExe inputs.neovim.packages.${system}.neovim}";
+        };
+        default = pkgs.mkShell {
+          name = "devkit-shell";
+          packages = with self.packages.${system}.devkit; [
+            ghostty
+            git
+            lazygit
+            starship
+            yazi
+            zellij
+            zsh
+            inputs.neovim.packages.${system}.neovim
+          ];
+          shellHook = ''
+            echo '${lib.toJSON {
+              workspace = {
+                library = ["${pkgs.hyprland}/share/hypr/stubs"];
+              };
+            }}' > ./.luarc.json
 
-        '';
-      };
-    });
+          '';
+        };
+      });
   };
 }

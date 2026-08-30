@@ -1,11 +1,15 @@
 {
   formats,
   lib,
-  makeWrapper,
+  wrapPackage,
   pkgs,
   stdenv,
-  symlinkJoin,
+  # Package
   yazi ? pkgs.yazi,
+  # Runtime Inputs
+  dragon-drop ? pkgs.dragon-drop,
+  jq ? pkgs.jq,
+  poppler ? pkgs.poppler,
 }:
 with lib; let
   toml = formats.toml {};
@@ -41,34 +45,25 @@ with lib; let
   };
   plugins = {};
 in
-  symlinkJoin ({
-      paths = [yazi];
-      nativeBuildInputs = [makeWrapper];
-      postBuild = ''
-        wrapProgram $out/bin/yazi \
-          --set YAZI_CONFIG_HOME ${stdenv.mkDerivation {
-          name = "config-home";
-          src = ./.;
-          installPhase = ''
-            mkdir -p $out
-            cp ${init} $out/init.lua
-            cp ${keymapsToml} $out/keymaps.toml
-            cp ${themeToml} $out/theme.toml
-            cp ${yaziToml} $out/yazi.toml
+  wrapPackage {
+    inherit pkgs;
+    package = yazi;
+    env.YAZI_CONFIG_HOME = stdenv.mkDerivation {
+      name = "config-home";
+      src = ./.;
+      installPhase = ''
+        mkdir -p $out
+        cp ${init} $out/init.lua
+        cp ${keymapsToml} $out/keymaps.toml
+        cp ${themeToml} $out/theme.toml
+        cp ${yaziToml} $out/yazi.toml
 
-            ${join "\n" (mapAttrsToList (n: v: ''
-                mkdir -p $out/plugins/${n}
-                cp -r ${v}/* $out/plugins/${n}
-              '')
-              plugins)}
-          '';
-        }} \
-          --set PATH ${with pkgs;
-          makeBinPath [
-            dragon-drop
-            jq
-            poppler
-          ]}
+        ${join "\n" (mapAttrsToList (n: v: ''
+            mkdir -p $out/plugins/${n}
+            cp -r ${v}/* $out/plugins/${n}
+          '')
+          plugins)}
       '';
-    }
-    // {inherit (yazi) name pname meta;})
+    };
+    runtimeInputs = [dragon-drop jq poppler];
+  }
