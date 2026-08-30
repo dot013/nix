@@ -2,24 +2,44 @@
   config,
   inputs,
   pkgs,
+  self,
   ...
 }: {
   imports = [
     ../../secrets.nix
-    # ./impermanence.nix
-    ./preservation.nix
+
     inputs.disko.nixosModules.disko
     ./disko.nix
     ./hardware-configuration.nix
-    ./services.nix
+
+    self.nixosModules.features.devkit
+    self.nixosModules.features.fonts
+    self.nixosModules.features.locale-brazil
+    self.nixosModules.features.plymouth
+    self.nixosModules.features.preservation
+    self.nixosModules.features.qmk-keyboard
+    self.nixosModules.features.tailscale
+
+    # Services
+    self.nixosModules.services.garage
   ];
 
-  # GnuPG keyring
-  programs.gnupg.agent = {
-    enable = true;
-    pinentryPackage = pkgs.pinentry-gtk2;
-    settings.default-cache-ttl = 3600 * 24;
+  # Home Manager
+  home-manager.users."guz" = {...}: {
+    imports = [self.homeManagerModules.features.devkit];
+
+    home.stateVersion = "25.11";
   };
+  # Users
+  users.users."guz" = {
+    extraGroups = ["wheel" "guz"];
+    isNormalUser = true;
+    password = "1313";
+    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
+    shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
+    openssh.authorizedKeys.keyFiles = [../../.ssh/spacestation.pub];
+  };
+  users.groups."guz" = {};
 
   # Yet another nix cli helper
   programs.nh = {
@@ -29,58 +49,13 @@
     flake = "/home/guz/Projects/dot013-nix";
   };
 
-  # QMK keyboard
-  hardware.keyboard.qmk.enable = true;
-  services.udev.packages = with pkgs; [via vial];
-
-  # Tailscale
-  services.tailscale.enable = true;
-
   # Networking
   networking.hostName = "spacestation";
   networking.networkmanager.enable = true;
-  networking.hostId = builtins.substring 0 8 (
-    builtins.hashString "sha256" config.networking.hostName
-  );
+  networking.hostId = builtins.substring 0 8 (builtins.hashString "sha256" config.networking.hostName);
 
   # Firewall
   networking.firewall.enable = true;
-
-  # SSH
-  services.openssh.enable = true;
-  services.openssh.settings = {
-    PasswordAuthentication = false;
-    PermitRootLogin = "forced-commands-only";
-  };
-
-  # Mosh
-  programs.mosh.enable = true;
-
-  # Locale
-  time.timeZone = "America/Sao_Paulo";
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = let
-    locale = "pt_BR.UTF-8";
-  in {
-    LC_ADDRESS = locale;
-    LC_IDENTIFICATION = locale;
-    LC_MEASUREMENT = locale;
-    LC_MONETARY = locale;
-    LC_NAME = locale;
-    LC_NUMERIC = locale;
-    LC_PAPER = locale;
-    LC_TELEPHONE = locale;
-    LC_TIME = locale;
-  };
-
-  # Keyboard
-  services.xserver.xkb.layout = "br";
-  console.keyMap = "br-abnt2";
-
-  security.polkit.enable = true;
-
-  # Nix
-  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   boot.loader.grub.enable = true;
   boot.loader.grub.efiSupport = true;

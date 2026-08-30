@@ -203,13 +203,7 @@
           };
           inherit inputs self;
         };
-        modules =
-          [
-            ./hosts/spacestation/configuration.nix
-            ./home/worm/configuration.nix
-            {users.users."guz".openssh.authorizedKeys.keyFiles = [./.ssh/spacestation.pub];}
-          ]
-          ++ commonModules;
+        modules = [./hosts/spacestation/configuration.nix] ++ commonModules;
       };
     };
 
