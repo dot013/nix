@@ -8,6 +8,7 @@
   imports = [
     inputs.disko.nixosModules.disko
     ./disko.nix
+    ./hardware-configuration.nix
 
     self.nixosModules.features.devkit
     self.nixosModules.features.flatpak
@@ -19,8 +20,6 @@
     self.nixosModules.features.qmk-keyboard
     self.nixosModules.features.sddm
     self.nixosModules.features.tailscale
-
-    ./hardware-configuration.nix
   ];
 
   # Home Manager

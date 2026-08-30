@@ -4,9 +4,7 @@
   pkgs,
   ...
 }:
-with lib; let
-  cfg = config.services.nextcloud;
-in {
+with lib; {
   imports = [
     "${fetchTarball {
       url = "https://github.com/onny/nixos-nextcloud-testumgebung/archive/fa6f062830b4bc3cedb9694c1dbf01d5fdf775ac.tar.gz";
@@ -79,21 +77,6 @@ in {
       "opcache.save_comments" = 1;
     };
   };
-
-  environment.persistence."/persist".directories = [
-    {
-      directory = "${cfg.home}";
-      user = "nextcloud";
-      group = "nextcloud";
-    }
-  ];
-
-  systemd.tmpfiles.rules = [
-    "d ${cfg.home} 0750 nextcloud nextcloud -"
-    "d ${cfg.home}/apps 0750 nextcloud nextcloud -"
-    "d ${cfg.home}/config 0750 nextcloud nextcloud -"
-    "d ${cfg.home}/data 0750 nextcloud nextcloud -"
-  ];
 
   sops.secrets = {
     "services/nextcloud/adminpass" = {owner = "nextcloud";};

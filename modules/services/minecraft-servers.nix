@@ -565,10 +565,6 @@ in {
     }
   ]; # Discord <-> SVC bridge
 
-  environment.persistence."/persist".directories = [
-    cfg.dataDir
-  ];
-
   nixpkgs.overlays = [
     inputs.nix-minecraft.overlay
   ];

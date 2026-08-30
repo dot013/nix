@@ -381,19 +381,6 @@ in {
     '';
   };
 
-  environment.persistence."/persist".directories = [
-    {
-      directory = cfg.repositoryRoot;
-      user = cfg.user;
-      group = cfg.group;
-    }
-    {
-      directory = cfg.stateDir;
-      user = cfg.user;
-      group = cfg.group;
-    }
-  ];
-
   sops.secrets = {
     "services/gitea/actions-token" = {owner = cfg.user;};
     "services/gitea/internal-token" = {owner = cfg.user;};
