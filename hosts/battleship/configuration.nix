@@ -1,25 +1,59 @@
 {
   inputs,
+  lib,
   pkgs,
+  self,
   ...
-}: {
+}:
+with lib; {
   imports = [
     ../../secrets.nix
-    ./gpu.nix
-    ./impermanence.nix
+
     inputs.disko.nixosModules.disko
     ./disko.nix
+    ./hardware-gpu.nix
     ./hardware-configuration.nix
 
-    ./services.nix
+    self.nixosModules.features.devkit
+    self.nixosModules.features.fonts
+    self.nixosModules.features.locale-brazil
+    self.nixosModules.features.plymouth
+    self.nixosModules.features.preservation
+    self.nixosModules.features.qmk-keyboard
+    self.nixosModules.features.tailscale
+
+    # Services
+    self.nixosModules.services.adguard
+    self.nixosModules.services.anubis
+    self.nixosModules.services.capytal-authelia
+    self.nixosModules.services.capytal-gitea
+    self.nixosModules.services.capytal-websites
+    self.nixosModules.services.cloudflared
+    self.nixosModules.services.garage
+    self.nixosModules.services.minecraft-servers
+    self.nixosModules.services.nextcloud
+    self.nixosModules.services.postgresql
+    self.nixosModules.services.valkey
   ];
 
-  # GnuPG keyring
-  programs.gnupg.agent = {
-    enable = true;
-    pinentryPackage = pkgs.pinentry-gtk2;
-    settings.default-cache-ttl = 3600 * 24;
+  services.garage.enable = mkForce false; # Just imported to configure .local domains
+
+  # Home Manager
+  home-manager.users."guz" = {...}: {
+    imports = [self.homeManagerModules.features.devkit];
+
+    home.stateVersion = "25.11";
   };
+  # Users
+  users.users."guz" = {
+    extraGroups = ["wheel" "guz"];
+    isNormalUser = true;
+    password = "1313";
+    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
+    shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
+    openssh.authorizedKeys.keyFiles = [../../.ssh/battleship.pub];
+  };
+  users.groups."guz" = {};
 
   # Yet another nix cli helper
   programs.nh = {
@@ -29,22 +63,6 @@
     flake = "/home/guz/Projects/dot013-nix";
   };
 
-  # QMK keyboard
-  hardware.keyboard.qmk.enable = true;
-  services.udev.packages = with pkgs; [via vial];
-
-  # Pipewire
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  # Tailscale
-  services.tailscale.enable = true;
-
   # Networking
   networking.hostName = "battleship";
   networking.networkmanager.enable = true;
@@ -53,42 +71,6 @@
   networking.firewall.enable = true;
   networking.firewall.allowedUDPPorts = [53];
   networking.firewall.allowedTCPPorts = [80 433];
-
-  # SSH
-  services.openssh.enable = true;
-  services.openssh.settings = {
-    PasswordAuthentication = false;
-    PermitRootLogin = "forced-commands-only";
-  };
-
-  # Mosh
-  programs.mosh.enable = true;
-
-  # Locale
-  time.timeZone = "America/Sao_Paulo";
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = let
-    locale = "pt_BR.UTF-8";
-  in {
-    LC_ADDRESS = locale;
-    LC_IDENTIFICATION = locale;
-    LC_MEASUREMENT = locale;
-    LC_MONETARY = locale;
-    LC_NAME = locale;
-    LC_NUMERIC = locale;
-    LC_PAPER = locale;
-    LC_TELEPHONE = locale;
-    LC_TIME = locale;
-  };
-
-  # Keyboard
-  services.xserver.xkb.layout = "br";
-  console.keyMap = "br-abnt2";
-
-  security.polkit.enable = true;
-
-  # Nix
-  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
