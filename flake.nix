@@ -291,7 +291,6 @@
         inherit (pkgs) callPackage;
       in {
         audacity = callPackage ./packages/audacity.nix {};
-        cal-sans = callPackage ./packages/cal-sans.nix {};
         infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
         neovim = inputs.neovim.packages.${system}.default;
         playit-agent = callPackage ./packages/playit-agent.nix {};
