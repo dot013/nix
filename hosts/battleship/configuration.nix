@@ -17,7 +17,6 @@ with lib; {
     self.nixosModules.features.devkit
     self.nixosModules.features.fonts
     self.nixosModules.features.locale-brazil
-    self.nixosModules.features.plymouth
     self.nixosModules.features.preservation
     self.nixosModules.features.qmk-keyboard
     self.nixosModules.features.tailscale
