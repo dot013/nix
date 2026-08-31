@@ -20,10 +20,7 @@ in
         "--gtk-single-instance=true"
         "--config-file=${
           kvFmt.generate "config" {
-            font-family = [
-              "FiraCode Nerd Font"
-              "Noto Color Emoji"
-            ];
+            font-family = ["FiraCode Nerd Font"];
             font-size = 12;
             background = colors.base00;
             background-opacity = 0.9;
