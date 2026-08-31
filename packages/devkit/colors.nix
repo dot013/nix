@@ -2,8 +2,8 @@
   base00 = "#111111"; # base
   base01 = "#101010"; # mantle
   base02 = "#181818"; # surface0
-  base03 = "#181818"; # surface1
-  base04 = "#181818"; # surface2
+  base03 = "#3b3b3b"; # surface1
+  base04 = "#9ca3bb"; # surface2
   base05 = "#cdd6f4"; # text
   base06 = "#f5e0dc"; # rosewater
   base07 = "#b4befe"; # lavender
