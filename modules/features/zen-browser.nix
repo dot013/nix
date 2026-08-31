@@ -144,7 +144,10 @@ with lib; {
         };
         nix-home-manager = {
           name = "Home Manager";
-          urls = [{template = "https://home-manager-options.extranix.com/?query={searchTerms}";}];
+          urls = [
+            {template = "https://search.nixos.org/options?query={searchTerms}&source=home_manager";}
+            {template = "https://home-manager-options.extranix.com/?query={searchTerms}";}
+          ];
           icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
           definedAliases = ["@hm"];
         };
