@@ -195,7 +195,7 @@
             };
           };
 
-          services.ollama.enable = mkDefault true;
+          services.ollama.enable = cfg.full;
           services.ollama.acceleration = mkDefault "rocm";
 
           home.sessionVariables = {
