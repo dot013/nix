@@ -35,6 +35,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
+
     capytalcc.url = "git+https://code.capytal.cc/capytal/capytal.cc";
     favelasmp.url = "git+https://code.capytal.cc/sixsides/favelasmp";
     guzone.url = "git+https://code.capytal.cc/dot013/guz.one";
@@ -58,13 +60,11 @@
       flake = false;
     };
 
-    neovim = {
-      url = "git+https://code.capytal.cc/dot013/nvim";
-      # url = "git+file:///home/guz/.projects/dot013-nvim";
-    };
+    neovim.url = "git+https://code.capytal.cc/dot013/nvim";
 
-    nix-flatpak = {
-      url = "github:gmodena/nix-flatpak";
+    obsidian-extensions = {
+      url = "github:karaolidis/nix-obsidian-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     zen-browser = {
@@ -252,6 +252,7 @@
         gaming = (import ./modules/features/gaming.nix).nixos;
         gnome = (import ./modules/features/gnome.nix).nixos;
         locale-brazil = ./modules/features/locale-brazil.nix;
+        obsidian = (import ./modules/features/obsidian.nix).nixos;
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
         plymouth = ./modules/features/plymouth.nix;
         preservation = ./modules/features/preservation.nix;
@@ -267,9 +268,10 @@
         flatpak = (import ./modules/features/flatpak.nix).homeManager;
         gaming = (import ./modules/features/gaming.nix).homeManager;
         gnome = (import ./modules/features/gnome.nix).homeManager;
-        zen-browser = ./modules/features/zen-browser.nix;
+        obsidian = (import ./modules/features/obsidian.nix).homeManager;
         vesktop = ./modules/features/vesktop.nix;
         vivaldi = ./modules/features/vivaldi.nix;
+        zen-browser = ./modules/features/zen-browser.nix;
       };
     };
 

@@ -253,6 +253,11 @@ with lib; {
           ".local/share/nvim"
           ".local/state/nvim"
         ]
+        # Obsidian
+        ++ (optionals (value.programs.obsidian.enable)) [
+          ".config/obsidian"
+        ]
+        ++ (mapAttrsToList (n: v: v.target) value.programs.obsidian.vaults)
         # Opencode
         ++ (optionals (isInstalled "opencode")) [
           ".cache/opencode"
