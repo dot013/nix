@@ -21,7 +21,7 @@
     self.nixosModules.features.locale-brazil
     self.nixosModules.features.media
     self.nixosModules.features.obsidian
-    self.nixosModules.features.plymouth
+    # self.nixosModules.features.plymouth
     self.nixosModules.features.preservation
     self.nixosModules.features.qmk-keyboard
     self.nixosModules.features.sddm
