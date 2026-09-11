@@ -12,9 +12,11 @@
       services = mkIf (options.services?flatpak) {
         flatpak.packages = [
           "io.github.wartybix.Constrict"
+          "org.blender.Blender"
           "org.kde.krita"
           "org.inkscape.Inkscape"
           "org.libreoffice.LibreOffice"
+          "com.obsproject.Studio"
         ];
       };
 
