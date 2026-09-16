@@ -36,6 +36,7 @@
       self.homeManagerModules.features.gaming
       self.homeManagerModules.features.gnome
       self.homeManagerModules.features.media
+      self.homeManagerModules.features.minecraft
       self.homeManagerModules.features.obsidian
       self.homeManagerModules.features.vesktop
       self.homeManagerModules.features.vivaldi

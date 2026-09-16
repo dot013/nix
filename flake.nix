@@ -264,10 +264,11 @@
     homeManagerModules = {
       features = {
         devkit = (import ./modules/features/devkit.nix).homeManager;
-        media = (import ./modules/features/media.nix).homeManager;
         flatpak = (import ./modules/features/flatpak.nix).homeManager;
         gaming = (import ./modules/features/gaming.nix).homeManager;
         gnome = (import ./modules/features/gnome.nix).homeManager;
+        media = (import ./modules/features/media.nix).homeManager;
+        minecraft = ./modules/features/minecraft.nix;
         obsidian = (import ./modules/features/obsidian.nix).homeManager;
         vesktop = ./modules/features/vesktop.nix;
         vivaldi = ./modules/features/vivaldi.nix;
