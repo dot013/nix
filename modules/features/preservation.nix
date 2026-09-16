@@ -116,6 +116,24 @@ with lib; {
           mode = "u=rwx,g=rx,o=";
         }
       ])
+      # Peertube
+      ++ (optionals config.services.peertube.enable (
+        [
+          {
+            directory = "/var/lib/peertube";
+            user = config.services.peertube.user;
+            group = config.services.peertube.group;
+            mode = "u=rwx,g=rx,o=";
+          }
+        ]
+        ++ (map (v: {
+            directory = v;
+            user = config.services.peertube.user;
+            group = config.services.peertube.group;
+            mode = "u=rwx,g=rx,o=";
+          })
+          config.services.peertube.dataDirs)
+      ))
       # PostgreSQL
       ++ (optionals config.services.postgresql.enable [
         {

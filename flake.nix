@@ -236,6 +236,7 @@
         capytal-authelia = ./modules/services/capytal/authelia.nix;
         capytal-gitea = ./modules/services/capytal/gitea.nix;
         capytal-matrix = ./modules/services/capytal/matrix.nix;
+        capytal-peertube = ./modules/services/capytal/peertube.nix;
         capytal-websites = ./modules/services/capytal/websites.nix;
         cloudflared = ./modules/services/cloudflared.nix;
         garage = ./modules/services/garage.nix;
