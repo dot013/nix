@@ -408,7 +408,64 @@ in {
       serviceConfig.Type = "oneshot";
       startAt = [
         "12:00:00 ${config.time.timeZone}"
-        "00:00:00 ${config.time.timeZone}"
+        "Mon..Sat 00:00:00 ${config.time.timeZone}"
+      ];
+    };
+    "minecraft-servers-backup" = {
+      script = ''
+        echo '/tellraw @a ["",{"text":"\n"},{"text":"<FavelaSMP>","bold":true,"color":"gold"},{"text":" Servidor reiniciando."},{"text":".\n "}]' > ${cfg.runDir}/favelasmp.stdin
+
+        webhook="$(cat ${config.sops.secrets."services/minecraft/discord-webhook".path})"
+        data="$(printf '{
+          "embeds": [
+          {
+            "title": "O Servidor Irá Reiniciar",
+            "color": 16418816,
+            "description": "O servidor irá reiniciar automaticamente para gerar um arquivo de backup, esse reinicio talvez ira demorar um pouco mais que os diários.",
+            "footer": {
+            "text": "FavelaSMP"
+            },
+            "timestamp": "%s"
+          }
+          ],
+          "username": "FavelaSMP",
+          "avatar_url": "https://favelasmp.guz.one/favicon.png"
+        }' "$(date -u +%FT%TZ)")"
+
+        ${getExe pkgs.curl} -X POST "$webhook" \
+          -H "Content-Type: application/json" \
+          -d "$data"
+
+        sleep 1s
+
+        echo "Stopping servers"
+        systemctl stop minecraft-server-favelasmp.service
+        systemctl stop minecraft-server-proxy.service
+        systemctl stop playit.service
+
+        sleep 1s
+
+        backup_dir="/run/media/cryptstorage/minecraft"
+
+        echo "Creating backup directory"
+        mkdir -p "$backup_dir"
+
+        echo "Changing directory ownser to ${cfg.user}:${cfg.group}"
+        chown ${cfg.user}:${cfg.group} -R "$backup_dir"
+
+        echo "Creating backup"
+        ${getExe pkgs.zip} "$backup_dir/favelasmp.zip" -u -r ${cfg.dataDir}/favelasmp/world
+
+        sleep 1s
+
+        echo "Starting servers"
+        systemctl start minecraft-server-favelasmp.service
+        systemctl start minecraft-server-proxy.service
+        systemctl start playit.service
+      '';
+      serviceConfig.Type = "oneshot";
+      startAt = [
+        "Sun 00:00:00 ${config.time.timeZone}"
       ];
     };
     "minecraft-server-favelasmp-maintainance" = {
