@@ -283,9 +283,6 @@ in {
 
   services.caddy.virtualHosts = {
     "${cfg.settings.server.DOMAIN}:80".extraConfig = ''
-      log {
-        level DEBUG
-      }
       header {
         X-Frame-Options "SAMEORIGIN"
         X-Content-Type-Options "nosniff"
