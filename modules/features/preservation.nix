@@ -125,6 +125,10 @@ with lib; {
           mode = "u=rwx,g=rx,o=";
         }
       ])
+      # Send
+      ++ (optionals config.services.send.enable [
+        config.services.send.dataDir
+      ])
       # Tailscale
       ++ (optionals config.services.tailscale.enable [
         "/var/lib/tailscale"
@@ -324,6 +328,9 @@ with lib; {
     );
 
   systemd.services = {
+    "continuwuity".serviceConfig = mkIf config.services.lldap.enable {
+      DynamicUser = mkForce false;
+    };
     "garage".serviceConfig = mkIf config.services.garage.enable {
       User = "garage";
       Group = "garage";
@@ -336,7 +343,9 @@ with lib; {
       DynamicUser = mkForce false;
       StateDirectory = mkForce null;
     };
-    "continuwuity".serviceConfig = mkIf config.services.lldap.enable {
+    "send".serviceConfig = mkIf config.services.send.enable {
+      User = "send";
+      Group = "send";
       DynamicUser = mkForce false;
     };
   };
@@ -350,10 +359,15 @@ with lib; {
       isSystemUser = true;
       group = "lldap";
     };
+    "send" = mkIf config.services.send.enable {
+      isSystemUser = true;
+      group = "send";
+    };
   };
   users.groups = {
     "garage" = mkIf config.services.garage.enable {};
     "lldap" = mkIf config.services.lldap.enable {};
+    "send" = mkIf config.services.send.enable {};
   };
 
   systemd.tmpfiles.rules =

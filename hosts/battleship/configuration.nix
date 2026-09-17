@@ -26,6 +26,7 @@ with lib; {
     self.nixosModules.services.anubis
     self.nixosModules.services.capytal-authelia
     self.nixosModules.services.capytal-gitea
+    self.nixosModules.services.capytal-send
     self.nixosModules.services.capytal-websites
     self.nixosModules.services.cloudflared
     self.nixosModules.services.garage
