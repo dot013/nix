@@ -17,6 +17,7 @@
           "org.inkscape.Inkscape"
           "org.libreoffice.LibreOffice"
           "com.obsproject.Studio"
+          "net.blockbench.Blockbench"
         ];
       };
 
