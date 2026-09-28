@@ -116,6 +116,21 @@ with lib; {
           mode = "u=rwx,g=rx,o=";
         }
       ])
+      # Ollama
+      ++ (optionals (config.services.ollama.enable) [
+        {
+          directory = config.services.ollama.home;
+          user = config.services.ollama.user;
+          group = config.services.ollama.group;
+          mode = "u=rwx,g=rx,o=";
+        }
+        {
+          directory = config.services.ollama.models;
+          user = config.services.ollama.user;
+          group = config.services.ollama.group;
+          mode = "u=rwx,g=rx,o=";
+        }
+      ])
       # PostgreSQL
       ++ (optionals config.services.postgresql.enable [
         {
@@ -323,7 +338,15 @@ with lib; {
       else {}
     );
 
+  services.ollama = mkIf config.services.ollama.enable {
+    user = mkDefault "ollama";
+    group = mkDefault "ollama";
+  };
+
   systemd.services = {
+    "continuwuity".serviceConfig = mkIf config.services.lldap.enable {
+      DynamicUser = mkForce false;
+    };
     "garage".serviceConfig = mkIf config.services.garage.enable {
       User = "garage";
       Group = "garage";
@@ -336,9 +359,18 @@ with lib; {
       DynamicUser = mkForce false;
       StateDirectory = mkForce null;
     };
-    "continuwuity".serviceConfig = mkIf config.services.lldap.enable {
+    "ollama".serviceConfig = mkIf config.services.ollama.enable {
       DynamicUser = mkForce false;
     };
+    "ollama-model-loader".serviceConfig =
+      mkIf (
+        (config.services.ollama.loadModels != [])
+        || config.services.ollama.syncModels
+      ) {
+        User = config.services.ollama.user;
+        Group = config.services.ollama.group;
+        DynamicUser = mkForce false;
+      };
   };
 
   users.users = {

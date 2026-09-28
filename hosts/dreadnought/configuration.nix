@@ -28,6 +28,8 @@
     self.nixosModules.features.tailscale
   ];
 
+  features.devkit.full = true;
+
   # Home Manager
   home-manager.users."guz" = {...}: {
     imports = [
@@ -42,8 +44,6 @@
       self.homeManagerModules.features.vivaldi
       self.homeManagerModules.features.zen-browser
     ];
-
-    features.devkit.full = true;
 
     home.stateVersion = "25.11";
   };

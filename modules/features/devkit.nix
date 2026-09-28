@@ -1,5 +1,6 @@
 {
   nixos = {
+    config,
     inputs,
     lib,
     pkgs,
@@ -7,38 +8,49 @@
     ...
   }:
     with lib; let
+      cfg = config.features.devkit;
       devkitPkgs = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit;
     in {
       imports = [inputs.neovim.nixosModules.default];
-
-      programs.gnupg.agent = {
-        enable = true;
-        pinentryPackage = pkgs.pinentry-gtk2;
-        settings.default-cache-ttl = 3600 * 24;
+      options.features.devkit = {
+        full = mkEnableOption "";
       };
+      config = {
+        programs.gnupg.agent = {
+          enable = true;
+          pinentryPackage = pkgs.pinentry-gtk2;
+          settings.default-cache-ttl = 3600 * 24;
+        };
 
-      # SSH
-      services.openssh.enable = true;
-      services.openssh.settings = {
-        PasswordAuthentication = false;
-        PermitRootLogin = "forced-commands-only";
+        # SSH
+        services.openssh.enable = true;
+        services.openssh.settings = {
+          PasswordAuthentication = false;
+          PermitRootLogin = "forced-commands-only";
+        };
+        programs.mosh.enable = mkDefault true;
+
+        services.ollama = {
+          enable = cfg.full;
+          package = pkgs.ollama-rocm;
+          # loadModels = ["deepseek-r1:1.5b"];
+        };
+
+        # Nix LD (Useful for devlopment)
+        programs.nix-ld.enable = true;
+        programs.nix-ld.libraries = with pkgs; [stdenv.cc.cc];
+
+        # OCI Containers
+        virtualisation.podman.enable = true;
+        virtualisation.podman.dockerCompat = true;
+        virtualisation.podman.dockerSocket.enable = true;
+
+        environment.systemPackages = with pkgs; [podman-compose];
+        environment.shells = [
+          (getExe devkitPkgs.zsh)
+        ];
+        environment.pathsToLink = ["/share/zsh"];
       };
-      programs.mosh.enable = mkDefault true;
-
-      # Nix LD (Useful for devlopment)
-      programs.nix-ld.enable = true;
-      programs.nix-ld.libraries = with pkgs; [stdenv.cc.cc];
-
-      # OCI Containers
-      virtualisation.podman.enable = true;
-      virtualisation.podman.dockerCompat = true;
-      virtualisation.podman.dockerSocket.enable = true;
-
-      environment.systemPackages = with pkgs; [podman-compose];
-      environment.shells = [
-        (getExe devkitPkgs.zsh)
-      ];
-      environment.pathsToLink = ["/share/zsh"];
     };
 
   homeManager = {
@@ -46,6 +58,7 @@
     inputs,
     lib,
     options,
+    osConfig,
     pkgs,
     pkgs-unstable,
     self,
@@ -57,7 +70,10 @@
     in {
       imports = [inputs.neovim.homeManagerModules.default];
       options.features.devkit = {
-        full = mkEnableOption "";
+        full = mkOption {
+          type = with types; bool;
+          default = osConfig.features.devkit.full;
+        };
       };
       config =
         {
@@ -182,21 +198,27 @@
 
           xdg.configFile."opencode/opencode.json" = mkIf cfg.full {
             text = toJSON {
+              "$schema" = "https://opencode.ai/config.json";
+              model = "ollama/qwen3-coder:30b";
               provider = {
-                "llama.cpp" = {
+                ollama = {
                   npm = "@ai-sdk/openai-compatible";
                   name = "Ollama (local)";
-                  options.baseURL = "http://localhost:${toString config.services.ollama.port}/v1";
-                };
-                models."llama2" = {
-                  name = "Llama 2";
+                  options = {
+                    baseURL = "http://localhost:${toString osConfig.services.ollama.port}/v1";
+                  };
+                  models = {
+                    "deepseek-r1:1.5b" = {
+                      name = "Deepseek R1";
+                    };
+                    "qwen3-coder:30b" = {
+                      name = "Quen3 Coder";
+                    };
+                  };
                 };
               };
             };
           };
-
-          services.ollama.enable = cfg.full;
-          services.ollama.acceleration = mkDefault "rocm";
 
           home.sessionVariables = {
             EXPLORER = "${getExe config.programs.yazi.package}";
