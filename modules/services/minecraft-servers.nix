@@ -28,6 +28,60 @@ in {
   services.minecraft-servers.servers = let
     velocityToml = cfg.servers."proxy".files."velocity.toml".value;
   in {
+    "halloween-rpg" = {
+      enable = true;
+      enableReload = true;
+      extraReload =
+        pipe [
+          "/whitelist reload"
+          "/reload"
+        ] [
+          (map (v: "echo '${v}' > ${cfg.runDir}/halloween-rpg.stdin"))
+          (join "\n")
+        ];
+      autoStart = false;
+      inherit
+        (cfg.servers."favelasmp")
+        jvmOpts
+        package
+        managementSystem
+        environment
+        ;
+      symlinks =
+        (removeAttrs cfg.servers."favelasmp".symlinks [
+          "mods/bluemap-5.22-fabric.jar"
+          "mods/git-pack-manager-fabric-26.1-5.3.0+fabric+26.1.jar"
+          "mods/mesh-lib-fabric-26.1-2.1.0+fabric+26.1.jar"
+          "mods/monkeylib538-fabric-26.2-5.0.0+fabric+26.2.jar"
+          "mods/dcintegration-fabric-MC26.2-3.2.0.jar"
+          "mods/voicechat-discord-fabric-26.1-3.2.0.jar"
+          "mods/unplugged_afk-v0.2.4-mc26.2.jar"
+        ])
+        // {
+          "whitelist.json" =
+            config.sops.secrets."services/minecraft/halloween-rpg-whitelist".path;
+          "ops.json" =
+            config.sops.secrets."services/minecraft/halloween-rpg-ops".path;
+        };
+      files =
+        cfg.servers."favelasmp".files
+        // {
+          "config/voicechat/voicechat-server.properties".value = {
+            port = 24456;
+          };
+          "config/voicechat-discord.yml" =
+            config.sops.secrets."services/minecraft/halloween-rpg-voicechat-discord".path;
+        };
+      serverProperties =
+        cfg.servers."favelasmp".serverProperties
+        // {
+          maxPlayer = 7;
+          motd = "§k0§r Bem vindo a §6§lTerra do Corvos§r§k0§r";
+          server-ip = elemAt (splitString ":" velocityToml.servers.halloween-rpg) 0;
+          server-port = toInt (elemAt (splitString ":" velocityToml.servers.halloween-rpg) 1);
+          require-resource-pack = false;
+        };
+    };
     "proxy" = {
       enable = true;
       enableReload = true;
@@ -62,6 +116,7 @@ in {
             ping-passthrough = "description";
             servers = {
               favelasmp = "127.0.0.1:30066";
+              halloween-rpg = "127.0.0.1:30067";
               try = ["favelasmp"];
             };
             show-max-players = 13;
@@ -644,5 +699,10 @@ in {
     "services/minecraft/favelasmp-voicechat-properties".owner = config.services.minecraft-servers.user;
     "services/minecraft/favelasmp-voicechat-discord".owner = config.services.minecraft-servers.user;
     "services/minecraft/favelasmp-whitelist".owner = config.services.minecraft-servers.user;
+
+    "services/minecraft/halloween-rpg-ops".owner = config.services.minecraft-servers.user;
+    "services/minecraft/halloween-rpg-voicechat-properties".owner = config.services.minecraft-servers.user;
+    "services/minecraft/halloween-rpg-voicechat-discord".owner = config.services.minecraft-servers.user;
+    "services/minecraft/halloween-rpg-whitelist".owner = config.services.minecraft-servers.user;
   };
 }

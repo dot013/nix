@@ -376,7 +376,7 @@
     "floodgate-velocity": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-8OAVaDSr5ImryE1d8oWVdIrGe0hLnjf8msca7dn3KR4=",
+        "narHash": "sha256-Px830kHFwYcnyYhveJqTnrqkw7giHOvOZ4ekJleozK8=",
         "type": "file",
         "url": "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity"
       },
@@ -404,7 +404,7 @@
     "geysermc-velocity": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-yZ09+MY5LyhVpx3Dz1xakAyXKzkH9UZwnLdJsxIKA40=",
+        "narHash": "sha256-DSmKhs9HD8eOMeql3M3QBMYuLybG+9ZHu5jijyo52rs=",
         "type": "file",
         "url": "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity"
       },
