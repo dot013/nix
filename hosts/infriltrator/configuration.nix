@@ -27,15 +27,18 @@ with lib; {
   users.users."guz" = {
     extraGroups = ["wheel" "guz"];
     isNormalUser = true;
-    password = "1313";
-    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
-    shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
+    hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
     packages = [
       inputs.disko.packages.${pkgs.stdenv.hostPlatform.system}.disko
       inputs.disko.packages.${pkgs.stdenv.hostPlatform.system}.disko-install
     ];
   };
   users.groups."guz" = {};
+
+  sops.secrets = {
+    "guz/password" = {owner = config.users.users.guz.name;};
+    "guz/git-envs" = {owner = config.users.users.guz.name;};
+  };
 
   # Network
   networking.networkmanager.enable = true;

@@ -1,6 +1,6 @@
 {
+  config,
   inputs,
-  lib,
   pkgs,
   self,
   ...
@@ -17,7 +17,7 @@
     self.nixosModules.features.flatpak
     self.nixosModules.features.fonts
     self.nixosModules.features.gaming
-    self.nixosModules.features.gnome
+    self.nixosModules.features.gnome-tiling
     self.nixosModules.features.locale-brazil
     self.nixosModules.features.media
     self.nixosModules.features.obsidian
@@ -36,7 +36,7 @@
       self.homeManagerModules.features.devkit
       self.homeManagerModules.features.flatpak
       self.homeManagerModules.features.gaming
-      self.homeManagerModules.features.gnome
+      self.homeManagerModules.features.gnome-tiling
       self.homeManagerModules.features.media
       self.homeManagerModules.features.minecraft
       self.homeManagerModules.features.obsidian
@@ -54,11 +54,15 @@
   users.users."guz" = {
     extraGroups = ["wheel" "guz"];
     isNormalUser = true;
-    password = "1313";
-    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
+    hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
     shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
   };
   users.groups."guz" = {};
+
+  sops.secrets = {
+    "guz/password" = {owner = config.users.users.guz.name;};
+    "guz/git-envs" = {owner = config.users.users.guz.name;};
+  };
 
   # Yet another nix cli helper
   programs.nh = {

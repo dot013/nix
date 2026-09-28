@@ -121,6 +121,7 @@
       })
       # Stylix
       inputs.stylix.nixosModules.stylix
+      ./secrets.nix
       ./style.nix
     ];
     forAllSystems = f:
@@ -251,6 +252,7 @@
         fonts = ./modules/features/fonts.nix;
         gaming = (import ./modules/features/gaming.nix).nixos;
         gnome = (import ./modules/features/gnome.nix).nixos;
+        gnome-tiling = (import ./modules/features/gnome-tiling.nix).nixos;
         locale-brazil = ./modules/features/locale-brazil.nix;
         obsidian = (import ./modules/features/obsidian.nix).nixos;
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
@@ -267,6 +269,7 @@
         flatpak = (import ./modules/features/flatpak.nix).homeManager;
         gaming = (import ./modules/features/gaming.nix).homeManager;
         gnome = (import ./modules/features/gnome.nix).homeManager;
+        gnome-tiling = (import ./modules/features/gnome-tiling.nix).homeManager;
         media = (import ./modules/features/media.nix).homeManager;
         minecraft = ./modules/features/minecraft.nix;
         obsidian = (import ./modules/features/obsidian.nix).homeManager;

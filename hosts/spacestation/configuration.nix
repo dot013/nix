@@ -33,12 +33,16 @@
   users.users."guz" = {
     extraGroups = ["wheel" "guz"];
     isNormalUser = true;
-    password = "1313";
-    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
+    hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
     shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
     openssh.authorizedKeys.keyFiles = [../../.ssh/spacestation.pub];
   };
   users.groups."guz" = {};
+
+  sops.secrets = {
+    "guz/password" = {owner = config.users.users.guz.name;};
+    "guz/git-envs" = {owner = config.users.users.guz.name;};
+  };
 
   # Yet another nix cli helper
   programs.nh = {

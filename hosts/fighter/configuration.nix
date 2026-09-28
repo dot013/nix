@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   pkgs,
@@ -24,12 +25,13 @@
     self.nixosModules.features.tailscale
   ];
 
-  # Home Manager
+  # Guz
   home-manager.users."guz" = {...}: {
     imports = [
       self.homeManagerModules.features.devkit
       self.homeManagerModules.features.flatpak
       self.homeManagerModules.features.gnome
+      self.homeManagerModules.features.gnome-tiling
       self.homeManagerModules.features.media
       self.homeManagerModules.features.obsidian
       self.homeManagerModules.features.vesktop
@@ -42,17 +44,48 @@
     home.stateVersion = "25.11";
   };
 
-  nix.allowUnfreeList = ["obsidian" "vivaldi"];
-
-  # Users
   users.users."guz" = {
     extraGroups = ["wheel" "guz"];
     isNormalUser = true;
-    password = "1313";
-    # hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
+    hashedPasswordFile = builtins.toString config.sops.secrets."guz/password".path;
     shell = self.packages.${pkgs.stdenv.hostPlatform.system}.devkit.zsh;
   };
   users.groups."guz" = {};
+
+  # Abr
+  home-manager.users."abr" = {...}: {
+    imports = [
+      self.homeManagerModules.features.flatpak
+      self.homeManagerModules.features.gnome
+    ];
+
+    services.flatpak.packages = [
+      "org.libreoffice.LibreOffice"
+      "org.mozilla.firefox"
+    ];
+
+    stylix.image = pkgs.fetchurl {
+      url = "https://wallpapercave.com/wp/D9bhmiZ.jpg";
+      hash = "sha256-W/BmfrPy0KNsoY8sr3ulgkIJhrO5Nx6JZxhEYUU46SM=";
+    };
+
+    home.stateVersion = "25.11";
+  };
+
+  users.users."abr" = {
+    extraGroups = ["wheel"];
+    isNormalUser = true;
+    hashedPasswordFile = builtins.toString config.sops.secrets."abr/password".path;
+  };
+  users.groups."abr" = {};
+
+  sops.secrets = {
+    "abr/password" = {owner = config.users.users.abr.name;};
+    "guz/password" = {owner = config.users.users.guz.name;};
+    "guz/git-envs" = {owner = config.users.users.guz.name;};
+  };
+
+  nix.allowUnfreeList = ["obsidian" "vivaldi"];
 
   # NH
   programs.nh = {
