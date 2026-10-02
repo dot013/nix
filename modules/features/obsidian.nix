@@ -55,36 +55,36 @@
             {
               name = "folder-colors";
               text = ''
-                .nav-file-title[data-path^="areas"],
-                .nav-folder-title[data-path^="areas"] {
+                .nav-file-title[data-path^="01-areas"],
+                .nav-folder-title[data-path^="01-areas"] {
                   color: var(--iris-11);
                   &:hover {
                     color: var(--iris-12);
                   }
                 }
-                .nav-file-title[data-path^="fleeting"],
-                .nav-folder-title[data-path^="fleeting"] {
-                  color: var(--yellow-11);
-                  &:hover {
-                    color: var(--yellow-12);
-                  }
-                }
-                .nav-file-title[data-path^="periodic"],
-                .nav-folder-title[data-path^="periodic"] {
-                  color: var(--red-11);
-                  &:hover {
-                    color: var(--red-12);
-                  }
-                }
-                .nav-file-title[data-path^="projects"],
-                .nav-folder-title[data-path^="projects"] {
+                .nav-file-title[data-path^="02-projects"],
+                .nav-folder-title[data-path^="02-projects"] {
                   color: var(--cyan-11);
                   &:hover {
                     color: var(--cyan-12);
                   }
                 }
-                .nav-file-title[data-path^="resources"],
-                .nav-folder-title[data-path^="resources"] {
+                .nav-file-title[data-path^="03-periodic"],
+                .nav-folder-title[data-path^="03-periodic"] {
+                  color: var(--red-11);
+                  &:hover {
+                    color: var(--red-12);
+                  }
+                }
+                .nav-file-title[data-path^="04-fleeting"],
+                .nav-folder-title[data-path^="04-fleeting"] {
+                  color: var(--yellow-11);
+                  &:hover {
+                    color: var(--yellow-12);
+                  }
+                }
+                .nav-file-title[data-path^="05-resources"],
+                .nav-folder-title[data-path^="05-resources"] {
                   color: var(--green-11);
                   &:hover {
                     color: var(--green-12);
