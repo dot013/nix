@@ -254,7 +254,7 @@
         gnome = (import ./modules/features/gnome.nix).nixos;
         gnome-tiling = (import ./modules/features/gnome-tiling.nix).nixos;
         locale-brazil = ./modules/features/locale-brazil.nix;
-        obsidian = (import ./modules/features/obsidian.nix).nixos;
+        obsidian = (import ./modules/features/obsidian).nixos;
         qmk-keyboard = ./modules/features/qmk-keyboard.nix;
         plymouth = ./modules/features/plymouth.nix;
         preservation = ./modules/features/preservation.nix;
@@ -272,7 +272,7 @@
         gnome-tiling = (import ./modules/features/gnome-tiling.nix).homeManager;
         media = (import ./modules/features/media.nix).homeManager;
         minecraft = ./modules/features/minecraft.nix;
-        obsidian = (import ./modules/features/obsidian.nix).homeManager;
+        obsidian = (import ./modules/features/obsidian).homeManager;
         vesktop = ./modules/features/vesktop.nix;
         vivaldi = ./modules/features/vivaldi.nix;
         zen-browser = ./modules/features/zen-browser.nix;

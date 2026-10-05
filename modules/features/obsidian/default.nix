@@ -137,6 +137,12 @@
               {
                 pkg = obsidian-front-matter-title-plugin;
                 startupType = "long";
+                settings = importJSON ./obsidian-front-matter-title-plugin.json;
+              }
+              {
+                pkg = obsidian-linter;
+                startupType = "long";
+                settings = importJSON ./obsidian-linter.json;
               }
               {
                 pkg = obsidian-hider;
@@ -161,7 +167,7 @@
                   showStatusBar = true;
                   disabledRules = ["MD041"];
                   useConfigFile = false;
-                  lineLenght = 80;
+                  lineLength = 80;
                   headingStyle = "atx";
                   emphasisStyle = "asterisk";
                   ulStyle = "dash";
@@ -175,31 +181,31 @@
                   hasMigratedDailyNoteSettings = false;
                   hasMigratedWeeklyNoteSettings = false;
                   daily = {
-                    format = "[periodic/]YYYY/YYYY-[Q]Q/YYYY-MM/gggg-[W]WW/YYYY-MM-DD";
+                    format = "[03-periodic/]YYYY/YYYY-[Q]Q/YYYY-MM/gggg-[W]WW/YYYY-MM-DD";
                     folder = "";
                     template = "_templates/daily.md";
                     enabled = true;
                   };
                   weekly = {
-                    format = "[periodic/]gggg/gggg-[Q]Q/gggg-MM/gggg-[W]WW/gggg-[W]WW";
+                    format = "[03-periodic/]gggg/gggg-[Q]Q/gggg-MM/gggg-[W]WW/gggg-[W]WW";
                     folder = "";
                     template = "_templates/weekly.md";
                     enabled = true;
                   };
                   monthly = {
-                    format = "[periodic/]YYYY/YYYY-[Q]Q/YYYY-MM/YYYY-MM";
+                    format = "[03-periodic/]YYYY/YYYY-[Q]Q/YYYY-MM/YYYY-MM";
                     folder = "";
                     template = "_templates/monthly.md";
                     enabled = true;
                   };
                   quarterly = {
-                    format = "[periodic/]YYYY/YYYY-[Q]Q/YYYY-[Q]Q";
+                    format = "[03-periodic/]YYYY/YYYY-[Q]Q/YYYY-[Q]Q";
                     folder = "";
                     template = "_templates/quarterly.md";
                     enabled = true;
                   };
                   yearly = {
-                    format = "[periodic/]YYYY/YYYY";
+                    format = "[03-periodic/]YYYY/YYYY";
                     folder = "";
                     template = "_templates/yearly.md";
                     enabled = true;
