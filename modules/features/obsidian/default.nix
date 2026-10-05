@@ -268,6 +268,7 @@
                 };
               }
             ];
+          extraFiles."graph.json".source = ./graph.json;
         };
       };
 

@@ -1,0 +1,58 @@
+{
+  "collapse-filter": true,
+  "search": "",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:01-areas",
+      "color": {
+        "a": 1,
+        "rgb": 7236318
+      }
+    },
+    {
+      "query": "path:02-projects",
+      "color": {
+        "a": 1,
+        "rgb": 963486
+      }
+    },
+    {
+      "query": "path:03-periodic",
+      "color": {
+        "a": 1,
+        "rgb": 15491394
+      }
+    },
+    {
+      "query": "path:04-fleeting",
+      "color": {
+        "a": 1,
+        "rgb": 16777047
+      }
+    },
+    {
+      "query": "path:05-resources",
+      "color": {
+        "a": 1,
+        "rgb": 3387508
+      }
+    }
+  ],
+  "collapse-display": true,
+  "showArrow": false,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": true,
+  "centerStrength": 0.518713248970312,
+  "repelStrength": 10,
+  "linkStrength": 1,
+  "linkDistance": 250,
+  "scale": 0.19753086419753085,
+  "close": true
+}
