@@ -76,6 +76,11 @@
           command = getExe config.programs.ghostty.package;
           name = "Launch Ghostty";
         };
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = mkIf config.programs.obsidian.enable {
+          binding = "<Super>n";
+          command = getExe config.programs.obsidian.package;
+          name = "Launch Obsidian";
+        };
       };
     };
 }
