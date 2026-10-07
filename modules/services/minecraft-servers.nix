@@ -28,60 +28,6 @@ in {
   services.minecraft-servers.servers = let
     velocityToml = cfg.servers."proxy".files."velocity.toml".value;
   in {
-    "halloween-rpg" = {
-      enable = true;
-      enableReload = true;
-      extraReload =
-        pipe [
-          "/whitelist reload"
-          "/reload"
-        ] [
-          (map (v: "echo '${v}' > ${cfg.runDir}/halloween-rpg.stdin"))
-          (join "\n")
-        ];
-      autoStart = false;
-      inherit
-        (cfg.servers."favelasmp")
-        jvmOpts
-        package
-        managementSystem
-        environment
-        ;
-      symlinks =
-        (removeAttrs cfg.servers."favelasmp".symlinks [
-          "mods/bluemap-5.22-fabric.jar"
-          "mods/git-pack-manager-fabric-26.1-5.3.0+fabric+26.1.jar"
-          "mods/mesh-lib-fabric-26.1-2.1.0+fabric+26.1.jar"
-          "mods/monkeylib538-fabric-26.2-5.0.0+fabric+26.2.jar"
-          "mods/dcintegration-fabric-MC26.2-3.2.0.jar"
-          "mods/voicechat-discord-fabric-26.1-3.2.0.jar"
-          "mods/unplugged_afk-v0.2.4-mc26.2.jar"
-        ])
-        // {
-          "whitelist.json" =
-            config.sops.secrets."services/minecraft/halloween-rpg-whitelist".path;
-          "ops.json" =
-            config.sops.secrets."services/minecraft/halloween-rpg-ops".path;
-        };
-      files =
-        cfg.servers."favelasmp".files
-        // {
-          "config/voicechat/voicechat-server.properties".value = {
-            port = 24456;
-          };
-          "config/voicechat-discord.yml" =
-            config.sops.secrets."services/minecraft/halloween-rpg-voicechat-discord".path;
-        };
-      serverProperties =
-        cfg.servers."favelasmp".serverProperties
-        // {
-          maxPlayer = 7;
-          motd = "§k0§r Bem vindo a §6§lTerra do Corvos§r§k0§r";
-          server-ip = elemAt (splitString ":" velocityToml.servers.halloween-rpg) 0;
-          server-port = toInt (elemAt (splitString ":" velocityToml.servers.halloween-rpg) 1);
-          require-resource-pack = false;
-        };
-    };
     "proxy" = {
       enable = true;
       enableReload = true;
@@ -117,6 +63,7 @@ in {
             servers = {
               favelasmp = "127.0.0.1:30066";
               halloween-rpg = "127.0.0.1:30067";
+              guzkei = "127.0.0.1:30068";
               try = ["favelasmp"];
             };
             show-max-players = 13;
@@ -401,6 +348,111 @@ in {
         white-list = true;
       };
     };
+    "halloween-rpg" = {
+      enable = true;
+      enableReload = true;
+      extraReload =
+        pipe [
+          "/whitelist reload"
+          "/reload"
+        ] [
+          (map (v: "echo '${v}' > ${cfg.runDir}/halloween-rpg.stdin"))
+          (join "\n")
+        ];
+      autoStart = false;
+      inherit
+        (cfg.servers."favelasmp")
+        jvmOpts
+        package
+        managementSystem
+        environment
+        ;
+      symlinks =
+        (removeAttrs cfg.servers."favelasmp".symlinks [
+          "mods/bluemap-5.22-fabric.jar"
+          "mods/git-pack-manager-fabric-26.1-5.3.0+fabric+26.1.jar"
+          "mods/mesh-lib-fabric-26.1-2.1.0+fabric+26.1.jar"
+          "mods/monkeylib538-fabric-26.2-5.0.0+fabric+26.2.jar"
+          "mods/dcintegration-fabric-MC26.2-3.2.0.jar"
+          "mods/voicechat-discord-fabric-26.1-3.2.0.jar"
+          "mods/unplugged_afk-v0.2.4-mc26.2.jar"
+        ])
+        // {
+          "whitelist.json" =
+            config.sops.secrets."services/minecraft/halloween-rpg-whitelist".path;
+          "ops.json" =
+            config.sops.secrets."services/minecraft/halloween-rpg-ops".path;
+        };
+      files =
+        cfg.servers."favelasmp".files
+        // {
+          "config/voicechat/voicechat-server.properties".value = {
+            port = 24456;
+          };
+          "config/voicechat-discord.yml" =
+            config.sops.secrets."services/minecraft/halloween-rpg-voicechat-discord".path;
+        };
+      serverProperties =
+        cfg.servers."favelasmp".serverProperties
+        // {
+          maxPlayer = 7;
+          motd = "§k0§r Bem vindo a §6§lTerra do Corvos§r§k0§r";
+          server-ip = elemAt (splitString ":" velocityToml.servers.halloween-rpg) 0;
+          server-port = toInt (elemAt (splitString ":" velocityToml.servers.halloween-rpg) 1);
+          require-resource-pack = false;
+        };
+    };
+    "guzkei" = rec {
+      enable = true;
+      enableReload = true;
+      extraReload =
+        pipe [
+          "/whitelist reload"
+          "/reload"
+        ] [
+          (map (v: "echo '${v}' > ${cfg.runDir}/halloween-rpg.stdin"))
+          (join "\n")
+        ];
+      autoStart = false;
+      inherit
+        (cfg.servers."favelasmp")
+        jvmOpts
+        package
+        managementSystem
+        environment
+        ;
+      symlinks =
+        (removeAttrs cfg.servers."favelasmp".symlinks [
+          "mods/bluemap-5.22-fabric.jar"
+          "mods/dcintegration-fabric-MC26.2-3.2.0.jar"
+          "mods/voicechat-discord-fabric-26.1-3.2.0.jar"
+        ])
+        // {
+          "whitelist.json" =
+            config.sops.secrets."services/minecraft/guzkei-whitelist".path;
+          "ops.json" =
+            config.sops.secrets."services/minecraft/guzkei-ops".path;
+        };
+      files =
+        cfg.servers."favelasmp".files
+        // {
+          "config/mesh-lib/main.json".value = {
+            httpPort = serverProperties.server-port + 100;
+          };
+          "config/voicechat/voicechat-server.properties".value = {
+            port = 24457;
+          };
+        };
+      serverProperties =
+        cfg.servers."favelasmp".serverProperties
+        // {
+          maxPlayer = 7;
+          motd = "Bem vindo";
+          server-ip = elemAt (splitString ":" velocityToml.servers.guzkei) 0;
+          server-port = toInt (elemAt (splitString ":" velocityToml.servers.guzkei) 1);
+          require-resource-pack = false;
+        };
+    };
   };
 
   systemd.services = let
@@ -510,6 +562,9 @@ in {
 
         echo "Creating backup"
         ${getExe pkgs.zip} "$backup_dir/favelasmp.zip" -u -r ${cfg.dataDir}/favelasmp/world
+
+        echo "Creating backup for guzkei"
+        ${getExe pkgs.zip} "$backup_dir/guzkei.zip" -u -r ${cfg.dataDir}/guzkei/world
 
         sleep 1s
 
@@ -632,6 +687,7 @@ in {
 
   services.caddy.virtualHosts."favelasmp.guz.one:80" = let
     meshLib = cfg.servers."favelasmp".files."config/mesh-lib/main.json".value;
+    guzkeiMeshLib = cfg.servers."guzkei".files."config/mesh-lib/main.json".value;
     bluemapServer = cfg.servers."favelasmp".files."config/bluemap/webserver.conf".value;
   in {
     extraConfig = ''
@@ -640,6 +696,14 @@ in {
 
       handle /git-pack-manager* {
         reverse_proxy http://localhost:${toString meshLib.httpPort} {
+          header_up X-Real-Ip {header.Cf-Connecting-Ip}
+          header_up X-Forwarded-For {header.Cf-Connecting-Ip}
+          header_up X-Forwarded-Proto https
+          header_up Host {host}
+        }
+      }
+      handle /guzkei/git-pack-manager* {
+        reverse_proxy http://localhost:${toString guzkeiMeshLib.httpPort} {
           header_up X-Real-Ip {header.Cf-Connecting-Ip}
           header_up X-Forwarded-For {header.Cf-Connecting-Ip}
           header_up X-Forwarded-Proto https
@@ -704,5 +768,9 @@ in {
     "services/minecraft/halloween-rpg-voicechat-properties".owner = config.services.minecraft-servers.user;
     "services/minecraft/halloween-rpg-voicechat-discord".owner = config.services.minecraft-servers.user;
     "services/minecraft/halloween-rpg-whitelist".owner = config.services.minecraft-servers.user;
+
+    "services/minecraft/guzkei-ops".owner = config.services.minecraft-servers.user;
+    "services/minecraft/guzkei-whitelist".owner = config.services.minecraft-servers.user;
+    "services/minecraft/guzkei-pack-manager".owner = config.services.minecraft-servers.user;
   };
 }
