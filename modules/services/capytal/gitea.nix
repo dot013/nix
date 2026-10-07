@@ -242,6 +242,14 @@ in {
   };
 
   virtualisation.podman.enable = true;
+  virtualisation.podman.package =
+    # INFO: https://github.com/podman-container-tools/podman/issues/29805
+    pkgs.callPackage "${(pkgs.fetchFromGitHub {
+      owner = "NixOS";
+      repo = "nixpkgs";
+      rev = "453eb764bf6c16a9d9f7cbd488fc6f13eb1bdb9b";
+      hash = "sha256-Gddh+8ViGCl+odrLvQ7eHX4vFuJmZUN+XVfBjXIsp2c=";
+    })}/pkgs/by-name/po/podman/package.nix" {};
   virtualisation.podman.dockerCompat = true;
   virtualisation.podman.dockerSocket.enable = true;
   virtualisation.containers.containersConf.settings = {
