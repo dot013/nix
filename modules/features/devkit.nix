@@ -94,7 +94,7 @@
           programs.git = {
             enable = true;
             package = devkitPkgs.git;
-            lfs.package = devkitPkgs.git;
+            lfs.enable = true;
           };
 
           # GPG Keyring
