@@ -2,11 +2,13 @@
   lib,
   options,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 with lib; {
   # Vesktop (Discord)
   programs.vesktop.enable = true;
+  programs.vesktop.package = pkgs-unstable.vesktop;
   programs.vesktop.vencord = {
     settings = {
       autoUpdate = false;
