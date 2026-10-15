@@ -79,6 +79,7 @@ in {
       };
       service = {
         DISABLE_REGISTRATION = true;
+        REQUIRE_SIGNIN_VIEW = "expensive"; # Fuck You AI scrappers
       };
       database = {
         DB_TYPE = "sqlite3";
@@ -273,6 +274,34 @@ in {
             all = [
               ''userAgent.contains("Discordbot")''
               ''path.startsWith("/avatars/")''
+            ];
+          };
+        }
+        {
+          # INFO: Agressive blocking
+          #
+          # Some bots seems to be using real browsers and even with the
+          # REQUIRE_SIGNIN_VIEW, the requests are slowing down the Gitea instance.
+          # So we will fully block, not even a login redirect, when:
+          # - it is a request directly to an expensive page
+          # - the method is HEAD or GET
+          # - there's no auth cookie and no auth header
+          name = "block-expensive";
+          action = "DENY";
+          expression = {
+            all = [
+              "(${strings.join " || " [
+                ''path.contains("/commit/")''
+                ''path.contains("/commits/")''
+                ''path.contains("/compare/")''
+                ''path.contains("/blame/")''
+                ''path.contains("/archive/")''
+                ''path.contains("/raw/")''
+              ]})"
+              ''(method == "HEAD" || method == "GET")''
+              (''!(("Cookie" in headers) && headers["Cookie"].contains("${cfg.settings.session.COOKIE_NAME}"))''
+                + " && "
+                + ''!("Authorization" in headers)'')
             ];
           };
         }
