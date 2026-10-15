@@ -13,6 +13,7 @@ in {
     package = inputs.loreddev-gitea.packages.${pkgs.stdenv.hostPlatform.system}.default;
     settings = let
       initList = l: (concatStringsSep "," l);
+      FILE_MAX_SIZE = 1024 * 2;
     in rec {
       DEFAULT = {
         APP_NAME = "Capytal Code";
@@ -46,8 +47,14 @@ in {
           "termina"
         ];
       };
+      "repository.release" = {
+        inherit FILE_MAX_SIZE;
+      };
       "repository.signing" = {
         DEFAULT_TRUST_MODEL = "committer";
+      };
+      "repository.upload" = {
+        inherit FILE_MAX_SIZE;
       };
       "ui.meta" = {
         AUTHOR = "Capytal";
@@ -76,6 +83,8 @@ in {
         LFS_START_SERVER = true;
         LFS_JWT_SECRET = mkForce "";
         LFS_JWT_SECRET_URI = "file:${config.sops.secrets."services/gitea/lfs-jwt-secret".path}";
+        PER_WRITE_TIMEOUT = "300s";
+        PER_WRITE_PER_KB_TIMEOUT = "300s";
       };
       service = {
         DISABLE_REGISTRATION = true;
@@ -177,6 +186,7 @@ in {
           ".xlsx"
           ".zip"
         ];
+        MAX_SIZE = FILE_MAX_SIZE;
       };
       lfs = {};
       storage = {
@@ -396,12 +406,22 @@ in {
         -Server
       }
 
-      reverse_proxy http://localhost:${toString (cfg.settings.server.HTTP_PORT + 2)} {
-        # header_up X-Real-Ip {header.Cf-Connecting-Ip}
-        # header_up X-Forwarded-For {header.Cf-Connecting-Ip}
-        header_up X-Forwarded-Proto https
-        header_up X-Http-Version {http.request.proto}
-        header_up Host {host}
+      handle /api/* {
+        reverse_proxy http://localhost:${toString (cfg.settings.server.HTTP_PORT)} {
+          # header_up X-Real-Ip {remote}
+          header_up X-Forwarded-Proto https
+          header_up X-Http-Version {http.request.proto}
+          header_up Host {host}
+        }
+      }
+
+      handle {
+        reverse_proxy http://localhost:${toString (cfg.settings.server.HTTP_PORT + 2)} {
+          # header_up X-Real-Ip {remote}
+          header_up X-Forwarded-Proto https
+          header_up X-Http-Version {http.request.proto}
+          header_up Host {host}
+        }
       }
     '';
     "gitea.local".extraConfig = ''
