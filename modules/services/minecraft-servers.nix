@@ -73,9 +73,9 @@ in {
         "forwarding.secret" =
           config.sops.secrets."services/minecraft/proxy-secret".path;
 
-        "plugins/global-whitelist-1.0.jar" = pkgs.fetchurl {
-          url = "https://cdn.modrinth.com/data/aKrMZ5cC/versions/5GDSLhSp/global-whitelist-1.0.jar";
-          sha512 = "908599f3674a93bc15b47caba3a22ffc12c0ecaa82b07ea3bc348a9466383b42af77dba9d23ec0af32f0639c3bcc061d366edb3d51eb2df58d95f9107fe4bc0c";
+        "plugins/global-whitelist-1.2.1.jar" = pkgs.fetchurl {
+          url = "https://cdn.modrinth.com/data/aKrMZ5cC/versions/sGDGYYQ2/global-whitelist-1.2.1.jar";
+          sha512 = "191324165509d39ac3b589e0bc4e79ac189e0f0873ea7f7a45652a9de20a2cad15a6941afa3a045e88f22649d20f78eb07b494f7ada1e7823e14a4bca900781a";
         };
         "plugins/global-whitelist/whitelist.json" =
           config.sops.secrets."services/minecraft/favelasmp-whitelist".path;
@@ -102,17 +102,17 @@ in {
             send-floodgate-data = true;
           };
 
-        "plugins/ViaVersion-5.10.1-SNAPSHOT.jar" = pkgs.fetchurl {
-          url = "https://cdn.modrinth.com/data/P1OZGk5p/versions/cUZ7Yg3y/ViaVersion-5.10.1-SNAPSHOT.jar";
-          sha512 = "2923e378fe87026f05bff65f50bda18096af5307048f405b1a1b3bdd5c59cbf18b5b222a48ef940350f57cd124e233451b81b63d10eab728f63bec546bac0754";
+        "plugins/ViaVersion-5.12.2-SNAPSHOT.jar" = pkgs.fetchurl {
+          url = "https://cdn.modrinth.com/data/P1OZGk5p/versions/rbF6L4o1/ViaVersion-5.12.2-SNAPSHOT.jar";
+          sha512 = "4a9781ebbccbc5930d50c45c2aab11ede4a3ccc4c8baf421fdead819547598bc9c4dc44ff666a9aa5c712eaa7cacc3f4b9ac716cad66e0974a6acf5a161d1ea5";
         };
         "plugins/ViaBackwards-5.10.1-SNAPSHOT.jar" = pkgs.fetchurl {
-          url = "https://cdn.modrinth.com/data/NpvuJQoq/versions/KXqWliHi/ViaBackwards-5.10.1-SNAPSHOT.jar";
-          sha512 = "b8e71a9bf651b48d69c99f5f8a81aad8d6516a021a6dc947ccbc523bbab91860afdb14a5122529dd7ed44c3270d69dd5797c800b2ed2c9a17859315737301374";
+          url = "https://cdn.modrinth.com/data/NpvuJQoq/versions/gsqwpQfb/ViaBackwards-5.12.2-SNAPSHOT.jar";
+          sha512 = "0c5eb942ee8e8b09c7e700490431a72c1cf7c8cad0736fd676f82d71db2422d491fd5f2186f699c1cd7a8c8f90b62bd470684dea34e9e7d3efe03160bfa496c0";
         };
         "plugins/ViaRewind-4.1.3.jar" = pkgs.fetchurl {
-          url = "https://cdn.modrinth.com/data/TbHIxhx5/versions/2kfqNMlc/ViaRewind-4.1.3-SNAPSHOT.jar";
-          sha512 = "6c3081ea3012f1e4d0ec0650e18436ef9a615232b234c09bde00a3cb1b5674f2a73fe513bb2db2f1dc86abd879c0a7fd692671b59036968c174b2064fe4c717a";
+          url = "https://cdn.modrinth.com/data/TbHIxhx5/versions/EPLCoxMK/ViaRewind-4.2.0.jar";
+          sha512 = "7f3a2a972a3fe45f9c16b48a2e2b08fca6aa70da77eb8e47644726f19a43dc24116c2f7e126434f9f9388fa1b987a014efe287e3980f773b6e261313e7e939b2";
         };
 
         "plugins/voicechat-velocity-2.6.18.jar" = pkgs.fetchurl {
