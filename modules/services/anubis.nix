@@ -1,4 +1,5 @@
-{...}: {
+{pkgs-unstable, ...}: {
+  services.anubis.package = pkgs-unstable.anubis;
   services.anubis.defaultOptions = {
     policy = {
       useDefaultBotRules = true;
