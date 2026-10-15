@@ -1,6 +1,7 @@
 {
   config,
   self,
+  pkgs-unstable,
   ...
 }: {
   imports = [
@@ -42,6 +43,7 @@
   };
 
   services.caddy.enable = true;
+  services.caddy.package = pkgs-unstable.caddy;
 
   sops.secrets = {
     "services/cloudflared/capytalcc-cert" = {};
