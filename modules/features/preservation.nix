@@ -34,6 +34,33 @@ with lib; {
           inInitrd = true;
         }
       ]
+      # Clustta
+      ++ (optionals (config.services?clustta && config.services.clustta.enable) [
+        {
+          directory = config.services.clustta.settings.data_dir;
+          user = config.services.clustta.user;
+          group = config.services.clustta.group;
+          mode = "u=rwx,g=rx,o=";
+        }
+        {
+          directory = config.services.clustta.settings.projects_dir;
+          user = config.services.clustta.user;
+          group = config.services.clustta.group;
+          mode = "u=rwx,g=rx,o=";
+        }
+        {
+          directory = config.services.clustta.settings.shared_projects_dir;
+          user = config.services.clustta.user;
+          group = config.services.clustta.group;
+          mode = "u=rwx,g=rx,o=";
+        }
+        {
+          directory = config.services.clustta.settings.storage_dir;
+          user = config.services.clustta.user;
+          group = config.services.clustta.group;
+          mode = "u=rwx,g=rx,o=";
+        }
+      ])
       # Garage
       ++ (with config.services.garage;
         optionals enable ([
