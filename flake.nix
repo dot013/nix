@@ -289,6 +289,7 @@
         inherit (pkgs) callPackage;
       in {
         audacity = callPackage ./packages/audacity.nix {};
+        clustta = callPackage ./packages/clustta.nix {};
         infiltrator = self.nixosConfigurations."infiltrator".config.system.build.isoImage;
         playit-agent = callPackage ./packages/playit-agent.nix {};
         images = {
