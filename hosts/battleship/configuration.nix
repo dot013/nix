@@ -26,6 +26,7 @@ with lib; {
     self.nixosModules.services.adguard
     self.nixosModules.services.anubis
     self.nixosModules.services.capytal-authelia
+    self.nixosModules.services.capytal-clustta
     self.nixosModules.services.capytal-gitea
     self.nixosModules.services.capytal-websites
     self.nixosModules.services.cloudflared
