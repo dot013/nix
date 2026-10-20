@@ -228,6 +228,7 @@
     nixosModules = {
       caddy = ./modules/caddy.nix;
       cloudflared-caddy = ./modules/cloudflared-caddy.nix;
+      clustta = ./modules/clustta.nix;
       services = {
         adguard = ./modules/services/adguard.nix;
         anubis = ./modules/services/anubis.nix;
