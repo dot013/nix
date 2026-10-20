@@ -236,6 +236,7 @@
         adguard = ./modules/services/adguard.nix;
         anubis = ./modules/services/anubis.nix;
         capytal-authelia = ./modules/services/capytal/authelia.nix;
+        capytal-clustta = ./modules/services/capytal/clustta.nix;
         capytal-gitea = ./modules/services/capytal/gitea.nix;
         capytal-matrix = ./modules/services/capytal/matrix.nix;
         capytal-websites = ./modules/services/capytal/websites.nix;
