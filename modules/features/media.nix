@@ -16,6 +16,9 @@
           "org.kde.krita"
           "org.inkscape.Inkscape"
           "org.libreoffice.LibreOffice"
+          "org.pipewire.Helvum"
+          "com.saivert.pwvucontrol"
+          "com.github.wwmm.easyeffects"
           "com.obsproject.Studio"
           "net.blockbench.Blockbench"
         ];
