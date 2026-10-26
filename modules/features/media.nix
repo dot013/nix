@@ -14,6 +14,7 @@
           "io.github.wartybix.Constrict"
           "org.blender.Blender"
           "org.kde.krita"
+          "org.kde.kdenlive"
           "org.inkscape.Inkscape"
           "org.libreoffice.LibreOffice"
           "org.pipewire.Helvum"
