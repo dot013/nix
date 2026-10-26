@@ -6,6 +6,9 @@
   hardware.graphics.enable32Bit = true;
   hardware.amdgpu.initrd.enable = true;
   hardware.amdgpu.opencl.enable = true;
+  hardware.graphics.extraPackages = [pkgs.rocmPackages.clr.icd];
+
+  nixpkgs.config.rocmSupport = true;
 
   environment.systemPackages = with pkgs; [clinfo];
 }

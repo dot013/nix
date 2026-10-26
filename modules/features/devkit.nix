@@ -4,6 +4,7 @@
     inputs,
     lib,
     pkgs,
+    pkgs-unstable,
     self,
     ...
   }:
@@ -32,7 +33,8 @@
 
         services.ollama = {
           enable = cfg.full;
-          package = pkgs.ollama-rocm;
+          package = pkgs-unstable.ollama-rocm;
+          rocmOverrideGfx = "10.1.0";
           # loadModels = ["deepseek-r1:1.5b"];
         };
 
@@ -199,7 +201,7 @@
           xdg.configFile."opencode/opencode.json" = mkIf cfg.full {
             text = toJSON {
               "$schema" = "https://opencode.ai/config.json";
-              model = "ollama/qwen3-coder:30b";
+              model = "ollama/lfm2.5:8b";
               provider = {
                 ollama = {
                   npm = "@ai-sdk/openai-compatible";
@@ -208,11 +210,23 @@
                     baseURL = "http://localhost:${toString osConfig.services.ollama.port}/v1";
                   };
                   models = {
+                    "lfm2.5:8b" = {
+                      name = "Liquid LFM2.5";
+                    };
                     "deepseek-r1:1.5b" = {
                       name = "Deepseek R1";
                     };
+                    "hillct/Quen3-Reranker-8b:latest" = {
+                      name = "Quen3 Reranker";
+                    };
                     "qwen3-coder:30b" = {
                       name = "Quen3 Coder";
+                    };
+                    "qwen2.5-coder:7b" = {
+                      name = "Quen2.5 Coder";
+                    };
+                    "bonsai-2:27b" = {
+                      name = "Bonsai 2";
                     };
                   };
                 };
