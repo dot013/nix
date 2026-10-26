@@ -20,6 +20,7 @@
           tabSize = 2;
           useMarkdownLinks = true;
           trashOption = "local";
+          strictLineBreaks = true;
         };
         appearance = {
           baseFontSize = mkForce 16;
