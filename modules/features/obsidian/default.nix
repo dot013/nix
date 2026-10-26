@@ -214,7 +214,7 @@
                 startupType = "short";
               }
               {
-                pkg = simple-banner;
+                pkg = banner-images;
                 startupType = "long";
               }
               {
