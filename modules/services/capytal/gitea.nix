@@ -188,6 +188,9 @@ in {
         ];
         MAX_SIZE = FILE_MAX_SIZE;
       };
+      cron = {
+        ENABLED = true;
+      };
       lfs = {};
       storage = {
         STORAGE_TYPE = "minio";
