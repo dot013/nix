@@ -252,7 +252,7 @@ in {
     type = "tar.xz";
     file = "gitea-dump.tar.xz";
     backupDir = "/run/media/cryptstorage/gitea/dumps";
-    interval = "Sat *-*-* 04:00:00 ${config.time.timeZone}";
+    interval = "Sat *-*-* 02:00:00 ${config.time.timeZone}";
   };
 
   virtualisation.podman.enable = true;
