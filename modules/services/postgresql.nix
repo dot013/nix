@@ -52,4 +52,10 @@ in {
     host    all             all             127.0.0.1/32            trust
     host    all             all             ::1/128                 trust
   '';
+
+  services.postgresqlBackup.enable = true;
+  services.postgresqlBackup.backupAll = true;
+  services.postgresqlBackup.compressionLevel = 9;
+  services.postgresqlBackup.startAt = "*-*-* 02:00:00 ${config.time.timeZone}";
+  services.postgresqlBackup.location = "/run/media/cryptstorage/postgresql/dumps";
 }
