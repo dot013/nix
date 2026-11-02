@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./garage.nix
+    ./nextcloud-capytal.nix
   ];
 
   networking.nat = {
