@@ -34,6 +34,8 @@ with lib; {
     self.nixosModules.services.nextcloud
     self.nixosModules.services.postgresql
     self.nixosModules.services.valkey
+
+    ./containers/default.nix
   ];
 
   services.garage.enable = mkForce false; # Just imported to configure .local domains

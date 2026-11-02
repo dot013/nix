@@ -34,6 +34,8 @@ with lib; {
           inInitrd = true;
         }
       ]
+      ++ (mapAttrsToList (name: value: "/var/lib/nixos-containers/${name}")
+        (filterAttrs (n: v: !v.ephemeral) config.containers))
       # Garage
       ++ (with config.services.garage;
         optionals enable ([
