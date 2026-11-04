@@ -51,6 +51,8 @@ in {
     "--load-credential=db-pass:${config.sops.secrets."containers/nextcloud-capytal/db-pass".path}"
     "--load-credential=config:${config.sops.secrets."containers/nextcloud-capytal/config".path}"
     "--load-credential=s3-secret:${config.sops.secrets."containers/nextcloud-capytal/s3-secret".path}"
+    "--property=MemoryMax=1G"
+    "--property=CPUQuota=100%" # One core
   ];
   containers.nextcloud-cpy.config = {
     config,
