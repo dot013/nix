@@ -13,7 +13,7 @@ with lib; {
   ];
 
   services.nextcloud = let
-    version = "33";
+    version = "34";
   in {
     enable = true;
     package = pkgs."nextcloud${version}";

@@ -15,23 +15,20 @@ in {
       Strict-Transport-Security "max-age=15552000"
     }
 
-    handle /remote.php/dav/* {
-      reverse_proxy http://10.0.2.2:80 {
-        header_up X-Real-IP {header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {header.Cf-Connecting-Ip}
-        header_up X-Forwarded-Proto https
-        header_up X-Http-Version {http.request.proto}
-        header_up Host {host}
-      }
+    rewrite /.well-known/carddav /remote.php/dav{uri}
+    rewrite /.well-known/caldav /remote.php/dav{uri}
+    rewrite /.well-known/host-meta /public.php?service=host-meta-json
+    rewrite /.well-known/host-meta.json /public.php?service=host-meta-json
+
+    reverse_proxy http://10.0.2.2:80 {
+      header_up X-Real-IP {header.Cf-Connecting-Ip}
+      header_up X-Forwarded-Host {host}
+      header_up X-Forwarded-For {header.Cf-Connecting-Ip}
+      header_up X-Forwarded-Proto https
+      header_up X-Http-Version {http.request.proto}
+      header_up Host {host}
     }
-    handle /publib.php/webdav/* {
-      reverse_proxy http://10.0.2.2:80 {
-        header_up X-Real-IP {header.Cf-Connecting-Ip}
-        header_up X-Forwarded-For {header.Cf-Connecting-Ip}
-        header_up X-Forwarded-Proto https
-        header_up X-Http-Version {http.request.proto}
-        header_up Host {host}
-      }
+  '';
     }
     handle {
       reverse_proxy http://localhost:2280 {
@@ -43,70 +40,6 @@ in {
       }
     }
   '';
-
-  services.anubis.instances."nextcloud-capytal" = {
-    policy = {
-      useDefaultBotRules = true;
-      settings = {
-        thresholds = [
-          {
-            name = "minimal-suspicion";
-            expression = "weight <= 0";
-            action = "ALLOW";
-          }
-          {
-            name = "mild-suspicion";
-            expression.all = ["weight > 0" "weight < 10"];
-            action = "CHALLENGE";
-            challenge = {
-              algorithm = "hashx";
-              difficulty = 4;
-            };
-          }
-          {
-            name = "moderate-suspicion";
-            expression.all = ["weight >= 10" "weight < 20"];
-            action = "CHALLENGE";
-            challenge = {
-              algorithm = "hashx";
-              difficulty = 8;
-            };
-          }
-          {
-            name = "mild-proof-of-work";
-            expression.all = ["weight >= 20" "weight < 30"];
-            action = "CHALLENGE";
-            challenge = {
-              algorithm = "hashx";
-              difficulty = 16;
-            };
-          }
-          {
-            name = "extreme-suspicion";
-            expression = "weight >= 30";
-            action = "CHALLENGE";
-            challenge = {
-              algorithm = "hashx";
-              difficulty = 24;
-            };
-          }
-        ];
-      };
-      extraBots = [
-        {import = "(data)/common/keep-internet-working.yaml";}
-      ];
-    };
-    settings = {
-      BIND = ":2280";
-      BIND_NETWORK = "tcp";
-      METRICS_BIND = ":2281";
-      METRICS_BIND_NETWORK = "tcp";
-      SERVE_ROBOTS_TXT = true;
-      TARGET = "http://10.0.2.2:80";
-      ED25519_PRIVATE_KEY_HEX_FILE = config.sops.secrets."containers/nextcloud-capytal/anubis-private-key".path;
-      DIFFICULTY = 16;
-    };
-  };
 
   containers.nextcloud-cpy.autoStart = true;
   containers.nextcloud-cpy.privateNetwork = true;
@@ -279,6 +212,5 @@ in {
     "containers/nextcloud-capytal/db-pass" = {restartUnits = ["container@nextcloud-capytal.service"];};
     "containers/nextcloud-capytal/config" = {restartUnits = ["container@nextcloud-capytal.service"];};
     "containers/nextcloud-capytal/s3-secret" = {restartUnits = ["container@nextcloud-capytal.service"];};
-    "containers/nextcloud-capytal/anubis-private-key" = {owner = config.services.anubis.instances."nextcloud-capytal".user;};
   };
 }
