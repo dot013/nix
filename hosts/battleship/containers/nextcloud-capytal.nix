@@ -328,10 +328,10 @@ in {
         "containers/nextcloud-capytal/spreed-client-secret" = {
           owner = config.services.nextcloud-spreed-signaling.user;
         };
-        "containers/nextcloud-capytal/coturn-secret" = {
-          owner = config.systemd.services.coturn.serviceConfig.User;
-          key = "containers/nextcloud-capytal/spreed-client-secret";
-        };
+        # "containers/nextcloud-capytal/coturn-secret" = {
+        #   owner = config.systemd.services.coturn.serviceConfig.User;
+        #   key = "containers/nextcloud-capytal/spreed-client-secret";
+        # };
       };
 
       networking.firewall.allowedTCPPorts = [80 config.services.coturn.listening-port];
