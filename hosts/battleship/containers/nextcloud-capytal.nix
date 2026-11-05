@@ -117,6 +117,7 @@ in {
       services.nextcloud.package = pkgs."nextcloud${version}";
       services.nextcloud.hostName = "cloud.capytal.cc";
       services.nextcloud.database.createLocally = true;
+      services.nextcloud.imaginary.enable = true;
       services.nextcloud.configureRedis = true;
       services.nextcloud.extraAppsEnable = true;
       services.nextcloud.extraApps = {
@@ -179,6 +180,7 @@ in {
           config.services.nextcloud.hostName
         ];
         overwriteprotocol = "https";
+        preview_format = "webp";
 
         oidc_login_provider_url = "https://auth.capytal.cc";
         # oidc_login_client_id = "via secret file"
