@@ -1,9 +1,13 @@
 {
   config,
   lib,
+  self,
   ...
 }:
 with lib; {
+  imports = [
+    self.nixosModules.caddy
+  ];
   options.services.cloudflared = {
     tunnels = mkOption {
       type = with types;

@@ -119,6 +119,13 @@
       inputs.stylix.nixosModules.stylix
       ./secrets.nix
       ./style.nix
+
+      # Local DNS
+      ({config, ...}: {
+        security.pki.certificateFiles = [
+          ./modules/services/adguard/ca.pem
+        ];
+      })
     ];
     forAllSystems = f:
       nixpkgs.lib.genAttrs systems (system: let
@@ -226,9 +233,10 @@
     };
 
     nixosModules = {
+      caddy = ./modules/caddy.nix;
       cloudflared-caddy = ./modules/cloudflared-caddy.nix;
       services = {
-        adguard = ./modules/services/adguard.nix;
+        adguard = ./modules/services/adguard/default.nix;
         anubis = ./modules/services/anubis.nix;
         capytal-authelia = ./modules/services/capytal/authelia.nix;
         capytal-gitea = ./modules/services/capytal/gitea.nix;

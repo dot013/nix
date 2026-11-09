@@ -36,7 +36,7 @@ in {
       };
       filtering = {
         rewrites = mkIf config.services.caddy.enable (pipe config.services.caddy.virtualHosts [
-          (filterAttrs (n: v: hasSuffix ".local" n))
+          (filterAttrs (n: _: hasSuffix ".local" n))
           (mapAttrsToList (domain: _: {
             domain = removePrefix "https://" (removePrefix "http://" domain);
             answer = "100.98.115.36";
@@ -77,11 +77,33 @@ in {
     };
   };
 
-  services.caddy.virtualHosts."adguard.local" = {
-    extraConfig = ''
-      reverse_proxy http://localhost:${toString cfg.port}
-      tls internal
-    '';
+  services.caddy.virtualHosts."adguard.local".extraConfig = ''
+    import local-tls
+    reverse_proxy http://localhost:${toString cfg.port}
+  '';
+  services.caddy.extraConfig = ''
+    (local-tls) {
+      tls {
+        issuer internal {
+          ca local_ca
+        }
+      }
+    }
+  '';
+  services.caddy.globalConfig = ''
+    pki {
+      ca local_ca {
+        name "Dot013 CA"
+        root {
+          cert "${./ca.pem}"
+          key "${config.sops.secrets."services/adguard/key".path}"
+        }
+      }
+    }
+  '';
+
+  sops.secrets = {
+    "services/adguard/key" = {owner = config.services.caddy.user;};
   };
 
   # Ports needed to access the DNS resolver
