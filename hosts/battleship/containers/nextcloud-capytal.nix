@@ -27,69 +27,66 @@ in {
       header_up Host {host}
     }
   '';
-  services.caddy.virtualHosts."talk.capytal.cc:80".extraConfig = ''
-    header {
-      X-Content-Type-Options "nosniff"
-      X-Robots-Tag "noindex,nofollow"
-      X-Permitted-Cross-Domain-Policies "none"
-      Referrer-Policy "no-referrer"
-      Strict-Transport-Security "max-age=15552000"
-    }
-
-    reverse_proxy http://10.0.2.2:80 {
-      header_up X-Real-IP {header.Cf-Connecting-Ip}
-      header_up X-Forwarded-Host {host}
-      header_up X-Forwarded-For {header.Cf-Connecting-Ip}
-      header_up X-Forwarded-Proto https
-      header_up X-Http-Version {http.request.proto}
-      header_up Host {host}
-    }
-  '';
-  services.caddy.logFormat = ''
-    level DEBUG
-  '';
-  services.caddy.globalConfig = ''
-    auto_https disable_redirects
-
-    # servers {
-    #   protocols h1 h2 h2c
-    #   listener_wrappers {
-    #     layer4 {
-    #       @turn tls talk.capytal.cc
-    #       route @turn {
-    #         proxy 10.0.2.2:3478
-    #       }
-    #     }
-    #   }
-    # }
-
-    layer4 {
-      tcp/:80 {
-        @cpy tls sni turn.capytal.cc
-        route @cpy {
-          proxy tcp/10.0.2.2:3478
-        }
-      }
-      tcp/:443 {
-        @cpy-tls tls sni turn.capytal.cc
-        route @cpy-tls {
-          proxy tcp/10.0.2.2:3478
-        }
-      }
-      udp/:80 {
-        @cpy tls sni turn.capytal.cc
-        route @cpy {
-          proxy udp/10.0.2.2:3478
-        }
-      }
-      udp/:443 {
-        @cpy-tls tls sni turn.capytal.cc
-        route @cpy-tls {
-          proxy udp/10.0.2.2:3478
-        }
-      }
-    }
-  '';
+  # services.caddy.virtualHosts."talk.capytal.cc:80".extraConfig = ''
+  #   header {
+  #     X-Content-Type-Options "nosniff"
+  #     X-Robots-Tag "noindex,nofollow"
+  #     X-Permitted-Cross-Domain-Policies "none"
+  #     Referrer-Policy "no-referrer"
+  #     Strict-Transport-Security "max-age=15552000"
+  #   }
+  #
+  #   reverse_proxy http://10.0.2.2:80 {
+  #     header_up X-Real-IP {header.Cf-Connecting-Ip}
+  #     header_up X-Forwarded-Host {host}
+  #     header_up X-Forwarded-For {header.Cf-Connecting-Ip}
+  #     header_up X-Forwarded-Proto https
+  #     header_up X-Http-Version {http.request.proto}
+  #     header_up Host {host}
+  #   }
+  # '';
+  # services.caddy.globalConfig = ''
+  #   auto_https disable_redirects
+  #
+  #   # servers {
+  #   #   protocols h1 h2 h2c
+  #   #   listener_wrappers {
+  #   #     layer4 {
+  #   #       @turn tls talk.capytal.cc
+  #   #       route @turn {
+  #   #         proxy 10.0.2.2:3478
+  #   #       }
+  #   #     }
+  #   #   }
+  #   # }
+  #
+  #   layer4 {
+  #     tcp/:80 {
+  #       @cpy tls sni turn.capytal.cc
+  #       route @cpy {
+  #         proxy tcp/10.0.2.2:3478
+  #       }
+  #     }
+  #     tcp/:443 {
+  #       @cpy-tls tls sni turn.capytal.cc
+  #       route @cpy-tls {
+  #         proxy tcp/10.0.2.2:3478
+  #       }
+  #     }
+  #     udp/:80 {
+  #       @cpy tls sni turn.capytal.cc
+  #       route @cpy {
+  #         proxy udp/10.0.2.2:3478
+  #       }
+  #     }
+  #     udp/:443 {
+  #       @cpy-tls tls sni turn.capytal.cc
+  #       route @cpy-tls {
+  #         proxy udp/10.0.2.2:3478
+  #       }
+  #     }
+  #   }
+  # '';
 
   containers.nextcloud-cpy.autoStart = true;
   containers.nextcloud-cpy.privateNetwork = true;
@@ -327,10 +324,6 @@ in {
         };
         "containers/nextcloud-capytal/spreed-client-secret" = {
           owner = config.services.nextcloud-spreed-signaling.user;
-        };
-        "containers/nextcloud-capytal/coturn-secret" = {
-          owner = config.systemd.services.coturn.serviceConfig.User;
-          key = "containers/nextcloud-capytal/spreed-client-secret";
         };
       };
 
