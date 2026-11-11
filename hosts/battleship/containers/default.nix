@@ -2,6 +2,7 @@
   imports = [
     ./garage.nix
     ./nextcloud-capytal.nix
+    ./postgresql.nix
   ];
 
   networking.nat = {
