@@ -32,6 +32,14 @@ in {
         ++ (map (v: v.name) (filter (v: v.ensureDBOwnership)
             config.services.postgresql.ensureUsers));
       services.postgresql.ensureUsers = [
+        {
+          name = "kitsu";
+          ensureClauses = {
+            login = true;
+            password = "SCRAM-SHA-256$4096:QK/rhDDwi/B8IkiDqPd33w==$9kgXMv3dYzIdzF6QzfP5JIu2APzW3Nc28ycjQ4o91Ms=:pVu3+dRfacT64qpq+Zo2TbhRe2Mj+eKBCk1Ls2uFF90=";
+          };
+          ensureDBOwnership = true;
+        }
       ];
       services.postgresql.authentication = lib.mkForce ''
         # TYPE  DATABASE        USER            ADDRESS                 METHOD
