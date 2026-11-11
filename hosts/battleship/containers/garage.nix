@@ -3,13 +3,13 @@
   lib,
   ...
 }: {
-  services.caddy.virtualHosts."http://s3.garage.local".extraConfig = lib.mkForce ''
+  services.caddy.virtualHosts."s3.garage.local".extraConfig = lib.mkForce ''
     reverse_proxy 192.168.0.101:3461
   '';
-  services.caddy.virtualHosts."http://web.garage.local".extraConfig = lib.mkForce ''
+  services.caddy.virtualHosts."web.garage.local".extraConfig = lib.mkForce ''
     reverse_proxy 192.168.0.101:3462
   '';
-  services.caddy.virtualHosts."http://rpc.garage.local".extraConfig = lib.mkForce ''
+  services.caddy.virtualHosts."rpc.garage.local".extraConfig = lib.mkForce ''
     reverse_proxy 192.168.0.101:3464
   '';
 
@@ -97,13 +97,13 @@
       system.stateVersion = "26.05";
     };
 
-  services.caddy.virtualHosts."s3.garage2.local:80".extraConfig = lib.mkForce ''
+  services.caddy.virtualHosts."s3.garage2.local".extraConfig = lib.mkForce ''
     reverse_proxy 192.168.0.101:3471
   '';
-  services.caddy.virtualHosts."web.garage2.local:80".extraConfig = lib.mkForce ''
+  services.caddy.virtualHosts."web.garage2.local".extraConfig = lib.mkForce ''
     reverse_proxy 192.168.0.101:3472
   '';
-  services.caddy.virtualHosts."rpc.garage2.local:80".extraConfig = lib.mkForce ''
+  services.caddy.virtualHosts."rpc.garage2.local".extraConfig = lib.mkForce ''
     reverse_proxy 192.168.0.101:3474
   '';
 

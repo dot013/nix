@@ -2,6 +2,7 @@
   inputs,
   config,
   lib,
+  self,
   ...
 }: let
   hostCfg = config;
@@ -108,6 +109,7 @@ in {
     with lib; {
       imports = [
         inputs.sops-nix.nixosModules.sops
+        self.nixosModules.services.adguard-tls
       ];
 
       services.nextcloud.enable = true;
@@ -155,7 +157,7 @@ in {
           key = "GK7fd378e9d89088ce0d6c0eb9";
           secretFile =
             config.sops.secrets."containers/nextcloud-capytal/s3-secret".path;
-          verify_bucket_exists = true;
+          verify_bucket_exists = false;
         };
       };
       services.nextcloud.secretFile =

@@ -17,6 +17,7 @@ with lib; {
   in {
     enable = true;
     package = pkgs."nextcloud${version}";
+    https = true;
     webserver = "caddy";
     hostName = "nextcloud.local";
     appstoreEnable = false;

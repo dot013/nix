@@ -120,12 +120,8 @@
       ./secrets.nix
       ./style.nix
 
-      # Local DNS
-      ({config, ...}: {
-        security.pki.certificateFiles = [
-          ./modules/services/adguard/ca.pem
-        ];
-      })
+      # Adguard local network TLS
+      (import ./modules/services/adguard.nix).tls-trust
     ];
     forAllSystems = f:
       nixpkgs.lib.genAttrs systems (system: let
@@ -236,7 +232,8 @@
       caddy = ./modules/caddy.nix;
       cloudflared-caddy = ./modules/cloudflared-caddy.nix;
       services = {
-        adguard = ./modules/services/adguard/default.nix;
+        adguard = (import ./modules/services/adguard.nix).service;
+        adguard-tls = (import ./modules/services/adguard.nix).tls-trust;
         anubis = ./modules/services/anubis.nix;
         capytal-authelia = ./modules/services/capytal/authelia.nix;
         capytal-gitea = ./modules/services/capytal/gitea.nix;
