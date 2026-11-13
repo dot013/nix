@@ -15,12 +15,11 @@
 
   containers.garage.autoStart = true;
   # containers.garage.privateNetwork = true;
-  containers.garage.privateUsers = "pick";
+  # containers.garage.privateUsers = "pick";
   containers.garage.hostAddress = "192.168.0.101";
   containers.garage.localAddress = "192.168.0.112";
   containers.garage.extraFlags = [
     "--load-credential=env:${config.sops.secrets."containers/garage/env".path}"
-    "--bind=/run/media/cryptstorage/garage:/var/lib/garage:idmap"
   ];
   containers.garage.config = {
     config,
@@ -96,6 +95,13 @@
 
       system.stateVersion = "26.05";
     };
+  containers.garage.bindMounts = {
+    varlibgarage = {
+      mountPoint = "/var/lib/garage";
+      hostPath = "/run/media/cryptstorage/garage";
+      isReadOnly = false;
+    };
+  };
 
   services.caddy.virtualHosts."s3.garage2.local".extraConfig = lib.mkForce ''
     reverse_proxy 192.168.0.101:3471
@@ -109,12 +115,11 @@
 
   containers.garage2.autoStart = true;
   # containers.garage2.privateNetwork = true;
-  containers.garage2.privateUsers = "pick";
+  # containers.garage2.privateUsers = "pick";
   containers.garage2.hostAddress = "192.168.0.101";
   containers.garage2.localAddress = "192.168.0.113";
   containers.garage2.extraFlags = [
     "--load-credential=env:${config.sops.secrets."containers/garage/env".path}"
-    "--bind=/run/media/cryptstorage/garage2:/var/lib/garage:idmap"
   ];
   containers.garage2.config = {
     config,
@@ -190,6 +195,13 @@
 
       system.stateVersion = "26.05";
     };
+  containers.garage2.bindMounts = {
+    varlibgarage = {
+      mountPoint = "/var/lib/garage";
+      hostPath = "/run/media/cryptstorage/garage2";
+      isReadOnly = false;
+    };
+  };
 
   users.users."garage" = {
     group = "garage";

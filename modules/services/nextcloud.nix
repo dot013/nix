@@ -45,11 +45,10 @@ with lib; {
       objectstore.s3 = {
         enable = true;
         bucket = "nextcloud";
-        hostname = "spacestation";
-        port = config.services.garage.settings.s3_api.api_bind_port;
+        hostname = "s3.garage.local";
         usePathStyle = true;
         useSsl = false;
-        region = config.services.garage.settings.s3_api.s3_region;
+        region = "garage";
         key = "GKcfa3c7230bef3e521ac5dc20";
         secretFile = config.sops.secrets."services/nextcloud/s3-secretFile".path;
         # sseCKeyFile = config.sops.secrets."nextcloud/s3/sseC".path; # Needs SSL
