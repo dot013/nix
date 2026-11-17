@@ -15,10 +15,10 @@ with lib;
       "--use-config-file" =
         writers.writeJSON "config"
         {
-          git.pagers = [
+          git.diffRenderers = [
             {
               colorArg = "always";
-              pager = "${getExe pager} --dark --paging=never";
+              command = "${getExe pager} --dark --paging=never";
             }
           ];
           gui.theme = with (import ./colors.nix); {
