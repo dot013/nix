@@ -194,7 +194,7 @@ in {
       lfs = {};
       storage = {
         STORAGE_TYPE = "minio";
-        MINIO_USE_SSL = true;
+        MINIO_USE_SSL = false;
         MINIO_INSECURE_SKIP_VERIFY = true;
         MINIO_ENDPOINT = "s3.garage.local";
         MINIO_BUCKET = "gitea";
@@ -332,7 +332,11 @@ in {
   };
 
   services.caddy.virtualHosts = {
-    "${cfg.settings.server.DOMAIN}:80".extraConfig = ''
+    "${cfg.settings.server.DOMAIN}".extraConfig = ''
+      log {
+        level DEBUG
+        output stdout
+      }
       header {
         X-Frame-Options "SAMEORIGIN"
         X-Content-Type-Options "nosniff"
@@ -411,8 +415,7 @@ in {
 
       handle /api/* {
         reverse_proxy http://localhost:${toString (cfg.settings.server.HTTP_PORT)} {
-          # header_up X-Real-Ip {remote}
-          header_up X-Forwarded-Proto https
+          header_up X-Real-Ip {remote_host}
           header_up X-Http-Version {http.request.proto}
           header_up Host {host}
         }
@@ -420,20 +423,16 @@ in {
 
       handle {
         reverse_proxy http://localhost:${toString (cfg.settings.server.HTTP_PORT + 2)} {
-          # header_up X-Real-Ip {remote}
-          header_up X-Forwarded-Proto https
+          header_up X-Real-Ip {remote_host}
           header_up X-Http-Version {http.request.proto}
           header_up Host {host}
         }
       }
     '';
-    "gitea.local".extraConfig = ''
-      reverse_proxy http://localhost:${toString (cfg.settings.server.HTTP_PORT)}
-    '';
-    "forge.capytal.cc:80".extraConfig = ''
+    "forge.capytal.cc".extraConfig = ''
       redir https://code.capytal.cc permanent
     '';
-    "forge.capytal.company:80".extraConfig = ''
+    "forge.capytal.company".extraConfig = ''
       redir https://code.capytal.cc permanent
     '';
   };

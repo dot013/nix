@@ -85,13 +85,13 @@ in {
     ];
 
     services.caddy.virtualHosts = {
-      "${removePrefix "." cfg.settings.s3_api.root_domain}".extraConfig = ''
+      "${removePrefix "." cfg.settings.s3_api.root_domain}:80".extraConfig = ''
         reverse_proxy http://spacestation:${toString cfg.settings.s3_api.api_bind_port}
       '';
-      "${removePrefix "." cfg.settings.s3_web.root_domain}".extraConfig = ''
+      "${removePrefix "." cfg.settings.s3_web.root_domain}:80".extraConfig = ''
         reverse_proxy http://spacestation:${toString cfg.settings.s3_web.bind_port}
       '';
-      "*.${removePrefix "." cfg.settings.s3_web.root_domain}".extraConfig = ''
+      "*.${removePrefix "." cfg.settings.s3_web.root_domain}:80".extraConfig = ''
         reverse_proxy http://spacestation:${toString cfg.settings.s3_web.bind_port}
       '';
     };

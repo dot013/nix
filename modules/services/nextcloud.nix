@@ -5,82 +5,107 @@
   pkgs-unstable,
   ...
 }:
-with lib; {
+with lib; let
+  cfg = config.services.nextcloud;
+in {
   imports = [
     "${fetchTarball {
       url = "https://github.com/onny/nixos-nextcloud-testumgebung/archive/fa6f062830b4bc3cedb9694c1dbf01d5fdf775ac.tar.gz";
       sha256 = "0gzd0276b8da3ykapgqks2zhsqdv4jjvbv97dsxg0hgrhb74z0fs";
     }}/nextcloud-extras.nix"
   ];
+  options.services.caddy.virtualHosts = mkOption {
+    apply = v:
+      mapAttrs (n: v:
+        if hasInfix cfg.hostName v.hostName
+        then
+          v
+          // {
+            extraConfig = pipe v.extraConfig [
+              (splitString "\n")
+              (filter (l: !(hasInfix "Strict-Transport-Security" l)))
+              (join "\n")
+            ];
+          }
+        else v)
+      v;
+  };
+  config = {
+    services.nextcloud = let
+      version = "35";
+    in {
+      enable = true;
+      package = pkgs-unstable."nextcloud${version}";
+      https = true;
+      webserver = "caddy";
+      hostName = "nextcloud.local";
+      appstoreEnable = false;
+      configureRedis = true;
+      database.createLocally = true;
+      extraApps = {
+        inherit
+          (pkgs-unstable."nextcloud${version}Packages".apps)
+          # mail
+          calendar
+          contacts
+          memories
+          news
+          notes
+          phonetrack
+          recognize
+          ;
+      };
+      config = {
+        adminuser = "admin";
+        adminpassFile = config.sops.secrets."services/nextcloud/adminpass".path;
 
-  services.nextcloud = let
-    version = "35";
-  in {
-    enable = true;
-    package = pkgs-unstable."nextcloud${version}";
-    https = true;
-    webserver = "caddy";
-    hostName = "nextcloud.local";
-    appstoreEnable = false;
-    configureRedis = true;
-    database.createLocally = true;
-    extraApps = {
-      inherit
-        (pkgs-unstable."nextcloud${version}Packages".apps)
-        # mail
-        calendar
-        contacts
-        memories
-        news
-        notes
-        phonetrack
-        recognize
-        ;
-    };
-    config = {
-      adminuser = "admin";
-      adminpassFile = config.sops.secrets."services/nextcloud/adminpass".path;
+        dbtype = "pgsql";
 
-      dbtype = "pgsql";
-
-      objectstore.s3 = {
-        enable = true;
-        bucket = "nextcloud";
-        hostname = "s3.garage.local";
-        usePathStyle = true;
-        useSsl = false;
-        region = "garage";
-        key = "GKcfa3c7230bef3e521ac5dc20";
-        secretFile = config.sops.secrets."services/nextcloud/s3-secretFile".path;
-        # sseCKeyFile = config.sops.secrets."nextcloud/s3/sseC".path; # Needs SSL
+        objectstore.s3 = {
+          enable = true;
+          bucket = "nextcloud";
+          hostname = "s3.garage.local";
+          usePathStyle = true;
+          useSsl = false;
+          region = "garage";
+          key = "GKcfa3c7230bef3e521ac5dc20";
+          secretFile = config.sops.secrets."services/nextcloud/s3-secretFile".path;
+          # sseCKeyFile = config.sops.secrets."nextcloud/s3/sseC".path; # Needs SSL
+        };
+      };
+      settings = {
+        "auth.authtoken.v1.disabled" = true;
+        debug = false;
+        default_language = "pt_BR";
+        default_locale = "pt_BR";
+        default_phone_region = "BR";
+        default_timezone = config.time.timeZone;
+        loglevel = 2;
+        maintenance_window_start = 5; # 2:00 AM at UTC-3
+        trusted_proxies = ["127.0.0.1"];
+      };
+      phpExtraExtensions = all:
+        with all; [
+          opcache
+        ];
+      phpOptions = {
+        "opcache.interned_strings_buffer" = 10;
+        "opcache.jit" = 1255;
+        "opcache.jit_buffer_size" = "8M";
+        "opcache.revalidate_freq" = 60;
+        "opcache.save_comments" = 1;
       };
     };
-    settings = {
-      "auth.authtoken.v1.disabled" = true;
-      debug = false;
-      default_language = "pt_BR";
-      default_locale = "pt_BR";
-      default_phone_region = "BR";
-      default_timezone = config.time.timeZone;
-      loglevel = 2;
-      maintenance_window_start = 5; # 2:00 AM at UTC-3
-      trusted_proxies = ["127.0.0.1"];
-    };
-    phpExtraExtensions = all:
-      with all; [
-        opcache
-      ];
-    phpOptions = {
-      "opcache.interned_strings_buffer" = 10;
-      "opcache.jit" = 1255;
-      "opcache.jit_buffer_size" = "8M";
-      "opcache.revalidate_freq" = 60;
-      "opcache.save_comments" = 1;
-    };
-  };
 
-  sops.secrets = {
-    "services/nextcloud/adminpass" = {owner = "nextcloud";};
-    "services/nextcloud/s3-secretFile" = {owner = "nextcloud";};
+    services.caddy.virtualHosts."https://${cfg.hostName}".serverAliases = [
+      "http://${cfg.hostName}"
+      "${cfg.hostName}:80"
+      "${cfg.hostName}:443"
+    ];
+
+    sops.secrets = {
+      "services/nextcloud/adminpass" = {owner = "nextcloud";};
+      "services/nextcloud/s3-secretFile" = {owner = "nextcloud";};
+    };
   };
 }
