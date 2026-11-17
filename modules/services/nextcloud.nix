@@ -1,7 +1,8 @@
 {
   config,
   lib,
-  pkgs,
+  # pkgs,
+  pkgs-unstable,
   ...
 }:
 with lib; {
@@ -13,10 +14,10 @@ with lib; {
   ];
 
   services.nextcloud = let
-    version = "34";
+    version = "35";
   in {
     enable = true;
-    package = pkgs."nextcloud${version}";
+    package = pkgs-unstable."nextcloud${version}";
     https = true;
     webserver = "caddy";
     hostName = "nextcloud.local";
@@ -25,7 +26,7 @@ with lib; {
     database.createLocally = true;
     extraApps = {
       inherit
-        (pkgs."nextcloud${version}Packages".apps)
+        (pkgs-unstable."nextcloud${version}Packages".apps)
         # mail
         calendar
         contacts
