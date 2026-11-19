@@ -54,6 +54,11 @@ in {
           phonetrack
           recognize
           ;
+        files_scripts = pkgs-unstable.fetchNextcloudApp {
+          url = "https://github.com/Raudius/files_scripts/releases/download/v5.0.4/files_scripts-5.0.4.tar.gz";
+          hash = "sha256-GsZLbXhLXl4YjN1orguJxdk8c54p+yHrhAmh8DPBs9E=";
+          license = "agpl3Only";
+        };
       };
       config = {
         adminuser = "admin";
@@ -84,10 +89,7 @@ in {
         maintenance_window_start = 5; # 2:00 AM at UTC-3
         trusted_proxies = ["127.0.0.1"];
       };
-      phpExtraExtensions = all:
-        with all; [
-          opcache
-        ];
+      phpExtraExtensions = all: with all; [opcache];
       phpOptions = {
         "opcache.interned_strings_buffer" = 10;
         "opcache.jit" = 1255;
@@ -96,6 +98,8 @@ in {
         "opcache.save_comments" = 1;
       };
     };
+
+    systemd.services."phpfpm-nextcloud".path = with pkgs-unstable; [ffmpeg qpdf];
 
     services.caddy.virtualHosts."https://${cfg.hostName}".serverAliases = [
       "http://${cfg.hostName}"
