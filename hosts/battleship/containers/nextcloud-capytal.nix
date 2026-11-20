@@ -130,7 +130,7 @@ in {
           news
           notes
           oidc_login
-          spreed
+          # spreed
           ;
         external = pkgs.fetchNextcloudApp {
           url = "https://github.com/nextcloud-releases/external/releases/download/v10.0.0/external-v10.0.0.tar.gz";
@@ -214,22 +214,22 @@ in {
         "opcache.save_comments" = 1;
       };
 
-      services.nextcloud-spreed-signaling.enable = true;
-      services.nextcloud-spreed-signaling.configureNginx = true;
-      services.nextcloud-spreed-signaling.hostName = "talk.capytal.cc";
-      services.nextcloud-spreed-signaling.backends."nextcloud-cpy" = {
-        secretFile = config.sops.secrets."containers/nextcloud-capytal/spreed-secret".path;
-        urls = ["https://${config.services.nextcloud.hostName}"];
-      };
-      services.nextcloud-spreed-signaling.settings = {
-        clients.internalsecretFile =
-          config.sops.secrets."containers/nextcloud-capytal/spreed-client-secret".path;
-        http.listen = "127.0.0.1:8080";
-        sessions = {
-          hashkeyFile = config.sops.secrets."containers/nextcloud-capytal/spreed-hashkey".path;
-          blockkeyFile = config.sops.secrets."containers/nextcloud-capytal/spreed-blockkey".path;
-        };
-      };
+      # services.nextcloud-spreed-signaling.enable = true;
+      # services.nextcloud-spreed-signaling.configureNginx = true;
+      # services.nextcloud-spreed-signaling.hostName = "talk.capytal.cc";
+      # services.nextcloud-spreed-signaling.backends."nextcloud-cpy" = {
+      #   secretFile = config.sops.secrets."containers/nextcloud-capytal/spreed-secret".path;
+      #   urls = ["https://${config.services.nextcloud.hostName}"];
+      # };
+      # services.nextcloud-spreed-signaling.settings = {
+      #   clients.internalsecretFile =
+      #     config.sops.secrets."containers/nextcloud-capytal/spreed-client-secret".path;
+      #   http.listen = "127.0.0.1:8080";
+      #   sessions = {
+      #     hashkeyFile = config.sops.secrets."containers/nextcloud-capytal/spreed-hashkey".path;
+      #     blockkeyFile = config.sops.secrets."containers/nextcloud-capytal/spreed-blockkey".path;
+      #   };
+      # };
 
       # services.coturn.enable = true;
       # services.coturn.realm = "turn.capytal.cc";
@@ -315,22 +315,6 @@ in {
         "containers/nextcloud-capytal/db-pass" = {owner = "nextcloud";};
         "containers/nextcloud-capytal/config" = {owner = "nextcloud";};
         "containers/nextcloud-capytal/s3-secret" = {owner = "nextcloud";};
-        "containers/nextcloud-capytal/spreed-hashkey" = {
-          owner = config.services.nextcloud-spreed-signaling.user;
-        };
-        "containers/nextcloud-capytal/spreed-blockkey" = {
-          owner = config.services.nextcloud-spreed-signaling.user;
-        };
-        "containers/nextcloud-capytal/spreed-secret" = {
-          owner = config.services.nextcloud-spreed-signaling.user;
-        };
-        "containers/nextcloud-capytal/spreed-client-secret" = {
-          owner = config.services.nextcloud-spreed-signaling.user;
-        };
-        # "containers/nextcloud-capytal/coturn-secret" = {
-        #   owner = config.systemd.services.coturn.serviceConfig.User;
-        #   key = "containers/nextcloud-capytal/spreed-client-secret";
-        # };
       };
 
       networking.firewall.allowedTCPPorts = [80 config.services.coturn.listening-port];
