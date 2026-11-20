@@ -40,6 +40,30 @@ in {
           };
           ensureDBOwnership = true;
         }
+        {
+          name = "postiz";
+          ensureClauses = {
+            login = true;
+            password = "SCRAM-SHA-256$4096:rPmAjhppSi514qsLZYbSxQ==$xwuf4gILdLRA30ru98cWQNx8mGIE4YzZnRaMuqoq2/M=:RZrNfXCFO6ncDfNOxjfVHkYGlW5N8TUrPNnu3rPP6Tk=";
+          };
+          ensureDBOwnership = true;
+        }
+        {
+          name = "postiz-temporal";
+          ensureClauses = {
+            login = true;
+            password = "SCRAM-SHA-256$4096:CqQ7TyjsMkAcSBZfjqo28Q==$qMzuPW9EB4WwwBvw7TtCwDN8SfL2pyu1hjKSN3Cfpaw=:1McTW0qpDPPOJE1dqFw0/vm+7E4A1tGAKjtqcCQyVIA=";
+          };
+          ensureDBOwnership = true;
+        }
+        {
+          name = "postiz-temporal-visibility";
+          ensureClauses = {
+            login = true;
+            password = "SCRAM-SHA-256$4096:CqQ7TyjsMkAcSBZfjqo28Q==$qMzuPW9EB4WwwBvw7TtCwDN8SfL2pyu1hjKSN3Cfpaw=:1McTW0qpDPPOJE1dqFw0/vm+7E4A1tGAKjtqcCQyVIA=";
+          };
+          ensureDBOwnership = true;
+        }
       ];
       services.postgresql.authentication = lib.mkForce ''
         # TYPE  DATABASE        USER            ADDRESS                 METHOD
