@@ -245,6 +245,7 @@
         nextcloud = ./modules/services/nextcloud.nix;
         postgresql = ./modules/services/postgresql.nix;
         valkey = ./modules/services/valkey.nix;
+        postiz = ./modules/services/postiz.nix;
       };
       features = {
         devkit = (import ./modules/features/devkit.nix).nixos;
