@@ -192,6 +192,7 @@ with lib; {
           "Job"
           "Music"
           "Nextcloud"
+          "Capytal"
           "Projects"
           "Pictures"
           "Videos"
