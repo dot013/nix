@@ -34,7 +34,7 @@ in {
         bind_hosts = [
           "0.0.0.0"
         ];
-        upstram_dns = [
+        upstream_dns = [
           "9.9.9.9"
         ];
         fallback_dns = [
