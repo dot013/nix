@@ -4,6 +4,7 @@
     ./kitsu.nix
     ./nextcloud-capytal.nix
     ./postgresql.nix
+    ./postiz.nix
   ];
 
   networking.nat = {
@@ -12,6 +13,4 @@
     externalInterface = "enp6s0";
     enableIPv6 = true;
   };
-
-  networking.defaultGateway = "192.168.0.101";
 }

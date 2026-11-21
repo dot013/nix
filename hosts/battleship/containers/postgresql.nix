@@ -28,7 +28,9 @@ in {
         ssl = false;
       };
       services.postgresql.ensureDatabases =
-        []
+        [
+          "postiz-temporal-visibility"
+        ]
         ++ (map (v: v.name) (filter (v: v.ensureDBOwnership)
             config.services.postgresql.ensureUsers));
       services.postgresql.ensureUsers = [
@@ -44,7 +46,7 @@ in {
           name = "postiz";
           ensureClauses = {
             login = true;
-            password = "SCRAM-SHA-256$4096:rPmAjhppSi514qsLZYbSxQ==$xwuf4gILdLRA30ru98cWQNx8mGIE4YzZnRaMuqoq2/M=:RZrNfXCFO6ncDfNOxjfVHkYGlW5N8TUrPNnu3rPP6Tk=";
+            password = "SCRAM-SHA-256$4096:tahwvA3iHTF/pXe3zBtl7w==$lpQgM9l2OT+8TVM7J5xeFG61NeM6QTPoxAZWHvShTDI=:UJioQNAJZ9//hZNseOBQvLIYnimMrgNQnZ+jtaN6ZFs=";
           };
           ensureDBOwnership = true;
         }
@@ -52,19 +54,36 @@ in {
           name = "postiz-temporal";
           ensureClauses = {
             login = true;
-            password = "SCRAM-SHA-256$4096:CqQ7TyjsMkAcSBZfjqo28Q==$qMzuPW9EB4WwwBvw7TtCwDN8SfL2pyu1hjKSN3Cfpaw=:1McTW0qpDPPOJE1dqFw0/vm+7E4A1tGAKjtqcCQyVIA=";
-          };
-          ensureDBOwnership = true;
-        }
-        {
-          name = "postiz-temporal-visibility";
-          ensureClauses = {
-            login = true;
-            password = "SCRAM-SHA-256$4096:CqQ7TyjsMkAcSBZfjqo28Q==$qMzuPW9EB4WwwBvw7TtCwDN8SfL2pyu1hjKSN3Cfpaw=:1McTW0qpDPPOJE1dqFw0/vm+7E4A1tGAKjtqcCQyVIA=";
+            password = "SCRAM-SHA-256$4096:FKDqN5ePwiRc5YIVy8XzBg==$mM+M9G4a7CFslGtP3PzEP2FY5FCp8OlsxYEdq1bpkkA=:m+dMvwTrIfGNaJCJnQffa733CCl5zp3voSo3mUYUStY=";
           };
           ensureDBOwnership = true;
         }
       ];
+      systemd.services.postgresql-setup.postStart = ''
+        echo "Setting up postiz-temporal ownership"
+        psql -f ${pkgs.writeText "postgres-setup-postiz-temporal.sql" ''
+          ALTER DATABASE "postiz-temporal" OWNER TO "postiz-temporal";
+          ALTER DATABASE "postiz-temporal-visibility" OWNER TO "postiz-temporal";
+
+          \connect "postiz-temporal-visibility"
+          REASSIGN OWNED BY "postiz-temporal-visibility" TO "postiz-temporal";
+          ALTER SCHEMA public OWNER TO "postiz-temporal";
+          GRANT ALL ON SCHEMA public TO "postiz-temporal";
+          GRANT ALL ON ALL TABLES IN SCHEMA public TO "postiz-temporal";
+          GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO "postiz-temporal";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "postiz-temporal";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO "postiz-temporal";
+
+          \connect "postiz-temporal"
+          REASSIGN OWNED BY "postiz-temporal-visibility" TO "postiz-temporal";
+          ALTER SCHEMA public OWNER TO "postiz-temporal";
+          GRANT ALL ON SCHEMA public TO "postiz-temporal";
+          GRANT ALL ON ALL TABLES IN SCHEMA public TO "postiz-temporal";
+          GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO "postiz-temporal";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "postiz-temporal";
+          ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO "postiz-temporal";
+        ''}
+      '';
       services.postgresql.authentication = lib.mkForce ''
         # TYPE  DATABASE        USER            ADDRESS                 METHOD
         local   all             all                                     trust
