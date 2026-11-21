@@ -109,7 +109,6 @@ in {
     with lib; {
       imports = [
         inputs.sops-nix.nixosModules.sops
-        self.nixosModules.services.adguard-tls
       ];
 
       services.nextcloud.enable = true;

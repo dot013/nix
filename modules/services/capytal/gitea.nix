@@ -333,10 +333,6 @@ in {
 
   services.caddy.virtualHosts = {
     "${cfg.settings.server.DOMAIN}".extraConfig = ''
-      log {
-        level DEBUG
-        output stdout
-      }
       header {
         X-Frame-Options "SAMEORIGIN"
         X-Content-Type-Options "nosniff"

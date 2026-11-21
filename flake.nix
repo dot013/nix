@@ -119,9 +119,6 @@
       inputs.stylix.nixosModules.stylix
       ./secrets.nix
       ./style.nix
-
-      # Adguard local network TLS
-      (import ./modules/services/adguard.nix).tls-trust
     ];
     forAllSystems = f:
       nixpkgs.lib.genAttrs systems (system: let
@@ -232,8 +229,7 @@
       caddy = ./modules/caddy.nix;
       cloudflared-caddy = ./modules/cloudflared-caddy.nix;
       services = {
-        adguard = (import ./modules/services/adguard.nix).service;
-        adguard-tls = (import ./modules/services/adguard.nix).tls-trust;
+        adguard = ./modules/services/adguard.nix;
         anubis = ./modules/services/anubis.nix;
         capytal-authelia = ./modules/services/capytal/authelia.nix;
         capytal-gitea = ./modules/services/capytal/gitea.nix;
