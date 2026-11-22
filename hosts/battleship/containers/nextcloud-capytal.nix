@@ -4,10 +4,16 @@
   lib,
   self,
   ...
-}: let
+}:
+with lib; let
   hostCfg = config;
 in {
   services.caddy.virtualHosts."cloud.capytal.cc:80".extraConfig = lib.mkForce ''
+    log {
+      level DEBUG
+      output stdout
+    }
+
     header {
       X-Content-Type-Options "nosniff"
       X-Robots-Tag "noindex,nofollow"
@@ -19,13 +25,64 @@ in {
     redir /.well-known/carddav /remote.php/dav 302
     redir /.well-known/caldav /remote.php/dav 302
 
-    reverse_proxy http://10.0.2.2:80 {
-      header_up X-Real-IP {header.Cf-Connecting-Ip}
-      header_up X-Forwarded-Host {host}
-      header_up X-Forwarded-For {header.Cf-Connecting-Ip}
-      header_up X-Forwarded-Proto https
-      header_up X-Http-Version {http.request.proto}
-      header_up Host {host}
+    @public path ${pipe [
+        "/.well-known/carddav/*"
+        "/.well-known/caldav/*"
+        "/remote.php/webdav/*"
+        "/remote.php/dav/*"
+        "/remote.php/caldav/*"
+        "/remote.php/carddav/*"
+        "/ocs/v2.php/cloud/users/*"
+        "/apps/notifications/*"
+        "/apps/spreed/*"
+        "/index.php/s/*"
+        "/apps/files/*"
+        "/core/*"
+        "/apps/*"
+        "/dist/*"
+        "/img/*"
+        "/js/*"
+        "/css/*"
+        "/avatar/*"
+        "/svg/*"
+      ] [
+        (map (p: [p (removeSuffix "/*" p)]))
+        flatten
+        (join " ")
+      ]}
+
+    handle @public {
+      header {
+        -Remote-User
+        -Remote-Groups
+        -Remote-Name
+        -Remote-Email
+      }
+
+      reverse_proxy http://${config.containers.nextcloud-cpy.localAddress}:80 {
+        transport http {
+          read_buffer 0
+          write_buffer 0
+        }
+        header_up X-Real-IP {header.Cf-Connecting-Ip}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-For {header.Cf-Connecting-Ip}
+        header_up X-Forwarded-Proto https
+        header_up X-Http-Version {http.request.proto}
+        header_up Host {host}
+      }
+    }
+
+    handle {
+      # import capytal-auth
+      reverse_proxy http://${config.containers.nextcloud-cpy.localAddress}:80 {
+        header_up X-Real-IP {header.Cf-Connecting-Ip}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-For {header.Cf-Connecting-Ip}
+        header_up X-Forwarded-Proto https
+        header_up X-Http-Version {http.request.proto}
+        header_up Host {host}
+      }
     }
   '';
   # services.caddy.virtualHosts."talk.capytal.cc:80".extraConfig = ''

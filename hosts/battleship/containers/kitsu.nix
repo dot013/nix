@@ -11,6 +11,8 @@ with lib; {
     }
     header @redirect >Location "http://(.*)" "https://$1"
 
+    import capytal-auth
+
     reverse_proxy http://localhost:8080 {
       header_up X-Real-IP {header.Cf-Connecting-Ip}
       header_up X-Forwarded-Host {host}

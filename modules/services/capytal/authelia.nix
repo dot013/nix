@@ -168,7 +168,7 @@ in {
     # A snippet that can be imported to enable Authelia in front of a service
     # https://www.authelia.com/integration/proxies/caddy/#subdomain
     extraConfig = ''
-      (auth) {
+      (capytal-auth) {
         forward_auth :9091 {
           header_up X-Real-Ip {header.Cf-Connecting-Ip}
           header_up X-Forwarded-For {header.Cf-Connecting-Ip}

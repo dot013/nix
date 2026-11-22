@@ -10,10 +10,7 @@ with lib; let
   hostCfg = config;
 in {
   services.caddy.virtualHosts."postiz.capytal.cc:80".extraConfig = ''
-    log {
-      level DEBUG
-      output stdout
-    }
+    import capytal-auth
 
     reverse_proxy ${config.containers.postiz.localAddress}:5000 {
       header_up X-Real-IP {header.Cf-Connecting-Ip}
@@ -59,7 +56,7 @@ in {
 
       TEMPORAL_ADDRESS = "localhost:7233";
       IS_GENERAL = "true";
-      DISABLE_REGISTRATION = "true";
+      # DISABLE_REGISTRATION = "true";
 
       NX_ADD_PLUGINS = "false";
     };
