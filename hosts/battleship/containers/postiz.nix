@@ -3,6 +3,7 @@
   lib,
   inputs,
   self,
+  pkgs,
   ...
 }:
 with lib; let
@@ -189,9 +190,50 @@ in {
       };
     };
     systemd.services."temporal" = {
-      after = ["network-online.target"];
-      wants = ["network-online.target"];
       before = ["postiz.target"];
+      path = [pkgs.temporal pkgs.netcat];
+      # HACK: don't block container boot readiness. Temporal ExecStartPre needs PG
+      # over the host veth, but host veth setup runs in ExecStartPost after READY=1.
+      wantedBy = mkForce [];
+      preStart = ''
+        set -eu
+
+        mkdir -p ${config.services.temporal.dataDir}
+        mkdir -p ${config.services.temporal.dataDir}/archival
+        mkdir -p ${config.services.temporal.dataDir}/archival/history
+        mkdir -p ${config.services.temporal.dataDir}/archival/visibility
+
+        # for _ in $(seq 1 60); do
+        #   if nc -z -w 2 192.168.0.101 5433; then
+        #     break
+        #   fi
+        #   echo 'Waiting for PostgreSQL port to be available...'
+        #   sleep 2
+        # done
+        nc -z -w 2 192.168.0.101 5433 || {
+          echo 'PostgreSQL port did not become available in time' >&2
+          exit 1
+        }
+        echo 'PostgreSQL port is available'
+
+        # Create and setup temporal database
+        echo "Setting up temporal database"
+        temporal-sql-tool --plugin postgres12 --ep 192.168.0.101 -u postiz-temporal \
+          -p 5433 --db postiz-temporal setup-schema -v 0.0
+        temporal-sql-tool --plugin postgres12 --ep 192.168.0.101 -u postiz-temporal \
+          -p 5433 --db postiz-temporal update-schema \
+          -d ${pkgs.temporal}/share/schema/postgresql/v12/temporal/versioned
+
+        echo "Setting up visibility database"
+        # Create and setup visibility database
+        temporal-sql-tool --plugin postgres12 --ep 192.168.0.101 -u postiz-temporal \
+          -p 5433 --db postiz-temporal-visibility setup-schema -v 0.0
+        temporal-sql-tool --plugin postgres12 --ep 192.168.0.101 -u postiz-temporal \
+          -p 5433 --db postiz-temporal-visibility update-schema \
+          -d ${pkgs.temporal}/share/schema/postgresql/v12/visibility/versioned
+
+        echo 'PostgreSQL schema setup complete'
+      '';
       environment = mapAttrs (_: v: toString v) {
         TEMPORAL_NAMESPACE = "default";
         TEMPORAL_HOST = "localhost:7233";
@@ -205,55 +247,15 @@ in {
         POSTGRES_TLS_ENABLED = "false";
         BIND_ON_IP = "127.0.0.1";
       };
-      path = [pkgs.temporal pkgs.netcat];
       serviceConfig = {
         TimeoutStartSec = "5min";
-        ExecStartPre = getExe (pkgs.writeShellScriptBin "start-pre" ''
-          set -eu
-
-          mkdir -p ${config.services.temporal.dataDir}
-          mkdir -p ${config.services.temporal.dataDir}/archival
-          mkdir -p ${config.services.temporal.dataDir}/archival/history
-          mkdir -p ${config.services.temporal.dataDir}/archival/visibility
-
-          for _ in $(seq 1 60); do
-            if nc -z -w 2 192.168.0.101 5433; then
-              break
-            fi
-            echo 'Waiting for PostgreSQL port to be available...'
-            sleep 2
-          done
-          nc -z -w 2 192.168.0.101 5433 || {
-            echo 'PostgreSQL port did not become available in time' >&2
-            exit 1
-          }
-          echo 'PostgreSQL port is available'
-
-          # Create and setup temporal database
-          echo "Setting up temporal database"
-          temporal-sql-tool --plugin postgres12 --ep 192.168.0.101 -u postiz-temporal \
-            -p 5433 --db postiz-temporal setup-schema -v 0.0
-          temporal-sql-tool --plugin postgres12 --ep 192.168.0.101 -u postiz-temporal \
-            -p 5433 --db postiz-temporal update-schema \
-            -d ${pkgs.temporal}/share/schema/postgresql/v12/temporal/versioned
-
-          echo "Setting up visibility database"
-          # Create and setup visibility database
-          temporal-sql-tool --plugin postgres12 --ep 192.168.0.101 -u postiz-temporal \
-            -p 5433 --db postiz-temporal-visibility setup-schema -v 0.0
-          temporal-sql-tool --plugin postgres12 --ep 192.168.0.101 -u postiz-temporal \
-            -p 5433 --db postiz-temporal-visibility update-schema \
-            -d ${pkgs.temporal}/share/schema/postgresql/v12/visibility/versioned
-
-          echo 'PostgreSQL schema setup complete'
-        '');
         EnvironmentFile = [
           config.sops.secrets."containers/postiz/temporal/env".path
         ];
       };
     };
     systemd.services."temporal-postiz-namespace" = {
-      wantedBy = ["multi-user.target"];
+      wantedBy = ["temporal.service"];
       after = ["network-online.target" "temporal.service"];
       wants = ["network-online.target" "temporal.service"];
       requires = ["temporal.service"];
@@ -264,6 +266,8 @@ in {
         User = config.services.temporal.user;
         Group = config.services.temporal.group;
         TimeoutStartSec = "5min";
+        Restart = "on-failure";
+        RestartSec = "10s";
       };
       environment = {
         DEFAULT_NAMESPACE = "default";
@@ -282,6 +286,30 @@ in {
         ${readFile (pkgs.writers.writeYAML "settings.yaml" config.services.temporal.settings)}
       ''
     );
+
+    # HACK: Temporal fails during boot, since, for some reason, the network interface
+    # isn't available yet. However, after boot finishes, restarting it, and it's depending
+    # services can start.
+    # INFO: MAYBE NEEDS TO BE RERUN MANUALLY AFTER RESTART
+    systemd.services."temporal-start-hacky" = {
+      after = ["multi-user.target"];
+      requires = ["multi-user.target"];
+      serviceConfig = {
+        Type = "simple";
+      };
+      script = ''
+        systemctl reset-failed temporal.service
+        systemctl restart temporal.service
+        systemctl reset-failed temporal-postiz-namespace.service
+        systemctl restart temporal-postiz-namespace.service
+        systemctl reset-failed postiz-migrate.service
+        systemctl restart postiz-migrate.service
+        systemctl reset-failed postiz-backend.service
+        systemctl restart postiz-backend.service
+        systemctl reset-failed postiz-frontend.service
+        systemctl restart postiz-frontend.service
+      '';
+    };
 
     services.redis.package = pkgs.valkey;
 
@@ -330,7 +358,10 @@ in {
     # Workaround for bug https://github.com/NixOS/nixpkgs/issues/162686
     networking.useHostResolvConf = mkForce false;
     networking.nameservers = ["192.168.0.101"];
-    services.resolved.enable = true;
+    networking.defaultGateway = {
+      address = "192.168.0.101";
+      interface = "eth0";
+    };
 
     system.stateVersion = "26.05";
   };
@@ -342,8 +373,20 @@ in {
     };
   };
 
-  systemd.services."container@postiz.service" = rec {
+  systemd.services."container@postiz.service" = {
     after = ["container@postgresql.service"];
-    requires = after;
+    requires = ["container@postgresql.service"];
+  };
+  systemd.services."temporal-hacky-restart-container@postiz" = {
+    wantedBy = ["container@postiz.service"];
+    after = ["container@postiz.service"];
+    requires = ["container@postiz.service"];
+    path = [pkgs.nixos-container];
+    script = ''
+      nixos-container run postiz -- systemctl start --force --now temporal-start-hacky
+    '';
+    serviceConfig = {
+      Type = "simple";
+    };
   };
 }

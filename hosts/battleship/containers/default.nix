@@ -13,4 +13,6 @@
     externalInterface = "enp6s0";
     enableIPv6 = true;
   };
+
+  networking.networkmanager.unmanaged = ["interface-name:ve-*"];
 }
